@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The TNM World Wrestling Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Condensed:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f3eee3; --paper2:#e9e2d2; --ink:#1b1a17; --mute:#6a645a; --rule:#1b1a17; --soft:#cfc6b3;
+  --red:#b3261e;
+  --wcw:#1d3f8f; --wwf:#c8102e; --uswa:#a8650f; --ajpw:#136f63; --njpw:#d4481a; --cmll:#6b2fa0; --asw:#4a5d23;
+  --head:'Anton',Impact,sans-serif; --cond:'Roboto Condensed',Arial Narrow,sans-serif; --serif:'Source Serif 4',Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font-family:var(--serif);font-size:16px;line-height:1.5;
+  background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:3px 3px}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* Masthead */
+.mast{border-bottom:4px double var(--rule);padding:18px 0 10px;text-align:center}
+.mast .top{display:flex;justify-content:space-between;font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--rule);padding-bottom:6px}
+.mast h1{font-family:var(--head);font-weight:400;font-size:clamp(38px,7vw,84px);line-height:.95;margin:12px 0 4px;letter-spacing:.01em;text-transform:uppercase}
+.mast h1 span{color:var(--red)}
+@media(max-width:640px){.mast .top span:not(:first-child){display:none}.mast .top{justify-content:center}.phead{grid-template-columns:1fr}.phead .stat{text-align:left}.tools>span:first-child{display:none}}
+.mast .tag{font-family:var(--serif);font-style:italic;color:var(--mute);font-size:15px}
+
+/* Nav */
+nav.main{position:sticky;top:0;z-index:20;background:var(--ink);color:var(--paper)}
+nav.main .wrap{display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+nav.main a{font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:11px 14px;white-space:nowrap;border-bottom:4px solid transparent}
+nav.main a:hover{background:#2c2a26}
+nav.main a.on{border-bottom-color:var(--c,var(--red));background:#2c2a26}
+.tools{display:flex;justify-content:flex-end;gap:10px;align-items:center;font-family:var(--cond);font-size:13px;padding:8px 0;color:var(--mute)}
+.toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;border:1px solid var(--ink);padding:4px 10px;background:var(--paper);font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--ink)}
+.toggle .dot{width:10px;height:10px;border:1.5px solid var(--ink);border-radius:50%}
+.toggle.on .dot{background:var(--red);border-color:var(--red)}
+
+/* Generic */
+h2.sec{font-family:var(--head);font-weight:400;text-transform:uppercase;font-size:28px;letter-spacing:.02em;margin:28px 0 10px;border-bottom:3px solid var(--ink);padding-bottom:4px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+h2.sec small{font-family:var(--cond);font-size:13px;color:var(--mute);letter-spacing:.06em}
+h3{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:15px;margin:16px 0 6px}
+.kicker{font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--c,var(--red))}
+.mute{color:var(--mute)}
+.grid{display:grid;gap:22px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.lead{grid-template-columns:2fr 1fr}
+@media(max-width:860px){.g2,.g3,.g4,.lead{grid-template-columns:1fr}}
+.col-rule>*+*{border-left:1px solid var(--soft);padding-left:22px}
+@media(max-width:860px){.col-rule>*+*{border-left:0;padding-left:0;border-top:1px solid var(--soft);padding-top:16px}}
+.chip{display:inline-block;font-family:var(--cond);font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--c,var(--ink));padding:2px 7px;text-decoration:none;vertical-align:middle}
+.flag{display:inline-block;font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid currentColor;padding:0 5px;margin-left:4px;vertical-align:1px}
+.flag.inj{color:var(--red)}.flag.plan{color:var(--mute)}.flag.new{color:var(--ajpw)}
+.box{border:2px solid var(--ink);background:var(--paper);padding:14px 16px}
+.box.dark{background:var(--ink);color:var(--paper)}
+.box.dark .mute{color:#b9b1a2}
+
+/* Story */
+.story h4{font-family:var(--head);font-weight:400;font-size:clamp(26px,3.4vw,40px);line-height:1.02;margin:4px 0 8px;text-transform:uppercase}
+.story.sm h4{font-size:22px}
+.story p{margin:0 0 10px}
+.story .dek{font-style:italic;color:var(--mute)}
+.drop:first-letter{font-family:var(--head);float:left;font-size:58px;line-height:.9;padding:4px 8px 0 0}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;font-family:var(--cond);font-size:14px}
+th{text-align:left;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:12px;border-bottom:2px solid var(--ink);padding:6px 8px}
+td{border-bottom:1px solid var(--soft);padding:6px 8px;vertical-align:top}
+tr.past td{color:var(--mute)}
+tr.big td{font-weight:700}
+.tbl-wrap{overflow-x:auto}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.stars{white-space:nowrap;font-weight:700}
+
+/* Titles */
+.belt{border:2px solid var(--ink);padding:10px 12px;background:linear-gradient(180deg,var(--paper) 0,var(--paper2) 100%);position:relative}
+.belt:before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c,var(--ink))}
+.belt .t{font-family:var(--cond);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);padding-left:6px}
+.belt .h{font-family:var(--head);font-size:22px;line-height:1.1;text-transform:uppercase;padding-left:6px}
+.belt .n{font-size:13px;color:var(--mute);padding-left:6px;font-style:italic}
+.belts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+
+/* Promo header */
+.phead{border-top:10px solid var(--c);padding:18px 0 4px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;border-bottom:1px solid var(--ink)}
+.phead h2{font-family:var(--head);font-weight:400;font-size:clamp(40px,7vw,76px);line-height:.9;margin:0;text-transform:uppercase;color:var(--c)}
+.phead .full{font-family:var(--cond);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:14px}
+.phead .stat{text-align:right;font-family:var(--cond)}
+.phead .stat b{display:block;font-family:var(--head);font-weight:400;font-size:30px;line-height:1}
+.sub{display:flex;flex-wrap:wrap;gap:0;margin:12px 0 0;border-bottom:2px solid var(--ink)}
+.sub button{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px;background:none;border:0;padding:8px 12px;cursor:pointer;color:var(--mute);border-bottom:4px solid transparent;margin-bottom:-2px}
+.sub button.on{color:var(--ink);border-bottom-color:var(--c)}
+
+/* Roster */
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0 18px}
+.roster div{border-bottom:1px dotted var(--soft);padding:5px 0;font-family:var(--cond);font-size:14px}
+.roster div b{font-weight:700}
+.roster div span{display:block;color:var(--mute);font-size:12.5px}
+.search{width:100%;max-width:320px;font-family:var(--cond);font-size:14px;padding:6px 10px;border:2px solid var(--ink);background:var(--paper)}
+
+/* Faction cards */
+.fac{border-left:5px solid var(--c);padding:6px 0 6px 12px;margin-bottom:12px}
+.fac b{font-family:var(--cond);text-transform:uppercase;letter-spacing:.04em}
+.fac p{margin:2px 0 0;font-size:15px}
+
+/* Timeline */
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--soft)}
+.tl .d{font-family:var(--cond);font-weight:700;text-transform:uppercase;font-size:13px}
+.tl .d small{display:block;font-weight:400;color:var(--mute)}
+.tl.past-dim li.past{opacity:.6}
+
+/* Show cards */
+.show{border:2px solid var(--ink);margin:0 0 16px;background:var(--paper)}
+.show>header{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border-bottom:2px solid var(--ink);background:var(--paper2)}
+.show>header b{font-family:var(--head);font-weight:400;font-size:20px;text-transform:uppercase}
+.show>header span{font-family:var(--cond);font-size:13px;color:var(--mute)}
+.show .notes{padding:8px 12px;font-size:14.5px;border-top:1px solid var(--soft)}
+.show .notes ul{margin:4px 0;padding-left:18px}
+.spoil{background:var(--ink);color:var(--ink);border-radius:2px;padding:0 3px}
+.spoilers-on .spoil{background:transparent;color:inherit;padding:0}
+.hidefin .fin{display:none}
+.spoilers-on .hidefin .fin{display:inline}
+details.bk{border:1px dashed var(--ink);padding:8px 12px;margin:12px 0;background:rgba(255,255,255,.35)}
+details.bk summary{cursor:pointer;font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px}
+
+/* Bars */
+.bar{height:14px;background:var(--c);min-width:2px}
+.barrow{display:grid;grid-template-columns:70px 1fr 110px;gap:10px;align-items:center;font-family:var(--cond);font-size:14px;padding:4px 0}
+
+/* Ticker */
+.ticker{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);overflow:hidden;white-space:nowrap;font-family:var(--cond);font-size:14px;background:var(--paper2)}
+.ticker div{display:inline-block;padding:6px 0;animation:tick 70s linear infinite}
+.ticker span{margin:0 22px}
+.ticker b{color:var(--red)}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ticker div{animation:none}}
+
+.cal-day{border-bottom:1px solid var(--soft);display:grid;grid-template-columns:110px 1fr;gap:12px;padding:8px 0}
+.cal-day .d{font-family:var(--head);font-size:22px;line-height:1}
+.cal-day .d small{display:block;font-family:var(--cond);font-size:12px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.cal-day.today{background:rgba(179,38,30,.07);outline:2px solid var(--red);outline-offset:-2px;padding-left:8px}
+.ev{font-family:var(--cond);font-size:14px;padding:2px 0}
+.ev .chip{margin-right:6px;min-width:46px;text-align:center}
+.ev.big b{color:var(--red)}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 14px}
+.filters button{font-family:var(--cond);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;border:2px solid var(--c);background:var(--c);color:#fff;padding:3px 9px;cursor:pointer}
+.filters button.off{background:transparent;color:var(--c)}
+footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font-family:var(--cond);font-size:13px;color:var(--mute);text-align:center}
+.empty{border:2px dashed var(--soft);padding:18px;text-align:center;font-family:var(--cond);color:var(--mute)}
+</style>
+</head>
+<body>
+<header class="mast wrap">
+  <div class="top"><span id="worlddate">World date</span><span>Vol. I · Seven promotions · One world</span><span>Booker's edition</span></div>
+  <h1>The TNM World <span>Wrestling</span> Report</h1>
+  <div class="tag">Every territory, every title, every week. Atlanta to Arena México to Budokan to Blackpool.</div>
+</header>
+<nav class="main"><div class="wrap" id="nav"></div></nav>
+<div class="ticker" aria-hidden="true"><div id="ticker"></div></div>
+<main class="wrap">
+  <div class="tools"><span>Upcoming finishes are hidden until they happen.</span><span class="toggle" id="spoilBtn" role="button" tabindex="0"><span class="dot"></span>Show booked finishes</span></div>
+  <div id="view"></div>
+</main>
+<footer class="wrap">The TNM World Wrestling Report · Built from the TNM World Booking project files · World clock set to <span id="wd2"></span>.<br>Items marked <span class="flag plan">plan</span> are booking proposals, not yet aired. "To establish" means the source data doesn't say yet.</footer>
+
+<script>
+/* =========================== DATA =========================== */
+const WORLD_DATE = '1991-07-09';   // move this forward as the world advances
+const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const P = {
+wcw:{short:'WCW',name:'World Championship Wrestling',home:'Atlanta, GA',c:'var(--wcw)',
+  status:'Post-Flair power vacuum. Great American Bash tour, Baltimore cage match 7/14.',
+  stat:['$350,000','gate, 7/5–7/8 (4 shows)'],
+  titles:[
+    ['World Heavyweight','VACANT','Flair quit and took Big Gold. New belt unveiled 7/6. Luger vs. Windham, cage, 7/14 Bash.'],
+    ['United States','Sting','Retained vs. Ozz (Columbus 7/8). Vs. Koloff at the Bash.'],
+    ['World Tag Team','VACANT','To be crowned 7/20, Johnson City.'],
+    ['Television','To establish','Plan: vacant, tournament in August, final at the Omni 8/25.'],
+  ],
+  factions:[
+    ['Luger, Harley Race & Mr. Hughes','Hughes now Luger\'s full-time bodyguard after leaving the Dark Circle. World Title picture vs. Windham, then Simmons.'],
+    ['The Dark Circle','Kevin Sullivan quit after Columbus. Cactus Jack takes over across 4 weeks of WCW Pro with One Man Gang. Bruise Brothers being courted. Target: El Gigante.'],
+    ['Paul E. Dangerously\'s group','"I didn\'t help anybody. I made an investment." Rick Rude (centerpiece), Bobby Eaton (first recruit). Arn Anderson and Larry Zbyszko are next on the shopping list.'],
+    ['The York Foundation','Richard Morton (turned on Gibson 7/6) and Terry Taylor.'],
+    ['Fabulous Freebirds','Michael Hayes back from injury 7/8 with Jimmy Garvin.'],
+  ],
+  stories:[
+    ['The Throne Sits Empty','Luger, with Race and Hughes in his corner, meets Barry Windham in the cage for the new World Title. Windham has called Luger out on TV twice.'],
+    ['Sting\'s Summer','Sting vs. Koloff at the Bash ends that program. August: the gift-box attack and a Sting vs. Abdullah run to the Omni. Rick Rude waits underneath.'],
+    ['Mr. Wonderful','Paul Orndorff is 2–0 with two four-star-plus matches (Steiner, Rich). JYD at the Bash, then the TV Title tournament.'],
+    ['Pillman vs. Liger','1–0 Pillman from Philly. The rematch is agreed for Baltimore.'],
+    ['Pro-only: Killer Bees vs. Murdoch & Reed','The masked-switch feud plays out across 4 episodes of WCW Pro and blows off No DQ, no masks.'],
+  ],
+  desk:['Hayes contract count unknown.','Dustin Rhodes out until the fall (neck). On screen: blamed on Paul E., Rude and Eaton (Greenville 7/13).','Rude and Abdullah are working AJPW. Check blackout dates before booking.','Vader has lost back-to-back main events. Rebuild planned on WCW Pro ep. 3.','Arn vs. Zbyszko needs a finish that lets both join Paul E. later (no contest or double count-out).','Autumn Armageddon still has no date.'],
+  roster:[
+['Abdullah The Butcher','Also AJPW. Keep matches short and gimmicked'],['Arn Anderson',''],['B. Brian Blair','Killer Bees'],['Barry Windham','World Title challenger'],['Big Josh',''],['Big Van Vader',''],['Bill Irwin',''],['Black Bart',''],['Bobby Eaton','w/ Paul E.'],['Brian Pillman',''],['Butch Reed','w/ Murdoch'],['Cactus Jack','New Dark Circle leader'],['Diamond Dallas Page',''],['Dick Murdoch','w/ Reed'],['Don Harris','Bruise Brothers'],['Dustin Rhodes','INJ:Neck, out until fall'],['El Gigante',''],['Great Muta',''],['Jim Brunzell','Killer Bees'],['Jimmy Garvin','Freebirds'],['Junk Yard Dog','vs. Orndorff'],['Jushin Liger',''],['Larry Zbyszko',''],['Lex Luger','w/ Harley Race'],['Michael Hayes','Freebirds'],['Mr. Hughes','Luger\'s bodyguard'],['Nikita Koloff',''],['One Man Gang','Dark Circle'],['Ozz',''],['Paul Orndorff','TV Title path'],['PN News',''],['Richard Morton','York Foundation'],['Rick Rude','Also AJPW. w/ Paul E.'],['Rick Steiner',''],['Robert Gibson',''],['Ron Harris','Bruise Brothers'],['Ron Simmons',''],['Steve Armstrong','Young Pistols'],['Sting','U.S. Champion'],['Terry Taylor','York Foundation'],['Tommy Rich',''],['Tracy Smothers','Young Pistols'],
+['Harley Race','Manager'],['Paul E. Dangerously','Manager']],
+  departures:[['Kevin Sullivan','Quit 7/8 after Columbus. Rumored: USWA or CMLL.'],['Ric Flair','Quit. Took the Big Gold belt.']],
+},
+wwf:{short:'WWF',name:'World Wrestling Federation',home:'Stamford, CT',c:'var(--wwf)',
+  status:'Summer tour and Canadian swing into WrestleFest \'91 at Busch Stadium.',
+  stat:['$738,780','recorded July gate'],
+  titles:[['WWF Championship','To establish','Not captured in the source data.'],['Intercontinental','To establish',''],['World Tag Team','To establish','']],
+  factions:[],
+  stories:[
+    ['Hogan vs. Slaughter','The top program, from the Vancouver Superstars taping (7/7) to the WrestleFest \'91 main event at Busch Stadium.'],
+    ['Warrior vs. Undertaker','Escalating gimmick matches: Coffin Match at MSG, Des Moines, Bodybag Match in Anaheim.'],
+    ['Steamboat Down','Ricky Steamboat tore his ACL in Des Moines 7/5. Out about 10 months, so a spring 1992 return.'],
+    ['Where Was Jake?','Jake Roberts no-showed his MSG match with Earthquake 7/1. Possible storyline hook.'],
+    ['Coming in September','Ric Flair arrives 9/9 claiming to be the "Real World\'s Champion," carrying Big Gold.'],
+  ],
+  desk:['Establish champions.','Set the WrestleFest result.','Canadian swing (7/8–7/12) has no cards: house-show filler unless booked.','Decide whether Jake\'s no-show becomes an angle.'],
+  roster:[['Hulk Hogan',''],['Sgt. Slaughter',''],['Ultimate Warrior',''],['The Undertaker',''],['Ricky Steamboat','INJ:ACL, out ~10 months'],['Jake Roberts','No-showed MSG 7/1'],['Earthquake','']],
+  departures:[],
+},
+uswa:{short:'USWA',name:'United States Wrestling Association',home:'Memphis, TN',c:'var(--uswa)',
+  status:'Post-Star Wars. Bret and Kerry forced together against Andre. Dallas Iron Man II on 8/17.',
+  stat:['$178,020','July tour revenue'],
+  titles:[
+    ['Unified World','Bret Hart / Kerry Von Erich','Holder to confirm. Iron Man II at Dallas Reunion Arena 8/17.'],
+    ['Southern Heavyweight','Steve Austin','Vs. Eddie Gilbert mid-Aug, then Diamond Studd into October.'],
+    ['Television','Bill Dundee','Won the one-night tournament over Brickhouse Brown. Jamie Dundee challenges 8/3.'],
+    ['Tag Team','Unresolved','Rick Steiner left. Scott Steiner, Tully Blanchard and Robert Fuller in the mix.'],
+  ],
+  factions:[
+    ['Paul Ellering\'s stable','Andre the Giant, with Stan Hansen and Dan Spivey recruited by 7/27. Jamie Dundee ringside. Kawada turned Ellering down.'],
+    ['The Texas Bunch','Terry Funk\'s group, recruiting Kevin Von Erich.'],
+    ['Hot Stuff International','Missy Hyatt. The missing-diamonds mystery is feeding Steve Austin\'s paranoia and pulling in Diamond Studd.'],
+    ['The New Kids','Young team in Bill Dundee\'s corner, feuding with Ellering\'s group and DWB & Dick Slater.'],
+  ],
+  stories:[
+    ['Bret & Kerry','Rivals forced into an unspoken alliance. Bret saved Kerry from Andre 7/6 and walked off without a word. They team in Louisville 7/13.'],
+    ['Austin\'s Paranoia','The diamonds angle is still escalating, with no payoff stated.'],
+    ['Jarrett vs. the Gilberts','Building to a no-holds-barred Friday Night Fights blow-off.'],
+    ['Honky vs. Canterbury','Moondogs interference all summer, into a steel cage 8/31 in Memphis.'],
+    ['Power Pro Wrestling: Level Up!','Development brand launched 6/30 in Nashville: Modest, Awesome, Bagwell, Johnny B. Badd, the Thrillseekers, Helms, Tatanka, Gilbertti, D-Von and more.'],
+  ],
+  desk:['Confirm the Unified Champion.','Resolve the tag titles.','Kawada / Scotty Flamingo TV thread unresolved.','Hansen and Spivey double up with AJPW. Check dates.','Autumn Armageddon has no date or card.','September AWA-territory tour: St. Paul, Milwaukee, Chicago, Green Bay, Las Vegas.'],
+  roster:[['Andre the Giant',''],['Bret Hart',''],['Terry Funk','Texas Bunch'],['Kerry Von Erich',''],['Kevin Von Erich','Texas Bunch'],['Jerry Lawler',''],['Stan Hansen','Also AJPW. Ellering'],['Eddie Gilbert',''],['Dan Spivey','Also AJPW. Ellering'],['Scott Steiner',''],['Bill Dundee','TV Champion'],['Robert Fuller',''],['Dutch Mantell',''],['Diamond Studd',''],['Sam Houston',''],['Jeff Jarrett',''],['Doug Gilbert',''],['Dennis Condrey',''],['Honky Tonk Man',''],['Steve Austin','Southern Champion'],['Dick Slater',''],['Chris Adams',''],['Dirty White Boy',''],['Scotty Flamingo',''],['Jimmy Valiant',''],['Brickhouse Brown',''],['Rex King',''],['Tom Prichard',''],['Eric Embry',''],['The Spellbinder',''],['Nightmare Danny Davis','The Nightmares'],['Nightmare Ken Wayne','The Nightmares'],['Mark Canterbury',''],['Moondog Cujo','Moondogs'],['El Hijo Del Santo',''],['Moondog Spot','Moondogs'],['Eddie Guerrero','Also CMLL'],['Moondog Rex','Moondogs'],['Sweet Daddy Falcone',''],['Scott Taylor',''],['Jamie Dundee','w/ Ellering'],['Rob Zakowski',''],['Tony Williams',''],['Brian Christopher',''],['Toshiaki Kawada','Also AJPW'],['The Masked Avenger',''],['Oliver Peters',''],['Red Tyler',''],['Alan Martin',''],['Paul Ellering','Manager'],['Missy Hyatt','Manager / HSI']],
+  departures:[['Rick Steiner','Left USWA (now WCW)']],
+},
+ajpw:{short:'AJPW',name:'All Japan Pro Wrestling',home:'Tokyo',c:'var(--ajpw)',
+  status:'Summer Action Series under way. Jumbo is still the ace. Misawa\'s Super Generation is coming.',
+  stat:['$2,726,508','tour revenue, the world\'s biggest'],
+  titles:[['Triple Crown','To establish','Not captured. Jumbo Tsuruta is the ace.'],['World Tag Team','Can-Am Express','Furnas & Kroffat. Defending vs. Ogawa & Inoue (7/11), Kobashi & Kawada (Budokan 7/27).'],['World Junior','To confirm','Masanobu Fuchi vs. Too Cold Scorpio noted for 7/15.']],
+  factions:[['Super Generation','Mitsuharu Misawa, Kenta Kobashi, Toshiaki Kawada. Debuted 7/1 at Korakuen.'],['The Gaijin Powerhouses','Stan Hansen, Terry Gordy, Dr. Death Steve Williams, Dan Spivey.'],['The Malenkos','Dean and Joe, the junior gatekeepers.']],
+  stories:[['Jumbo vs. the Next Generation','Jumbo beat Kawada at Chiba. Kobashi (Okayama), Hansen (Osaka) and Williams (Budokan) are still to come.'],['Misawa Rising','Beat Dory Funk Jr. clean in Niigata. Hansen, Gordy and Kawada are next.'],['Baba\'s Legacy','Giant Baba beat Abdullah by DQ in Chiba. Abdullah and Rude are the foreign heels he has to deal with.'],['Ogawa\'s Tour','Yoshinari Ogawa has been the most-pushed young junior since opening night.'],['Tag Scramble','Gordy & Williams, Can-Am Express and the Fantastics are trading wins and double count-outs.']],
+  desk:['Establish the Triple Crown champion.','Hiroshima 7/13 gate (38,000) is probably a data error.','Masa Fuchi / Masanobu Fuchi duplicate in the age chart.','Hansen and Spivey miss dates while in USWA.'],
+  roster:[['Jumbo Tsuruta','40'],['Giant Baba','53'],['Mitsuharu Misawa','29 · Super Generation'],['Kenta Kobashi','24 · Super Generation'],['Toshiaki Kawada','27 · Super Generation, also USWA'],['Akira Taue','30'],['Stan Hansen','41 · also USWA'],['Terry Gordy','30'],['Steve Williams','31'],['Dan Spivey','38 · also USWA'],['Dory Funk Jr.','50'],['Doug Furnas','31 · Can-Am Express'],['Dan Kroffat','30 · Can-Am Express'],['Bobby Fulton','30 · Fantastics'],['Tommy Rogers','30 · Fantastics'],['Dean Malenko','30'],['Joe Malenko','35'],['Johnny Ace','29'],['Dynamite Kid','32 · British Bulldogs'],['Masanobu Fuchi','38'],['Yoshinari Ogawa','24'],['Tsuyoshi Kikuchi','26'],['Masao Inoue','21'],['Richard Slinger','22'],['Haruka Eigen','45 · back from elbow injury 7/17'],['Rusher Kimura','55'],['Giant Kimala II','31'],['Too Cold Scorpio',''],['Abdullah the Butcher','50 · also WCW'],['Rick Rude','32 · also WCW']],
+  departures:[],
+},
+njpw:{short:'NJPW',name:'New Japan Pro Wrestling',home:'Tokyo',c:'var(--njpw)',
+  status:'Summer Crush \'91 tour. Chōshu on top, building to Chono and a Sumo Hall finale.',
+  stat:['$242,600','tour revenue'],
+  titles:[['IWGP Heavyweight','To establish',''],['IWGP Tag Team','To establish',''],['IWGP Junior','To establish','']],
+  factions:[],
+  stories:[['Chōshu vs. Bigelow','Riki Chōshu opened the tour against Bam Bam Bigelow (Korakuen 7/4, Osaka TV 7/6).'],['Chōshu vs. Chono','The tour builds to Riki Chōshu vs. Masahiro Chono in Morioka 7/29.'],['The Sumo Hall Finale','7/30 at Ryōgoku Kokugikan. The card isn\'t set yet.']],
+  desk:['Thinnest dataset in the world: most creative gets built from scratch.','Liger, Muta and Vader are WCW. Liger is free from 7/15 if needed.','Establish IWGP champions.'],
+  roster:[['Riki Chōshu','Top native star'],['Masahiro Chono',''],['Bam Bam Bigelow','Touring gaijin'],['Jushin Liger','WCW (watch list)'],['Great Muta','WCW (watch list)'],['Big Van Vader','WCW (watch list)']],
+  departures:[],
+},
+cmll:{short:'CMLL',name:'Consejo Mundial de Lucha Libre',home:'Mexico City',c:'var(--cmll)',
+  status:'Building to Verano de Escándalo (7/26) at Arena México, then the International Gran Prix.',
+  stat:['$1,215,486','est. July gate'],
+  titles:[['World Heavyweight','Konnan','Pitched. Aguayo rematch 8/30.'],['World Light Heavyweight','El Dandy','Pitched'],['World Welterweight','Fuerza Guerrera','Pitched'],['World Tag Team','MS-1 & Satánico','Pitched'],['World Trios','Los Hermanos Dinamita','Pitched'],['Women\'s','Irma González','Pitched']],
+  factions:[['Satánico\'s rudos','Satánico and MS-1, recruiting Jaque Mate and Masakre.'],['Cien Caras\' faction','Forms 7/19 when Pierroth Jr. joins.'],['Vampiro & Kamala','Cracks showing with Black Magic. Vampiro turns 7/26.'],['Los Guerreros','Eddie, Chavo and Fuerza Guerrera vs. Los Brazos.']],
+  stories:[['Rayo vs. Cien Caras','No DQ on 7/19, then the Verano trios.'],['Guerreros vs. Brazos','Family feud, trios blow-off 7/28. Eddie vs. Brazo de Plata respect angle.'],['Yamada Invades','Toshiyo Yamada debuted 7/7. Hair vs. Hair with La Diabólica at Verano.'],['Eddie vs. El Dandy','Slow burn over "best pure wrestler."'],['International Gran Prix','8/24 Arena México: Team Mexico vs. Team International.']],
+  desk:['Title picture is still a pitch. Confirm it.','Rudas to bring in: La Diabólica, La Seductora, Pantera Sureña.','Weekday labels in the source are approximate.','Kevin Sullivan is a rumored arrival (Satánico\'s faction).'],
+  roster:'Angel Azteca|Apolo Dantes|Atlantis|Black Magic|Blue Panther|Brazo De Oro|Brazo De Plata|Chavo Guerrero|Cien Caras|Eddie Guerrero|El Brazo|El Dandy|El Hijo Del Santo|Espectro Jr|Fuerza Guerrera|Jaque Mate|Kamala|Karloff Lagarde Jr|Konnan|Mano Negra|Masakre|Máscara Año 2000|MS-1|Negro Casas|Pierroth Jr|Rayo De Jalisco Jr|Sangre Chicana|Satánico|Silver King|Toshiyo Yamada|Ultimo Dragón|Universo 2000|Vampiro Canadiense|Volador'.split('|').map(n=>[n,({'Eddie Guerrero':'Also USWA','El Hijo Del Santo':'Also USWA','Toshiyo Yamada':'Joshi, touring','Konnan':'World Champ (pitched)','Kamala':'Occasional dates'})[n]||'']),
+  departures:[],
+},
+asw:{short:'ASW',name:'All Star Wrestling',home:'United Kingdom',c:'var(--asw)',
+  status:'Holiday camp season (Apr–Oct): Pontins and Butlins. Back to the theatres in November.',
+  stat:['Blank slate','no roster on file'],
+  titles:[['British Heavyweight','To establish',''],['British Heavy-Middleweight','To establish',''],['British Tag Team','To establish','']],
+  factions:[],
+  stories:[['Holiday Camp Season','Summer touring: Southport, Minehead, Prestatyn Sands, Bognor Regis, Camber Sands, Skegness, Brean Sands, Ayr, Hemsby, Pwllheli.'],['The Winter Circuit','Nov–Mar: Croydon Fairfield Halls, Hanley, Liverpool Empire, Blackpool Tower Circus, Wolverhampton, York, Southampton, Leicester, Reading, Brentwood, Hull, York Hall.'],['A Loan Window','Camp season could be the window for talent exchanges with the other promotions.']],
+  desk:['Build the roster.','Name champions.','Decide on TV presence.','Plan talent loans.'],
+  roster:[],
+  departures:[],
+}};
+
+/* Events. r=results array [match, result, rating]; f = finish (hidden if upcoming) */
+const E = [
+// WCW
+{d:'1991-07-05',p:'wcw',city:'Philadelphia, PA',venue:'Civic Center',type:'Premium house show',gate:'10,000 · $200,000',rate:'***1/2',big:1,m:[
+['Arn Anderson vs. Junk Yard Dog','Arn (DDT)','3/4*'],['Bruise Brothers vs. Young Pistols','D. Harris pins Armstrong. Debut','1/4*'],['Brian Pillman vs. Jushin Liger','Pillman (crucifix)','***3/4'],['Sullivan, Hughes & OMG vs. Killer Bees & Dustin Rhodes','Hughes pins Brunzell','***1/4'],['Lex Luger vs. Nikita Koloff','Luger (rolling reverse cradle)','**'],['Paul Orndorff vs. Rick Steiner','Orndorff (piledriver). Upset','****1/2'],['Sting & Barry Windham vs. Big Van Vader & Great Muta','Sting pins Vader','****']],
+ n:['The Dark Circle is named.','Windham wants the World Title at the Bash.']},
+{d:'1991-07-06',p:'wcw',city:'Atlanta, GA',venue:'Center Stage',type:'WCW Saturday Night (TBS)',gate:'1,050 · $10,500',rate:'**',m:[
+['Jushin Liger vs. Terry Taylor','Liger (moonsault)','***1/2'],['Bruise Brothers vs. Bill Irwin & Butch Reed','D. Harris pins Irwin','-3/4*'],['Rock \'n\' Roll Express vs. Bobby Eaton & DDP','Gibson pins DDP. Morton turns on Gibson after','**'],['Kevin Sullivan vs. Dustin Rhodes','Sullivan by DQ. Gigante saves','**'],['Barry Windham vs. Ozz','Windham (superplex)','**3/4']],
+ n:['Jim Herd: Flair is gone, new World Title belt unveiled.','Bash matches set: Luger vs. Windham (cage), Pillman vs. Liger, Orndorff vs. JYD, Morton vs. Gibson, Bruise Brothers vs. News & Rich, Gigante vs. OMG, Arn vs. Zbyszko, Simmons vs. Ozz.']},
+{d:'1991-07-07',p:'wcw',city:'Richmond, VA',venue:'Coliseum',type:'House show',gate:'6,000 · $72,000',rate:'**1/2',m:[
+['Young Pistols vs. York Foundation','Smothers pins Taylor','**'],['El Gigante vs. Butch Reed','Gigante (chokeslam)','1/2*'],['Brian Pillman vs. Bobby Eaton','Pillman. Paul E. interferes','***1/4'],['Arn Anderson vs. Big Josh','Arn (DDT)','*1/4'],['Bruise Brothers vs. Killer Bees','D. Harris pins Brunzell','*3/4'],['Paul Orndorff vs. Tommy Rich','Orndorff (piledriver). Steiner interferes','****1/4'],['Rick Rude vs. Dustin Rhodes','Rude by count-out. Paul E. interferes','**1/4'],['Sting & Windham vs. Luger & Mr. Hughes','Sting submits Hughes (Scorpion)','**3/4']]},
+{d:'1991-07-08',p:'wcw',city:'Columbus, GA',venue:'Civic Center',type:'House show',gate:'4,500 · $67,500',rate:'**1/2',m:[
+['Bobby Eaton vs. Tracy Smothers','Eaton (Alabama Jam). Paul E. interferes','***'],['Larry Zbyszko vs. Butch Reed','Zbyszko (brainbuster)','**3/4'],['Abdullah the Butcher vs. Bill Irwin','Abdullah (elbow drop)','-**1/4'],['Arn Anderson vs. Steve Armstrong','Arn (DDT)','**'],['Jushin Liger vs. Dustin Rhodes','20:00 draw. Dustin hurts his neck','****'],['Dark Circle vs. Gibson, News & Rich','Hughes pins Rich. Sullivan\'s last match','*1/4'],['Freebirds vs. Killer Bees','Hayes pins Blair. Freebirds return','***3/4'],['Sting vs. Ozz (U.S. Title)','Sting retains (Scorpion)','**3/4'],['Steiner & Koloff vs. Vader & Muta','Steiner pins Muta','***']],
+ n:['Kevin Sullivan quits WCW, effective immediately.','Dustin Rhodes out until the fall.']},
+{d:'1991-07-09',p:'wcw',city:'Tallahassee, FL',venue:'Leon County Civic Center',type:'WCW Pro taping (4 episodes)',m:[
+['Ep 1 (airs 7/13): Barry Windham vs. Bobby Eaton','Windham (lariat)',''],['Ep 2 (7/20): Brian Pillman vs. Richard Morton','Pillman (cross body)',''],['Ep 3 (7/27): Big Van Vader vs. Tommy Rich','Vader (Vader Bomb)',''],['Ep 4 (8/3): Killer Bees vs. Murdoch & Reed, No DQ, no masks','Bees (Blair roll-up). Feud ends','']],
+ n:['Dark Circle arc: "Where is Kevin Sullivan?" → candle reveal → Cactus saves OMG → "The circle needs someone crazier."','Paul E.: "I made an investment."']},
+{d:'1991-07-11',p:'wcw',city:'Columbia, SC',venue:'Carolina Coliseum',type:'GAB tour'},
+{d:'1991-07-12',p:'wcw',city:'Charleston, SC',venue:'McAllister Fieldhouse',type:'GAB tour'},
+{d:'1991-07-13',p:'wcw',city:'Greenville, SC',venue:'Memorial Auditorium',type:'WCW Saturday Night (go-home)',m:[['Angle: Paul E., Rude & Eaton ambush Dustin Rhodes','Rude Awakening on the injured neck. Steiner too late. Stretcher','']],plan:1},
+{d:'1991-07-14',p:'wcw',city:'Baltimore, MD',venue:'Baltimore Arena',type:'The Great American Bash \'91',big:1,m:[
+['Steel cage, vacant World Title: Lex Luger vs. Barry Windham','Luger. Hughes slips in a chair; piledriver',''],['U.S. Title: Sting vs. Nikita Koloff','Sting retains',''],['Rick Rude vs. Rick Steiner','Rude (phone shot). "You\'re next," to Sting',''],['Paul Orndorff vs. Junk Yard Dog','Orndorff, clean (piledriver)',''],['Brian Pillman vs. Jushin Liger','',''],['Arn Anderson vs. Larry Zbyszko','No contest or double count-out (plan)',''],['El Gigante vs. One Man Gang','Cactus at ringside costs Gigante (plan)',''],['Ron Simmons vs. Ozz','',''],['Richard Morton vs. Robert Gibson','',''],['Bruise Brothers vs. PN News & Tommy Rich','',''],['Freebirds vs. Young Pistols & TBA','Dustin is injured: partner needed','']],
+ n:['Head to head with WWF WrestleFest \'91 the same night.','Abdullah pulled (AJPW). Cactus vs. Vader shelved.']},
+{d:'1991-07-20',p:'wcw',city:'Johnson City, TN',venue:'',type:'Saturday Night: tag titles crowned'},
+{d:'1991-07-26',p:'wcw',city:'Oakland, CA',venue:'Coliseum',type:'House show'},
+{d:'1991-07-27',p:'wcw',city:'Phoenix, AZ',venue:'',type:'Saturday Night'},
+{d:'1991-08-25',p:'wcw',city:'Atlanta, GA',venue:'The Omni',type:'GAB tour finale',big:1,m:[['U.S. Title: Sting vs. Abdullah (Texas Death or cage)','Sting, clean. Rude attacks after',''],['TV Title final: Paul Orndorff vs. Rick Steiner','Orndorff (ropes for leverage)','']],plan:1},
+// WWF
+{d:'1991-07-01',p:'wwf',city:'New York, NY',venue:'Madison Square Garden',type:'Prime Time taping',gate:'15,520 · $543,200',big:1,m:[['Ultimate Warrior vs. The Undertaker, Coffin Match','',''],['Jake Roberts vs. Earthquake','Roberts no-shows','']]},
+{d:'1991-07-05',p:'wwf',city:'Des Moines, IA',venue:'Veterans Memorial Auditorium',type:'House show',m:[['Ultimate Warrior vs. The Undertaker','','']],n:['Ricky Steamboat tears his ACL. Out ~10 months.']},
+{d:'1991-07-06',p:'wwf',city:'Anaheim, CA',venue:'Convention Center',type:'House show',m:[['Ultimate Warrior vs. The Undertaker, Bodybag Match','','']]},
+{d:'1991-07-07',p:'wwf',city:'Vancouver, BC',venue:'BC Place',type:'Superstars taping',m:[['Hulk Hogan vs. Sgt. Slaughter','','']]},
+{d:'1991-07-08',p:'wwf',city:'Calgary, AB',venue:'Saddledome',type:'House show'},
+{d:'1991-07-09',p:'wwf',city:'Edmonton, AB',venue:'Northlands Coliseum',type:'House show'},
+{d:'1991-07-10',p:'wwf',city:'Saskatoon, SK',venue:'Saskatchewan Place',type:'House show'},
+{d:'1991-07-11',p:'wwf',city:'Regina, SK',venue:'Agridome',type:'House show'},
+{d:'1991-07-12',p:'wwf',city:'Winnipeg, MB',venue:'Arena',type:'House show'},
+{d:'1991-07-13',p:'wwf',city:'Milwaukee, WI',venue:'Bradley Center',type:'House show'},
+{d:'1991-07-14',p:'wwf',city:'St. Louis, MO',venue:'Busch Stadium',type:'WrestleFest \'91 (PPV)',big:1,m:[['Hulk Hogan vs. Sgt. Slaughter','Result not set','']]},
+{d:'1991-07-18',p:'wwf',city:'Richfield, OH',venue:'Coliseum',type:'House show'},
+{d:'1991-07-19',p:'wwf',city:'Dayton, OH',venue:'Hara Arena',type:'House show'},
+{d:'1991-07-20',p:'wwf',city:'Philadelphia, PA',venue:'Spectrum',type:'Broadcast house show'},
+{d:'1991-07-21',p:'wwf',city:'Toronto, ON',venue:'Maple Leaf Gardens',type:'Broadcast show'},
+{d:'1991-07-25',p:'wwf',city:'Amarillo, TX',venue:'Civic Center',type:'House show'},
+{d:'1991-07-26',p:'wwf',city:'San Francisco, CA',venue:'Cow Palace',type:'High-profile show'},
+{d:'1991-07-27',p:'wwf',city:'Rosemont, IL',venue:'Rosemont Horizon',type:'High-profile show'},
+{d:'1991-07-28',p:'wwf',city:'Hartford, CT',venue:'Civic Center',type:'House show'},
+{d:'1991-07-29',p:'wwf',city:'Worcester, MA',venue:'Centrum',type:'House show'},
+{d:'1991-07-30',p:'wwf',city:'Portland, ME',venue:'Cumberland County CC',type:'House show'},
+{d:'1991-07-31',p:'wwf',city:'Scranton, PA',venue:'CYC',type:'House show'},
+{d:'1991-09-09',p:'wwf',city:'Prime Time',venue:'',type:'Ric Flair debuts with Big Gold',big:1},
+// USWA
+{d:'1991-07-01',p:'uswa',city:'Memphis, TN',venue:'Mid South Coliseum',type:'USWA Star Wars (PLE)',gate:'10,085 · $121,020',big:1,m:[['Unified Title: Bret Hart vs. Kerry Von Erich','',''],['Jeff Jarrett vs. Eddie Gilbert','',''],['Scott Steiner & Robert Fuller vs. Stan Hansen & Dan Spivey','',''],['Kevin Von Erich vs. Terry Funk','',''],['Southern Title: Steve Austin vs. Brickhouse Brown','',''],['Bill Dundee & Jimmy Valiant vs. Jamie Dundee & Andre the Giant','',''],['Tag Team Mayhem: Condrey & D. Gilbert vs. Nightmares vs. Gringos Locos vs. New Kids','#1 contenders','']]},
+{d:'1991-07-03',p:'uswa',city:'Jonesboro, AR',venue:'Earl Bell Community Center',type:'TV taping',m:[['Bill Dundee & Jimmy Valiant vs. Dirty White Boy & Rex King','','']]},
+{d:'1991-07-06',p:'uswa',city:'Memphis, TN',venue:'Mid South Coliseum',type:'Championship Wrestling (Live TV)',m:[['Andre the Giant (w/ Ellering) vs. Kerry Von Erich','Andre by DQ (Jamie Dundee chair). Bret Hart makes the save','']],n:['Ellering on Kawada turning him down: Kawada\'s loss, not his.']},
+{d:'1991-07-10',p:'uswa',city:'Evansville, IN',venue:'Veterans Memorial Coliseum',type:'TV taping (4 weeks)'},
+{d:'1991-07-13',p:'uswa',city:'Louisville, KY',venue:'Louisville Gardens',type:'Championship Wrestling',big:1,m:[['Kerry Von Erich & Bret Hart vs. Andre the Giant & Jamie Dundee','','']]},
+{d:'1991-07-17',p:'uswa',city:'TBD',venue:'',type:'Spot show'},
+{d:'1991-07-20',p:'uswa',city:'Dallas, TX',venue:'Sportatorium',type:'Championship Wrestling'},
+{d:'1991-07-24',p:'uswa',city:'Evansville, IN',venue:'Veterans Memorial Coliseum',type:'TV taping'},
+{d:'1991-07-27',p:'uswa',city:'Nashville, TN',venue:'Fairgrounds',type:'Syndicated taping',n:['Ellering formally brings in Hansen & Spivey.']},
+{d:'1991-07-31',p:'uswa',city:'Jonesboro, AR',venue:'Earl Bell Community Center',type:'TV taping'},
+{d:'1991-08-03',p:'uswa',city:'',venue:'',type:'TV Title: Bill Dundee vs. Jamie Dundee'},
+{d:'1991-08-17',p:'uswa',city:'Dallas, TX',venue:'Reunion Arena',type:'Echoes of Glory: Bret vs. Kerry Iron Man II',gate:'16,000 · $320,000',big:1},
+{d:'1991-08-31',p:'uswa',city:'Memphis, TN',venue:'Mid South Coliseum',type:'Cage: Honky Tonk Man vs. Mark Canterbury'},
+// AJPW
+{d:'1991-07-01',p:'ajpw',city:'Tokyo',venue:'Korakuen Hall',type:'Opening Night',m:[['Misawa & Kobashi vs. Hansen & Gordy','Double count-out',''],['Can-Am Express vs. Fantastics','Can-Am, clean',''],['Dean Malenko vs. Ogawa','Dean (submission)','']]},
+{d:'1991-07-03',p:'ajpw',city:'Chiba',venue:'Port Arena',type:'Warm-up show',m:[['Jumbo Tsuruta vs. Toshiaki Kawada','Jumbo. Kawada earns respect',''],['Joe Malenko vs. Kikuchi','Joe (cradle)',''],['Giant Baba vs. Abdullah','Baba by DQ','']]},
+{d:'1991-07-05',p:'ajpw',city:'Sendai',venue:'City Gym',type:'Regional showcase',m:[['Gordy & Williams vs. Can-Am Express','Double count-out',''],['Ogawa & Inoue vs. Slinger & Kikuchi','Ogawa pins Slinger',''],['Rick Rude vs. Johnny Ace','Rude, dirty','']]},
+{d:'1991-07-07',p:'ajpw',city:'Niigata',venue:'City Gym',type:'Mid-tour',m:[['Misawa vs. Dory Funk Jr.','Misawa, clean',''],['Malenkos vs. Kawada & Kikuchi','Malenkos',''],['Kimala II vs. Spivey','Spivey (lariat)','']]},
+{d:'1991-07-09',p:'ajpw',city:'Kanazawa',venue:'Ishikawa Prefectural Gym',type:'Tag team feature',m:[['Fantastics vs. Hansen & Spivey','Fantastics (roll-up)',''],['Kobashi & Taue vs. Can-Am Express','Can-Am',''],['Masao Inoue vs. Haruka Eigen','Inoue','']]},
+{d:'1991-07-11',p:'ajpw',city:'Nagoya',venue:'Aichi Prefectural Gym',type:'Mid-tour highlight',m:[['Misawa & Kawada vs. Abdullah & Rude','Misawa pins Rude',''],['Tag Title: Ogawa & Inoue vs. Can-Am Express','',''],['Dean Malenko vs. Johnny Ace','Dean. Handshake tease',''],['British Bulldogs vs. Hansen & Spivey','','']]},
+{d:'1991-07-13',p:'ajpw',city:'Hiroshima',venue:'Sun Plaza',type:'Six-man tag special',m:[['Misawa, Kobashi & Kawada vs. Hansen, Gordy & Williams','Misawa pins Gordy',''],['Malenkos & Dory Funk Jr. vs. Ogawa, Kikuchi & Taue','Malenkos','']]},
+{d:'1991-07-15',p:'ajpw',city:'Okayama',venue:'Okayama Budokan',type:'Regional stop',m:[['Jumbo vs. Kobashi','Jumbo. Kobashi survives',''],['Can-Am vs. Fantastics','Fantastics (flash pin)',''],['Joe Malenko vs. Ogawa','Ogawa (counter)','']]},
+{d:'1991-07-17',p:'ajpw',city:'Kumamoto',venue:'Prefectural Gym',type:'Southern loop',m:[['Misawa vs. Stan Hansen','Misawa (Tiger Driver)',''],['Kawada vs. Rick Rude','Rude (tights)',''],['Baba & Kimura vs. Abdullah & Kimala II','Baba','']]},
+{d:'1991-07-19',p:'ajpw',city:'Fukuoka',venue:'Sports Center',type:'Southern showcase',m:[['Gordy & Williams vs. Fantastics','Gordy & Williams',''],['Kobashi & Kawada vs. Can-Am Express','Kobashi pins Kroffat','']]},
+{d:'1991-07-21',p:'ajpw',city:'Sapporo',venue:'Nakajima Sports Center',type:'Northern swing',m:[['Misawa & Jumbo vs. Hansen & Gordy','Misawa pins Hansen',''],['Baba vs. Rick Rude','Baba (flash cradle)','']]},
+{d:'1991-07-23',p:'ajpw',city:'Yokohama',venue:'Cultural Gym',type:'Pre-finale',m:[['Misawa vs. Kawada','Misawa. Post-match handshake',''],['Can-Am vs. Gordy & Williams','Double DQ','']]},
+{d:'1991-07-25',p:'ajpw',city:'Osaka',venue:'Prefectural Gym',type:'Co-main event',gate:'6,000 · $210,000',m:[['Jumbo vs. Stan Hansen','Jumbo',''],['Misawa & Kobashi vs. Gordy & Williams','Misawa pins Gordy','']]},
+{d:'1991-07-27',p:'ajpw',city:'Tokyo',venue:'Nippon Budokan',type:'Summer Action Series finale',gate:'14,000 · $560,000',big:1,m:[['Jumbo Tsuruta vs. Steve Williams','Jumbo (two backdrop drivers)',''],['Tag Title: Can-Am Express vs. Kobashi & Kawada','Can-Am retains',''],['Texas Death: Misawa vs. Abdullah','Misawa, revenge for Baba',''],['Junior elimination: Kikuchi, Ogawa, Slinger, Inoue','Ogawa',''],['Rick Rude vs. Johnny Ace','Rude','']]},
+// NJPW
+{d:'1991-07-04',p:'njpw',city:'Tokyo',venue:'Korakuen Hall',type:'Summer Crush \'91',gate:'1,750 · $56,000',m:[['Riki Chōshu vs. Bam Bam Bigelow','','']]},
+{d:'1991-07-05',p:'njpw',city:'Niigata',venue:'City Gymnasium',type:'Summer Crush \'91',gate:'2,800 · $61,600'},
+{d:'1991-07-06',p:'njpw',city:'Osaka',venue:'Prefectural Gym',type:'World Pro Wrestling TV',gate:'5,000 · $125,000',m:[['Riki Chōshu vs. Bam Bam Bigelow','','']]},
+{d:'1991-07-10',p:'njpw',city:'Nagoya',venue:'Aichi Prefectural Gym',type:'Summer Crush \'91'},
+{d:'1991-07-13',p:'njpw',city:'Abashiri',venue:'City Gymnasium',type:'Summer Crush \'91'},
+{d:'1991-07-14',p:'njpw',city:'Hiroshima',venue:'Sun Plaza Hall',type:'Summer Crush \'91'},
+{d:'1991-07-18',p:'njpw',city:'Fukuoka',venue:'Hakata Star Lanes',type:'Summer Crush \'91'},
+{d:'1991-07-19',p:'njpw',city:'Sapporo',venue:'Nakajima Sports Center',type:'TV taping'},
+{d:'1991-07-22',p:'njpw',city:'Sendai',venue:'Sendai Gymnasium',type:'Summer Crush \'91'},
+{d:'1991-07-29',p:'njpw',city:'Morioka',venue:'Iwate Prefectural Gym',type:'Summer Crush \'91',m:[['Riki Chōshu vs. Masahiro Chono','','']]},
+{d:'1991-07-30',p:'njpw',city:'Tokyo',venue:'Sumo Hall',type:'Summer Crush \'91 finale',big:1,m:[['Card not set','','']]},
+// CMLL
+{d:'1991-07-05',p:'cmll',city:'Mexico City',venue:'Arena México',type:'Viernes Espectacular',m:[['Rayo de Jalisco Jr. & Atlantis vs. Cien Caras & MS-1','Rayo pins MS-1 after a Satánico miscue','']]},
+{d:'1991-07-06',p:'cmll',city:'Mexico City',venue:'Arena Coliseo',type:'Sábado de Lucha Libre',m:[['Eddie & Chavo Guerrero vs. El Brazo & Brazo de Oro','Guerreros. Brazo de Plata challenges Eddie','']]},
+{d:'1991-07-08',p:'cmll',city:'Puebla',venue:'Arena Puebla',type:'Domingo de Coliseo',m:[['Toshiyo Yamada debut trios','Showcase for the joshi star','']]},
+{d:'1991-07-10',p:'cmll',city:'Naucalpan',venue:'El Toreo',type:'House show'},
+{d:'1991-07-12',p:'cmll',city:'Mexico City',venue:'Arena México',type:'Viernes Espectacular',m:[['Kamala & Vampiro vs. Atlantis & Mano Negra','Kamala pins Atlantis. Vampiro refuses to tag','']]},
+{d:'1991-07-13',p:'cmll',city:'Mexico City',venue:'Arena Coliseo',type:'Tag team spotlight',m:[['El Dandy vs. Jaque Mate','Dandy. Jumped by Satánico & MS-1','']]},
+{d:'1991-07-14',p:'cmll',city:'Guadalajara',venue:'Arena Guadalajara',type:'Rudos vs. Técnicos',m:[['Silver King, Volador & Ultimo Dragón vs. Máscara Año 2000, Universo 2000 & Masakre','Silver King pins Masakre','']]},
+{d:'1991-07-17',p:'cmll',city:'Acapulco',venue:'Coliseo Acapulco',type:'Acapulco debut'},
+{d:'1991-07-19',p:'cmll',city:'Mexico City',venue:'Arena México',type:'Viernes Espectacular',m:[['Rayo de Jalisco Jr. vs. Cien Caras, No DQ','Double count-out. Pierroth Jr. joins Cien Caras','']]},
+{d:'1991-07-20',p:'cmll',city:'Mexico City',venue:'Arena Coliseo',type:'Women\'s division featured',m:[['Eddie Guerrero vs. Brazo de Plata','Eddie. Respect angle','']]},
+{d:'1991-07-21',p:'cmll',city:'Puebla',venue:'Arena Puebla',type:'Mask-vs-mask tease',m:[['Vampiro, Kamala & Black Magic vs. Atlantis, Mano Negra & El Dandy','Vampiro walks out. Kamala pins Mano Negra','']]},
+{d:'1991-07-26',p:'cmll',city:'Mexico City',venue:'Arena México',type:'Verano de Escándalo',big:1,m:[['Rayo, Atlantis & El Dandy vs. Cien Caras, Pierroth Jr. & Satánico','Rayo pins Pierroth Jr.',''],['Hair vs. Hair: Toshiyo Yamada vs. La Diabólica','Yamada. Diabólica shaved',''],['Vampiro & Black Magic vs. Silver King & Volador','Vampiro turns on Black Magic','']]},
+{d:'1991-07-27',p:'cmll',city:'Mexico City',venue:'Arena Coliseo',type:'Verano fallout'},
+{d:'1991-07-28',p:'cmll',city:'Nezahualcóyotl',venue:'Arena Neza',type:'Fan appreciation',m:[['Guerreros vs. Brazos, trios blow-off','Guerreros, clean','']]},
+{d:'1991-08-24',p:'cmll',city:'Mexico City',venue:'Arena México',type:'International Gran Prix',big:1,m:[['Team Mexico vs. Team International, 10-man elimination','Result not set','']]},
+{d:'1991-08-30',p:'cmll',city:'Mexico City',venue:'Arena México',type:'Super Viernes',m:[['CMLL World Title: Konnan vs. Perro Aguayo (rematch)','Result not set','']]},
+];
+
+const SHARED = [
+['Rick Rude','WCW','AJPW','Works both. AJPW 7/5, 7/11, 7/17, 7/21, 7/27. Flies back for Richmond 7/7, Greenville 7/13 and the Bash 7/14.'],
+['Abdullah the Butcher','WCW','AJPW','AJPW 7/3, 7/11, 7/13, 7/17, 7/27. Pulled from the Bash. Back in WCW for the August gift box.'],
+['Stan Hansen','USWA','AJPW','Shuttles between them. Missed AJPW Niigata 7/7 while in USWA.'],
+['Dan Spivey','USWA','AJPW','Same shuttle as Hansen. Both join Ellering\'s USWA stable 7/27.'],
+['Toshiaki Kawada','AJPW','USWA','AJPW Super Generation. Turned down Ellering in USWA. Short USWA deal.'],
+['Eddie Guerrero','CMLL','USWA','Guerreros vs. Brazos in CMLL. Also on the USWA ledger.'],
+['El Hijo Del Santo','CMLL','USWA','On both rosters.'],
+['Jushin Liger','WCW','NJPW','WCW-exclusive through the Bash. Free for NJPW from 7/15.'],
+['Great Muta','WCW','NJPW','Watch list. No NJPW dates booked.'],
+['Big Van Vader','WCW','NJPW','Watch list. No NJPW dates booked.'],
+['Toshiyo Yamada','CMLL','Joshi','Touring CMLL. Hair vs. Hair 7/26. Women\'s Title challenge pitched.'],
+['Kevin Sullivan','(free agent)','USWA or CMLL?','Walked out of WCW 7/8. Rumored for Funk\'s Texas Bunch or Satánico\'s rudos.'],
+];
+
+const ARRIVALS = [
+['9/5/91','WCW','Bill Kazmaier','Arrival. "World\'s Strongest Man."'],
+['9/9/91','WWF','Ric Flair','Arrival. "Real World\'s Champion," with Big Gold.'],
+['9/9/91','WWF','Scott Taylor','Career debut.'],
+['Sept \'91','WCW','Van Hammer','Career debut. Heavy-metal rocker.'],
+['9/20/91','Japan','Masayoshi Motegi','Career debut. W*ING junior.'],
+['10/4/91','Joshi','Kumiko Maekawa','AJW debut. Karate background.'],
+['10/4/91','Joshi','Chikako Shiratori','AJW debut.'],
+['10/21/91','WWF','Chris Chavis (Tatanka)','Vignettes first. TV in Feb \'92. Also on USWA\'s Power Pro roster.'],
+['11/5/91','WCW','Marcus Alexander Bagwell','Young babyface. Also on USWA\'s Power Pro roster.'],
+['11/10/91','Indies','Rick Michaels','Georgia.'],
+['11/10/91','Indies','Stevie Richards','Philadelphia (date disputed).'],
+['11/11/91','WWF','Chris Walker','Jumps from GWF.'],
+['11/18/91','CMLL','Rey Bucanero Jr.','Age 17, nephew of Pirata Morgan.'],
+['11/20/91','Indies','Glenn Gilbertti','Career debut. Also on USWA\'s Power Pro roster.'],
+['Late \'91','WWF','Repo Man','Gimmick debut (Barry Darsow).'],
+['12/1/91','WWF','Owen Hart','Return.'],
+['12/2/91','WWF','Brian Lee','Arrival.'],
+['12/7/91','Shoot','Volk Han','RINGS debut vs. Akira Maeda.'],
+['12/7/91','Shoot','Hans Nijman','RINGS, karate bout.'],
+['12/22/91','Shoot','Hiromitsu Kanehara','UWF-i, vs. Masakazu Maeda.'],
+['12/22/91','Shoot','Masakazu Maeda','UWF-i.'],
+['1991','Indies','Little Guido','NJ. Shoot-style base.'],
+['1991','Europe','Alex Wright','CWA, age 16. Son of Steve Wright.'],
+['1991','Joshi','Rie Tamada','AJW class of \'91.'],
+['1/11/92','Joshi','Michiko Omukai','AJW. Delayed by injury.'],
+];
+
+/* =========================== HELPERS =========================== */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dt = s=>{const [y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d))};
+const W = dt(WORLD_DATE);
+const fmt = s=>{const x=dt(s);return `${DOW[x.getUTCDay()]} ${MON[x.getUTCMonth()]} ${x.getUTCDate()}`};
+const fmtLong = s=>{const x=dt(s);return `${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][x.getUTCDay()]}, ${['January','February','March','April','May','June','July','August','September','October','November','December'][x.getUTCMonth()]} ${x.getUTCDate()}, ${x.getUTCFullYear()}`};
+const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
+const chip = k=>`<a class="chip" href="#${k}" style="--c:${P[k].c}">${P[k].short}</a>`;
+const ORDER = ['wcw','wwf','uswa','ajpw','njpw','cmll','asw'];
+let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
+
+/* =========================== NAV =========================== */
+const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].short]),['calendar','World Calendar'],['talent','Talent Exchange'],['arrivals','Arrivals']];
+function renderNav(cur){
+  $('#nav').innerHTML=NAV.map(([k,l])=>`<a href="#${k}" class="${cur===k?'on':''}" style="--c:${P[k]?P[k].c:'var(--red)'}">${l}</a>`).join('');
+}
+
+/* =========================== COMPONENTS =========================== */
+function showCard(e,opts={}){
+  const past=isPast(e.d), today=isToday(e.d);
+  const label = past?'Results':(today?'Tonight':'Booked');
+  const rows=(e.m||[]).map(([mt,res,r])=>{
+    let resCell='';
+    if(res){ resCell = past ? esc(res) : `<span class="spoil">${esc(res)}</span>`; }
+    return `<tr><td>${esc(mt)}</td><td>${resCell}</td>${opts.ratings!==false?`<td class="stars">${esc(r||'')}</td>`:''}</tr>`;
+  }).join('');
+  return `<article class="show" style="--c:${P[e.p].c}">
+    <header><div>${opts.chip?chip(e.p)+' ':''}<b>${esc(e.type)}</b>${e.plan?'<span class="flag plan">plan</span>':''}</div>
+    <span>${fmt(e.d)} · ${esc([e.city,e.venue].filter(Boolean).join(', '))}${e.gate?' · '+esc(e.gate):''}${e.rate?' · Card '+esc(e.rate):''} · <b style="font-family:var(--cond);font-size:13px;color:${past?'var(--mute)':'var(--red)'}">${label}</b></span></header>
+    ${rows?`<div class="tbl-wrap"><table><thead><tr><th>Match</th><th>${past?'Result':'Finish'}</th>${opts.ratings!==false?'<th>Rating</th>':''}</tr></thead><tbody>${rows}</tbody></table></div>`:''}
+    ${e.n?`<div class="notes"><ul>${e.n.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+  </article>`;
+}
+function belt(k,t){return `<div class="belt" style="--c:${P[k].c}"><div class="t">${esc(t[0])}</div><div class="h">${esc(t[1])}</div>${t[2]?`<div class="n">${esc(t[2])}</div>`:''}</div>`}
+
+/* =========================== VIEWS =========================== */
+function viewHome(){
+  const week=E.filter(e=>{const x=dt(e.d);return x>=W && (x-W)/864e5<=6}).sort((a,b)=>a.d.localeCompare(b.d));
+  const lastWeek=E.filter(e=>{const x=dt(e.d);return x<W && (W-x)/864e5<=7 && e.m}).sort((a,b)=>b.d.localeCompare(a.d));
+  const gates=[['ajpw',2726507],['cmll',1215486],['wwf',738780],['wcw',350000],['njpw',242600],['uswa',178020]];
+  const maxG=gates[0][1];
+  return `
+  <section class="grid lead col-rule" style="margin-top:8px">
+    <div class="story">
+      <div class="kicker" style="--c:var(--wcw)">WCW · Baltimore, Sunday</div>
+      <h4>The Throne Sits Empty</h4>
+      <p class="dek">Flair is gone, Big Gold went with him, and Lex Luger and Barry Windham are locked in a cage for a brand-new World Title.</p>
+      <p class="drop">Five days after Ric Flair walked out, WCW unveiled a new World Heavyweight Championship on Saturday Night and set Luger against Windham inside the cage at the Great American Bash. Luger has Harley Race and now Mr. Hughes, who has left the Dark Circle to serve as his full-time bodyguard. Windham has spent the week calling him out, from the Philly main event to Atlanta, where Luger, Race and Hughes answered from the stage.</p>
+      <p>The Bash also has Sting defending the U.S. Title against Nikita Koloff, Rick Rude vs. Rick Steiner with Paul E. Dangerously suddenly in the picture, and a Pillman–Liger rematch. Paul Orndorff, coming off two of the best matches of the summer, gets the Junk Yard Dog.</p>
+      <h3>The rest of the world</h3>
+      <div class="grid g2">
+        <div class="story sm"><div class="kicker" style="--c:var(--wwf)">WWF · Same Night</div><h4>Super Sunday</h4><p>The Bash goes head to head with WrestleFest '91 at Busch Stadium: Hulk Hogan vs. Sgt. Slaughter in front of a 57,676-seat stadium. AJPW is in Hiroshima the night before. NJPW is in Hiroshima the same night.</p></div>
+        <div class="story sm"><div class="kicker" style="--c:var(--uswa)">USWA · Louisville</div><h4>Partners, Not Friends</h4><p>Bret Hart pulled Andre off Kerry Von Erich in Memphis and walked out without a word. Saturday in Louisville they team up against Andre and Jamie Dundee. Nobody's calling it a reconciliation.</p></div>
+        <div class="story sm"><div class="kicker" style="--c:var(--ajpw)">AJPW · On Tour</div><h4>The Super Generation</h4><p>Misawa, Kobashi and Kawada debuted as a unit on opening night. Misawa beat Dory Funk Jr. clean in Niigata. Jumbo is still the ace, and he gets Kobashi, Hansen and Dr. Death before Budokan.</p></div>
+        <div class="story sm"><div class="kicker" style="--c:var(--cmll)">CMLL · Arena México</div><h4>Yamada Has Landed</h4><p>Toshiyo Yamada's debut in Puebla starts a joshi invasion that's headed for a Hair vs. Hair with La Diabólica at Verano de Escándalo. Vampiro and Kamala are already showing cracks.</p></div>
+      </div>
+    </div>
+    <aside>
+      <div class="box dark"><div class="kicker" style="--c:#f0b429">Breaking</div>
+        <h3 style="margin-top:4px;font-size:18px">Sullivan walks out on WCW</h3>
+        <p style="margin:0 0 10px;font-size:15px">Kevin Sullivan quit after Columbus. The candles were banned ("use a flashlight"). Rumored next stops: Memphis or Mexico City. Cactus Jack is circling the Dark Circle.</p>
+        <h3 style="font-size:18px">Injury report</h3>
+        <ul style="margin:0;padding-left:18px;font-size:15px"><li><b>Dustin Rhodes</b> (WCW): neck, out until fall</li><li><b>Ricky Steamboat</b> (WWF): ACL, ~10 months</li><li><b>Haruka Eigen</b> (AJPW): elbow, returns 7/17</li></ul>
+      </div>
+      <h2 class="sec" style="font-size:22px">This week <small>${fmt(WORLD_DATE)} →</small></h2>
+      <ul class="tl">${week.map(e=>`<li class="${e.big?'big':''}"><div class="d">${fmt(e.d)}${isToday(e.d)?'<small style="color:var(--red)">Tonight</small>':''}</div><div>${chip(e.p)} <b style="font-family:var(--cond)">${esc(e.type)}</b><br><span class="mute" style="font-size:14px">${esc([e.city,e.venue].filter(Boolean).join(', '))}</span></div></li>`).join('')}</ul>
+      <p style="font-family:var(--cond);font-size:13px"><a href="#calendar">Full world calendar →</a></p>
+    </aside>
+  </section>
+
+  <h2 class="sec">Championship Board <small>Top title in every promotion</small></h2>
+  <div class="belts">${ORDER.map(k=>belt(k,[P[k].short+' · '+P[k].titles[0][0],P[k].titles[0][1],P[k].titles[0][2]])).join('')}</div>
+
+  <section class="grid g2 col-rule">
+    <div>
+      <h2 class="sec">Last week's results <small>Past 7 days</small></h2>
+      ${lastWeek.slice(0,4).map(e=>showCard(e,{chip:1})).join('')}
+      <p style="font-family:var(--cond);font-size:13px">More on each promotion's page.</p>
+    </div>
+    <div>
+      <h2 class="sec">The Ledger <small>July 1991 money</small></h2>
+      ${gates.map(([k,g])=>`<div class="barrow" style="--c:${P[k].c}"><span>${chip(k)}</span><div class="bar" style="width:${(g/maxG*100).toFixed(1)}%"></div><span class="num">$${g.toLocaleString()}</span></div>`).join('')}
+      <p class="mute" style="font-family:var(--cond);font-size:13px;margin-top:6px">AJPW: full tour (Hiroshima figure is suspect). CMLL: estimate. WWF: recorded gates only. WCW: 7/5–7/8 to date. USWA: July tour; August did $634,685 on the Dallas debut.</p>
+      <h2 class="sec">Booker's desk <small>Open across the world</small></h2>
+      <ul style="padding-left:18px;margin:0;font-size:15px">
+        <li><b>Autumn Armageddon</b> is name-checked by both WCW and USWA, with no date.</li>
+        <li><b>Bash vs. WrestleFest</b>, same night, 7/14.</li>
+        <li><b>Hansen/Spivey</b> double-booked between AJPW and USWA.</li>
+        <li><b>Titles to establish:</b> WWF, NJPW, AJPW Triple Crown, ASW, CMLL (pitched only).</li>
+        <li><b>Steamboat's return</b>: spring 1992.</li>
+        <li><b>Flair to the WWF</b> 9/9 with Big Gold, if you want the real timeline.</li>
+        <li><b>All Star Wrestling</b> needs a roster.</li>
+      </ul>
+    </div>
+  </section>`;
+}
+
+function viewPromo(k,tab){
+  const p=P[k]; tab=tab||'overview';
+  const ev=E.filter(e=>e.p===k).sort((a,b)=>a.d.localeCompare(b.d));
+  const tabs=[['overview','Overview'],['shows','Cards & Results'],['roster','Roster'],['schedule','Schedule']];
+  let body='';
+  if(tab==='overview'){
+    body=`
+    <div class="grid lead col-rule">
+      <div>
+        <p style="font-size:18px;font-style:italic;margin:14px 0">${esc(p.status)}</p>
+        <h2 class="sec">Top Storylines</h2>
+        ${p.stories.map(s=>`<div class="story sm" style="margin-bottom:12px"><h4 style="font-size:21px;color:${p.c}">${esc(s[0])}</h4><p>${esc(s[1])}</p></div>`).join('')}
+        ${p.factions.length?`<h2 class="sec">Factions</h2>${p.factions.map(f=>`<div class="fac" style="--c:${p.c}"><b>${esc(f[0])}</b><p>${esc(f[1])}</p></div>`).join('')}`:''}
+      </div>
+      <aside>
+        <h2 class="sec" style="font-size:22px">Champions</h2>
+        <div class="grid" style="gap:10px">${p.titles.map(t=>belt(k,t)).join('')}</div>
+        <h2 class="sec" style="font-size:22px">Booker's Desk</h2>
+        <ul style="padding-left:18px;margin:0;font-size:15px">${p.desk.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+        ${p.departures.length?`<h2 class="sec" style="font-size:22px">Departures</h2><ul style="padding-left:18px;margin:0;font-size:15px">${p.departures.map(d=>`<li><b>${esc(d[0])}</b>: ${esc(d[1])}</li>`).join('')}</ul>`:''}
+      </aside>
+    </div>`;
+  } else if(tab==='shows'){
+    const withCards=ev.filter(e=>e.m||e.n);
+    const past=withCards.filter(e=>dt(e.d)<W).reverse(), up=withCards.filter(e=>dt(e.d)>=W);
+    body = withCards.length? `<div class="grid g2 col-rule"><div><h2 class="sec">Upcoming <small>${up.length} cards</small></h2>${up.map(e=>showCard(e)).join('')||'<div class="empty">Nothing booked yet.</div>'}</div><div><h2 class="sec">Results <small>Newest first</small></h2>${past.map(e=>showCard(e)).join('')||'<div class="empty">No results yet.</div>'}</div></div>` : `<div class="empty" style="margin-top:20px">No cards on file yet. ${esc(p.short)} is a blank slate.</div>`;
+  } else if(tab==='roster'){
+    body = p.roster.length? `<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0;gap:10px;flex-wrap:wrap"><input class="search" id="rsearch" placeholder="Search ${p.roster.length} names…"><span class="mute" style="font-family:var(--cond);font-size:13px">${k==='ajpw'?'Number = age as of July 1991':''}</span></div><div class="roster" id="rgrid">${p.roster.map(([n,note])=>{const inj=note.startsWith('INJ:');return `<div data-n="${esc(n.toLowerCase())}"><b>${esc(n)}</b>${inj?'<span class="flag inj">INJ</span>':''}<span>${esc(inj?note.slice(4):note)||'&nbsp;'}</span></div>`}).join('')}</div>`
+      : `<div class="empty" style="margin-top:20px">No roster on file. Build it as you go.</div>`;
+  } else {
+    body = `<h2 class="sec">Schedule <small>${ev.length} dates</small></h2><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>City</th><th>Venue</th><th>Show</th><th>Gate</th></tr></thead><tbody>${ev.map(e=>`<tr class="${isPast(e.d)?'past':''} ${e.big?'big':''}"><td>${fmt(e.d)}</td><td>${esc(e.city)}</td><td>${esc(e.venue)}</td><td>${esc(e.type)}${isToday(e.d)?' <span class="flag" style="color:var(--red)">tonight</span>':''}</td><td class="num">${esc(e.gate||'')}</td></tr>`).join('')}</tbody></table></div>
+    ${k==='asw'?'<p class="mute">No dated shows on file. The circuit runs on the venue pools on the Overview tab.</p>':''}`;
+  }
+  return `<section style="--c:${p.c}">
+    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2></div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>
+    <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab?'on':''}">${l}</button>`).join('')}</div>
+    ${body}
+  </section>`;
+}
+
+let calFilter=new Set(ORDER);
+function viewCalendar(){
+  const days={};
+  E.filter(e=>calFilter.has(e.p)).forEach(e=>(days[e.d]=days[e.d]||[]).push(e));
+  const keys=Object.keys(days).sort();
+  return `<h2 class="sec">World Calendar <small>Every promotion, one timeline</small></h2>
+  <div class="filters">${ORDER.map(k=>`<button data-f="${k}" class="${calFilter.has(k)?'':'off'}" style="--c:${P[k].c}">${P[k].short}</button>`).join('')}</div>
+  ${keys.map(d=>`<div class="cal-day ${isToday(d)?'today':''}" style="${isPast(d)?'opacity:.6':''}"><div class="d">${MON[dt(d).getUTCMonth()]} ${dt(d).getUTCDate()}<small>${DOW[dt(d).getUTCDay()]}${isToday(d)?' · today':''}</small></div><div>${days[d].map(e=>`<div class="ev ${e.big?'big':''}">${chip(e.p)}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${e.m&&e.m[0]&&e.m[0][0]!=='Card not set'?`<br><span style="padding-left:58px;display:inline-block;font-size:13px" class="mute">${esc(e.m[0][0])}</span>`:''}</div>`).join('')}</div></div>`).join('')}`;
+}
+
+function viewTalent(){
+  return `<h2 class="sec">Talent Exchange <small>Wrestlers working more than one territory</small></h2>
+  <p style="max-width:760px">Check here before booking anyone below. Same-day conflicts are the booker's problem. Travel is the wrestler's.</p>
+  <div class="tbl-wrap"><table><thead><tr><th>Wrestler</th><th>Home</th><th>Also</th><th>Notes</th></tr></thead><tbody>
+  ${SHARED.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td>${tagFor(s[1])}</td><td>${tagFor(s[2])}</td><td>${esc(s[3])}</td></tr>`).join('')}
+  </tbody></table></div>
+  <h2 class="sec">Rick Rude's July <small>Ravishing frequent-flyer miles</small></h2>
+  <ul class="tl">${[['1991-07-05','ajpw','Sendai: beats Johnny Ace'],['1991-07-06','wcw','Atlanta: pre-taped promo from Japan'],['1991-07-07','wcw','Richmond: beats Dustin Rhodes by count-out'],['1991-07-11','ajpw','Nagoya: w/ Abdullah vs. Misawa & Kawada'],['1991-07-13','wcw','Greenville: the Dustin ambush (plan)'],['1991-07-14','wcw','The Bash: vs. Rick Steiner'],['1991-07-17','ajpw','Kumamoto: vs. Kawada'],['1991-07-21','ajpw','Sapporo: vs. Giant Baba'],['1991-07-27','ajpw','Budokan: vs. Johnny Ace']].map(([d,k,t])=>`<li class="${isPast(d)?'past':''}"><div class="d">${fmt(d)}</div><div>${chip(k)} ${esc(t)}</div></li>`).join('')}</ul>`;
+}
+function tagFor(s){const k=ORDER.find(k=>P[k].short===s);return k?chip(k):`<span class="chip" style="--c:#6a645a">${esc(s)}</span>`}
+
+function viewArrivals(){
+  return `<h2 class="sec">Arrivals Board <small>Fall 1991 debut class</small></h2>
+  <p style="max-width:760px">Real-world debuts and promotion arrivals from September to December 1991, ready to drop into the world as the calendar gets there.</p>
+  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Where</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
+  ${ARRIVALS.map(a=>`<tr><td style="white-space:nowrap">${esc(a[0])}</td><td>${tagFor(a[1])}</td><td><b>${esc(a[2])}</b></td><td>${esc(a[3])}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+/* =========================== ROUTER =========================== */
+let curTab={};
+function route(){
+  const h=(location.hash||'#home').slice(1);
+  const key = NAV.some(n=>n[0]===h)?h:'home';
+  renderNav(key);
+  let html;
+  if(P[key]) html=viewPromo(key,curTab[key]);
+  else if(key==='calendar') html=viewCalendar();
+  else if(key==='talent') html=viewTalent();
+  else if(key==='arrivals') html=viewArrivals();
+  else html=viewHome();
+  $('#view').innerHTML=html;
+  bind(key);
+}
+function bind(key){
+  document.querySelectorAll('.sub button').forEach(b=>b.onclick=()=>{curTab[key]=b.dataset.tab;route();});
+  document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;calFilter.has(f)?calFilter.delete(f):calFilter.add(f);if(!calFilter.size)ORDER.forEach(k=>calFilter.add(k));route();});
+  const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('#rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
+}
+function setSpoil(v){spoilers=v;document.body.classList.toggle('spoilers-on',v);$('#spoilBtn').classList.toggle('on',v);$('#spoilBtn').lastChild.textContent=v?'Hide booked finishes':'Show booked finishes';try{localStorage.setItem('tnm-spoil',v?'1':'0')}catch(e){}}
+$('#spoilBtn').onclick=()=>setSpoil(!spoilers);
+$('#spoilBtn').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setSpoil(!spoilers)}};
+
+/* Ticker + dates */
+$('#worlddate').textContent='World date: '+fmtLong(WORLD_DATE);
+$('#wd2').textContent=fmtLong(WORLD_DATE);
+const tk=['<b>WCW</b> Sullivan quits; Cactus Jack eyes the Dark Circle','<b>WCW</b> Dustin Rhodes out with neck injury','<b>WWF</b> Steamboat tears ACL in Des Moines','<b>USWA</b> Bret saves Kerry from Andre','<b>AJPW</b> Misawa beats Dory Funk Jr. clean','<b>CMLL</b> Yamada debuts in Puebla','<b>WCW</b> Orndorff–Rich ****1/4 in Richmond','<b>WCW</b> Freebirds fly again in Columbus','<b>NJPW</b> Chōshu vs. Bigelow headlines Osaka TV','<b>JULY 14</b> Bash vs. WrestleFest: same night'];
+$('#ticker').innerHTML=[...tk,...tk].map(t=>`<span>${t}</span>`).join('·');
+
+setSpoil(spoilers);
+window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0)});
+route();
+</script>
+</body>
+</html>
