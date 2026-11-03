@@ -26,7 +26,7 @@ a{color:inherit}
 .mast .top{display:flex;justify-content:space-between;font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--rule);padding-bottom:6px}
 .mast h1{font-family:var(--head);font-weight:400;font-size:clamp(38px,7vw,84px);line-height:.95;margin:12px 0 4px;letter-spacing:.01em;text-transform:uppercase}
 .mast h1 span{color:var(--red)}
-@media(max-width:640px){.mast .top span:not(:first-child){display:none}.mast .top{justify-content:center}.phead{grid-template-columns:1fr}.phead .stat{text-align:left}.tools>span:first-child{display:none}}
+@media(max-width:640px){#factbox{float:none!important;width:auto!important;margin:0 0 14px!important}.mast .top span:not(:first-child){display:none}.mast .top{justify-content:center}.phead{grid-template-columns:1fr}.phead .stat{text-align:left}.tools>span:first-child{display:none}}
 .mast .tag{font-family:var(--serif);font-style:italic;color:var(--mute);font-size:15px}
 
 /* Nav */
@@ -63,6 +63,7 @@ h3{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spaci
 .story h4{font-family:var(--head);font-weight:400;font-size:clamp(26px,3.4vw,40px);line-height:1.02;margin:4px 0 8px;text-transform:uppercase}
 .story.sm h4{font-size:22px}
 .story p{margin:0 0 10px}
+.story h4 a:hover{color:var(--c,var(--red))}
 .story .dek{font-style:italic;color:var(--mute)}
 .drop:first-letter{font-family:var(--head);float:left;font-size:58px;line-height:.9;padding:4px 8px 0 0}
 
@@ -503,10 +504,11 @@ function viewHome(){
   <section class="grid lead col-rule" style="margin-top:8px">
     <div class="story">
       <div class="kicker" style="--c:var(--wcw)">WCW · Baltimore, Sunday</div>
-      <h4>The Throne Sits Empty</h4>
+      <h4><a href="#wcw-throne-sits-empty" style="text-decoration:none">The Throne Sits Empty</a></h4>
       <p class="dek">Flair is gone, Big Gold went with him, and Lex Luger and Barry Windham are locked in a cage for a brand-new World Title.</p>
       <p class="drop">Five days after Ric Flair walked out, WCW unveiled a new World Heavyweight Championship on Saturday Night and set Luger against Windham inside the cage at the Great American Bash. Luger has Harley Race and now Mr. Hughes, who has left the Dark Circle to serve as his full-time bodyguard. Windham has spent the week calling him out, from the Philly main event to Atlanta, where Luger, Race and Hughes answered from the stage.</p>
       <p>The Bash also has Sting defending the U.S. Title against Nikita Koloff, Rick Rude vs. Rick Steiner with Paul E. Dangerously suddenly in the picture, and a Pillman–Liger rematch. Paul Orndorff, coming off two of the best matches of the summer, gets the Junk Yard Dog.</p>
+      <p style="font-family:var(--cond);font-weight:700"><a href="#wcw-throne-sits-empty">Read the full story →</a></p>
       <h3>The rest of the world</h3>
       <div class="grid g2">
         <div class="story sm"><div class="kicker" style="--c:var(--wwf)">WWF · Same Night</div><h4>Super Sunday</h4><p>The Bash goes head to head with WrestleFest '91 at Busch Stadium: Hulk Hogan vs. Sgt. Slaughter in front of a 57,676-seat stadium. AJPW is in Hiroshima the night before. NJPW is in Hiroshima the same night.</p></div>
@@ -569,7 +571,7 @@ function viewPromo(k,tab){
       <div>
         <p style="font-size:18px;font-style:italic;margin:14px 0">${esc(p.status)}</p>
         <h2 class="sec">Top Storylines</h2>
-        ${p.stories.map(s=>`<div class="story sm" style="margin-bottom:12px"><h4 style="font-size:21px;color:${p.c}">${esc(s[0])}</h4><p>${esc(s[1])}</p></div>`).join('')}
+        ${p.stories.map(s=>{const aid=Object.keys(ARTICLES).find(id=>ARTICLES[id].p===k&&ARTICLES[id].title===s[0]);return `<div class="story sm" style="margin-bottom:12px"><h4 style="font-size:21px;color:${p.c}">${aid?`<a href="#${aid}" style="text-decoration:none">${esc(s[0])}</a>`:esc(s[0])}</h4><p>${esc(s[1])}${aid?` <a href="#${aid}" style="font-family:var(--cond);font-weight:700;font-size:14px">Read the full story →</a>`:''}</p></div>`}).join('')}
         ${p.factions.length?`<h2 class="sec">Factions</h2>${p.factions.map(f=>`<div class="fac" style="--c:${p.c}"><b>${esc(f[0])}</b><p>${esc(f[1])}</p></div>`).join('')}`:''}
       </div>
       <aside>
@@ -631,10 +633,78 @@ function viewArrivals(){
   </tbody></table></div>`;
 }
 
+
+/* =========================== ARTICLES =========================== */
+const ARTICLES={
+'wcw-stings-summer':{p:'wcw',kicker:'Cover Story · United States Championship',
+ title:'Sting\'s Summer',
+ dek:'Three nights, three wins and one very long list of men who want the United States Championship. The Stinger is the hottest champion in WCW. That makes him the biggest target.',
+ by:'By the WCW Magazine staff',date:'1991-07-09',
+ body:[
+['p','If you want to know who has carried World Championship Wrestling through the first week without Ric Flair, look for the face paint. While the main-event picture tore itself apart over an empty throne, Sting went out every night and won. He has worked three main events in four days on the Great American Bash tour, and he has not lost one of them.'],
+['p','It started in Philadelphia on July 5, in what may be the match of the summer. Sting and Barry Windham went 26 minutes with Big Van Vader and the Great Muta, two of the most dangerous men in the sport, and the Civic Center crowd of 10,000 never sat down. The finish belonged to Sting: a flying cross body off the top, right onto Vader, for the one, two, three. Pinning Vader clean is something very few men alive can say they have done.'],
+['h','The Scorpion Stings'],
+['p','Two nights later in Richmond, Sting and Windham met Lex Luger and Mr. Hughes in the main event. Harley Race got involved against Windham, and for a moment it looked like the champion\'s crew would steal another one. Then Sting locked Hughes in the Scorpion Deathlock, and the big man had nowhere to go. Hughes submitted in the middle of the ring.'],
+['p','In Columbus on July 8, the United States Championship was on the line against Ozz. Ozz never tapped, and he never got out, either. He passed out in the Scorpion Deathlock, and the referee called it. Sting is still your champion.'],
+['p','That\'s three main events, three wins, and two of them by the same hold. Word around the locker room is that nobody wants to be the next man caught in it.'],
+['h','Baltimore: Nikita'],
+['p','Next up is the biggest one yet. On Sunday at The Great American Bash, Sting defends the U.S. Title against Nikita Koloff.'],
+['p','Koloff comes to Baltimore with something to prove. He lost to Lex Luger in Philadelphia and wants that match back, but first he wants gold. He bounced back in Columbus, teaming with Rick Steiner to beat Vader and Muta, and he went face to face with Sting on Saturday Night in Atlanta. Neither man backed down an inch.'],
+['p','Koloff is as strong as anyone Sting has faced, and he has the Russian Sickle to end it with one swing. Sting has the Scorpion and a crowd that will be on its feet from the first bell. Something has to give.'],
+['h','Ravishing Intentions'],
+['p','And whatever happens Sunday, Sting will not have long to celebrate.'],
+['p','On Saturday Night, viewers saw a taped message from Rick Rude, filmed in Sendai, Japan, where he is in the middle of an All Japan tour. Rude made it clear he plans to deal with Rick Steiner at the Bash first. After that, he said, he is coming for Sting\'s United States Championship.'],
+['p','Rude has been backing it up. In Richmond he beat Dustin Rhodes by count-out, and Paul E. Dangerously was at ringside, putting his nose and his oversized phone right where they didn\'t belong. Rude has flown back and forth across the Pacific to keep his WCW dates. That kind of commitment usually means a man wants something very badly.'],
+['p','Then there\'s Paul E. In three shows he has interfered three times, for Bobby Eaton twice and for Rude once. He keeps insisting he hasn\'t helped anybody. He calls it an investment. Investors expect a return, and the most valuable piece of property in WCW right now might be the belt around Sting\'s waist.'],
+['h','The Bottom Line'],
+['p','Sting is hot, the U.S. Title has never looked better, and the line of challengers gets longer every week. Koloff on Sunday. Rude waiting in the wings. And Paul E., phone in hand, watching everything.'],
+['p','It\'s going to be a long, hot summer for the Stinger. He wouldn\'t have it any other way.'],
+],
+ facts:[['Champion','Sting, United States Heavyweight Champion'],['7/5 Philadelphia','W: w/ Windham d. Vader & Muta. Pinned Vader (****)'],['7/7 Richmond','W: w/ Windham d. Luger & Hughes. Hughes submits (**3/4)'],['7/8 Columbus','W: d. Ozz, title retained. Scorpion (**3/4)'],['Next defense','Nikita Koloff, The Great American Bash, 7/14'],['Waiting','Ravishing Rick Rude (w/ Paul E. Dangerously)']],
+ factTitle:'The Stinger\'s Scorecard'},
+'wcw-throne-sits-empty':{p:'wcw',kicker:'WCW · The Great American Bash · Baltimore, July 14',
+ title:'The Throne Sits Empty',
+ dek:'Ric Flair walked out and took Big Gold with him. On Sunday, Lex Luger and Barry Windham walk into a steel cage to decide who sits in the chair he left behind.',
+ by:'By the WCW Magazine staff',date:'1991-07-09',
+ body:[
+['p','For the first time in years, nobody in World Championship Wrestling can call himself the champion of the world. Ric Flair is gone. So is the belt. The Big Gold title he carried out the door has turned up in Memphis, where Flair has signed with the USWA, and WCW has been left with an empty throne and a power vacuum the size of the Omni.'],
+['p','Jim Herd addressed it at the top of Saturday Night from Center Stage in Atlanta on July 6. Flair, he said, was no longer with the company, and the title he took with him no longer represents WCW. Then he unveiled a brand-new World Heavyweight Championship and announced how it would be filled: Lex Luger against Barry Windham, inside a steel cage, at The Great American Bash in Baltimore.'],
+['h','The Total Package'],
+['p','Luger arrives at the Bash looking more like a champion every night, and acting less like the man fans cheered for. In the Philadelphia Civic Center on July 5 he beat Nikita Koloff with a rolling reverse cradle, a win that said as much about opportunism as power. The arrogance has grown by the day, and so has the company he keeps.'],
+['p','Harley Race is in his corner now, and Race has been there before: seven times a world champion, and nobody in the building knows better what it takes to win one. Mr. Hughes has been at Luger\'s side more and more, too. In Richmond on July 7, when Luger and Hughes tagged against Sting and Windham, Race got involved against Windham. It didn\'t save the night, and Sting made Hughes tap to the Scorpion Deathlock, but Luger walked out without taking the fall. That is the pattern: Luger rarely pays the price himself.'],
+['p','When Windham called him out on Saturday Night, Luger didn\'t come to the ring. He answered from the stage, with Race and Hughes beside him. Read into that what you will.'],
+['h','The Lariat'],
+['p','Windham has been building to this since Philadelphia. He and Sting beat Big Van Vader and the Great Muta in a 26-minute main event that some in attendance called the best match of the summer, and when it was over, Windham made sure the cameras saw him gesture toward the title picture. He wanted Baltimore, and he got it.'],
+['p','In Atlanta he took apart Ozz with a superplex, then grabbed the microphone and called Luger by name. Ron Simmons came out to back him up against Ozz, which tells you where the locker room stands. Windham doesn\'t have a manager, a bodyguard or a plan B. He has a lariat, a cage door that locks from the outside, and a chance to prove that the best pure wrestler left in WCW is also its rightful champion.'],
+['h','Why the Cage'],
+['p','The steel is there for one reason: to keep everyone else out. A cage takes Harley Race off the apron and Mr. Hughes off the floor, or at least it is supposed to. Luger has built his recent run on the help around him. Windham has built his on doing it alone. Inside the cage, in theory, neither man can lean on anything but himself.'],
+['p','In theory. Cage doors open. Referees get distracted. And nobody in Baltimore will be watching the door more closely than Barry Windham.'],
+['h','What Else Is Riding on Baltimore'],
+['p','The World Title is the headline, but it won\'t be the only thing decided. Sting defends the United States Championship against Nikita Koloff. Rick Rude, fresh off a count-out win over Dustin Rhodes and with Paul E. Dangerously suddenly in the picture, meets Rick Steiner. Paul Orndorff, red-hot after an upset of Steiner in Philadelphia and a classic with Tommy Rich in Richmond, gets the Junk Yard Dog. Brian Pillman and Jushin Liger run back their Philadelphia thriller.'],
+['p','And whoever leaves Baltimore with the new belt won\'t have long to enjoy it. Ron Simmons is waiting. So is Koloff, who still wants Luger after Philadelphia. And somewhere in Memphis, a man in a robe is telling anyone who\'ll listen that the real world\'s championship never left his shoulder.'],
+['p','The throne sits empty for five more days.'],
+],
+ facts:[['Event','The Great American Bash \'91'],['Date','Sunday, July 14, 1991'],['Venue','Baltimore Arena, Baltimore, MD'],['Match','Steel cage, vacant WCW World Heavyweight Title'],['In Luger\'s corner','Harley Race'],['Last time out','Luger d. Koloff (7/5); Windham d. Ozz (7/6)']],
+}};
+function viewArticle(id){
+  const a=ARTICLES[id], p=P[a.p];
+  return `<article style="--c:${p.c};max-width:760px;margin:0 auto">
+    <p style="font-family:var(--cond);font-size:13px;margin:14px 0 0"><a href="#${a.p}">← Back to ${p.short}</a></p>
+    ${a.p==='wcw'?`<div style="margin-top:10px;background:var(--wcw);color:#fff;display:flex;justify-content:space-between;align-items:baseline;padding:6px 12px"><span style="font-family:var(--head);font-size:26px;letter-spacing:.04em">WCW MAGAZINE</span><span style="font-family:var(--cond);font-size:12px;letter-spacing:.1em;text-transform:uppercase">Summer 1991 · The official magazine of WCW</span></div>`:''}
+    <div class="phead" style="grid-template-columns:1fr;border-bottom:0;padding-bottom:0"><div class="kicker">${esc(a.kicker)}</div></div>
+    <h1 style="font-family:var(--head);font-weight:400;font-size:clamp(44px,8vw,86px);line-height:.92;text-transform:uppercase;margin:6px 0 10px">${esc(a.title)}</h1>
+    <p class="story" style="font-size:20px;font-style:italic;color:var(--mute);margin:0 0 10px">${esc(a.dek)}</p>
+    <div style="font-family:var(--cond);font-size:13px;text-transform:uppercase;letter-spacing:.08em;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px 0;margin-bottom:18px">${esc(a.by)} · ${fmtLong(a.date)}</div>
+    <div class="box" style="float:right;width:260px;margin:0 0 14px 20px;font-family:var(--cond);font-size:14px" id="factbox"><div class="kicker">${esc(a.factTitle||'Tale of the Tape')}</div>${a.facts.map(f=>`<div style="border-bottom:1px dotted var(--soft);padding:4px 0"><span class="mute" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em">${esc(f[0])}</span><br><b>${esc(f[1])}</b></div>`).join('')}</div>
+    <div class="story" style="font-size:18px;line-height:1.6">${a.body.map((b,i)=>b[0]==='h'?`<h3 style="font-size:18px;color:${p.c};margin-top:22px;clear:none">${esc(b[1])}</h3>`:`<p class="${i===0?'drop':''}">${esc(b[1])}</p>`).join('')}</div>
+    <div style="clear:both;border-top:4px double var(--ink);margin-top:24px;padding-top:10px;font-family:var(--cond);font-size:14px"><a href="#${a.p}">More from ${p.short} →</a> · <a href="#calendar">World Calendar →</a></div>
+  </article>`;
+}
 /* =========================== ROUTER =========================== */
 let curTab={};
 function route(){
   const h=(location.hash||'#home').slice(1);
+  if(ARTICLES[h]){renderNav(ARTICLES[h].p);$('#view').innerHTML=viewArticle(h);return;}
   const key = NAV.some(n=>n[0]===h)?h:'home';
   renderNav(key);
   let html;
