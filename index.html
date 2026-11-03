@@ -294,18 +294,18 @@ asw:{short:'ASW',name:'All Star Wrestling',home:'United Kingdom',c:'var(--asw)',
 /* Events. r=results array [match, result, rating]; f = finish (hidden if upcoming) */
 const E = [
 // WCW
-{d:'1991-07-05',p:'wcw',city:'Philadelphia, PA',venue:'Civic Center',type:'Premium house show',gate:'10,000 · $200,000',rate:'***1/2',big:1,m:[
+{d:'1991-07-05',p:'wcw',city:'Philadelphia, PA',venue:'Civic Center',type:'Premium house show',gate:'10,000 · $200,000',rate:'***1/2',big:1,link:'WCW_PHIL',m:[
 ['Arn Anderson vs. Junk Yard Dog','Arn (DDT)','3/4*'],['Bruise Brothers vs. Young Pistols','D. Harris pins Armstrong. Debut','1/4*'],['Brian Pillman vs. Jushin Liger','Pillman (crucifix)','***3/4'],['Sullivan, Hughes & OMG vs. Killer Bees & Dustin Rhodes','Hughes pins Brunzell','***1/4'],['Lex Luger vs. Nikita Koloff','Luger (rolling reverse cradle)','**'],['Paul Orndorff vs. Rick Steiner','Orndorff (piledriver). Upset','****1/2'],['Sting & Barry Windham vs. Big Van Vader & Great Muta','Sting pins Vader','****']],
  n:['The Dark Circle is named.','Windham wants the World Title at the Bash.']},
-{d:'1991-07-06',p:'wcw',city:'Atlanta, GA',venue:'Center Stage',type:'WCW Saturday Night (TBS)',gate:'1,050 · $10,500',rate:'**',m:[
+{d:'1991-07-06',p:'wcw',city:'Atlanta, GA',venue:'Center Stage',type:'WCW Saturday Night (TBS)',link:'WCW_SATU',gate:'1,050 · $10,500',rate:'**',m:[
 ['Jushin Liger vs. Terry Taylor','Liger (moonsault)','***1/2'],['Bruise Brothers vs. Bill Irwin & Butch Reed','D. Harris pins Irwin','-3/4*'],['Rock \'n\' Roll Express vs. Bobby Eaton & DDP','Gibson pins DDP. Morton turns on Gibson after','**'],['Kevin Sullivan vs. Dustin Rhodes','Sullivan by DQ. Gigante saves','**'],['Barry Windham vs. Ozz','Windham (superplex)','**3/4']],
  n:['Jim Herd: Flair is gone, new World Title belt unveiled.','Bash matches set: Luger vs. Windham (cage), Pillman vs. Liger, Orndorff vs. JYD, Morton vs. Gibson, Bruise Brothers vs. News & Rich, Gigante vs. OMG, Arn vs. Zbyszko, Simmons vs. Ozz.']},
-{d:'1991-07-07',p:'wcw',city:'Richmond, VA',venue:'Coliseum',type:'House show',gate:'6,000 · $72,000',rate:'**1/2',m:[
+{d:'1991-07-07',p:'wcw',city:'Richmond, VA',venue:'Coliseum',type:'House show',gate:'6,000 · $72,000',link:'WCW_RICH',rate:'**1/2',m:[
 ['Young Pistols vs. York Foundation','Smothers pins Taylor','**'],['El Gigante vs. Butch Reed','Gigante (chokeslam)','1/2*'],['Brian Pillman vs. Bobby Eaton','Pillman. Paul E. interferes','***1/4'],['Arn Anderson vs. Big Josh','Arn (DDT)','*1/4'],['Bruise Brothers vs. Killer Bees','D. Harris pins Brunzell','*3/4'],['Paul Orndorff vs. Tommy Rich','Orndorff (piledriver). Steiner interferes','****1/4'],['Rick Rude vs. Dustin Rhodes','Rude by count-out. Paul E. interferes','**1/4'],['Sting & Windham vs. Luger & Mr. Hughes','Sting submits Hughes (Scorpion)','**3/4']]},
-{d:'1991-07-08',p:'wcw',city:'Columbus, GA',venue:'Civic Center',type:'House show',gate:'4,500 · $67,500',rate:'**1/2',m:[
+{d:'1991-07-08',p:'wcw',city:'Columbus, GA',venue:'Civic Center',type:'House show',gate:'4,500 · $67,500',link:'WCW_COLU',rate:'**1/2',m:[
 ['Bobby Eaton vs. Tracy Smothers','Eaton (Alabama Jam). Paul E. interferes','***'],['Larry Zbyszko vs. Butch Reed','Zbyszko (brainbuster)','**3/4'],['Abdullah the Butcher vs. Bill Irwin','Abdullah (elbow drop)','-**1/4'],['Arn Anderson vs. Steve Armstrong','Arn (DDT)','**'],['Jushin Liger vs. Dustin Rhodes','20:00 draw. Dustin hurts his neck','****'],['Dark Circle vs. Gibson, News & Rich','Hughes pins Rich. Sullivan\'s last match','*1/4'],['Freebirds vs. Killer Bees','Hayes pins Blair. Freebirds return','***3/4'],['Sting vs. Ozz (U.S. Title)','Sting retains (Scorpion)','**3/4'],['Steiner & Koloff vs. Vader & Muta','Steiner pins Muta','***']],
  n:['Kevin Sullivan quits WCW, effective immediately.','Dustin Rhodes out until the fall.']},
-{d:'1991-07-09',p:'wcw',city:'Tallahassee, FL',venue:'Leon County Civic Center',type:'WCW Pro taping (4 episodes)',m:[
+{d:'1991-07-09',p:'wcw',city:'Tallahassee, FL',venue:'Leon County Civic Center',type:'WCW Pro taping (4 episodes)',link:'WCW_PRO_',m:[
 ['Ep 1 (airs 7/13): Barry Windham vs. Bobby Eaton','Windham (lariat)',''],['Ep 2 (7/20): Brian Pillman vs. Richard Morton','Pillman (cross body)',''],['Ep 3 (7/27): Big Van Vader vs. Tommy Rich','Vader (Vader Bomb)',''],['Ep 4 (8/3): Killer Bees vs. Murdoch & Reed, No DQ, no masks','Bees (Blair roll-up). Feud ends','']],
  n:['Dark Circle arc: "Where is Kevin Sullivan?" → candle reveal → Cactus saves OMG → "The circle needs someone crazier."','Paul E.: "I made an investment."']},
 {d:'1991-07-11',p:'wcw',city:'Columbia, SC',venue:'Carolina Coliseum',type:'GAB tour'},
@@ -451,7 +451,11 @@ const USWA_ARCHIVE=[
 ['Supercards & Specials',[['Star Wars 1991','STAR_WAR'],['Slamboree · 5.25.1991','SLAMBORE'],['Friday Night Fights · Louisville · 6.28.1991','FRIDAY_N'],['Friday Night Fights · Nashville · 6.21.1991','FRIDAY-1'],['Friday Night Fights · 5.24.1991 · S1 E1','FRIDAY-2'],['Thanksgiving Thunder 1990','THANKSGI'],['The Gauntlet','THE_GAUN'],['Gauntlet For The Gold','GAUNTLET']]],
 ['Live Events',[['Memphis · 5.11.1991','MEMPHIS_'],['Memphis · 4.27.1991 · The Three Way Dance','MEMPHI-1'],['Memphis · 4.13.1991 · International Incident','MEMPHI-2'],['Louisville · 4.12.1991','LOUISVIL'],['Nashville · 4.8.1991 · Debut show','NASHVILL'],['Dallas Sportatorium · 3.30.1991 · Debut','DALLAS__'],['Galveston · 3.29.1991','GALVESTO'],['Louisville · 3.22.1991','LOUISV-1'],['Memphis · 3.11.1991','MEMPHI-3'],['Louisville · 3.8.1991','LOUISV-2'],['Memphis · 3.4.1991 · Fully Loaded','MEMPHI-4'],['Louisville · 3.1.1991','LOUISV-3'],['Memphis · 2.25.1991','MEMPHI-5'],['Louisville · 2.22.1991','LOUISV-4'],['Memphis · 2.18.1991','MEMPHI-6'],['Louisville · 2.15.1991','LOUISV-5'],['Memphis · 2.11.1991','MEMPHI-7'],['Louisville · 2.8.1991','LOUISV-6'],['Jonesboro · 2.6.1991','JONESBOR'],['Memphis · 2.4.1991','MEMPHI-8'],['Louisville · 2.1.1991','LOUISV-7'],['Evansville · 1.30.1991','EVANSVIL'],['Memphis · 1.28.1991','MEMPHI-9'],['Memphis · 1.14.1991 · Tag League','MEMPHI-A'],['Memphis · 1.7.1991 · Tag League','MEMPHI-B'],['Memphis · 12.31.1990 · Tag League','MEMPHI-C'],['Louisville · 12.28.1990 · Tag League','LOUISV-8'],['Memphis · 12.17.1990 · Tag League','MEMPHI-D'],['Louisville · 12.14.1990 · Tag League','LOUISV-9'],['Memphis · 12.3.1990 · Tag League','MEMPHI-E'],['Memphis · 11.19.1990','MEMPHI-F'],['Louisville · 11.15.1990','LOUISV-A'],['Evansville · 11.14.1990 · Top Prospect Tournament','EVANSV-1'],['Memphis · 11.12.1990','MEMPH-10'],['Louisville · 11.8.1990','LOUISV-B'],['Evansville · 11.6.1990','EVANSV-2'],['Memphis · 11.5.1990','MEMPH-11'],['Louisville · 11.1.1990','LOUISV-C'],['Evansville · 10.30.1990','EVANSV-3'],['Memphis · 10.29.1990 · Grave Consequences','MEMPH-12'],['Louisville · 10.26.1990','LOUISV-D'],['Evansville · 10.23.1990','EVANSV-4'],['Memphis · 10.22.1990','MEMPH-13'],['Jonesboro · 10.19.1990','JONESB-1'],['Louisville · 10.18.1990','LOUISV-E'],['Evansville · 10.16.1990','EVANSV-5'],['Memphis · 10.15.1990','MEMPH-14'],['Louisville · 10.11.1990','LOUISV-F'],['Evansville · 10.9.1990','EVANSV-6'],['Memphis · 10.8.1990 · Unified Title Tournament','MEMPH-15'],['Louisville · 10.4.1990 · Tag Team Frenzy','LOUIS-10'],['Evansville · 10.2.1990','EVANSV-7'],['Memphis · 10.1.1990','MEMPH-16'],['Louisville · 9.27.1990','LOUIS-11'],['Evansville · 9.25.1990','EVANSV-8'],['Memphis · 9.24.1990','MEMPH-17'],['Louisville · 9.20.1990','LOUIS-12'],['Memphis · 9.17.1990','MEMPH-18'],['Louisville · 9.13.1990','LOUIS-13'],['Memphis · 9.10.1990','MEMPH-19'],['Louisville · 9.6.1990','LOUIS-14'],['Memphis · 9.3.1990','MEMPH-1A']]],
 ];
-const uswaLink=(f,t)=>`<a href="${USWA_BASE}${f}.HTM" target="_blank" rel="noopener">${t}</a>`;
+const WCW_ARCHIVE=[
+['Shows',[['Saturday Night · Atlanta, GA · 7.6.1991','WCW_SATU'],['Philadelphia, PA · Civic Center','WCW_PHIL'],['Richmond, VA · Richmond Coliseum','WCW_RICH'],['Columbus, GA · Civic Center','WCW_COLU'],['WCW Pro Wrestling TV Taping','WCW_PRO_'],['Wildwood, NJ · Convention Center','WCW_WILD'],['Macon, GA · Macon Coliseum','WCW_MACO'],['Ft. Bragg, NC · Ritz-Epps Center','WCW_FT__']]]];
+const SITES={uswa:{base:USWA_BASE,arch:USWA_ARCHIVE,label:'Every show, Sept 1990 – July 1991'},wcw:{base:'https://shovan123-lang.github.io/WCW/HTML/',arch:WCW_ARCHIVE,label:'Show pages from the official WCW site'}};
+const siteLink=(k,f,t)=>`<a href="${SITES[k].base}${f}.HTM" target="_blank" rel="noopener">${t}</a>`;
+const uswaLink=(f,t)=>siteLink('uswa',f,t);
 /* =========================== HELPERS =========================== */
 const $ = s=>document.querySelector(s);
 const esc = s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -484,7 +488,7 @@ function showCard(e,opts={}){
     <span>${fmt(e.d)} · ${esc([e.city,e.venue].filter(Boolean).join(', '))}${e.gate?' · '+esc(e.gate):''}${e.rate?' · Card '+esc(e.rate):''} · <b style="font-family:var(--cond);font-size:13px;color:${past?'var(--mute)':'var(--red)'}">${label}</b></span></header>
     ${rows?`<div class="tbl-wrap"><table><thead><tr><th>Match</th><th>${past?'Result':'Finish'}</th>${opts.ratings!==false?'<th>Rating</th>':''}</tr></thead><tbody>${rows}</tbody></table></div>`:''}
     ${e.n?`<div class="notes"><ul>${e.n.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
-    ${e.link?`<div class="notes" style="font-family:var(--cond)">${uswaLink(e.link,'Full show on the USWA site ↗')}</div>`:''}
+    ${e.link?`<div class="notes" style="font-family:var(--cond)">${siteLink(e.p,e.link,'Full show on the '+P[e.p].short+' site ↗')}</div>`:''}
   </article>`;
 }
 function belt(k,t){return `<div class="belt" style="--c:${P[k].c}"><div class="t">${esc(t[0])}</div><div class="h">${esc(t[1])}</div>${t[2]?`<div class="n">${esc(t[2])}</div>`:''}</div>`}
@@ -557,7 +561,7 @@ function viewPromo(k,tab){
   const p=P[k]; tab=tab||'overview';
   const ev=E.filter(e=>e.p===k).sort((a,b)=>a.d.localeCompare(b.d));
   const tabs=[['overview','Overview'],['shows','Cards & Results'],['roster','Roster'],['schedule','Schedule']];
-  if(k==='uswa') tabs.push(['archive','TV Archive']);
+  if(SITES[k]) tabs.push(['archive',k==='uswa'?'TV Archive':'Show Archive']);
   let body='';
   if(tab==='overview'){
     body=`
@@ -581,9 +585,9 @@ function viewPromo(k,tab){
     const past=withCards.filter(e=>dt(e.d)<W).reverse(), up=withCards.filter(e=>dt(e.d)>=W);
     body = withCards.length? `<div class="grid g2 col-rule"><div><h2 class="sec">Upcoming <small>${up.length} cards</small></h2>${up.map(e=>showCard(e)).join('')||'<div class="empty">Nothing booked yet.</div>'}</div><div><h2 class="sec">Results <small>Newest first</small></h2>${past.map(e=>showCard(e)).join('')||'<div class="empty">No results yet.</div>'}</div></div>` : `<div class="empty" style="margin-top:20px">No cards on file yet. ${esc(p.short)} is a blank slate.</div>`;
   } else if(tab==='archive'){
-    const n=USWA_ARCHIVE.reduce((a,g)=>a+g[1].length,0);
-    body=`<div class="box" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div class="kicker">USWA Official Archive</div><b style="font-family:var(--head);font-weight:400;font-size:24px;text-transform:uppercase">Every show, Sept 1990 – July 1991</b><div class="mute" style="font-family:var(--cond);font-size:14px">${n} show pages. Links open the USWA site in a new tab.</div></div><a class="ext" href="${USWA_BASE}WELCOME.HTM" target="_blank" rel="noopener">Open the USWA site ↗</a></div>
-    ${USWA_ARCHIVE.map(([g,items])=>`<h2 class="sec">${g} <small>${items.length} shows</small></h2><div class="arch">${items.map(([t,f])=>uswaLink(f,esc(t))).join('')}</div>`).join('')}`;
+    const S=SITES[k], n=S.arch.reduce((a,g)=>a+g[1].length,0);
+    body=`<div class="box" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div class="kicker">${p.short} Official Archive</div><b style="font-family:var(--head);font-weight:400;font-size:24px;text-transform:uppercase">${S.label}</b><div class="mute" style="font-family:var(--cond);font-size:14px">${n} show pages. Links open the ${p.short} site in a new tab.</div></div><a class="ext" href="${S.base}WELCOME.HTM" target="_blank" rel="noopener">Open the ${p.short} site ↗</a></div>
+    ${S.arch.map(([g,items])=>`<h2 class="sec">${g} <small>${items.length} shows</small></h2><div class="arch">${items.map(([t,f])=>siteLink(k,f,esc(t))).join('')}</div>`).join('')}`;
   } else if(tab==='roster'){
     body = p.roster.length? `<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0;gap:10px;flex-wrap:wrap"><input class="search" id="rsearch" placeholder="Search ${p.roster.length} names…"><span class="mute" style="font-family:var(--cond);font-size:13px">${k==='ajpw'?'Number = age as of July 1991':''}</span></div><div class="roster" id="rgrid">${p.roster.map(([n,note])=>{const inj=note.startsWith('INJ:');return `<div data-n="${esc(n.toLowerCase())}"><b>${esc(n)}</b>${inj?'<span class="flag inj">INJ</span>':''}<span>${esc(inj?note.slice(4):note)||'&nbsp;'}</span></div>`}).join('')}</div>`
       : `<div class="empty" style="margin-top:20px">No roster on file. Build it as you go.</div>`;
@@ -592,7 +596,7 @@ function viewPromo(k,tab){
     ${k==='asw'?'<p class="mute">No dated shows on file. The circuit runs on the venue pools on the Overview tab.</p>':''}`;
   }
   return `<section style="--c:${p.c}">
-    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${k==='uswa'?`<a class="ext" href="${USWA_BASE}WELCOME.HTM" target="_blank" rel="noopener">Official USWA site ↗</a>`:''}</div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>
+    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${p.short} site ↗</a>`:''}</div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>
     <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab?'on':''}">${l}</button>`).join('')}</div>
     ${body}
   </section>`;
