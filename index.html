@@ -190,6 +190,47 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 .photo-w{margin:4px 0 10px;border:2px solid var(--ink)}
 .photo-w img{display:block;width:100%;height:auto}
 .empty{border:2px dashed var(--soft);padding:18px;text-align:center;font-family:var(--cond);color:var(--mute)}
+
+/* Business charts */
+.biz-tiles{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);background:var(--paper)}
+.biz-tiles>div{padding:10px 14px;border-left:1px solid var(--soft)}.biz-tiles>div:first-child{border-left:0}
+.biz-tiles span{display:block;font-family:var(--cond);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.biz-tiles b{display:block;font-family:var(--head);font-weight:400;font-size:30px;line-height:1.05}
+.biz-tiles b small{display:block;font-family:var(--cond);font-size:12.5px;color:var(--mute);letter-spacing:.02em}
+@media(max-width:500px){.hb-s .mute{display:none}}
+@media(max-width:700px){.biz-tiles{grid-template-columns:1fr 1fr}.biz-tiles>div:nth-child(3){border-left:0}.biz-tiles>div:nth-child(n+3){border-top:1px solid var(--soft)}}
+.cc{margin:0;border:2px solid var(--ink);background:var(--paper);padding:12px 14px}
+.cc figcaption b{display:block;font-family:var(--head);font-weight:400;font-size:21px;text-transform:uppercase;line-height:1.1}
+.cc figcaption span{display:block;font-family:var(--cond);font-size:13px;color:var(--mute);margin-bottom:8px}
+.cc-f{font-family:var(--cond);font-size:12.5px;color:var(--mute);margin:10px 0 0}
+.cc-leg{display:flex;gap:14px;font-family:var(--cond);font-size:12.5px;color:var(--mute);margin:0 0 8px}
+.cc-leg i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.hb{display:grid;gap:7px}
+.hb-row{display:grid;grid-template-columns:var(--lw,64px) 1fr;gap:4px 10px;align-items:center}
+.hb-l{font-family:var(--cond);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb-s{font-family:var(--cond);font-size:13px}
+.hb-t{position:relative;display:flex;align-items:center;gap:2px;min-height:18px;padding-right:62px}
+.hb-v{position:absolute;right:0;font-family:var(--cond);font-weight:700;font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.hb-b{display:block;height:16px;background:var(--c);border-radius:0 4px 4px 0;cursor:pointer;outline-offset:2px}
+.hb-b+.hb-b{border-radius:0 4px 4px 0}.hb-b:has(+.hb-b){border-radius:0}
+.hb-b:hover,.hb-b:focus{filter:brightness(1.15)}
+.hatch{background:repeating-linear-gradient(45deg,var(--c) 0 3px,transparent 3px 6px)!important;box-shadow:inset 0 0 0 1.5px var(--c)}
+.hb-track{flex:1;display:block;background:var(--paper2);border-radius:0 4px 4px 0;box-shadow:inset 0 0 0 1px var(--soft)}
+.hb-n{grid-column:2;font-family:var(--cond);font-size:12.5px;color:var(--mute);margin-top:-3px}
+.hb-ref{position:absolute;top:-3px;bottom:-3px;width:0;border-left:2px dashed var(--ink)}
+.vc{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:6px;height:180px;align-items:end;border-bottom:1.5px solid var(--ink);padding-top:18px}
+.vc-c{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;cursor:pointer;outline-offset:2px}
+.vc-c .hb-b{height:auto;width:100%;max-width:56px;margin:0 auto;border-radius:4px 4px 0 0}
+.vc-c .hb-b.hatch+.hb-b{border-radius:0}
+.vc-c:hover .hb-b,.vc-c:focus .hb-b{filter:brightness(1.15)}
+.vc-v{position:absolute;top:-18px;left:0;right:0;text-align:center;font-family:var(--cond);font-size:12.5px}
+.vc-x{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:6px;font-family:var(--cond);font-size:11.5px;text-align:center;line-height:1.2;margin-top:5px;color:var(--mute)}
+.vc-x span{overflow:hidden;text-overflow:ellipsis}
+.cum{width:100%;height:auto;display:block}
+.cum .ax{stroke:var(--ink);stroke-width:1.5}.cum .ref{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:6 4}
+.cum .lab{font-family:var(--cond);font-size:13px;fill:var(--mute)}.cum .lab.b{fill:var(--ink);font-weight:700}
+.cum [data-tip]{cursor:pointer}
+.ctip{position:absolute;z-index:50;display:none;max-width:280px;background:var(--ink);color:var(--paper);font-family:var(--cond);font-size:13px;line-height:1.35;padding:6px 9px;border-radius:3px;pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.2)}
 </style>
 </head>
 <body>
@@ -701,7 +742,7 @@ function viewContracts(k){
   <p class="mute" style="font-family:var(--cond);font-size:13px">Proposed pay scale, November 2026 draft. The booker signs and re-signs every deal; these are the rates to use when he does.</p>`;
 }
 
-const FINANCE={"uswa": {"period": "Weekly", "payBasis": "Per appearance, paid weekly", "rows": [{"d": "1991-07-01", "show": "Memphis · USWA Star Wars 1991 (PPV)", "cls": "Supershow", "gate": 121020, "payroll": 39424, "note": "Includes 12% main-event and 6% semi-main splits; staff at 3×"}, {"d": "1991-07-03", "show": "Jonesboro · Worldwide (S1 E11)", "cls": "TV taping", "gate": 3000, "payroll": 2150, "note": "TV tapings run at a loss"}, {"d": "1991-07-06", "show": "Memphis · Championship Wrestling (Live TV)", "cls": "Arena show", "gate": 54000, "merch": 2000, "payroll": 14510, "note": "4,500 of 10,085 at $12. Card **1/2"}, {"d": "1991-07-10", "show": "Evansville · Worldwide (S1 E12)", "cls": "TV taping", "gate": 16000, "merch": 1000, "payroll": 2320, "note": "2,000 at $8. Card **1/2. Payroll estimated"}], "note": "Week of July 1 complete. Week of July 8 in progress (Louisville 7/13 to come)."}, "wwf": {"period": "Monthly", "payBasis": "Monthly salary", "rows": [{"d": "1991-07-01", "show": "New York, NY · House show, taped for Prime Time", "cls": "", "gate": 543200, "payroll": null, "note": ""}, {"d": "1991-07-05", "show": "Des Moines, IA · House show", "cls": "", "gate": 90000, "payroll": null, "note": ""}, {"d": "1991-07-06", "show": "Anaheim, CA · House show", "cls": "", "gate": 105580, "payroll": null, "note": ""}, {"d": "1991-07-08", "show": "Calgary, AB · House show", "cls": "", "gate": 260000, "payroll": null, "note": ""}, {"d": "1991-07-09", "show": "Edmonton, AB · House show", "cls": "", "gate": 201000, "payroll": null, "note": ""}, {"d": "1991-07-10", "show": "Saskatoon, SK · House show", "cls": "", "gate": 110500, "payroll": null, "note": ""}], "fixed": ["Monthly salaries (July)", 1056500], "note": "Salaries are a fixed monthly cost. WrestleFest PPV bonus (5% of the gate to the main event) to be added after 7/14."}, "wcw": {"period": "Monthly", "payBasis": "Monthly salary", "rows": [{"d": "1991-07-05", "show": "Philadelphia, PA · Premium house show", "cls": "", "gate": 200000, "payroll": null, "note": ""}, {"d": "1991-07-06", "show": "Atlanta, GA · WCW Saturday Night (TBS)", "cls": "", "gate": 10500, "payroll": null, "note": ""}, {"d": "1991-07-07", "show": "Richmond, VA · House show", "cls": "", "gate": 72000, "payroll": null, "note": ""}, {"d": "1991-07-08", "show": "Columbus, GA · House show", "cls": "", "gate": 67500, "payroll": null, "note": ""}, {"d": "1991-07-11", "show": "Columbia, SC · House show", "cls": "", "gate": 62400, "merch": 52000, "payroll": null, "note": "5,200 at $12. Merch $10 a head, per Sean. Card **3/4"}], "fixed": ["Monthly salaries (July)", 342500], "note": "Salaries are a fixed monthly cost. Bash PPV bonus (5% of the gate to the main event) to be added after 7/14."}, "ajpw": {"period": "Per tour", "payBasis": "Per tour", "rows": [{"d": "1991-07-01", "show": "Tokyo · Summer Action Series, Night 1", "cls": "", "gate": 51992, "payroll": null, "note": ""}, {"d": "1991-07-03", "show": "Chiba · Night 2", "cls": "", "gate": 71765, "payroll": null, "note": ""}, {"d": "1991-07-05", "show": "Sendai · Night 3", "cls": "", "gate": 87500, "payroll": null, "note": ""}, {"d": "1991-07-07", "show": "Niigata · Night 4", "cls": "", "gate": 67500, "payroll": null, "note": ""}, {"d": "1991-07-09", "show": "Kanazawa · Night 5 (Nippon TV)", "cls": "", "gate": 87500, "payroll": null, "note": ""}], "fixed": ["Summer Action Series tour fees (full tour, before proration)", 354000], "note": "Tour fees are paid at the end of the tour (7/27 Budokan). Gates through night 5."}, "njpw": {"period": "Per tour", "payBasis": "Per tour", "rows": [{"d": "1991-07-04", "show": "Tokyo · Summer Crush '91, Night 1 (TV Asahi)", "cls": "", "gate": 56000, "payroll": null, "note": ""}, {"d": "1991-07-05", "show": "Niigata · Night 2", "cls": "", "gate": 61600, "payroll": null, "note": ""}, {"d": "1991-07-06", "show": "Osaka · Night 3, World Pro Wrestling TV", "cls": "", "gate": 125000, "payroll": null, "note": ""}, {"d": "1991-07-10", "show": "Nagoya · Night 4", "cls": "", "gate": 100000, "payroll": null, "note": ""}], "fixed": ["Summer Crush '91 tour fees (full tour, before proration)", 391000], "note": "Tour fees are paid at the end of the tour (7/30). Gates through night 4. Part-timers are prorated when the tour closes."}, "cmll": {"period": "Per show", "payBasis": "Per show", "rows": [{"d": "1991-07-05", "show": "Mexico City · Viernes Espectacular", "cls": "Big show", "gate": 189000, "payroll": 44780, "note": "23 on the card"}, {"d": "1991-07-06", "show": "Mexico City · Sábado de Lucha Libre", "cls": "Regular", "gate": 41040, "payroll": 9650, "note": "19 on the card"}, {"d": "1991-07-08", "show": "Puebla · Monday in Puebla", "cls": "Regular", "gate": null, "payroll": 8850, "note": "19 on the card; gate logged in pesos (~140,000), not converted"}, {"d": "1991-07-10", "show": "Naucalpan · Lucha Libre en Naucalpan", "cls": "Regular", "gate": 64800, "payroll": 7050, "note": "16 on the card"}, {"d": "1991-07-12", "show": "Mexico City · Viernes Espectacular", "cls": "Big show", "gate": 135000, "payroll": 40400, "note": "26 on the card"}], "note": "Payroll counts every wrestler named on the card. Viernes Espectacular includes the main-event (8%) and semi-main (4%) gate splits."}, "asw": {"period": "Per show", "payBasis": "Per show", "rows": [{"d": "1991-07-03", "show": "Southport · Holiday camp tour, Show 1", "cls": "Regular", "gate": 5000, "payroll": 2070, "note": "14 on the card"}, {"d": "1991-07-06", "show": "Bognor Regis · Holiday camp tour, Show 2", "cls": "Regular", "gate": 5000, "payroll": 2080, "note": "14 on the card"}], "note": "Every holiday camp show is sold to the resort for a flat $5,000."}, "twa": {"period": "Per show", "payBasis": "Per show", "rows": [{"d": "1991-06-29", "show": "Philadelphia, PA · Super Summer Sizzler '91", "cls": "Home show", "gate": 12600, "payroll": 5161, "note": "15 on the card"}, {"d": "1991-07-19", "show": "Allentown, PA · Spot show", "cls": "Regular", "gate": 10800, "payroll": 2875, "note": "13 on the card"}], "note": "Shows run so far. Later dates are booked but not yet run."}, "pp": {"period": "Per show", "payBasis": "Per show", "rows": [{"d": "1991-05-10", "show": "Nashville, TN · Genesis: A New Beginning", "cls": "Regular", "gate": 2125, "payroll": 395, "note": "8 on the card; gate estimated at $5 a ticket"}, {"d": "1991-06-30", "show": "Nashville, TN · First Strike (first \"Level Up\" event)", "cls": "Regular", "gate": 1750, "payroll": 500, "note": "11 on the card; gate estimated at $5 a ticket"}, {"d": "1991-07-28", "show": "Nashville, TN · Power Hour", "cls": "Regular", "gate": 1000, "payroll": 775, "note": "19 on the card"}], "note": "Genesis and First Strike gates are estimates (attendance × $5). Rocky Johnson and Bill Watts are paid for every card."}, "_streams": ["Merchandise", "TV rights", "Pay-per-view share", "Home video", "900 hotline", "Licensing", "Programs & magazines", "Concessions & parking", "Talent loan fees", "Sponsorships"]};
+const FINANCE={"uswa": {"period": "Weekly", "payBasis": "Per appearance, paid weekly", "rows": [{"d": "1991-07-01", "show": "Memphis · USWA Star Wars 1991 (PPV)", "cls": "Supershow", "gate": 121020, "payroll": 39424, "note": "Includes 12% main-event and 6% semi-main splits; staff at 3×"}, {"d": "1991-07-03", "show": "Jonesboro · Worldwide (S1 E11)", "cls": "TV taping", "gate": 3000, "payroll": 2150, "note": "TV tapings run at a loss"}, {"d": "1991-07-06", "show": "Memphis · Championship Wrestling (Live TV)", "cls": "Arena show", "gate": 54000, "merch": 2000, "payroll": 14510, "note": "4,500 of 10,085 at $12. Card **1/2"}, {"d": "1991-07-10", "show": "Evansville · Worldwide (S1 E12)", "cls": "TV taping", "gate": 16000, "merch": 1000, "payroll": 2320, "note": "2,000 at $8. Card **1/2. Payroll estimated"}], "note": "Week of July 1 complete. Week of July 8 in progress (Louisville 7/13 to come)."}, "wwf": {"period": "Monthly", "payBasis": "Monthly salary", "rows": [{"d": "1991-07-01", "show": "New York, NY · House show, taped for Prime Time", "cls": "", "gate": 543200, "payroll": null, "note": "Jake Roberts no-showed", "cost": 13194, "oncard": 25}, {"d": "1991-07-05", "show": "Des Moines, IA · House show", "cls": "", "gate": 90000, "payroll": null, "note": "", "cost": 10548, "oncard": 18}, {"d": "1991-07-06", "show": "Anaheim, CA · House show", "cls": "", "gate": 105580, "payroll": null, "note": "", "cost": 11452, "oncard": 20}, {"d": "1991-07-08", "show": "Calgary, AB · House show", "cls": "", "gate": 260000, "payroll": null, "note": "", "cost": 16774, "oncard": 27}, {"d": "1991-07-09", "show": "Edmonton, AB · House show", "cls": "", "gate": 201000, "payroll": null, "note": "", "cost": 15323, "oncard": 29}, {"d": "1991-07-10", "show": "Saskatoon, SK · House show", "cls": "", "gate": 110500, "payroll": null, "note": "", "cost": 13839, "oncard": 25}, {"d": "1991-07-11", "show": "Regina, SK · House show", "cls": "", "gate": 63000, "payroll": null, "note": "Jimmy Snuka no-showed", "cost": 12903, "oncard": 24}, {"d": "1991-07-12", "show": "Winnipeg, MB · House show", "cls": "", "gate": 202000, "payroll": null, "note": "", "cost": 15000, "oncard": 26}], "fixed": ["Monthly salaries (July)", 1056500], "note": "Salaries are a fixed monthly cost. Show cost is one day's pay (monthly salary ÷ 31) for everyone who worked the card, wrestlers and managers; announcers aren't counted. WrestleFest PPV bonus (5% of the gate to the main event) to be added after 7/14."}, "wcw": {"period": "Monthly", "payBasis": "Monthly salary", "rows": [{"d": "1991-07-05", "show": "Philadelphia, PA · Premium house show", "cls": "", "gate": 200000, "payroll": null, "note": "", "cost": 6097, "oncard": 21}, {"d": "1991-07-06", "show": "Atlanta, GA · WCW Saturday Night (TBS)", "cls": "", "gate": 10500, "payroll": null, "note": "", "cost": 6855, "oncard": 28}, {"d": "1991-07-07", "show": "Richmond, VA · House show", "cls": "", "gate": 72000, "payroll": null, "note": "", "cost": 6581, "oncard": 25}, {"d": "1991-07-08", "show": "Columbus, GA · House show", "cls": "", "gate": 67500, "payroll": null, "note": "", "cost": 5790, "oncard": 26}, {"d": "1991-07-11", "show": "Columbia, SC · House show", "cls": "", "gate": 62400, "merch": 52000, "payroll": null, "note": "5,200 at $12. Merch $10 a head, per Sean. Card **3/4", "cost": 7258, "oncard": 28}], "fixed": ["Monthly salaries (July)", 342500], "note": "Salaries are a fixed monthly cost. Show cost is one day's pay (monthly salary ÷ 31) for everyone who worked the card, wrestlers and managers; announcers aren't counted. Bash PPV bonus (5% of the gate to the main event) to be added after 7/14."}, "ajpw": {"period": "Per tour", "payBasis": "Per tour", "rows": [{"d": "1991-07-01", "show": "Tokyo · Summer Action Series, Night 1", "cls": "", "gate": 51992, "payroll": null, "note": ""}, {"d": "1991-07-03", "show": "Chiba · Night 2", "cls": "", "gate": 71765, "payroll": null, "note": ""}, {"d": "1991-07-05", "show": "Sendai · Night 3", "cls": "", "gate": 87500, "payroll": null, "note": ""}, {"d": "1991-07-07", "show": "Niigata · Night 4", "cls": "", "gate": 67500, "payroll": null, "note": ""}, {"d": "1991-07-09", "show": "Kanazawa · Night 5 (Nippon TV)", "cls": "", "gate": 87500, "payroll": null, "note": ""}], "fixed": ["Summer Action Series tour fees (full tour, before proration)", 354000], "note": "Tour fees are paid at the end of the tour (7/27 Budokan). Gates through night 5."}, "njpw": {"period": "Per tour", "payBasis": "Per tour", "rows": [{"d": "1991-07-04", "show": "Tokyo · Summer Crush '91, Night 1 (TV Asahi)", "cls": "", "gate": 56000, "payroll": null, "note": ""}, {"d": "1991-07-05", "show": "Niigata · Night 2", "cls": "", "gate": 61600, "payroll": null, "note": ""}, {"d": "1991-07-06", "show": "Osaka · Night 3, World Pro Wrestling TV", "cls": "", "gate": 125000, "payroll": null, "note": ""}, {"d": "1991-07-10", "show": "Nagoya · Night 4", "cls": "", "gate": 100000, "payroll": null, "note": ""}], "fixed": ["Summer Crush '91 tour fees (full tour, before proration)", 391000], "note": "Tour fees are paid at the end of the tour (7/30). Gates through night 4. Part-timers are prorated when the tour closes."}, "cmll": {"period": "Per show", "payBasis": "Per show", "rows": [{"d": "1991-07-05", "show": "Mexico City · Viernes Espectacular", "cls": "Big show", "gate": 189000, "payroll": 44780, "note": "23 on the card"}, {"d": "1991-07-06", "show": "Mexico City · Sábado de Lucha Libre", "cls": "Regular", "gate": 41040, "payroll": 9650, "note": "19 on the card"}, {"d": "1991-07-08", "show": "Puebla · Monday in Puebla", "cls": "Regular", "gate": 7515, "payroll": 8850, "note": "19 on the card; ~140,000 pesos converted at 18.6297 per dollar (Banxico FIX, 11/9/2026)"}, {"d": "1991-07-10", "show": "Naucalpan · Lucha Libre en Naucalpan", "cls": "Regular", "gate": 64800, "payroll": 7050, "note": "16 on the card"}, {"d": "1991-07-12", "show": "Mexico City · Viernes Espectacular", "cls": "Big show", "gate": 135000, "payroll": 40400, "note": "26 on the card"}], "note": "Payroll counts every wrestler named on the card. Viernes Espectacular includes the main-event (8%) and semi-main (4%) gate splits."}, "asw": {"period": "Per show", "payBasis": "Per show", "rows": [{"d": "1991-07-03", "show": "Southport · Holiday camp tour, Show 1", "cls": "Regular", "gate": 5000, "payroll": 2070, "note": "14 on the card"}, {"d": "1991-07-06", "show": "Bognor Regis · Holiday camp tour, Show 2", "cls": "Regular", "gate": 5000, "payroll": 2080, "note": "14 on the card"}], "note": "Every holiday camp show is sold to the resort for a flat $5,000."}, "twa": {"period": "Per show", "payBasis": "Per show", "rows": [{"d": "1991-06-29", "show": "Philadelphia, PA · Super Summer Sizzler '91", "cls": "Home show", "gate": 12600, "payroll": 5161, "note": "15 on the card"}, {"d": "1991-07-19", "show": "Allentown, PA · Spot show", "cls": "Regular", "gate": 10800, "payroll": 2875, "note": "13 on the card"}], "note": "Shows run so far. Later dates are booked but not yet run."}, "pp": {"period": "Per show", "payBasis": "Per show", "rows": [{"d": "1991-05-10", "show": "Nashville, TN · Genesis: A New Beginning", "cls": "Regular", "gate": 2125, "payroll": 395, "note": "8 on the card; gate estimated at $5 a ticket"}, {"d": "1991-06-30", "show": "Nashville, TN · First Strike (first \"Level Up\" event)", "cls": "Regular", "gate": 1750, "payroll": 500, "note": "11 on the card; gate estimated at $5 a ticket"}, {"d": "1991-07-28", "show": "Nashville, TN · Power Hour", "cls": "Regular", "gate": 1000, "payroll": 775, "note": "19 on the card"}], "note": "Genesis and First Strike gates are estimates (attendance × $5). Rocky Johnson and Bill Watts are paid for every card."}, "_streams": ["Merchandise", "TV rights", "Pay-per-view share", "Home video", "900 hotline", "Licensing", "Programs & magazines", "Concessions & parking", "Talent loan fees", "Sponsorships"]};
 function viewSeries(k,sr){
   const S=SERIES[sr], ids=seriesOf(k,sr), p=P[k];
   if(!ids.length) return `<div class="empty" style="margin-top:20px">${sr==='observer'?`No Observer reports filed for ${esc(p.short)} yet.`:'Nothing filed yet.'}</div>`;
@@ -711,7 +752,7 @@ function viewSeries(k,sr){
 function viewFinance(k){
   const f=FINANCE[k]; if(!f) return `<div class="empty" style="margin-top:20px">No finance records yet.</div>`;
   const money=v=>v==null?'—':(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
-  const rows=f.rows; const gate=rows.reduce((a,r)=>a+(r.gate||0),0); const merch=rows.reduce((a,r)=>a+(r.merch||0),0); const hasM=merch>0;
+  const rows=f.rows; const hasCost=rows.some(r=>r.cost); const gate=rows.reduce((a,r)=>a+(r.gate||0),0); const merch=rows.reduce((a,r)=>a+(r.merch||0),0); const hasM=merch>0;
   let pay, payLabel;
   if(f.fixed){pay=f.fixed[1];payLabel=f.fixed[0];}
   else {pay=rows.filter(r=>r.gate!=null).reduce((a,r)=>a+(r.payroll||0),0);payLabel=rows.some(r=>r.gate==null)?'Talent payroll (shows with a gate in dollars)':'Talent payroll, shows logged';}
@@ -725,15 +766,103 @@ function viewFinance(k){
     <p style="margin:8px 0 0"><b>Talent is paid:</b> ${esc(f.payBasis)}. ${esc(f.note||'')}</p>
   </div>
   <div class="tbl-wrap"><table><tbody>${tiles.map(([l,v])=>`<tr><td>${esc(l)}</td><td class="num"><b style="font-size:18px">${v}</b></td></tr>`).join('')}</tbody></table></div>
+  ${financeCharts(k)}
   ${f.fixed&&gate<pay?`<p class="mute" style="font-family:var(--cond);font-size:13px">Only part of the ${f.period==='Monthly'?'month':'tour'} has been logged, so the fixed payroll is ahead of the gates for now.</p>`:''}
   <h2 class="sec">Shows <small>${rows.length} logged</small></h2>
-  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th>${f.fixed?'':'<th>Class</th>'}<th>Gate</th>${hasM?'<th>Merch</th>':''}${f.fixed?'':'<th>Payroll</th><th>Net</th><th>%</th>'}<th>Notes</th></tr></thead><tbody>
-  ${rows.map(r=>`<tr><td style="white-space:nowrap">${fmt(r.d)}</td><td>${esc(r.show)}</td>${f.fixed?'':`<td>${esc(r.cls||'')}</td>`}<td class="num">${money(r.gate)}</td>${hasM?`<td class="num">${r.merch?money(r.merch):'—'}</td>`:''}${f.fixed?'':`<td class="num">${money(r.payroll)}</td><td class="num">${r.gate!=null&&r.payroll!=null?money(r.gate+(r.merch||0)-r.payroll):'—'}</td><td class="num">${r.gate&&r.payroll!=null?Math.round(r.payroll/r.gate*100)+'%':'—'}</td>`}<td>${esc(r.note||'')}</td></tr>`).join('')}
+  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th>${f.fixed?'':'<th>Class</th>'}<th>Gate</th>${hasM?'<th>Merch</th>':''}${f.fixed?'':'<th>Payroll</th><th>Net</th><th>%</th>'}${hasCost?'<th>Show cost</th><th>%</th>':''}<th>Notes</th></tr></thead><tbody>
+  ${rows.map(r=>`<tr><td style="white-space:nowrap">${fmt(r.d)}</td><td>${esc(r.show)}</td>${f.fixed?'':`<td>${esc(r.cls||'')}</td>`}<td class="num">${money(r.gate)}</td>${hasM?`<td class="num">${r.merch?money(r.merch):'—'}</td>`:''}${f.fixed?'':`<td class="num">${money(r.payroll)}</td><td class="num">${r.gate!=null&&r.payroll!=null?money(r.gate+(r.merch||0)-r.payroll):'—'}</td><td class="num">${r.gate&&r.payroll!=null?Math.round(r.payroll/r.gate*100)+'%':'—'}</td>`}${hasCost?`<td class="num">${r.cost?money(r.cost):'—'}</td><td class="num">${r.cost&&r.gate?Math.round(r.cost/r.gate*100)+'%':'—'}</td>`:''}<td>${esc(r.note||'')}</td></tr>`).join('')}
   </tbody></table></div>
   <h2 class="sec">Other revenue <small>Coming later</small></h2>
   <div class="tbl-wrap"><table><thead><tr><th>Stream</th><th>Amount</th></tr></thead><tbody>${FINANCE._streams.map(s=>`<tr><td>${esc(s)}</td>${s==='Merchandise'&&hasM?`<td><b>${money(merch)}</b></td>`:'<td class="mute">Not tracked yet</td>'}</tr>`).join('')}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Payroll uses the rates on the Contracts tab. Costs other than talent (travel, buildings, TV production) aren't tracked yet.</p>`;
 }
+
+/* =========================== BUSINESS CHARTS =========================== */
+const $m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
+const $k=v=>Math.abs(v)>=1e6?'$'+(v/1e6).toFixed(2)+'M':Math.abs(v)>=1e4?'$'+Math.round(v/1e3)+'K':$m(v);
+function bizTotals(k){
+  const f=FINANCE[k]; if(!f) return null;
+  const rows=f.rows, withGate=rows.filter(r=>r.gate!=null);
+  const gate=withGate.reduce((a,r)=>a+r.gate,0), merch=rows.reduce((a,r)=>a+(r.merch||0),0);
+  const perShow=f.fixed?null:withGate.reduce((a,r)=>a+(r.payroll||0),0);
+  const showCost=rows.some(r=>r.cost)?withGate.reduce((a,r)=>a+(r.cost||0),0):null;
+  const talent=perShow!=null?perShow:showCost;
+  return {k,f,rows,withGate,gate,merch,rev:gate+merch,perShow,showCost,talent,fixed:f.fixed?f.fixed[1]:null,shows:withGate.length};
+}
+/* horizontal bar list; items: {label,html,parts:[{v,c,tip,cls}],val} */
+function hbars(items,max,o={}){
+  max=max||Math.max(...items.map(it=>it.parts.reduce((a,p)=>a+p.v,0)),1);
+  return `<div class="hb"${o.lw?` style="--lw:${o.lw}"`:''}>${items.map(it=>`<div class="hb-row"><div class="hb-l">${it.html||esc(it.label)}</div><div class="hb-t">${it.parts.map(p=>`<span class="hb-b ${p.cls||''}" style="width:${Math.max(p.v/max*100,p.v>0?.6:0)}%;--c:${p.c}" data-tip="${esc(p.tip)}" tabindex="0"></span>`).join('')}${o.ref!=null?`<i class="hb-ref" style="left:${o.ref/max*100}%"></i>`:''}<b class="hb-v">${it.val}</b></div></div>`).join('')}</div>`;
+}
+function chartCard(title,sub,body,foot){
+  return `<figure class="cc"><figcaption><b>${title}</b>${sub?`<span>${sub}</span>`:''}</figcaption>${body}${foot?`<p class="cc-f">${foot}</p>`:''}</figure>`;
+}
+function worldBusiness(){
+  const T=ORDER.map(bizTotals).filter(Boolean);
+  const gate=T.reduce((a,t)=>a+t.gate,0), merch=T.reduce((a,t)=>a+t.merch,0), shows=T.reduce((a,t)=>a+t.shows,0);
+  const all=T.flatMap(t=>t.withGate.map(r=>({...r,k:t.k})));
+  const best=all.slice().sort((a,b)=>b.gate-a.gate)[0];
+  const tiles=[['World gate logged',$k(gate)],['Merchandise',$k(merch)],['Shows with a gate',shows],['Biggest house',best?`${$k(best.gate)}<small>${esc(P[best.k].short)} · ${esc(best.show.split(' · ')[0])}</small>`:'—']];
+  // 1. revenue league table (gate + merch stacked)
+  const lg=T.slice().sort((a,b)=>b.rev-a.rev);
+  const c1=hbars(lg.map(t=>({html:chip(t.k),val:$k(t.rev),parts:[{v:t.gate,c:P[t.k].c,tip:`${P[t.k].short} gate: ${$m(t.gate)} over ${t.shows} show${t.shows==1?'':'s'}`},...(t.merch?[{v:t.merch,c:P[t.k].c,cls:'hatch',tip:`${P[t.k].short} merchandise: ${$m(t.merch)}`}]:[])]})));
+  const leg=`<div class="cc-leg"><span><i style="background:var(--ink)"></i>Gate</span><span><i class="hatch" style="--c:var(--ink)"></i>Merchandise</span></div>`;
+  // 2. talent cost share of gate (per-show payroll, or show cost for salaried)
+  const sh=T.filter(t=>t.talent!=null&&t.gate).map(t=>({...t,pct:t.talent/t.gate*100})).sort((a,b)=>b.pct-a.pct);
+  const c2=hbars(sh.map(t=>({html:chip(t.k),val:Math.round(t.pct)+'%',parts:[{v:t.pct,c:P[t.k].c,tip:`${P[t.k].short}: ${$m(t.talent)} ${t.perShow!=null?'payroll':'show cost'} on ${$m(t.gate)} gate`}]})),Math.max(50,...sh.map(t=>t.pct)));
+  // 3. fixed bills: revenue so far vs salary / tour fee
+  const fx=T.filter(t=>t.fixed);
+  const c3=`<div class="hb">${fx.map(t=>{const p=t.rev/t.fixed*100,w=Math.min(p,100);return `<div class="hb-row"><div class="hb-l">${chip(t.k)}</div><div class="hb-t"><span class="hb-track"><span class="hb-b" style="width:${w}%;--c:${P[t.k].c}" data-tip="${esc(`${P[t.k].short}: ${$m(t.rev)} revenue vs ${$m(t.fixed)} ${t.f.fixed[0].toLowerCase()}`)}" tabindex="0"></span></span><b class="hb-v">${Math.round(p)}%</b></div><div class="hb-n">${t.rev>=t.fixed?`<b>${$k(t.rev-t.fixed)} over</b> the ${t.f.period==='Monthly'?'monthly salary bill':'tour fees'}`:`<b>${$k(t.fixed-t.rev)} short</b> of the ${t.f.period==='Monthly'?'monthly salary bill':'tour fees'}`}</div></div>`}).join('')}</div>`;
+  // 4. top 10 houses
+  const top=all.slice().sort((a,b)=>b.gate-a.gate).slice(0,10);
+  const c4=hbars(top.map(r=>({html:`${chip(r.k)} <span class="hb-s">${esc(r.show.split(' · ')[0])} <span class="mute">${fmt(r.d)}</span></span>`,val:$k(r.gate),parts:[{v:r.gate,c:P[r.k].c,tip:`${r.show} · ${fmt(r.d)}: ${$m(r.gate)}`}]})),0,{lw:'min(215px,55%)'});
+  return `<h2 class="sec">World business <small>From the finance ledger</small></h2>
+  <div class="biz-tiles">${tiles.map(([l,v])=>`<div><span>${l}</span><b>${v}</b></div>`).join('')}</div>
+  <div class="grid g2" style="margin-top:14px">
+    ${chartCard('Revenue by promotion','Gate and merchandise logged',leg+c1,'Power Pro includes its May and June shows. CMLL\'s Puebla gate is converted from pesos at today\'s real-world rate.')}
+    ${chartCard('Talent cost as a share of the gate','Lower is better',c2,'Per-show payroll for per-show promotions. For WWF and WCW, the show cost (one day of salary for everyone on the card). AJPW and NJPW pay by tour, so they\'re in the next chart.')}
+    ${chartCard('Fixed bills covered','Revenue so far against the salary bill or tour fees',c3,'Full-length bars mean the bill is covered. The tours settle at the end (AJPW 7/27, NJPW 7/30).')}
+    ${chartCard('Top 10 houses','Biggest gates in the world',c4,'')}
+  </div>`;
+}
+function financeCharts(k){
+  const t=bizTotals(k); if(!t||!t.withGate.length) return '';
+  const c=P[k].c, rows=t.withGate, max=Math.max(...rows.map(r=>r.gate+(r.merch||0)));
+  const best=rows.reduce((a,r)=>r.gate>a.gate?r:a,rows[0]);
+  const cols=`<div class="vc" style="--n:${rows.length}">${rows.map(r=>`<div class="vc-c" data-tip="${esc(`${fmt(r.d)} · ${r.show}: ${$m(r.gate)} gate${r.merch?`, ${$m(r.merch)} merch`:''}${r.payroll!=null?`, ${$m(r.payroll)} payroll`:''}${r.cost?`, ${$m(r.cost)} show cost`:''}`)}" tabindex="0">${r===best?`<b class="vc-v">${$k(r.gate)}</b>`:''}${r.merch?`<span class="hb-b hatch" style="height:${r.merch/max*100}%;--c:${c}"></span>`:''}<span class="hb-b" style="height:${r.gate/max*100}%;--c:${c}"></span></div>`).join('')}</div><div class="vc-x" style="--n:${rows.length}">${rows.map(r=>`<span>${esc(r.show.split(' · ')[0].split(',')[0])}<br><small>${MON[dt(r.d).getUTCMonth()]} ${dt(r.d).getUTCDate()}</small></span>`).join('')}</div>`;
+  const leg=t.merch?`<div class="cc-leg"><span><i style="background:${c}"></i>Gate</span><span><i class="hatch" style="--c:${c}"></i>Merchandise</span></div>`:'';
+  let out=chartCard('Gate by show',`${rows.length} shows · best: ${esc(best.show.split(' · ')[0])}`,leg+cols,'Hover or tap a bar for the numbers.');
+  if(t.fixed){
+    // cumulative revenue vs fixed bill
+    const W2=600,H=220,pl=8,pr=8,pt=18,pb=26;
+    let run=0; const pts=rows.map(r=>(run+=r.gate+(r.merch||0)));
+    const ymax=Math.max(t.fixed,run)*1.08, n=pts.length;
+    const x=i=>pl+(n===1?(W2-pl-pr)/2:i*(W2-pl-pr)/(n-1)), y=v=>pt+(1-v/ymax)*(H-pt-pb);
+    const path=pts.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
+    const svg=`<svg class="cum" viewBox="0 0 ${W2} ${H}" role="img" aria-label="Running revenue against the fixed bill">
+      <line x1="${pl}" x2="${W2-pr}" y1="${y(0)}" y2="${y(0)}" class="ax"/>
+      <line x1="${pl}" x2="${W2-pr}" y1="${y(t.fixed)}" y2="${y(t.fixed)}" class="ref"/>
+      <text x="${pl}" y="${y(t.fixed)-6}" class="lab">${esc(t.f.period==='Monthly'?'Monthly salary bill':'Tour fees')} ${$k(t.fixed)}</text>
+      <path d="${path}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/>
+      ${pts.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="5" fill="${c}" stroke="var(--paper)" stroke-width="2"/><circle cx="${x(i)}" cy="${y(v)}" r="16" fill="transparent" data-tip="${esc(`Through ${fmt(rows[i].d)}: ${$m(v)} revenue`)}" tabindex="0"/>`).join('')}
+      <text x="${x(n-1)}" y="${y(pts[n-1])-12}" text-anchor="end" class="lab b">${$k(pts[n-1])}</text>
+    </svg>`;
+    const d=run-t.fixed;
+    out+=chartCard('Running revenue vs. the fixed bill',d>=0?`${$k(d)} over the bill`:`${$k(-d)} still to cover`,svg,t.f.period==='Monthly'?'Gate plus merchandise, added show by show, against the full July salary bill.':'Gate added night by night against the full tour fees, which are paid when the tour ends.');
+  }
+  return `<div class="grid ${t.fixed?'g2':''}" style="margin:6px 0 16px">${out}</div>`;
+}
+(function(){
+  const tip=document.createElement('div');tip.className='ctip';document.body.appendChild(tip);
+  const show=e=>{const el=e.target.closest&&e.target.closest('[data-tip]');if(!el){tip.style.display='none';return;}
+    tip.textContent=el.getAttribute('data-tip');tip.style.display='block';
+    const r=el.getBoundingClientRect(),tw=tip.offsetWidth;
+    let lx=(e.clientX||r.left+r.width/2)-tw/2;lx=Math.max(8,Math.min(lx,innerWidth-tw-8));
+    tip.style.left=lx+'px';tip.style.top=(r.top+scrollY-tip.offsetHeight-8)+'px';};
+  document.addEventListener('mouseover',show);document.addEventListener('focusin',show);
+  document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('[data-tip]'))show(e);else tip.style.display='none';});
+  document.addEventListener('scroll',()=>tip.style.display='none',{passive:true});
+})();
 
 function viewMoney(){
   const m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
@@ -743,7 +872,8 @@ function viewMoney(){
     const pay=f.fixed?f.fixed[1]:f.rows.filter(r=>r.gate!=null).reduce((x,r)=>x+(r.payroll||0),0);
     const top=c.rows.filter(r=>!'MOS'.includes(r[0])).sort((x,y)=>y[2]-x[2])[0];
     return `<tr><td>${chip(k)}</td><td>${esc(c.basis)}</td><td><b>${esc(top[1])}</b> · ${m(top[2])} <span class="mute">${esc(c.unit)}</span></td><td class="num">${m(gate)}</td><td class="num">${m(pay)}${f.fixed?' <span class="mute">fixed</span>':''}</td><td class="num">${gate?Math.round(pay/gate*100)+'%':'—'}</td><td style="white-space:nowrap"><a href="#${k}/contracts">Contracts</a> · <a href="#${k}/finance">Finance</a></td></tr>`;}).join('');
-  return `<h2 class="sec">Money <small>Contracts and finance across the world</small></h2>
+  return `${worldBusiness()}
+  <h2 class="sec">Money <small>Contracts and finance across the world</small></h2>
   ${a?`<div class="box" style="margin:16px 0"><div class="kicker">${esc(a.kicker)}</div><h3 style="font-family:var(--head);font-weight:400;font-size:30px;margin:4px 0;text-transform:uppercase"><a href="#world-who-gets-paid" style="color:inherit;text-decoration:none">${esc(a.title)}</a></h3><p style="margin:6px 0">${esc(a.dek)}</p><a href="#world-who-gets-paid" style="font-family:var(--cond);font-weight:700">Read the full story →</a></div>`:''}
   <div class="tbl-wrap"><table><thead><tr><th>Promotion</th><th>Pay basis</th><th>Top of the scale</th><th>Gate logged</th><th>Talent payroll</th><th>Share</th><th>Pages</th></tr></thead><tbody>${rows}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">"Fixed" payroll is the full monthly salary or tour fee, set against the gates logged so far. Costs other than talent aren't tracked yet.</p>`;
