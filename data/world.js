@@ -8,6 +8,18 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 
 const TICKER = [
  [
+  "<b>USWA</b> Kerry steals the pin from Bret in Louisville",
+  "uswa-kerry-steals-the-pin"
+ ],
+ [
+  "<b>USWA</b> Observer: Louisville does $67,500; Austin–Studd ****",
+  "uswa-observer-louisville-0713"
+ ],
+ [
+  "<b>USWA</b> From the Road: Dirty White Boy's five minutes",
+  "uswa-diary-dwb-0713"
+ ],
+ [
   "<b>WWF</b> WrestleFest: Hogan retains, Sid strikes, LOD save",
   "wwf-wrestlefest-recap"
  ],
