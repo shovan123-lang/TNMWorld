@@ -6,6 +6,119 @@ const SHARED = [["Bruise Brothers (Ron & Don Harris)", "WCW", "TWA", "Working bo
 
 const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Strongest Man.\""], ["9/9/91", "WWF", "Scott Taylor", "Career debut."], ["Sept '91", "WCW", "Van Hammer", "Career debut. Heavy-metal rocker."], ["9/20/91", "Japan", "Masayoshi Motegi", "Career debut. W*ING junior."], ["10/4/91", "Joshi", "Kumiko Maekawa", "AJW debut. Karate background."], ["10/4/91", "Joshi", "Chikako Shiratori", "AJW debut."], ["10/21/91", "WWF", "Chris Chavis (Tatanka)", "Vignettes first. TV in Feb '92. Also on USWA's Power Pro roster."], ["11/5/91", "WCW", "Marcus Alexander Bagwell", "Young babyface. Also on USWA's Power Pro roster."], ["11/10/91", "Indies", "Rick Michaels", "Georgia."], ["11/10/91", "Indies", "Stevie Richards", "Philadelphia (date disputed)."], ["11/11/91", "WWF", "Chris Walker", "Jumps from GWF."], ["11/18/91", "CMLL", "Rey Bucanero Jr.", "Age 17, nephew of Pirata Morgan."], ["11/20/91", "Indies", "Glenn Gilbertti", "Career debut. Also on USWA's Power Pro roster."], ["Late '91", "WWF", "Repo Man", "Gimmick debut (Barry Darsow)."], ["12/1/91", "WWF", "Owen Hart", "Return."], ["12/2/91", "WWF", "Brian Lee", "Arrival."], ["12/7/91", "Shoot", "Volk Han", "RINGS debut vs. Akira Maeda."], ["12/7/91", "Shoot", "Hans Nijman", "RINGS, karate bout."], ["12/22/91", "Shoot", "Hiromitsu Kanehara", "UWF-i, vs. Masakazu Maeda."], ["12/22/91", "Shoot", "Masakazu Maeda", "UWF-i."], ["1991", "Indies", "Little Guido", "NJ. Shoot-style base."], ["1991", "Europe", "Alex Wright", "CWA, age 16. Son of Steve Wright."], ["1991", "Joshi", "Rie Tamada", "AJW class of '91."], ["1/11/92", "Joshi", "Michiko Omukai", "AJW. Delayed by injury."]];
 
-const TICKER = [["<b>WWF</b> WrestleFest: Hogan retains, Sid strikes, LOD save", "wwf-wrestlefest-recap"], ["<b>WWF</b> Observer: WrestleFest goes *3/4; the Warrior is hurt", "wwf-observer-wrestlefest-0714"], ["<b>WWF</b> From the Road: Marty Jannetty, six feet apart", "wwf-diary-jannetty-0714"], ["<b>WWF</b> Piper's back: Rowdy Roddy returns vs. Sid in Milwaukee", "wwf-pipers-back"], ["<b>WWF</b> Observer: Piper returns, Sid still struggles", "wwf-observer-milwaukee-0713"], ["<b>WWF</b> From the Road: Roddy Piper, three hours in a back room", "wwf-diary-piper-0713"], ["<b>WCW</b> WCW Pro: Steiner and Orndorff advance in the TV Title tournament", "wcw-steiner-draws-first-blood"], ["<b>WCW</b> Observer: Pro Ep. 1 writes Sullivan off and points to Greenville", "wcw-observer-pro-ep1"], ["<b>WCW</b> From the Road: Rick Steiner at the Tallahassee taping", "wcw-diary-steiner-0709"], ["<b>AJPW</b> Breaking: Kawada is leaving All Japan; last date Okayama 7/15", "ajpw-kawada-leaving"], ["<b>AJPW</b> Observer: Hiroshima's young boys steal the show", "ajpw-observer-hiroshima-0713"], ["<b>AJPW</b> From the Road: Masao Inoue, up at seven again", "ajpw-diary-inoue-0713"], ["<b>WCW</b> The Z-Man signs: Tom Zenk joins WCW", "wcw-zenk-signs"], ["<b>WWF</b> Observer: Winnipeg saves the swing with a $202,000 gate", "wwf-observer-winnipeg-0712"], ["<b>WWF</b> Observer: Regina hits bottom as Snuka no-shows", "wwf-observer-regina-0711"], ["<b>WWF</b> From the Road: Owen Hart on four nights, four good matches", "wwf-diary-owen-0712"], ["<b>AJPW</b> Observer: Nagoya draws $192,000 at $32 a seat", "ajpw-observer-nagoya-0711"], ["<b>AJPW</b> Misawa pins Rude; World Tag Titles stay put", "ajpw-champions-hold-the-line"], ["<b>AJPW</b> From the Road: Richard Slinger on eating the Jumbo Knee", "ajpw-diary-slinger-0711"], ["<b>WCW</b> Observer: Charleston goes *** but draws just 3,200", "wcw-observer-charleston-0712"], ["<b>WCW</b> Sting makes Arn Anderson pass out", "wcw-sting-makes-arn-pass-out"], ["<b>WCW</b> From the Road: Jushin Liger on a last-minute opponent", "wcw-diary-liger-0712"], ["<b>ASW</b> Observer: three shows in, three sellouts, and Big Daddy arrives", "asw-observer-three-shows"], ["<b>ASW</b> From the Road: Robbie Brookside on twenty minutes with Haystacks", "asw-diary-brookside-0710"], ["<b>USWA</b> Observer: Evansville does $16,000; Dundee piledrives Adams", "uswa-observer-evansville-0710"], ["<b>USWA</b> From the Road: Sweet Daddy Falcone on the Flamingo Invitational", "uswa-diary-falcone-0710"], ["<b>USWA</b> Observer: Memphis does $54,000 on an angle show", "uswa-observer-memphis-0706"], ["<b>USWA</b> Andre puts Kerry to sleep; Flair checks on him", "uswa-bret-saves-kerry"], ["<b>USWA</b> Jamie Dundee chains Jimmy Valiant", "uswa-bret-saves-kerry"], ["<b>WORLD</b> Who gets paid: Hogan's $125K a month vs. one night in Memphis", "world-who-gets-paid"], ["<b>POWER PRO</b> Jericho retains with the Lion Tamer", "pp-jericho-keeps-the-belt"], ["<b>POWER PRO</b> Modest and Steel no-show Power Hour", "pp-where-was-modest"], ["<b>POWER PRO</b> Lightning Kid–Judge Dread opener goes ***1/2", "pp-six-new-faces"], ["<b>POWER PRO</b> Benoit debuts in Nashville", "pp-six-new-faces"], ["<b>CMLL</b> Vampiro puts his hair up against Konnan's title", "cmll-hair-on-the-line"], ["<b>CMLL</b> El Dandy is the third Infernal", "cmll-hair-on-the-line"], ["<b>CMLL</b> Octagón debuts at Arena México", "cmll-hair-on-the-line"], ["<b>CMLL</b> Liger and the Blazer booked for Acapulco", "cmll-hair-on-the-line"], ["<b>CMLL</b> Sullivan no-show; talks with CMLL ongoing", "cmll-hair-on-the-line"], ["<b>USWA</b> Texas Bunch become the Texas Outlaws", "uswa-texas-outlaws"], ["<b>USWA</b> Kerry gets Andre in Memphis", "uswa-bret-kerry"], ["<b>USWA</b> A different Sam Houston calls out Flamingo", "uswa-sam-houston"], ["<b>USWA</b> Guerrero steals Jonesboro", "uswa-jonesboro-report"], ["<b>USWA</b> Flair debuts at Star Wars, costs Kevin Von Erich", "uswa-flair-signs"], ["<b>USWA</b> Bret retains over Kerry with the Sharpshooter", "uswa-flair-signs"], ["<b>USWA</b> Diamond Studd debuts, clears HSI", "uswa-flair-signs"], ["<b>USWA</b> Tully Blanchard is Scott Steiner's new partner", "uswa-flair-signs"], ["<b>USWA</b> Moondogs turn on Canterbury", "uswa-flair-signs"], ["<b>WCW</b> Sullivan quits; Cactus Jack eyes the Dark Circle", "wcw-sullivan-quits"], ["<b>WCW</b> Dustin Rhodes out with neck injury", "wcw-dustin-injured"], ["<b>WWF</b> Steamboat tears ACL in Des Moines", "wwf-steamboat-acl"], ["<b>WWF</b> Owen steals the show in Calgary", "wwf-owen-steals-calgary"], ["<b>WWF</b> Mountie handcuffs Boss Man", "wwf-cuffed"], ["<b>WWF</b> MSG draws $543,200 for a *1/2 card", "wwf-garden-gold"], ["<b>WWF</b> Three hurt in Edmonton; Earthquake out of WrestleFest", "wwf-edmonton-injuries"], ["<b>WWF</b> Jake hesitates on the save", "wwf-jake-hesitates"], ["<b>WWF</b> Sid stares down Hogan in Saskatoon", "wwf-sid-is-watching"], ["<b>WWF</b> Nastys keep the belts; Ellering in LOD's corner", "wwf-nastys-survive"], ["<b>WWF</b> Bulldog stays in Japan, office fumes", "wwf-bulldog-two-masters"], ["<b>WWF</b> WrestleFest: 12 matches at Busch Stadium", "wwf-wrestlefest-preview"], ["<b>USWA</b> Bret saves Kerry from Andre", "uswa-bret-saves-kerry"], ["<b>AJPW</b> Abdullah's fork sends Baba to the hospital", "ajpw-fall-of-the-giant"], ["<b>AJPW</b> Dr. Death calls out Jumbo", "ajpw-dr-death-wants-jumbo"], ["<b>AJPW</b> Misawa–Funk ****1/4 in Niigata", "ajpw-misawa-rising"], ["<b>CMLL</b> Yamada debuts in Puebla", "cmll-yamada-debuts"], ["<b>WCW</b> Orndorff–Rich ****1/4 in Richmond", "wcw-orndorff-rich"], ["<b>WCW</b> Freebirds fly again in Columbus", "wcw-freebirds-return"], ["<b>NJPW</b> Chōshu–Bigelow goes five stars at Korakuen", "njpw-choshu-bigelow"], ["<b>NJPW</b> Chono rolls up the champion", "njpw-chonos-moment"], ["<b>NJPW</b> Hirata & Hashimoto win the IWGP tag titles", "njpw-new-tag-champions"], ["<b>NJPW</b> Samoans squash Chōshu in 2:26", "njpw-samoans"], ["<b>NJPW</b> 56-minute eight-man goes ****3/4", "njpw-kim-duk-unbeaten"], ["<b>NJPW</b> Liger, Pillman, IRS and Blazer in two places at once", "njpw-the-commuters"], ["<b>NJPW</b> First G1 Climax set for August", "njpw-g1-climax"], ["<b>JULY 14</b> Bash vs. WrestleFest: same night", "world-super-sunday"], ["<b>TWA</b> Nightstalker tears biceps in Allentown", "twa-nightstalker-hurt"], ["<b>TWA</b> Idol wins with his feet on the ropes", "twa-feet-on-the-ropes"], ["<b>TWA</b> Snow Plows Jackson in no-DQ rematch", "twa-snow-settles-it"], ["<b>TWA</b> First title tournament bracket set", "twa-title-tournament"]];
+const TICKER = [
+ [
+  "<b>WWF</b> WrestleFest: Hogan retains, Sid strikes, LOD save",
+  "wwf-wrestlefest-recap"
+ ],
+ [
+  "<b>WWF</b> Observer: WrestleFest goes *3/4; the Warrior is hurt",
+  "wwf-observer-wrestlefest-0714"
+ ],
+ [
+  "<b>WWF</b> From the Road: Marty Jannetty, six feet apart",
+  "wwf-diary-jannetty-0714"
+ ],
+ [
+  "<b>WWF</b> Piper's back: Rowdy Roddy returns vs. Sid in Milwaukee",
+  "wwf-pipers-back"
+ ],
+ [
+  "<b>WWF</b> Observer: Piper returns, Sid still struggles",
+  "wwf-observer-milwaukee-0713"
+ ],
+ [
+  "<b>WWF</b> From the Road: Roddy Piper, three hours in a back room",
+  "wwf-diary-piper-0713"
+ ],
+ [
+  "<b>WCW</b> WCW Pro: Steiner and Orndorff advance in the TV Title tournament",
+  "wcw-steiner-draws-first-blood"
+ ],
+ [
+  "<b>WCW</b> Observer: Pro Ep. 1 writes Sullivan off and points to Greenville",
+  "wcw-observer-pro-ep1"
+ ],
+ [
+  "<b>WCW</b> From the Road: Rick Steiner at the Tallahassee taping",
+  "wcw-diary-steiner-0709"
+ ],
+ [
+  "<b>AJPW</b> Breaking: Kawada is leaving All Japan; last date Okayama 7/15",
+  "ajpw-kawada-leaving"
+ ],
+ [
+  "<b>AJPW</b> Observer: Hiroshima's young boys steal the show",
+  "ajpw-observer-hiroshima-0713"
+ ],
+ [
+  "<b>AJPW</b> From the Road: Masao Inoue, up at seven again",
+  "ajpw-diary-inoue-0713"
+ ],
+ [
+  "<b>WCW</b> The Z-Man signs: Tom Zenk joins WCW",
+  "wcw-zenk-signs"
+ ],
+ [
+  "<b>WWF</b> Observer: Winnipeg saves the swing with a $202,000 gate",
+  "wwf-observer-winnipeg-0712"
+ ],
+ [
+  "<b>AJPW</b> Observer: Nagoya draws $192,000 at $32 a seat",
+  "ajpw-observer-nagoya-0711"
+ ],
+ [
+  "<b>WCW</b> Observer: Charleston goes *** but draws just 3,200",
+  "wcw-observer-charleston-0712"
+ ],
+ [
+  "<b>WCW</b> Sting makes Arn Anderson pass out",
+  "wcw-sting-makes-arn-pass-out"
+ ],
+ [
+  "<b>ASW</b> Observer: three shows in, three sellouts, and Big Daddy arrives",
+  "asw-observer-three-shows"
+ ],
+ [
+  "<b>USWA</b> Observer: Evansville does $16,000; Dundee piledrives Adams",
+  "uswa-observer-evansville-0710"
+ ],
+ [
+  "<b>USWA</b> Observer: Memphis does $54,000 on an angle show",
+  "uswa-observer-memphis-0706"
+ ],
+ [
+  "<b>WORLD</b> Who gets paid: Hogan's $125K a month vs. one night in Memphis",
+  "world-who-gets-paid"
+ ],
+ [
+  "<b>POWER PRO</b> Jericho retains with the Lion Tamer",
+  "pp-jericho-keeps-the-belt"
+ ],
+ [
+  "<b>CMLL</b> Vampiro puts his hair up against Konnan's title",
+  "cmll-hair-on-the-line"
+ ],
+ [
+  "<b>USWA</b> Flair debuts at Star Wars, costs Kevin Von Erich",
+  "uswa-flair-signs"
+ ],
+ [
+  "<b>WCW</b> Freebirds fly again in Columbus",
+  "wcw-freebirds-return"
+ ],
+ [
+  "<b>NJPW</b> Liger, Pillman, IRS and Blazer in two places at once",
+  "njpw-the-commuters"
+ ],
+ [
+  "<b>JULY 14</b> Bash vs. WrestleFest: same night",
+  "world-super-sunday"
+ ],
+ [
+  "<b>TWA</b> Idol wins with his feet on the ropes",
+  "twa-feet-on-the-ropes"
+ ]
+];
 
 FINANCE._streams = ["Merchandise", "TV rights", "Pay-per-view share", "Home video", "900 hotline", "Licensing", "Programs & magazines", "Concessions & parking", "Talent loan fees", "Sponsorships"];
