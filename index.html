@@ -238,7 +238,7 @@ const W = dt(WORLD_DATE);
 const fmt = s=>{const x=dt(s);return `${DOW[x.getUTCDay()]} ${MON[x.getUTCMonth()]} ${x.getUTCDate()}`};
 const fmtLong = s=>{const x=dt(s);return `${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][x.getUTCDay()]}, ${['January','February','March','April','May','June','July','August','September','October','November','December'][x.getUTCMonth()]} ${x.getUTCDate()}, ${x.getUTCFullYear()}`};
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
-const pastE = e=>P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W;
+const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
 const chip = k=>`<a class="chip" href="#${k}" style="--c:${P[k].c}">${P[k].short}</a>`;
 const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','cmll','asw','twa'];
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
