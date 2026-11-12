@@ -31,9 +31,9 @@ if(!dry) fs.writeFileSync(wf,w);
 
 // 3: earnings
 let eb='';
-try{eb=execFileSync('python3',[path.join(ROOT,'tools','earnings','build.py'),nd],{encoding:'utf8'});}catch(e){say('!! Earnings rebuild FAILED: '+e.message);}
+try{eb=execFileSync('python3',[path.join(ROOT,'tools','earnings','build.py'),nd],{encoding:'utf8'});execFileSync('python3',[path.join(ROOT,'tools','earnings','doc.py')]);}catch(e){say('!! Earnings rebuild FAILED: '+e.message);}
 if(dry){ // put the earnings file back the way it was
-  try{execFileSync('git',['checkout','--','data/earnings.js','tools/earnings/earnings.md'],{cwd:ROOT});}catch(e){}
+  try{execFileSync('git',['checkout','--','data/earnings.js','tools/earnings/earnings.md','tools/earnings/tracker_doc.md','tools/earnings/ledger_summary.md'],{cwd:ROOT});}catch(e){}
 }
 say('Earnings: '+(eb.split('\n')[0]||'(no output)'));
 D=load();
