@@ -17,7 +17,7 @@ Live site: https://shovan123-lang.github.io/TNMWorld/
 ## Updating
 
 - To move the world forward, change `WORLD_DATE` in `data/world.js` (only when the world week closes).
-- To update a promotion, edit only its `data/<promotion>.js` file. Updates to different promotions don't touch the same file, except for the headline ticker (`TICKER` in `data/world.js`), which everyone adds to.
+- To update a promotion, edit only its `data/<promotion>.js` file. Updates to different promotions don't touch the same file, except for the headline ticker (`TICKER` in `data/world.js`), which everyone adds to. The site shows at most 15 headlines: the newest posted (top of the list), always including each promotion's newest. Add new headlines at the top and trim the list back to 15 (Sean, 2026-11-11).
 - **`asOf`:** each promotion's `P.<key>.asOf` is the last in-game date it has run. Cards dated on or before `asOf` show as results; later ones show as upcoming. Without `asOf`, the site falls back to `WORLD_DATE`, which hides results run after the world date. Move `asOf` forward with every show.
 - Articles go in the promotion's `ARTICLES` block: Observer reports use `series: "observer"`, From the Road diaries use `series: "diary"`, news items use `news: 1`. Body text is a list of `["p", text]` and `["h", heading]` pairs.
 - Gates and merchandise go in `FINANCE.<key>.rows` (`gate`, `merch`, `payroll`; use `null` when a number isn't known yet).
