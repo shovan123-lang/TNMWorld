@@ -8,6 +8,14 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 
 const TICKER = [
  [
+  "<b>NJPW</b> Observer: Chono taps Hase, Afa goes after Hirata in Abashiri",
+  "njpw-observer-abashiri-0713"
+ ],
+ [
+  "<b>NJPW</b> From the Road: Mando Guerrero, who's finished",
+  "njpw-diary-mando-0713"
+ ],
+ [
   "<b>USWA</b> Kerry steals the pin from Bret in Louisville",
   "uswa-kerry-steals-the-pin"
  ],
@@ -118,14 +126,6 @@ const TICKER = [
  [
   "<b>WCW</b> Freebirds fly again in Columbus",
   "wcw-freebirds-return"
- ],
- [
-  "<b>NJPW</b> Liger, Pillman, IRS and Blazer in two places at once",
-  "njpw-the-commuters"
- ],
- [
-  "<b>JULY 14</b> Bash vs. WrestleFest: same night",
-  "world-super-sunday"
  ],
  [
   "<b>TWA</b> Idol wins with his feet on the ropes",
