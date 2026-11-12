@@ -639,7 +639,17 @@ $('#spoilBtn').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault()
 /* Ticker + dates */
 $('#worlddate').textContent='World date: '+fmtLong(WORLD_DATE);
 $('#wd2').textContent=fmtLong(WORLD_DATE);
-const tk=TICKER;
+/* Ticker: at most 15 headlines (Sean, 2026-11-11). The newest posted (top of TICKER) win,
+   but every promotion keeps its newest headline. Shown in TICKER order, newest first. */
+const TICKER_MAX=15;
+function pickTicker(list){
+  const promoOf=([t,id])=>(ARTICLES[id]&&ARTICLES[id].p)||(ORDER.find(k=>t.includes('<b>'+P[k].short+'</b>'))||'_');
+  const keep=new Set();
+  ORDER.forEach(k=>{const i=list.findIndex(x=>promoOf(x)===k);if(i>=0)keep.add(i);});
+  for(let i=0;i<list.length&&keep.size<TICKER_MAX;i++)keep.add(i);
+  return list.filter((_,i)=>keep.has(i));
+}
+const tk=pickTicker(TICKER);
 $('#ticker').innerHTML=[...tk,...tk].map(([t,id],i)=>`<span><a href="#${id}"${i>=tk.length?' tabindex="-1" aria-hidden="true"':''}>${t}</a></span>`).join('·');
 /* Ticker speed: a steady pace (px per second) however many headlines there are */
 const TICKER_SPEED=55;

@@ -6,6 +6,7 @@ const SHARED = [["Bruise Brothers (Ron & Don Harris)", "WCW", "TWA", "Working bo
 
 const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Strongest Man.\""], ["9/9/91", "WWF", "Scott Taylor", "Career debut."], ["Sept '91", "WCW", "Van Hammer", "Career debut. Heavy-metal rocker."], ["9/20/91", "Japan", "Masayoshi Motegi", "Career debut. W*ING junior."], ["10/4/91", "Joshi", "Kumiko Maekawa", "AJW debut. Karate background."], ["10/4/91", "Joshi", "Chikako Shiratori", "AJW debut."], ["10/21/91", "WWF", "Chris Chavis (Tatanka)", "Vignettes first. TV in Feb '92. Also on USWA's Power Pro roster."], ["11/5/91", "WCW", "Marcus Alexander Bagwell", "Young babyface. Also on USWA's Power Pro roster."], ["11/10/91", "Indies", "Rick Michaels", "Georgia."], ["11/10/91", "Indies", "Stevie Richards", "Philadelphia (date disputed)."], ["11/11/91", "WWF", "Chris Walker", "Jumps from GWF."], ["11/18/91", "CMLL", "Rey Bucanero Jr.", "Age 17, nephew of Pirata Morgan."], ["11/20/91", "Indies", "Glenn Gilbertti", "Career debut. Also on USWA's Power Pro roster."], ["Late '91", "WWF", "Repo Man", "Gimmick debut (Barry Darsow)."], ["12/1/91", "WWF", "Owen Hart", "Return."], ["12/2/91", "WWF", "Brian Lee", "Arrival."], ["12/7/91", "Shoot", "Volk Han", "RINGS debut vs. Akira Maeda."], ["12/7/91", "Shoot", "Hans Nijman", "RINGS, karate bout."], ["12/22/91", "Shoot", "Hiromitsu Kanehara", "UWF-i, vs. Masakazu Maeda."], ["12/22/91", "Shoot", "Masakazu Maeda", "UWF-i."], ["1991", "Indies", "Little Guido", "NJ. Shoot-style base."], ["1991", "Europe", "Alex Wright", "CWA, age 16. Son of Steve Wright."], ["1991", "Joshi", "Rie Tamada", "AJW class of '91."], ["1/11/92", "Joshi", "Michiko Omukai", "AJW. Delayed by injury."]];
 
+// Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
   "<b>NJPW</b> Observer: Chono taps Hase, Afa goes after Hirata in Abashiri",
@@ -44,72 +45,16 @@ const TICKER = [
   "wwf-pipers-back"
  ],
  [
-  "<b>WWF</b> Observer: Piper returns, Sid still struggles",
-  "wwf-observer-milwaukee-0713"
- ],
- [
-  "<b>WWF</b> From the Road: Roddy Piper, three hours in a back room",
-  "wwf-diary-piper-0713"
- ],
- [
   "<b>WCW</b> WCW Pro: Steiner and Orndorff advance in the TV Title tournament",
   "wcw-steiner-draws-first-blood"
- ],
- [
-  "<b>WCW</b> Observer: Pro Ep. 1 writes Sullivan off and points to Greenville",
-  "wcw-observer-pro-ep1"
- ],
- [
-  "<b>WCW</b> From the Road: Rick Steiner at the Tallahassee taping",
-  "wcw-diary-steiner-0709"
  ],
  [
   "<b>AJPW</b> Breaking: Kawada is leaving All Japan; last date Okayama 7/15",
   "ajpw-kawada-leaving"
  ],
  [
-  "<b>AJPW</b> Observer: Hiroshima's young boys steal the show",
-  "ajpw-observer-hiroshima-0713"
- ],
- [
-  "<b>AJPW</b> From the Road: Masao Inoue, up at seven again",
-  "ajpw-diary-inoue-0713"
- ],
- [
-  "<b>WCW</b> The Z-Man signs: Tom Zenk joins WCW",
-  "wcw-zenk-signs"
- ],
- [
-  "<b>WWF</b> Observer: Winnipeg saves the swing with a $202,000 gate",
-  "wwf-observer-winnipeg-0712"
- ],
- [
-  "<b>AJPW</b> Observer: Nagoya draws $192,000 at $32 a seat",
-  "ajpw-observer-nagoya-0711"
- ],
- [
-  "<b>WCW</b> Observer: Charleston goes *** but draws just 3,200",
-  "wcw-observer-charleston-0712"
- ],
- [
-  "<b>WCW</b> Sting makes Arn Anderson pass out",
-  "wcw-sting-makes-arn-pass-out"
- ],
- [
   "<b>ASW</b> Observer: three shows in, three sellouts, and Big Daddy arrives",
   "asw-observer-three-shows"
- ],
- [
-  "<b>USWA</b> Observer: Evansville does $16,000; Dundee piledrives Adams",
-  "uswa-observer-evansville-0710"
- ],
- [
-  "<b>USWA</b> Observer: Memphis does $54,000 on an angle show",
-  "uswa-observer-memphis-0706"
- ],
- [
-  "<b>WORLD</b> Who gets paid: Hogan's $125K a month vs. one night in Memphis",
-  "world-who-gets-paid"
  ],
  [
   "<b>POWER PRO</b> Jericho retains with the Lion Tamer",
@@ -118,14 +63,6 @@ const TICKER = [
  [
   "<b>CMLL</b> Vampiro puts his hair up against Konnan's title",
   "cmll-hair-on-the-line"
- ],
- [
-  "<b>USWA</b> Flair debuts at Star Wars, costs Kevin Von Erich",
-  "uswa-flair-signs"
- ],
- [
-  "<b>WCW</b> Freebirds fly again in Columbus",
-  "wcw-freebirds-return"
  ],
  [
   "<b>TWA</b> Idol wins with his feet on the ropes",
