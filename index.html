@@ -300,40 +300,24 @@ function viewHome(){
   const lastWeek=E.filter(e=>{const x=dt(e.d);return pastE(e) && (W-x)/864e5<=7 && e.m}).sort((a,b)=>b.d.localeCompare(a.d));
   const gates=ORDER.map(k=>{const F=typeof FINANCE!=='undefined'&&FINANCE[k];const rows=(F&&Array.isArray(F.rows))?F.rows:[];return [k,rows.filter(r=>String(r.d||'').startsWith('1991-07')&&typeof r.gate==='number').reduce((s,r)=>s+r.gate,0)]}).filter(g=>g[1]>0).sort((a,b)=>b[1]-a[1]);
   const maxG=Math.max(...gates.map(g=>g[1]));
+  const F=FRONT;
+  const fst=([p,k,id,t,x])=>`<div class="story sm"><div class="kicker" style="--c:var(--${p})">${esc(k)}</div><h4><a href="#${id}" style="text-decoration:none">${esc(t)}</a></h4><p>${esc(x)}</p></div>`;
   return `
   <section class="grid lead col-rule" style="margin-top:8px">
     <div class="story">
-      <div class="kicker" style="--c:var(--wcw)">WCW · The Great American Bash · Baltimore</div>
-      <h4><a href="#wcw-bash91-luger-gold" style="text-decoration:none">Luger Locks In the Gold</a></h4>
-      <p class="dek">Lex Luger wins the new World Title in the cage, Cactus Jack shocks Vader, and Rude tells Sting he's next.</p>
-      <p class="drop">Lex Luger is the WCW World Heavyweight Champion. He piledrove Barry Windham inside the cage in Baltimore at 23:07 to win the new belt, in a four-star main event that ended without the Harley Race distraction or Mr. Hughes chair the office had planned. Windham is expected to chase him all August, with Ron Simmons lined up behind him.</p>
-      <p>Sting made Nikita Koloff submit to keep the U.S. Title, and Rick Rude, with Paul E. Dangerously's phone doing the dirty work, beat Rick Steiner and told Sting he's next. Cactus Jack upset Big Van Vader with a double-arm DDT, then left with a back injury that will keep him out for weeks. Tom Zenk debuted by tearing up Paul E.'s contract. 7,000 fans paid $126,000, and 120,000 homes bought the show.</p>
-      <p style="font-family:var(--cond);font-weight:700"><a href="#wcw-bash91-luger-gold">Read the full story →</a></p>
+      <div class="kicker" style="--c:var(--${F.lead.p})">${esc(F.lead.kicker)}</div>
+      <h4><a href="#${F.lead.id}" style="text-decoration:none">${esc(F.lead.title)}</a></h4>
+      <p class="dek">${esc(F.lead.dek)}</p>
+      ${F.lead.paras.map((x,n)=>`<p${n?'':' class="drop"'}>${esc(x)}</p>`).join('')}
+      <p style="font-family:var(--cond);font-weight:700"><a href="#${F.lead.id}">Read the full story →</a></p>
       <h3 style="clear:both;padding-top:4px">The rest of the world</h3>
-      <div class="grid g2">
-        <div class="story sm"><div class="kicker" style="--c:var(--wwf)">WWF · WrestleFest</div><h4><a href="#wwf-wrestlefest-recap" style="text-decoration:none">Sid Sends a Message</a></h4><p>Hogan kept the WWF Title over Sgt. Slaughter with Jim Duggan refereeing, then Sid Justice powerbombed him until the Legion of Doom made the save. The Ultimate Warrior hurt his neck losing to the Undertaker, and the Rockers shoved each other after losing to the Nasty Boys.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--uswa)">USWA · Louisville</div><h4><a href="#uswa-kerry-steals-the-pin" style="text-decoration:none">Kerry Steals the Pin</a></h4><p>Kerry Von Erich pinned Jamie Dundee, taking the win from his partner Bret Hart. Steve Austin and Diamond Studd went **** to a double count-out, and Flair vs. Terry Funk is set for Dallas on 7/20.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--ajpw)">AJPW · Hiroshima</div><h4><a href="#ajpw-super-generation-answers" style="text-decoration:none">Super Generation Answers Jumbo</a></h4><p>Misawa pinned Gordy with the Tiger Driver, and Jumbo Tsuruta finally spoke. Funk and the Malenkos went ****3/4 in the match of the tour.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--njpw)">NJPW · Abashiri</div><h4><a href="#njpw-observer-abashiri-0713" style="text-decoration:none">Chono Says "Sumo Hall"</a></h4><p>Masahiro Chono made Hase tap and pointed at Sumo Hall. Afa went after Hirata, Mando Guerrero picked a fight nobody booked, and the Kawada rumors point at New Japan.</p></div>
-      </div>
+      <div class="grid g2">${F.rest.map(fst).join('')}</div>
       <h3 style="clear:both;padding-top:14px;border-top:1px solid var(--soft);margin-top:18px">Backstage around the world</h3>
-      <div class="grid g2">
-        <div class="story sm"><div class="kicker" style="--c:var(--wcw)">WCW · Backstage</div><h4><a href="#wcw-observer-bash91" style="text-decoration:none">Cactus Wins, Then Goes Down</a></h4><p>Cactus Jack hurt his back beating Vader and is out 20 WCW cards. His taped WCW Pro segments still air. And 7,000 fans is barely half a house in Baltimore.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--wwf)">WWF · Backstage</div><h4><a href="#wwf-observer-wrestlefest-0714" style="text-decoration:none">The Warrior Is Out</a></h4><p>The Ultimate Warrior's neck injury will keep him out past SummerSlam. Marty Jannetty's deal is running out just as the Rockers start shoving each other.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--uswa)">USWA · Business</div><h4><a href="#uswa-observer-louisville-0713" style="text-decoration:none">$67,500 for a House Show</a></h4><p>Louisville drew $67,500 without TV. Austin and Studd stole it, Steiner and Tully got only 5:38, and Dennis Condrey gave notice.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--uswa)">USWA · Backstage</div><h4><a href="#uswa-big-gold" style="text-decoration:none">Whose Belt Is It?</a></h4><p>Flair has Big Gold in Memphis. WCW wants it back, and the argument is about an old deposit. Bret Hart and Flair could end up with two world titles in one ring.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--ajpw)">AJPW · Backstage</div><h4><a href="#ajpw-observer-hiroshima-0713" style="text-decoration:none">The Young Boys Steal It</a></h4><p>Masao Inoue had the opener of the tour in Hiroshima, and the biggest news happened in the dressing room: Kawada gave notice.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--cmll)">CMLL · Business</div><h4><a href="#cmll-the-ceiling" style="text-decoration:none">The 10,500 Ceiling</a></h4><p>Arena México is 95 percent full on Fridays. A Verano sellout at $16.20 would be $170,100. The only way up is the ticket price.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--pp)">Power Pro · Backstage</div><h4><a href="#pp-young-lions-abroad" style="text-decoration:none">Young Lions Abroad</a></h4><p>The Lightning Kid is the first Power Pro student on excursion in Mexico. Chris Benoit could be next. Jericho isn't going anywhere with the belt.</p></div>
-        <div class="story sm"><div class="kicker" style="--c:var(--asw)">All Star · Backstage</div><h4><a href="#asw-two-passports" style="text-decoration:none">Two Passports</a></h4><p>Black Magic is on the All Star roster but hasn't worked a camp date. He's 0–3 in Mexico, with a ****1/2 match against Casas.</p></div>
-      </div>
+      <div class="grid g2">${F.backstage.map(fst).join('')}</div>
     </div>
     <aside>
       <div class="box dark"><div class="kicker" style="--c:#f0b429">Breaking</div>
-        <h3 style="margin-top:4px;font-size:18px"><a href="#ajpw-kawada-leaving" style="color:inherit">Kawada is leaving All Japan</a></h3>
-        <p style="margin:0 0 10px;font-size:15px">Toshiaki Kawada gave notice in Hiroshima. His last date is Okayama on Monday, with the World Tag titles on the line, and the dressing room says he's headed to New Japan.</p>
-        <h3 style="font-size:18px"><a href="#wcw-rude-awakening-greenville" style="color:inherit">Paul E.'s men take out Dustin</a></h3>
-        <p style="margin:0 0 10px;font-size:15px">Rude, Eaton and Paul E. ambushed Dustin Rhodes in Greenville the night before the Bash. Rude Awakening on the injured neck; he's out until the fall.</p>
+        ${F.breaking.map(([id,t,x],n)=>`<h3 style="${n?'':'margin-top:4px;'}font-size:18px">${id?`<a href="#${id}" style="color:inherit">${esc(t)}</a>`:esc(t)}</h3><p style="margin:0 0 10px;font-size:15px">${esc(x)}</p>`).join('')}
         <h3 style="font-size:18px">Injury report</h3>
         <ul style="margin:0;padding-left:18px;font-size:15px">${ORDER.flatMap(k=>(P[k].roster||[]).filter(r=>/^INJ/.test(r[1]||'')).map(r=>`<li><b>${esc(r[0])}</b> (${esc(P[k].short)}): ${esc(r[1].replace(/^INJ:\s*/,'').replace(/^\d+\s*·\s*/,'').split(' · ')[0])}</li>`)).join('')}</ul>
       </div>
@@ -359,14 +343,7 @@ function viewHome(){
       ${(()=>{const t=topEarners(null,5);return t.length?`<h2 class="sec">Top earners <small>${esc(EARNINGS.month)} so far</small></h2>${t.map(([x,v],i)=>`<div style="display:flex;justify-content:space-between;border-bottom:1px dotted var(--soft);padding:4px 0;font-family:var(--cond);font-size:15px"><span>${i+1}. <b>${esc(x.name)}</b> ${x.promos.map(pchip).join('')}</span><span class="num">${eMoney(v)}</span></div>`).join('')}<p style="font-family:var(--cond);font-size:13px;margin-top:6px"><a href="#earnings">Full earnings tracker →</a></p>`:''})()}
       <h2 class="sec">Booker's desk <small>Open across the world</small></h2>
       <ul style="padding-left:18px;margin:0;font-size:15px">
-        <li><b>Autumn Armageddon</b> is name-checked by both WCW and USWA, with no date.</li>
-        <li><b>SummerSlam vs. the Omni:</b> WWF and WCW go head to head again on 8/25.</li>
-        <li><b>Kawada's next stop:</b> the rumors say New Japan. All Japan needs a new partner for Misawa.</li>
-        <li><b>WCW tag titles</b> are crowned in Johnson City 7/20. Cactus Jack is out 20 cards.</li>
-        <li><b>Flair vs. Funk</b> in Dallas 7/20, and Big Gold vs. the Unified Title still hangs over the USWA.</li>
-        <li><b>Hansen/Spivey</b> double-booked between AJPW and USWA.</li>
-        <li><b>Titles to establish:</b> NJPW, AJPW Triple Crown, CMLL World Trios (Tercias final 7/26).</li>
-        <li><b>Davey Boy Smith</b> is out of WWF until about 7/29. <b>Steamboat's return</b>: spring 1992.</li>
+        ${F.desk.map(x=>`<li>${x}</li>`).join('')}
       </ul>
     </div>
   </section>`;
