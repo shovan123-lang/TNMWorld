@@ -10,7 +10,7 @@ Live site: https://shovan123-lang.github.io/TNMWorld/
 | `data/world.js` | World-wide data: the world date, the headline ticker, the talent exchange and the arrivals board. |
 | `data/<promotion>.js` | Everything for one promotion: overview, champions, roster, cards and results, articles (Observer reports, From the Road diaries, news), contracts, finance, archive links and banner. One file each: `wcw`, `wwf`, `uswa`, `pp` (Power Pro), `ajpw`, `njpw`, `cmll`, `asw`, `twa` (Tri-State). |
 | `img/` | Banner images. |
-| `USWA/`, `WCW/`, `WWF/`, `AJPW/`, `NJPW/`, `CMLL/`, `ASW/`, `TriState/`, `Powerpro/` | Each promotion's official show-archive site (`<folder>/HTML/WELCOME.HTM`). These replace the separate repositories, which are kept as-is but no longer updated. |
+| `USWA/`, `WCW/`, `WWF/`, `AJPW/`, `NJPW/`, `CMLL/`, `ASW/`, `TriState/`, `Powerpro/` | Old copies of the archive sites. **Not used.** Since 2026-11-11 every `SITES.<key>.base` points at the promotion's own repository (`shovan123-lang/WWF`, `USWA`, `AJPW`, `NJPW`, `CMLL`, `ASW`, `TriState`, `Powerpro`, `WCW1`), which Sean uploads to. New show pages there only need a link added to `SITES.<key>.arch` and the card's `link`. |
 
 ## Updating
 
