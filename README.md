@@ -23,6 +23,10 @@ Live site: https://shovan123-lang.github.io/TNMWorld/
 - Gates and merchandise go in `FINANCE.<key>.rows` (`gate`, `merch`, `payroll`; use `null` when a number isn't known yet).
 - After a show runs, the after-show checklist covers logging results, the write-ups and pushing the site.
 
+## Moving the world clock
+
+`node tools/advance_clock.js YYYY-MM-DD` (add `--dry` to preview; a dry run also resets `data/earnings.js` to the committed version). It sets `WORLD_DATE`, trims the ticker to 15, rebuilds the Talent Earnings tracker, and prints a report: which promotions are behind or ahead of the world, shows still to run or log, shows missing from the earnings tracker, injuries, and double bookings of shared talent in the next 14 days. It doesn't commit. In Claude Code, `/advance-clock YYYY-MM-DD` runs the whole routine (`.claude/commands/advance-clock.md`).
+
 ## Talent Earnings tracker
 
 Rebuild it **every time the world clock moves** (Sean, 2026-11-11), and after logging a show:
