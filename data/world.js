@@ -9,6 +9,18 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
+  "<b>WCW</b> Bash: Lex Luger wins the World Title in the cage",
+  "wcw-bash91-luger-gold"
+ ],
+ [
+  "<b>WCW</b> Observer: Cactus Jack upsets Vader, then goes out hurt",
+  "wcw-observer-bash91"
+ ],
+ [
+  "<b>WCW</b> From the Road: Cactus Jack, \"I beat Big Van Vader\"",
+  "wcw-diary-cactus-bash91"
+ ],
+ [
   "<b>WCW</b> Greenville: Rude and Eaton ambush Dustin Rhodes, Steiner makes the save",
   "wcw-rude-awakening-greenville"
  ],
@@ -33,20 +45,8 @@ const TICKER = [
   "uswa-kerry-steals-the-pin"
  ],
  [
-  "<b>USWA</b> Observer: Louisville does $67,500; Austin–Studd ****",
-  "uswa-observer-louisville-0713"
- ],
- [
-  "<b>USWA</b> From the Road: Dirty White Boy's five minutes",
-  "uswa-diary-dwb-0713"
- ],
- [
   "<b>WWF</b> WrestleFest: Hogan retains, Sid strikes, LOD save",
   "wwf-wrestlefest-recap"
- ],
- [
-  "<b>WWF</b> Observer: WrestleFest goes *3/4; the Warrior is hurt",
-  "wwf-observer-wrestlefest-0714"
  ],
  [
   "<b>AJPW</b> Breaking: Kawada is leaving All Japan; last date Okayama 7/15",

@@ -86,6 +86,8 @@ NOT_ON_SCALE = ["Kevin Sullivan (WCW): worked 7/5, 7/6 and 7/8 but quit 7/8 and 
 BONUSES = [
  ("wwf","1991-07-14","WrestleFest '91 main-event bonus (5% of the $1,027,140 gate, split 2 ways)",
   {"Hulk Hogan":25678.5,"Sgt. Slaughter":25678.5}),
+ ("wcw","1991-07-14","Great American Bash main-event bonus (5% of the $126,000 gate, split 2 ways)",
+  {"Lex Luger":3150,"Barry Windham":3150}),
 ]
 
 # ---- Japan: one fee per tour, paid on the last night. Listed as "due" until that date has run.
