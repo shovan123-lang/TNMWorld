@@ -91,3 +91,14 @@ BONUSES = [
 # ---- Japan: one fee per tour, paid on the last night. Listed as "due" until that date has run.
 TOURS = {"ajpw":("1991-07-27","Summer Action Series tour fee"),
          "njpw":("1991-07-30","Summer Crush '91 tour fee")}
+
+# ---- Tour wrestlers switched to per-appearance pay (taken out of the tour fee).
+# rate per night worked; add each night once it has run.
+PER_NIGHT = {
+ "ajpw": {
+  # Kawada gave notice 7/13; last date Okayama 7/15. Sean, 2026-11-11: paid per appearance, not the tour fee.
+  # $1,000 a night = his $14,000 tour fee ÷ 14 nights. Add Okayama 7/15 once it runs.
+  "Toshiaki Kawada": (1000, [("1991-07-03","Chiba · Night 2"),("1991-07-07","Niigata · Night 4"),
+     ("1991-07-09","Kanazawa · Night 5"),("1991-07-11","Nagoya · Night 6"),("1991-07-13","Hiroshima · Night 7")]),
+ },
+}

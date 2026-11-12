@@ -33,11 +33,17 @@ for k,d,lab,m in S.BONUSES:
 for k,(d,lab) in S.TOURS.items():
   paid=WORLD>=d
   for t,n,r,note in C[k]['rows']:
-    if t=="O": continue
+    if t=="O" or n in S.PER_NIGHT.get(k,{}): continue
     p=get(n,k,t)
     if paid: p["shows"]+=r
     else: p["due"]+=r
     p["lines"].append(dict(p=k,d=d,what=lab+(" (paid)" if paid else " (due on the last night, before any proration)"),amt=r,kind="tour" if paid else "due"))
+for k,who in S.PER_NIGHT.items():
+  for n,(r,nights) in who.items():
+    p=get(n,k,tier.get((k,n),"A"))
+    for d,lab in nights:
+      p["shows"]+=r; p["apps"]+=1
+      p["lines"].append(dict(p=k,d=d,what=lab+" · per appearance (${:,} a night, in place of the tour fee)".format(r),amt=r,kind="show"))
 showlist=[]
 for s in S.SHOWS:
   R=rate[s['p']]; pay={n:R[n]*s['mult'] for n in s['people']}; pay.update(s.get('extra',{}))
