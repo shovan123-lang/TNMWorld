@@ -9,6 +9,18 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
+  "<b>WCW</b> Greenville: Rude and Eaton ambush Dustin Rhodes, Steiner makes the save",
+  "wcw-rude-awakening-greenville"
+ ],
+ [
+  "<b>WCW</b> Observer: the go-home show does its job at **1/4",
+  "wcw-observer-greenville-0713"
+ ],
+ [
+  "<b>WCW</b> From the Road: Bobby Eaton, careful on purpose",
+  "wcw-diary-eaton-0713"
+ ],
+ [
   "<b>NJPW</b> Observer: Chono taps Hase, Afa goes after Hirata in Abashiri",
   "njpw-observer-abashiri-0713"
  ],
@@ -35,18 +47,6 @@ const TICKER = [
  [
   "<b>WWF</b> Observer: WrestleFest goes *3/4; the Warrior is hurt",
   "wwf-observer-wrestlefest-0714"
- ],
- [
-  "<b>WWF</b> From the Road: Marty Jannetty, six feet apart",
-  "wwf-diary-jannetty-0714"
- ],
- [
-  "<b>WWF</b> Piper's back: Rowdy Roddy returns vs. Sid in Milwaukee",
-  "wwf-pipers-back"
- ],
- [
-  "<b>WCW</b> WCW Pro: Steiner and Orndorff advance in the TV Title tournament",
-  "wcw-steiner-draws-first-blood"
  ],
  [
   "<b>AJPW</b> Breaking: Kawada is leaving All Japan; last date Okayama 7/15",
