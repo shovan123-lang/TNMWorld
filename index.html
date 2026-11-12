@@ -174,7 +174,10 @@ details.bk summary{cursor:pointer;font-family:var(--cond);font-weight:700;text-t
 .ev{font-family:var(--cond);font-size:14px;padding:2px 0}
 .ev .chip{margin-right:6px;min-width:46px;text-align:center}
 .ev.big b{color:var(--red)}
-.filters{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 14px}
+.filters,.efilters{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 14px}
+.efilters button{font-family:var(--cond);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;border:2px solid var(--c);background:var(--c);color:#fff;padding:3px 9px;cursor:pointer}
+.efilters button.off{background:transparent;color:var(--c)}
+#etbl tr.er{cursor:pointer}#etbl tr.er:hover td{background:var(--paper2)}#etbl tr.ed td{background:var(--paper2);font-family:var(--cond);font-size:13.5px}#etbl tr.ed table{margin:4px 0}.pc{font-family:var(--cond);font-size:11px;font-weight:700;color:#fff;background:var(--c);padding:1px 5px;margin-right:3px;white-space:nowrap}
 .filters button{font-family:var(--cond);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;border:2px solid var(--c);background:var(--c);color:#fff;padding:3px 9px;cursor:pointer}
 .filters button.off{background:transparent;color:var(--c)}
 footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font-family:var(--cond);font-size:13px;color:var(--mute);text-align:center}
@@ -220,6 +223,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/cmll.js"></script>
 <script src="data/asw.js"></script>
 <script src="data/twa.js"></script>
+<script src="data/earnings.js"></script>
 <script>
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -244,7 +248,7 @@ const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','cmll','asw','twa'];
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
 
 /* =========================== NAV =========================== */
-const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['talent','Talent Exchange'],['arrivals','Arrivals'],['money','Money']];
+const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['talent','Talent Exchange'],['arrivals','Arrivals'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
 const TAB_LABEL={overview:'Overview',shows:'Cards & Results',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road'};
@@ -256,11 +260,11 @@ function renderNav(cur,curT){
     <div class="menu" role="menu">${promoTabs(k).map(t=>`<a role="menuitem" href="#${k}/${t}" class="${cur===k&&(curT||'overview')===t?'cur':''}">${TAB_LABEL[t]}</a>`).join('')}
     ${SITES[k]?`<a role="menuitem" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${esc(p.short)} site ↗</a>`:''}
     ${la?`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#${la}">${esc(ARTICLES[la].title)}</a>`:''}</div></div>`;};
-  const worldOn=['calendar','talent','arrivals','money'].includes(cur)||cur==='world-who-gets-paid';
-  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',talent:'Talent Exchange',arrivals:'Arrivals',money:'Money'})[cur]||''):'Front Page'}</span></button>
+  const worldOn=['calendar','talent','arrivals','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
+  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',talent:'Talent Exchange',arrivals:'Arrivals',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
   <div class="items"><a href="#home" class="top ${cur==='home'?'on':''}">Front Page</a>${ORDER.map(promo).join('')}
   <div class="dd" style="--c:var(--red)"><a href="#calendar" class="top ${worldOn?'on':''}" aria-haspopup="true">World<span class="caret">▾</span></a>
-    <div class="menu" role="menu"><a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a><a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a></div></div></div>`;
+    <div class="menu" role="menu"><a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a><a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a></div></div></div>`;
   $('#burger').onclick=()=>{const n=document.querySelector('nav.main');n.classList.toggle('open');$('#burger').setAttribute('aria-expanded',n.classList.contains('open'));};
   // Touch / small screens: first tap on a promotion opens its menu instead of navigating
   document.querySelectorAll('nav.main .dd>.top').forEach(a=>a.addEventListener('click',ev=>{
@@ -353,6 +357,7 @@ function viewHome(){
       <h2 class="sec">The Ledger <small>July 1991 money</small></h2>
       ${gates.map(([k,g])=>`<div class="barrow" style="--c:${P[k].c}"><span>${chip(k)}</span><div class="bar" style="width:${(g/maxG*100).toFixed(1)}%"></div><span class="num">$${g.toLocaleString()}</span></div>`).join('')}
       <p class="mute" style="font-family:var(--cond);font-size:13px;margin-top:6px">AJPW: first 5 nights of the Summer Action Series. CMLL: four of five shows (Puebla's gate was in pesos). ASW: two sold camp shows at $5,000 each. WWF: six shows, MSG through Saskatoon. WCW: 7/5–7/8 to date. USWA: July tour; August did $634,685 on the Dallas debut.</p>
+      ${(()=>{const t=topEarners(null,5);return t.length?`<h2 class="sec">Top earners <small>${esc(EARNINGS.month)} so far</small></h2>${t.map(([x,v],i)=>`<div style="display:flex;justify-content:space-between;border-bottom:1px dotted var(--soft);padding:4px 0;font-family:var(--cond);font-size:15px"><span>${i+1}. <b>${esc(x.name)}</b> ${x.promos.map(pchip).join('')}</span><span class="num">${eMoney(v)}</span></div>`).join('')}<p style="font-family:var(--cond);font-size:13px;margin-top:6px"><a href="#earnings">Full earnings tracker →</a></p>`:''})()}
       <h2 class="sec">Booker's desk <small>Open across the world</small></h2>
       <ul style="padding-left:18px;margin:0;font-size:15px">
         <li><b>Autumn Armageddon</b> is name-checked by both WCW and USWA, with no date.</li>
@@ -421,6 +426,7 @@ function viewFinance(k){
   <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th>${f.fixed?'':'<th>Class</th>'}<th>Gate</th>${hasM?'<th>Merch</th>':''}${f.fixed?'':'<th>Payroll</th><th>Net</th><th>%</th>'}<th>Notes</th></tr></thead><tbody>
   ${rows.map(r=>`<tr><td style="white-space:nowrap">${fmt(r.d)}</td><td>${esc(r.show)}</td>${f.fixed?'':`<td>${esc(r.cls||'')}</td>`}<td class="num">${money(r.gate)}</td>${hasM?`<td class="num">${r.merch?money(r.merch):'—'}</td>`:''}${f.fixed?'':`<td class="num">${money(r.payroll)}</td><td class="num">${r.gate!=null&&r.payroll!=null?money(r.gate+(r.merch||0)-r.payroll):'—'}</td><td class="num">${r.gate&&r.payroll!=null?Math.round(r.payroll/r.gate*100)+'%':'—'}</td>`}<td>${esc(r.note||'')}</td></tr>`).join('')}
   </tbody></table></div>
+  ${earningsBox(k,10)}
   <h2 class="sec">Other revenue <small>Coming later</small></h2>
   <div class="tbl-wrap"><table><thead><tr><th>Stream</th><th>Amount</th></tr></thead><tbody>${FINANCE._streams.map(s=>`<tr><td>${esc(s)}</td>${s==='Merchandise'&&hasM?`<td><b>${money(merch)}</b></td>`:'<td class="mute">Not tracked yet</td>'}</tr>`).join('')}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Payroll uses the rates on the Contracts tab. Costs other than talent (travel, buildings, TV production) aren't tracked yet.</p>`;
@@ -437,7 +443,61 @@ function viewMoney(){
   return `<h2 class="sec">Money <small>Contracts and finance across the world</small></h2>
   ${a?`<div class="box" style="margin:16px 0"><div class="kicker">${esc(a.kicker)}</div><h3 style="font-family:var(--head);font-weight:400;font-size:30px;margin:4px 0;text-transform:uppercase"><a href="#world-who-gets-paid" style="color:inherit;text-decoration:none">${esc(a.title)}</a></h3><p style="margin:6px 0">${esc(a.dek)}</p><a href="#world-who-gets-paid" style="font-family:var(--cond);font-weight:700">Read the full story →</a></div>`:''}
   <div class="tbl-wrap"><table><thead><tr><th>Promotion</th><th>Pay basis</th><th>Top of the scale</th><th>Gate logged</th><th>Talent payroll</th><th>Share</th><th>Pages</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <p style="font-family:var(--cond);font-weight:700;font-size:15px"><a href="#earnings">Who's made the most this month: the Talent Earnings tracker →</a></p>
   <p class="mute" style="font-family:var(--cond);font-size:13px">"Fixed" payroll is the full monthly salary or tour fee, set against the gates logged so far. Costs other than talent aren't tracked yet.</p>`;
+}
+
+
+/* =========================== TALENT EARNINGS =========================== */
+const EKEY=Object.fromEntries(ORDER.map(k=>[P[k].short,k]));
+let eFilter=new Set(ORDER), eSort='earned', eQ='';
+const eMoney=v=>v?'$'+Math.round(v).toLocaleString('en-US'):'—';
+const pchip=k=>`<span class="pc" style="--c:${P[k].c}">${esc(P[k].short)}</span>`;
+// money a person made from one promotion (paid so far)
+function earnedFrom(x,k){return x.lines.filter(l=>l.p===k&&l.kind!=='due').reduce((a,l)=>a+l.amt,0);}
+function topEarners(k,n){if(typeof EARNINGS==='undefined')return[];
+  return EARNINGS.people.map(x=>[x,k?earnedFrom(x,k):x.earned]).filter(r=>r[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,n);}
+function earningsBox(k,n){const t=topEarners(k,n||10);if(!t.length)return'';
+  return `<h2 class="sec">Top earners <small>${k?'From '+esc(P[k].short)+', ':''}${esc(EARNINGS.month)} to ${fmt(EARNINGS.world)}</small></h2>
+  <div class="tbl-wrap"><table><thead><tr><th>#</th><th>Name</th><th>Paid so far</th></tr></thead><tbody>${t.map(([x,v],i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b>${x.role!=='Wrestler'?` <span class="mute">${esc(x.role.toLowerCase())}</span>`:''}</td><td class="num">${eMoney(v)}</td></tr>`).join('')}</tbody></table></div>
+  <p style="font-family:var(--cond);font-size:13px"><a href="#earnings">Full world earnings tracker →</a></p>`;}
+function viewEarnings(){
+  if(typeof EARNINGS==='undefined') return `<div class="empty">No earnings data yet.</div>`;
+  const X=EARNINGS, all=X.people;
+  const tot=all.reduce((a,x)=>a+x.earned,0), due=all.reduce((a,x)=>a+x.due,0);
+  const byP=ORDER.map(k=>[k,all.reduce((a,x)=>a+earnedFrom(x,k),0),all.filter(x=>x.lines.some(l=>l.p===k&&l.kind!=='due')).length]);
+  const tiles=[['World date',fmtLong(X.world)],['Paid out so far',eMoney(tot)],['Japan tour fees still due',eMoney(due)],['July projected',eMoney(tot+due)],['People paid',all.filter(x=>x.earned>0).length]];
+  return `<h2 class="sec">Talent Earnings <small>${esc(X.month)}: every promotion, every paycheck</small></h2>
+  <div class="box" style="margin:16px 0"><div class="kicker">Running tracker · updated every time the world clock moves</div>
+  <p style="margin:6px 0 0">WWF and WCW salaries count day by day through the world date. USWA, CMLL, ASW, Tri-State and Power Pro pay per appearance (base rate × the show's multiplier, plus main-event and semi-main gate cuts), counted for every show that has run. AJPW and NJPW pay one fee at the end of the tour, so those show as <b>due</b> until the last night. Bonuses (like WrestleFest's main-event cut) are added on the night. Announcers aren't included. Click a name for the full breakdown.</p></div>
+  <div class="tbl-wrap"><table><tbody>${tiles.map(([l,v])=>`<tr><td>${esc(l)}</td><td class="num"><b style="font-size:18px">${v}</b></td></tr>`).join('')}</tbody></table></div>
+  <h2 class="sec">By promotion <small>Paid so far</small></h2>
+  ${(()=>{const mx=Math.max(...byP.map(r=>r[1]),1);return byP.filter(r=>r[1]>0).sort((a,b)=>b[1]-a[1]).map(([k,v,n])=>`<div class="barrow" style="--c:${P[k].c}"><span>${chip(k)}</span><div class="bar" style="width:${(v/mx*100).toFixed(1)}%"></div><span class="num">${eMoney(v)} <span class="mute">· ${n} paid</span></span></div>`).join('')})()}
+  <h2 class="sec">Leaderboard</h2>
+  <div class="efilters">${ORDER.map(k=>`<button data-f="${k}" class="${eFilter.has(k)?'':'off'}" style="--c:${P[k].c}">${P[k].short}</button>`).join('')}</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px;font-family:var(--cond);font-size:14px">
+   <input id="esearch" placeholder="Search a name…" value="${esc(eQ)}" style="font:inherit;padding:5px 8px;border:2px solid var(--ink);min-width:220px">
+   <label>Sort by <select id="esort" style="font:inherit;padding:4px">${[['earned','Paid so far'],['proj','July projected'],['due','Tour fees due'],['shows','Show pay'],['apps','Appearances']].map(([v,l])=>`<option value="${v}" ${eSort===v?'selected':''}>${l}</option>`).join('')}</select></label>
+  </div>
+  <div class="tbl-wrap"><table id="etbl"><thead><tr><th>#</th><th>Name</th><th>Promotions</th><th>Salary to date</th><th>Show pay</th><th>Bonuses</th><th>Paid so far</th><th>Tour fees due</th><th>July projected</th></tr></thead><tbody id="ebody"></tbody></table></div>
+  <h2 class="sec">How each show was counted</h2>
+  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Promotion</th><th>Show</th><th>Paid</th><th>Itemized</th><th>Ledger payroll</th></tr></thead><tbody>${X.shows.map(s=>`<tr><td style="white-space:nowrap">${fmt(s.d)}</td><td>${chip(s.p)}</td><td>${esc(s.show)}</td><td class="num">${s.n}</td><td class="num">${eMoney(s.total)}</td><td class="num">${eMoney(s.logged)}</td></tr>`).join('')}</tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Where the itemized total is under the ledger's payroll, the ledger figure also counted announcers or staff who aren't in this tracker. ${X.notes.map(esc).join(' ')}. Last rebuilt ${esc(X.updated)}.</p>`;
+}
+function renderEarningsRows(){
+  const b=$('#ebody'); if(!b) return; const q=eQ.toLowerCase();
+  const rows=EARNINGS.people.filter(x=>x.promos.some(k=>eFilter.has(k))&&(!q||x.name.toLowerCase().includes(q))).sort((a,c)=>c[eSort]-a[eSort]||c.earned-a.earned);
+  b.innerHTML=rows.map((x,i)=>`<tr class="er" data-i="${EARNINGS.people.indexOf(x)}"><td>${i+1}</td><td><b>${esc(x.name)}</b>${x.role!=='Wrestler'?` <span class="mute">${esc(x.role.toLowerCase())}</span>`:''}</td><td>${x.promos.map(pchip).join('')}</td><td class="num">${eMoney(x.salary)}</td><td class="num">${eMoney(x.shows)}${x.apps?` <span class="mute">(${x.apps})</span>`:''}</td><td class="num">${eMoney(x.bonus)}</td><td class="num"><b>${eMoney(x.earned)}</b></td><td class="num">${eMoney(x.due)}</td><td class="num">${eMoney(x.proj)}</td></tr>`).join('')||`<tr><td colspan="9" class="mute">Nobody matches.</td></tr>`;
+}
+function bindEarnings(){
+  document.querySelectorAll('.efilters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;eFilter.has(f)?eFilter.delete(f):eFilter.add(f);if(!eFilter.size)ORDER.forEach(k=>eFilter.add(k));b.classList.toggle('off',!eFilter.has(f));document.querySelectorAll('.efilters button').forEach(x=>x.classList.toggle('off',!eFilter.has(x.dataset.f)));renderEarningsRows();});
+  const s=$('#esearch'); if(s) s.oninput=()=>{eQ=s.value;renderEarningsRows();};
+  const o=$('#esort'); if(o) o.onchange=()=>{eSort=o.value;renderEarningsRows();};
+  const b=$('#ebody'); if(b) b.onclick=ev=>{const tr=ev.target.closest('tr.er'); if(!tr) return;
+    const nx=tr.nextElementSibling; if(nx&&nx.classList.contains('ed')){nx.remove();return;}
+    const x=EARNINGS.people[+tr.dataset.i];
+    tr.insertAdjacentHTML('afterend',`<tr class="ed"><td></td><td colspan="8"><table><tbody>${x.lines.map(l=>`<tr><td style="white-space:nowrap">${l.kind==='salary'?'To '+fmt(l.d):fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${l.kind==='due'?'<span class="mute">due</span> ':''}${eMoney(l.amt)}</td></tr>`).join('')}</tbody></table></td></tr>`);};
+  renderEarningsRows();
 }
 
 function viewPromo(k,tab){
@@ -560,6 +620,7 @@ function route(){
   else if(key==='talent') html=viewTalent();
   else if(key==='arrivals') html=viewArrivals();
   else if(key==='money') html=viewMoney();
+  else if(key==='earnings') html=viewEarnings();
   else html=viewHome();
   $('#view').innerHTML=html;
   bind(key);
@@ -568,6 +629,7 @@ function bind(key){
   document.querySelectorAll('.sub button').forEach(b=>b.onclick=()=>{keepScroll=true;location.hash=key+'/'+b.dataset.tab;});
   document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;calFilter.has(f)?calFilter.delete(f):calFilter.add(f);if(!calFilter.size)ORDER.forEach(k=>calFilter.add(k));route();});
   const cs=$('#csearch'); if(cs) cs.oninput=()=>{const q=cs.value.toLowerCase();document.querySelectorAll('#ctbl tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
+  if(key==='earnings') bindEarnings();
   const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('#rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
 }
 function setSpoil(v){spoilers=v;document.body.classList.toggle('spoilers-on',v);$('#spoilBtn').classList.toggle('on',v);$('#spoilBtn').lastChild.textContent=v?'Hide booked finishes':'Show booked finishes';try{localStorage.setItem('tnm-spoil',v?'1':'0')}catch(e){}}

@@ -9,6 +9,8 @@ Live site: https://shovan123-lang.github.io/TNMWorld/
 | `index.html` | The page itself: layout, styles and the code that draws every view. No promotion data lives here. |
 | `data/world.js` | World-wide data: the world date, the headline ticker, the talent exchange and the arrivals board. |
 | `data/<promotion>.js` | Everything for one promotion: overview, champions, roster, cards and results, articles (Observer reports, From the Road diaries, news), contracts, finance, archive links and banner. One file each: `wcw`, `wwf`, `uswa`, `pp` (Power Pro), `ajpw`, `njpw`, `cmll`, `asw`, `twa` (Tri-State). |
+| `data/earnings.js` | The Talent Earnings tracker (World → Talent Earnings). **Generated**: don't edit by hand. |
+| `tools/earnings/` | Builds the tracker. `shows.py` lists who worked each per-appearance show, plus bonuses and Japan tour dates; `build.py` reads the pay rates from `CONTRACTS` and writes `data/earnings.js` and `earnings.md`. |
 | `img/` | Banner images. |
 | `USWA/`, `WCW/`, `WWF/`, `AJPW/`, `NJPW/`, `CMLL/`, `ASW/`, `TriState/`, `Powerpro/` | Old copies of the archive sites. **Not used.** Since 2026-11-11 every `SITES.<key>.base` points at the promotion's own repository (`shovan123-lang/WWF`, `USWA`, `AJPW`, `NJPW`, `CMLL`, `ASW`, `TriState`, `Powerpro`, `WCW1`), which Sean uploads to. New show pages there only need a link added to `SITES.<key>.arch` and the card's `link`. |
 
@@ -20,6 +22,15 @@ Live site: https://shovan123-lang.github.io/TNMWorld/
 - Articles go in the promotion's `ARTICLES` block: Observer reports use `series: "observer"`, From the Road diaries use `series: "diary"`, news items use `news: 1`. Body text is a list of `["p", text]` and `["h", heading]` pairs.
 - Gates and merchandise go in `FINANCE.<key>.rows` (`gate`, `merch`, `payroll`; use `null` when a number isn't known yet).
 - After a show runs, the after-show checklist covers logging results, the write-ups and pushing the site.
+
+## Talent Earnings tracker
+
+Rebuild it **every time the world clock moves** (Sean, 2026-11-11), and after logging a show:
+
+1. For each new USWA, CMLL, ASW, Tri-State or Power Pro show, add an entry to `SHOWS` in `tools/earnings/shows.py`: everyone paid (wrestlers and managers, not announcers), the show multiplier, the gate, and who splits the main-event and semi-main cuts. Put the ledger's payroll in `logged` so the two can be compared.
+2. Add any bonus (PPV main-event cuts) to `BONUSES`. New tours go in `TOURS`; a new month needs `MONTH` changed.
+3. Run `python3 tools/earnings/build.py` (it uses `WORLD_DATE` from `data/world.js`). WWF and WCW salaries accrue day by day to the world date; Japan tour fees move from "due" to paid once the tour's last night is on or before the world date.
+4. Copy `tools/earnings/earnings.md` into the project doc `claude/TNM - World Talent Earnings Tracker.md` and refresh the summary in the World Finance Ledger.
 
 ## Who can push, and how
 
