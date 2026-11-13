@@ -59,6 +59,13 @@ SHOWS+=[
    "Ángel Azteca",*INTO,"Octagón","El Hijo Del Santo","Volador","Ultimo Dragón","Satánico","MS-1","El Dandy",
    "Eddie Guerrero","Brazo De Plata","Chavo Guerrero","Vampiro Canadiense","Kamala","Konnan",
    "Blue Panther"]),  # Cien Caras and Fuerza Guerrera were in angles only and aren't counted (matches the logged $40,400)
+ dict(p="cmll",d="1991-07-13",show="Mexico City · Sábado de Lucha Libre",mult=1,gate=43200,logged=9400,
+  people=["Octagón","Espectro Jr","Volador","El Hijo Del Santo","Jerry Estrada","Javier Cruz","Satánico","MS-1",
+   "Blue Panther","Ultimo Dragón",*BRAZOS,"Cien Caras","Máscara Año 2000","Universo 2000",
+   "Chavo Guerrero","Eddie Guerrero","Fuerza Guerrera","Kamala","Black Magic","Art Barr"]),  # El Dandy (run-in) and Masakre (watched) were angles only
+ dict(p="cmll",d="1991-07-14",show="Guadalajara · Lucha Libre en Domingo",mult=1,gate=77220,logged=7100,
+  people=["Felino","Silver King","Tony Arce","Vulcano","Toshiyo Yamada","Lola González","Apolo Dantes","Pierroth Jr",
+   "Sangre Chicana","Blue Panther","Cien Caras","Máscara Año 2000","Universo 2000","Konnan","Atlantis","Rayo De Jalisco Jr"]),
  dict(p="asw",d="1991-07-03",show="Southport · Holiday camp tour, Show 1",mult=1,gate=5000,logged=2070,
   people=["Tony St. Clair","El Gran Hamada","Iceman King Parsons","Giant Haystacks","Gary Albright","Dory Funk Jr.","Doc Dean",
    "Hector Guerrero","Bob Backlund","Bruce Hart","Robbie Brookside","Iron Mike Sharpe","Fit Finlay","Steve Regal"]),
