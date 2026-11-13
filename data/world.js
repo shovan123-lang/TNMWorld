@@ -9,6 +9,26 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
+  "<b>NJPW</b> Hiroshima: Samoans beat down Hirata; Pegasus Kid hurts his neck",
+  "njpw-hirata-stands-up"
+ ],
+ [
+  "<b>NJPW</b> Observer: Hashimoto no-shows, Mutoh & Chono go ****",
+  "njpw-observer-hiroshima-0714"
+ ],
+ [
+  "<b>CMLL</b> Guadalajara: the Dinamitas pin Konnan twice",
+  "cmll-dinamitas-stun-guadalajara"
+ ],
+ [
+  "<b>CMLL</b> Observer: Octagón vs. Espectro Jr. goes ****1/4",
+  "cmll-observer-coliseo-0713"
+ ],
+ [
+  "<b>CMLL</b> Tercias semis set: Chavo shoves Fuerza aside",
+  "cmll-chavo-pushes-fuerza"
+ ],
+ [
   "<b>WCW</b> Bash: Lex Luger wins the World Title in the cage",
   "wcw-bash91-luger-gold"
  ],
@@ -23,22 +43,6 @@ const TICKER = [
  [
   "<b>WCW</b> Greenville: Rude and Eaton ambush Dustin Rhodes, Steiner makes the save",
   "wcw-rude-awakening-greenville"
- ],
- [
-  "<b>WCW</b> Observer: the go-home show does its job at **1/4",
-  "wcw-observer-greenville-0713"
- ],
- [
-  "<b>WCW</b> From the Road: Bobby Eaton, careful on purpose",
-  "wcw-diary-eaton-0713"
- ],
- [
-  "<b>NJPW</b> Observer: Chono taps Hase, Afa goes after Hirata in Abashiri",
-  "njpw-observer-abashiri-0713"
- ],
- [
-  "<b>NJPW</b> From the Road: Mando Guerrero, who's finished",
-  "njpw-diary-mando-0713"
  ],
  [
   "<b>USWA</b> Kerry steals the pin from Bret in Louisville",
@@ -61,10 +65,6 @@ const TICKER = [
   "pp-jericho-keeps-the-belt"
  ],
  [
-  "<b>CMLL</b> Vampiro puts his hair up against Konnan's title",
-  "cmll-hair-on-the-line"
- ],
- [
   "<b>TWA</b> Idol wins with his feet on the ropes",
   "twa-feet-on-the-ropes"
  ]
@@ -72,4 +72,4 @@ const TICKER = [
 
 FINANCE._streams = ["Merchandise", "TV rights", "Pay-per-view share", "Home video", "900 hotline", "Licensing", "Programs & magazines", "Concessions & parking", "Talent loan fees", "Sponsorships"];
 // Front page: lead, rest of the world, backstage, breaking, booker's desk. Refreshed each time the world clock advances.
-const FRONT = {"asOf": "1991-07-14", "lead": {"p": "wcw", "kicker": "WCW · The Great American Bash · Baltimore", "id": "wcw-bash91-luger-gold", "title": "Luger Locks In the Gold", "dek": "Lex Luger wins the new World Title in the cage, Cactus Jack shocks Vader, and Rude tells Sting he's next.", "paras": ["Lex Luger is the WCW World Heavyweight Champion. He piledrove Barry Windham inside the cage in Baltimore at 23:07 to win the new belt, in a four-star main event that ended without the Harley Race distraction or Mr. Hughes chair the office had planned. Windham is expected to chase him all August, with Ron Simmons lined up behind him.", "Sting made Nikita Koloff submit to keep the U.S. Title, and Rick Rude, with Paul E. Dangerously's phone doing the dirty work, beat Rick Steiner and told Sting he's next. Cactus Jack upset Big Van Vader with a double-arm DDT, then left with a back injury that will keep him out for weeks. Tom Zenk debuted by tearing up Paul E.'s contract. 7,000 fans paid $126,000, and 120,000 homes bought the show."]}, "rest": [["wwf", "WWF · WrestleFest", "wwf-wrestlefest-recap", "Sid Sends a Message", "Hogan kept the WWF Title over Sgt. Slaughter with Jim Duggan refereeing, then Sid Justice powerbombed him until the Legion of Doom made the save. The Ultimate Warrior hurt his neck losing to the Undertaker, and the Rockers shoved each other after losing to the Nasty Boys."], ["uswa", "USWA · Louisville", "uswa-kerry-steals-the-pin", "Kerry Steals the Pin", "Kerry Von Erich pinned Jamie Dundee, taking the win from his partner Bret Hart. Steve Austin and Diamond Studd went **** to a double count-out, and Flair vs. Terry Funk is set for Dallas on 7/20."], ["ajpw", "AJPW · Hiroshima", "ajpw-super-generation-answers", "Super Generation Answers Jumbo", "Misawa pinned Gordy with the Tiger Driver, and Jumbo Tsuruta finally spoke. Funk and the Malenkos went ****3/4 in the match of the tour."], ["njpw", "NJPW · Abashiri", "njpw-observer-abashiri-0713", "Chono Says \"Sumo Hall\"", "Masahiro Chono made Hase tap and pointed at Sumo Hall. Afa went after Hirata, Mando Guerrero picked a fight nobody booked, and the Kawada rumors point at New Japan."]], "backstage": [["wcw", "WCW · Backstage", "wcw-observer-bash91", "Cactus Wins, Then Goes Down", "Cactus Jack hurt his back beating Vader and is out 20 WCW cards. His taped WCW Pro segments still air. And 7,000 fans is barely half a house in Baltimore."], ["wwf", "WWF · Backstage", "wwf-observer-wrestlefest-0714", "The Warrior Is Out", "The Ultimate Warrior's neck injury will keep him out past SummerSlam. Marty Jannetty's deal is running out just as the Rockers start shoving each other."], ["uswa", "USWA · Business", "uswa-observer-louisville-0713", "$67,500 for a House Show", "Louisville drew $67,500 without TV. Austin and Studd stole it, Steiner and Tully got only 5:38, and Dennis Condrey gave notice."], ["uswa", "USWA · Backstage", "uswa-big-gold", "Whose Belt Is It?", "Flair has Big Gold in Memphis. WCW wants it back, and the argument is about an old deposit. Bret Hart and Flair could end up with two world titles in one ring."], ["ajpw", "AJPW · Backstage", "ajpw-observer-hiroshima-0713", "The Young Boys Steal It", "Masao Inoue had the opener of the tour in Hiroshima, and the biggest news happened in the dressing room: Kawada gave notice."], ["cmll", "CMLL · Business", "cmll-the-ceiling", "The 10,500 Ceiling", "Arena México is 95 percent full on Fridays. A Verano sellout at $16.20 would be $170,100. The only way up is the ticket price."], ["pp", "Power Pro · Backstage", "pp-young-lions-abroad", "Young Lions Abroad", "The Lightning Kid is the first Power Pro student on excursion in Mexico. Chris Benoit could be next. Jericho isn't going anywhere with the belt."], ["asw", "All Star · Backstage", "asw-two-passports", "Two Passports", "Black Magic is on the All Star roster but hasn't worked a camp date. He's 0–3 in Mexico, with a ****1/2 match against Casas."]], "breaking": [["ajpw-kawada-leaving", "Kawada is leaving All Japan", "Toshiaki Kawada gave notice in Hiroshima. His last date is Okayama on Monday, with the World Tag titles on the line, and the dressing room says he's headed to New Japan."], ["wcw-rude-awakening-greenville", "Paul E.'s men take out Dustin", "Rude, Eaton and Paul E. ambushed Dustin Rhodes in Greenville the night before the Bash. Rude Awakening on the injured neck; he's out until the fall."]], "desk": ["<b>Autumn Armageddon</b> is name-checked by both WCW and USWA, with no date.", "<b>SummerSlam vs. the Omni:</b> WWF and WCW go head to head again on 8/25.", "<b>Kawada's next stop:</b> the rumors say New Japan. All Japan needs a new partner for Misawa.", "<b>WCW tag titles</b> are crowned in Johnson City 7/20. Cactus Jack is out 20 cards.", "<b>Flair vs. Funk</b> in Dallas 7/20, and Big Gold vs. the Unified Title still hangs over the USWA.", "<b>Hansen/Spivey</b> double-booked between AJPW and USWA.", "<b>Titles to establish:</b> NJPW, AJPW Triple Crown, CMLL World Trios (Tercias final 7/26).", "<b>Davey Boy Smith</b> is out of WWF until about 7/29. <b>Steamboat's return</b>: spring 1992."]};
+const FRONT = {"asOf": "1991-07-14", "lead": {"p": "wcw", "kicker": "WCW · The Great American Bash · Baltimore", "id": "wcw-bash91-luger-gold", "title": "Luger Locks In the Gold", "dek": "Lex Luger wins the new World Title in the cage, Cactus Jack shocks Vader, and Rude tells Sting he's next.", "paras": ["Lex Luger is the WCW World Heavyweight Champion. He piledrove Barry Windham inside the cage in Baltimore at 23:07 to win the new belt, in a four-star main event that ended without the Harley Race distraction or Mr. Hughes chair the office had planned. Windham is expected to chase him all August, with Ron Simmons lined up behind him.", "Sting made Nikita Koloff submit to keep the U.S. Title, and Rick Rude, with Paul E. Dangerously's phone doing the dirty work, beat Rick Steiner and told Sting he's next. Cactus Jack upset Big Van Vader with a double-arm DDT, then left with a back injury that will keep him out for weeks. Tom Zenk debuted by tearing up Paul E.'s contract. 7,000 fans paid $126,000, and 120,000 homes bought the show."]}, "rest": [["wwf", "WWF · WrestleFest", "wwf-wrestlefest-recap", "Sid Sends a Message", "Hogan kept the WWF Title over Sgt. Slaughter with Jim Duggan refereeing, then Sid Justice powerbombed him until the Legion of Doom made the save. The Ultimate Warrior hurt his neck losing to the Undertaker, and the Rockers shoved each other after losing to the Nasty Boys."], ["uswa", "USWA · Louisville", "uswa-kerry-steals-the-pin", "Kerry Steals the Pin", "Kerry Von Erich pinned Jamie Dundee, taking the win from his partner Bret Hart. Steve Austin and Diamond Studd went **** to a double count-out, and Flair vs. Terry Funk is set for Dallas on 7/20."], ["ajpw", "AJPW · Hiroshima", "ajpw-super-generation-answers", "Super Generation Answers Jumbo", "Misawa pinned Gordy with the Tiger Driver, and Jumbo Tsuruta finally spoke. Funk and the Malenkos went ****3/4 in the match of the tour."], ["njpw", "NJPW · Hiroshima", "njpw-hirata-stands-up", "The Samoans Leave a Mark", "Afa cost the Samoans the main event, so they beat down Hirata anyway. Mutoh & Chono went **** with Fujinami & Koshinaka, and Pegasus Kid hurt his neck beating Kido."], ["cmll", "CMLL · Guadalajara", "cmll-dinamitas-stun-guadalajara", "The Dinamitas Silence Guadalajara", "Rayo won the first fall at home, then Cien Caras and Universo 2000 pinned Konnan twice. The Tercias semifinals are set after Chavo shoved Fuerza aside for the pin on Saturday."]], "backstage": [["wcw", "WCW · Backstage", "wcw-observer-bash91", "Cactus Wins, Then Goes Down", "Cactus Jack hurt his back beating Vader and is out 20 WCW cards. His taped WCW Pro segments still air. And 7,000 fans is barely half a house in Baltimore."], ["wwf", "WWF · Backstage", "wwf-observer-wrestlefest-0714", "The Warrior Is Out", "The Ultimate Warrior's neck injury will keep him out past SummerSlam. Marty Jannetty's deal is running out just as the Rockers start shoving each other."], ["uswa", "USWA · Business", "uswa-observer-louisville-0713", "$67,500 for a House Show", "Louisville drew $67,500 without TV. Austin and Studd stole it, Steiner and Tully got only 5:38, and Dennis Condrey gave notice."], ["uswa", "USWA · Backstage", "uswa-big-gold", "Whose Belt Is It?", "Flair has Big Gold in Memphis. WCW wants it back, and the argument is about an old deposit. Bret Hart and Flair could end up with two world titles in one ring."], ["ajpw", "AJPW · Backstage", "ajpw-observer-hiroshima-0713", "The Young Boys Steal It", "Masao Inoue had the opener of the tour in Hiroshima, and the biggest news happened in the dressing room: Kawada gave notice."], ["cmll", "CMLL · Business", "cmll-the-ceiling", "The 10,500 Ceiling", "Arena México is 95 percent full on Fridays. A Verano sellout at $16.20 would be $170,100. The only way up is the ticket price."], ["pp", "Power Pro · Backstage", "pp-young-lions-abroad", "Young Lions Abroad", "The Lightning Kid is the first Power Pro student on excursion in Mexico. Chris Benoit could be next. Jericho isn't going anywhere with the belt."], ["asw", "All Star · Backstage", "asw-two-passports", "Two Passports", "Black Magic is on the All Star roster but hasn't worked a camp date. He's 0–3 in Mexico, with a ****1/2 match against Casas."]], "breaking": [["ajpw-kawada-leaving", "Kawada is leaving All Japan", "Toshiaki Kawada gave notice in Hiroshima. His last date is Okayama on Monday, with the World Tag titles on the line, and the dressing room says he's headed to New Japan."], ["wcw-rude-awakening-greenville", "Paul E.'s men take out Dustin", "Rude, Eaton and Paul E. ambushed Dustin Rhodes in Greenville the night before the Bash. Rude Awakening on the injured neck; he's out until the fall."], ["njpw-observer-hiroshima-0714", "Pegasus Kid hurt; Hashimoto no-shows", "Pegasus Kid injured his neck in Hiroshima and is expected to miss about eight shows, which puts his Sumo Hall title shot at Liger in doubt. Tag champion Shinya Hashimoto didn't show up."]], "desk": ["<b>Autumn Armageddon</b> is name-checked by both WCW and USWA, with no date.", "<b>SummerSlam vs. the Omni:</b> WWF and WCW go head to head again on 8/25.", "<b>Kawada's next stop:</b> the rumors say New Japan. All Japan needs a new partner for Misawa.", "<b>WCW tag titles</b> are crowned in Johnson City 7/20. Cactus Jack is out 20 cards.", "<b>Flair vs. Funk</b> in Dallas 7/20, and Big Gold vs. the Unified Title still hangs over the USWA.", "<b>Hansen/Spivey</b> double-booked between AJPW and USWA.", "<b>Titles to establish:</b> NJPW, AJPW Triple Crown, CMLL World Trios (Tercias final 7/26).", "<b>Davey Boy Smith</b> is out of WWF until about 7/29. <b>Steamboat's return</b>: spring 1992."]};
