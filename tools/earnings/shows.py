@@ -106,8 +106,9 @@ TOURS = {"ajpw":("1991-07-27","Summer Action Series tour fee"),
 PER_NIGHT = {
  "ajpw": {
   # Kawada gave notice 7/13; last date Okayama 7/15. Sean, 2026-11-11: paid per appearance, not the tour fee.
-  # $1,000 a night = his $14,000 tour fee ÷ 14 nights. Add Okayama 7/15 once it runs.
+  # $1,000 a night = his $14,000 tour fee ÷ 14 nights. Okayama 7/15 was his last night (6 total).
   "Toshiaki Kawada": (1000, [("1991-07-03","Chiba · Night 2"),("1991-07-07","Niigata · Night 4"),
-     ("1991-07-09","Kanazawa · Night 5"),("1991-07-11","Nagoya · Night 6"),("1991-07-13","Hiroshima · Night 7")]),
+     ("1991-07-09","Kanazawa · Night 5"),("1991-07-11","Nagoya · Night 6"),("1991-07-13","Hiroshima · Night 7"),
+     ("1991-07-15","Okayama · Night 8")]),
  },
 }
