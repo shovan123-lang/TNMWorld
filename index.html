@@ -289,6 +289,7 @@ function showCard(e,opts={}){
     <span>${fmt(e.d)} · ${esc([e.city,e.venue].filter(Boolean).join(', '))}${e.gate?' · '+esc(e.gate):''}${e.rate?' · Card '+esc(e.rate):''} · <b style="font-family:var(--cond);font-size:13px;color:${past?'var(--mute)':'var(--red)'}">${label}</b></span></header>
     ${rows?`<div class="tbl-wrap"><table><thead><tr><th>Match</th><th>${past?'Result':'Finish'}</th>${opts.ratings!==false?'<th>Rating</th>':''}</tr></thead><tbody>${rows}</tbody></table></div>`:''}
     ${e.n?`<div class="notes"><ul>${e.n.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+    ${e.reads&&e.reads.some(r=>ARTICLES[r[1]])?`<div class="notes" style="font-family:var(--cond);font-weight:700">${e.reads.filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])} →</a>`).join(' · ')}</div>`:''}
     ${e.link?`<div class="notes" style="font-family:var(--cond)">${siteLink(e.p,e.link,'Full show on the '+P[e.p].short+' site ↗')}</div>`:''}
   </article>`;
 }

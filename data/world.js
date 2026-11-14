@@ -9,6 +9,14 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
+  "<b>WCW</b> Salisbury: Sting makes Big Van Vader submit in a five-star main",
+  "wcw-sting-conquers-mastodon"
+ ],
+ [
+  "<b>WCW</b> Observer: Muta no-shows, Big Josh tears his quad",
+  "wcw-observer-salisbury-0715"
+ ],
+ [
   "<b>AJPW</b> Kawada's last night: Miracle Violence take the World Tag titles",
   "ajpw-mvc-take-the-gold"
  ],
@@ -39,14 +47,6 @@ const TICKER = [
  [
   "<b>CMLL</b> Guadalajara: the Dinamitas pin Konnan twice",
   "cmll-dinamitas-stun-guadalajara"
- ],
- [
-  "<b>CMLL</b> Observer: Octagón vs. Espectro Jr. goes ****1/4",
-  "cmll-observer-coliseo-0713"
- ],
- [
-  "<b>WCW</b> Bash: Lex Luger wins the World Title in the cage",
-  "wcw-bash91-luger-gold"
  ],
  [
   "<b>USWA</b> Kerry steals the pin from Bret in Louisville",
