@@ -1,8 +1,8 @@
 // Shared helpers for the TNMWorld tools: load every data file into one object.
 const fs=require('fs'),path=require('path');
 const ROOT=path.join(__dirname,'..');
-const FILES=['world','wcw','wwf','uswa','pp','ajpw','njpw','cmll','asw','twa'];
-const ORDER=['wcw','wwf','uswa','pp','ajpw','njpw','cmll','asw','twa'];
+const FILES=['world','wcw','wwf','uswa','pp','ajpw','njpw','cmll','asw','twa','fmw'];
+const ORDER=['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
 function load(){
   const g={P:{},E:[],ARTICLES:{},CONTRACTS:{},FINANCE:{},SITES:{},BANNER_SVG:{}};
   let src='';for(const f of FILES)src+=fs.readFileSync(path.join(ROOT,'data',f+'.js'),'utf8')+'\n';

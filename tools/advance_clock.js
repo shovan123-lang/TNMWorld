@@ -47,7 +47,7 @@ for(const k of ORDER){const p=D.P[k],a=p.asOf||'(none)';
 
 if(D.EARNINGS){
   const inT=new Set(D.EARNINGS.shows.map(s=>s.p+s.d));
-  const per=['uswa','cmll','asw','twa','pp'];
+  const per=['uswa','cmll','asw','twa','pp','fmw'];
   const miss=D.E.filter(e=>per.includes(e.p)&&e.d.slice(0,7)===D.EARNINGS.world.slice(0,7)&&(e.d<=(D.P[e.p].asOf||'')||e.ran)&&e.m&&e.m.length&&!inT.has(e.p+e.d));
   say('\nEARNINGS TRACKER');
   say(miss.length?'  !! Shows that have run but are NOT in tools/earnings/shows.py (add them, then rebuild):\n'+miss.map(e=>`     ${e.d} ${D.P[e.p].short} ${e.city}`).join('\n'):'  Every per-appearance show that has run is counted.');

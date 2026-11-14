@@ -11,7 +11,7 @@
 :root{
   --paper:#f3eee3; --paper2:#e9e2d2; --ink:#1b1a17; --mute:#6a645a; --rule:#1b1a17; --soft:#cfc6b3;
   --red:#b3261e;
-  --wcw:#1d3f8f; --wwf:#c8102e; --uswa:#a8650f; --ajpw:#136f63; --njpw:#d4481a; --cmll:#6b2fa0; --asw:#4a5d23; --twa:#a3162b; --pp:#b5179e;
+  --wcw:#1d3f8f; --wwf:#c8102e; --uswa:#a8650f; --ajpw:#136f63; --njpw:#d4481a; --cmll:#6b2fa0; --asw:#4a5d23; --twa:#a3162b; --pp:#b5179e; --fmw:#3a3a46;
   --head:'Anton',Impact,sans-serif; --cond:'Roboto Condensed',Arial Narrow,sans-serif; --serif:'Source Serif 4',Georgia,serif;
 }
 *{box-sizing:border-box}
@@ -197,7 +197,7 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 </head>
 <body>
 <header class="mast wrap">
-  <div class="top"><span id="worlddate">World date</span><span>Vol. I · Nine promotions · One world</span><span>Booker's edition</span></div>
+  <div class="top"><span id="worlddate">World date</span><span>Vol. I · Ten promotions · One world</span><span>Booker's edition</span></div>
   <h1>The TNM World <span>Wrestling</span> Report</h1>
   <div class="tag">Every territory, every title, every week. Atlanta to Arena México to Budokan to Blackpool.</div>
 </header>
@@ -223,6 +223,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/cmll.js"></script>
 <script src="data/asw.js"></script>
 <script src="data/twa.js"></script>
+<script src="data/fmw.js"></script>
 <script src="data/earnings.js"></script>
 <script>
 /* =========================== DATA =========================== */
@@ -244,7 +245,7 @@ const fmtLong = s=>{const x=dt(s);return `${['Sunday','Monday','Tuesday','Wednes
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
 const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
 const chip = k=>`<a class="chip" href="#${k}" style="--c:${P[k].c}">${P[k].short}</a>`;
-const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','cmll','asw','twa'];
+const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
 
 /* =========================== NAV =========================== */

@@ -13,7 +13,7 @@ ALIAS={"El Hijo Del Santo":"El Hijo del Santo","Abdullah The Butcher":"Abdullah 
  "The Blue Blazer":"Owen Hart","El Gran Hamada":"Gran Hamada","Mike Rotunda":"Irwin R. Schyster",
  "Rayo De Jalisco Jr":"Rayo de Jalisco Jr.","Brazo De Oro":"Brazo de Oro","Brazo De Plata":"Brazo de Plata",
  "Pierroth Jr":"Pierroth Jr.","Espectro Jr":"Espectro Jr."}
-PN={"wcw":"WCW","wwf":"WWF","uswa":"USWA","pp":"Power Pro","ajpw":"AJPW","njpw":"NJPW","cmll":"CMLL","asw":"ASW","twa":"TWA"}
+PN={"wcw":"WCW","wwf":"WWF","uswa":"USWA","pp":"Power Pro","ajpw":"AJPW","njpw":"NJPW","cmll":"CMLL","asw":"ASW","twa":"TWA","fmw":"FMW"}
 ROLE={"M":"Manager","S":"Staff"}
 people={}
 def get(n,k,tier="A"):
