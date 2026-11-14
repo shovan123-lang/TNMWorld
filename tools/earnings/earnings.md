@@ -251,66 +251,67 @@
 | 249 | Jos LeDuc | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
 | 250 | Kerry Brown | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
 | 251 | Oliver Peters | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
-| 252 | Jumbo Tsuruta | AJPW | — | — | — | **$0** | $30,000 | $30,000 |
-| 253 | Riki Chōshu | NJPW | — | — | — | **$0** | $28,000 | $28,000 |
-| 254 | Mitsuharu Misawa | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
-| 255 | Steve Williams | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
-| 256 | Tatsumi Fujinami | NJPW | — | — | — | **$0** | $22,000 | $22,000 |
-| 257 | Terry Gordy | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
-| 258 | Bam Bam Bigelow | NJPW | — | — | — | **$0** | $18,000 | $18,000 |
-| 259 | Keiji Mutoh | NJPW | — | — | — | **$0** | $18,000 | $18,000 |
-| 260 | Masahiro Chono | NJPW | — | — | — | **$0** | $16,000 | $16,000 |
-| 261 | Shinya Hashimoto | NJPW | — | — | — | **$0** | $16,000 | $16,000 |
-| 262 | Akira Taue | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
-| 263 | Dynamite Kid | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
-| 264 | Kenta Kobashi | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
-| 265 | Dan Kroffat | AJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 266 | Doug Furnas | AJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 267 | Hiroshi Hase | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 268 | Mil Mascaras | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 269 | Pegasus Kid | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 270 | Scott Norton | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 271 | Tiger Jeet Singh | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 272 | Bobby Fulton | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 273 | Junji Hirata | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 274 | Kensuke Sasaki | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 275 | Kim Duk | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 276 | Masanobu Fuchi | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 277 | Shiro Koshinaka | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 278 | Tommy Rogers | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 279 | Dean Malenko | AJPW | — | — | — | **$0** | $7,000 | $7,000 |
-| 280 | Jim Neidhart | NJPW | — | — | — | **$0** | $7,000 | $7,000 |
-| 281 | Joe Malenko | AJPW | — | — | — | **$0** | $7,000 | $7,000 |
-| 282 | Dos Caras | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 283 | El Samurai | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 284 | Hiro Saito | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 285 | Johnny Ace | AJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 286 | Kengo Kimura | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 287 | Osamu Kido | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 288 | Rusher Kimura | AJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 289 | Akira Nogami | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 290 | Giant Kimala II | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 291 | Haruka Eigen | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 292 | Ken Patera | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 293 | Kokina | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 294 | Kuniaki Kobayashi | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 295 | Masashi Aoyagi | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 296 | Norio Honaga | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 297 | Samu | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 298 | Tarzan Goto | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 299 | Tony Halme | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 300 | Too Cold Scorpio | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 301 | Tsuyoshi Kikuchi | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 302 | Billy Joe Travis | AJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 303 | Corporal Kirchner | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 304 | Keith Hart | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 305 | Mando Guerrero | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 306 | Yoshinari Ogawa | AJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 307 | Hiroyoshi Tenzan | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
-| 308 | Jeff Gaylord | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
-| 309 | Masao Inoue | AJPW | — | — | — | **$0** | $3,000 | $3,000 |
-| 310 | Richard Slinger | AJPW | — | — | — | **$0** | $3,000 | $3,000 |
-| 311 | Savio Vega | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 252 | Giant Baba | AJPW | — | — | — | **$0** | $30,000 | $30,000 |
+| 253 | Jumbo Tsuruta | AJPW | — | — | — | **$0** | $30,000 | $30,000 |
+| 254 | Riki Chōshu | NJPW | — | — | — | **$0** | $28,000 | $28,000 |
+| 255 | Mitsuharu Misawa | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
+| 256 | Steve Williams | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
+| 257 | Tatsumi Fujinami | NJPW | — | — | — | **$0** | $22,000 | $22,000 |
+| 258 | Terry Gordy | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
+| 259 | Bam Bam Bigelow | NJPW | — | — | — | **$0** | $18,000 | $18,000 |
+| 260 | Keiji Mutoh | NJPW | — | — | — | **$0** | $18,000 | $18,000 |
+| 261 | Masahiro Chono | NJPW | — | — | — | **$0** | $16,000 | $16,000 |
+| 262 | Shinya Hashimoto | NJPW | — | — | — | **$0** | $16,000 | $16,000 |
+| 263 | Akira Taue | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
+| 264 | Dynamite Kid | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
+| 265 | Kenta Kobashi | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
+| 266 | Dan Kroffat | AJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 267 | Doug Furnas | AJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 268 | Hiroshi Hase | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 269 | Mil Mascaras | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 270 | Pegasus Kid | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 271 | Scott Norton | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 272 | Tiger Jeet Singh | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 273 | Bobby Fulton | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 274 | Junji Hirata | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 275 | Kensuke Sasaki | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 276 | Kim Duk | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 277 | Masanobu Fuchi | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 278 | Shiro Koshinaka | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 279 | Tommy Rogers | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 280 | Dean Malenko | AJPW | — | — | — | **$0** | $7,000 | $7,000 |
+| 281 | Jim Neidhart | NJPW | — | — | — | **$0** | $7,000 | $7,000 |
+| 282 | Joe Malenko | AJPW | — | — | — | **$0** | $7,000 | $7,000 |
+| 283 | Dos Caras | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 284 | El Samurai | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 285 | Hiro Saito | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 286 | Johnny Ace | AJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 287 | Kengo Kimura | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 288 | Osamu Kido | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 289 | Rusher Kimura | AJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 290 | Akira Nogami | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 291 | Giant Kimala II | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 292 | Haruka Eigen | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 293 | Ken Patera | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 294 | Kokina | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 295 | Kuniaki Kobayashi | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 296 | Masashi Aoyagi | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 297 | Norio Honaga | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 298 | Samu | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 299 | Tarzan Goto | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 300 | Tony Halme | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 301 | Too Cold Scorpio | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 302 | Tsuyoshi Kikuchi | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 303 | Billy Joe Travis | AJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 304 | Corporal Kirchner | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 305 | Keith Hart | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 306 | Mando Guerrero | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 307 | Yoshinari Ogawa | AJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 308 | Hiroyoshi Tenzan | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 309 | Jeff Gaylord | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 310 | Masao Inoue | AJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 311 | Richard Slinger | AJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 312 | Savio Vega | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
 
 SHOWS
 | Date | Promotion | Show | Paid | Itemized total | Ledger payroll |
