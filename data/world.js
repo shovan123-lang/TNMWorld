@@ -9,6 +9,10 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
+  "<b>WCW</b> Farmland: Paul E.'s phone hands Zenk a 2–0 lead; Bruise Brothers lose",
+  "wcw-observer-farmland-0716"
+ ],
+ [
   "<b>USWA</b> Observer: Jonesboro, Guerrero goes ****1/4 on Worldwide",
   "uswa-observer-jonesboro-0717"
  ],
