@@ -243,6 +243,7 @@ const W = dt(WORLD_DATE);
 const fmt = s=>{const x=dt(s);return `${DOW[x.getUTCDay()]} ${MON[x.getUTCMonth()]} ${x.getUTCDate()}`};
 const fmtLong = s=>{const x=dt(s);return `${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][x.getUTCDay()]}, ${['January','February','March','April','May','June','July','August','September','October','November','December'][x.getUTCMonth()]} ${x.getUTCDate()}, ${x.getUTCFullYear()}`};
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
+const aired = id=>{const a=ARTICLES[id];return !(a&&a.airs&&dt(a.airs)>W)||spoilers};
 const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
 const chip = k=>`<a class="chip" href="#${k}" style="--c:${P[k].c}">${P[k].short}</a>`;
 const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
@@ -251,10 +252,10 @@ let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e
 /* =========================== NAV =========================== */
 const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['talent','Talent Exchange'],['arrivals','Arrivals'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
-function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
+function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
 const TAB_LABEL={overview:'Overview',shows:'Cards & Results',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road'};
 function promoTabs(k){const t=['overview','shows','roster','schedule'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)t.push(sr)});return t;}
-function latestArticle(k){return Object.keys(ARTICLES).filter(id=>ARTICLES[id].p===k).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||''))[0];}
+function latestArticle(k){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||''))[0];}
 function renderNav(cur,curT){
   const promo=k=>{const p=P[k],la=latestArticle(k);
     return `<div class="dd" style="--c:${p.c}"><a href="#${k}" class="top ${cur===k?'on':''}" aria-haspopup="true">${esc(p.nav||p.short)}<span class="caret">▾</span></a>
@@ -287,9 +288,10 @@ function showCard(e,opts={}){
   }).join('');
   return `<article class="show" style="--c:${P[e.p].c}">
     <header><div>${opts.chip?chip(e.p)+' ':''}<b>${esc(e.type)}</b>${e.plan?'<span class="flag plan">plan</span>':''}</div>
-    <span>${fmt(e.d)} · ${esc([e.city,e.venue].filter(Boolean).join(', '))}${e.gate?' · '+esc(e.gate):''}${e.rate?' · Card '+esc(e.rate):''} · <b style="font-family:var(--cond);font-size:13px;color:${past?'var(--mute)':'var(--red)'}">${label}</b></span></header>
+    <span>${fmt(e.d)} · ${esc([e.city,e.venue].filter(Boolean).join(', '))}${e.gate?' · '+esc(e.gate):''}${e.rate&&past?' · Card '+esc(e.rate):''} · <b style="font-family:var(--cond);font-size:13px;color:${past?'var(--mute)':'var(--red)'}">${label}</b></span></header>
     ${rows?`<div class="tbl-wrap"><table><thead><tr><th>Match</th><th>${past?'Result':'Finish'}</th>${opts.ratings!==false?'<th>Rating</th>':''}</tr></thead><tbody>${rows}</tbody></table></div>`:''}
-    ${e.n?`<div class="notes"><ul>${e.n.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+    ${e.taped?`<div class="notes"><b>${esc(e.taped)}</b></div>`:''}
+    ${e.n?`<div class="notes"><ul>${e.n.map(x=>`<li>${past?esc(x):`<span class="spoil">${esc(x)}</span>`}</li>`).join('')}</ul></div>`:''}
     ${e.reads&&e.reads.some(r=>ARTICLES[r[1]])?`<div class="notes" style="font-family:var(--cond);font-weight:700">${e.reads.filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])} →</a>`).join(' · ')}</div>`:''}
     ${e.link?`<div class="notes" style="font-family:var(--cond)">${siteLink(e.p,e.link,'Full show on the '+P[e.p].short+' site ↗')}</div>`:''}
   </article>`;
@@ -612,8 +614,8 @@ function bind(key){
   const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('#rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
 }
 function setSpoil(v){spoilers=v;document.body.classList.toggle('spoilers-on',v);$('#spoilBtn').classList.toggle('on',v);$('#spoilBtn').lastChild.textContent=v?'Hide booked finishes':'Show booked finishes';try{localStorage.setItem('tnm-spoil',v?'1':'0')}catch(e){}}
-$('#spoilBtn').onclick=()=>setSpoil(!spoilers);
-$('#spoilBtn').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setSpoil(!spoilers)}};
+$('#spoilBtn').onclick=()=>{setSpoil(!spoilers);route();};
+$('#spoilBtn').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setSpoil(!spoilers);route();}};
 
 /* Ticker + dates */
 $('#worlddate').textContent='World date: '+fmtLong(WORLD_DATE);

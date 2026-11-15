@@ -65,8 +65,8 @@ const TICKER = [
   "asw-observer-three-shows"
  ],
  [
-  "<b>POWER PRO</b> Jericho retains with the Lion Tamer",
-  "pp-jericho-keeps-the-belt"
+  "<b>POWER PRO</b> Power Hour taped in Nashville, airs 7/28",
+  "pp"
  ],
  [
   "<b>TWA</b> Idol wins with his feet on the ropes",
