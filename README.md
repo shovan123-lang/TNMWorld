@@ -36,6 +36,10 @@ Rebuild it **every time the world clock moves** (Sean, 2026-11-11), and after lo
 3. Run `python3 tools/earnings/build.py` (it uses `WORLD_DATE` from `data/world.js`). WWF and WCW salaries accrue day by day to the world date; Japan tour fees move from "due" to paid once the tour's last night is on or before the world date.
 4. Copy `tools/earnings/earnings.md` into the project doc `claude/TNM - World Talent Earnings Tracker.md` and refresh the summary in the World Finance Ledger.
 
+## Title histories
+
+Each promotion's archive site has `HTML/TITLES.HTM` (linked at the top of its `WELCOME.HTM`). The pages are built by `tools/titles/build.py` from the TNM7 result tags on the show pages ("X won/retained the Y Title"), plus the hand-entered facts in `tools/titles/overrides.json` (vacancies, belts awarded in segments, tournament wins the tags don't mark, dates a page doesn't carry). To rebuild after new shows are uploaded, clone the archive repos next to this one (`uswa`, `wcw1`, `wwf`, `ajpw`, `njpw`, `cmll`, `asw`, `tristate`, `powerpro`) and run `python3 tools/titles/build.py`. It also puts the link back on `WELCOME.HTM` if a new TNM7 upload replaced that page. Then commit and push each archive repo.
+
 ## Who can push, and how
 
 - A Claude session can update the site only if the repository is attached to it **with push access** and the session has a shell and git. A session that can't push should write everything to the claude.ai project docs and note "website not updated" in the promotion's hub, so a session that can push catches it up.
