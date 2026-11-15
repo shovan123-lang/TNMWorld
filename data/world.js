@@ -9,6 +9,14 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
+  "<b>USWA</b> Observer: Jonesboro, Guerrero goes ****1/4 on Worldwide",
+  "uswa-observer-jonesboro-0717"
+ ],
+ [
+  "<b>USWA</b> From the Road: Dennis Condrey, That's the job",
+  "uswa-diary-condrey-0717"
+ ],
+ [
   "<b>FMW</b> Frontier joins the world: Onita, Pogo, Goto, Sabu and a women's division",
   "fmw-frontier-joins"
  ],
@@ -41,16 +49,8 @@ const TICKER = [
   "njpw-pegasus-off-tour"
  ],
  [
-  "<b>NJPW</b> Hiroshima: Samoans beat down Hirata; Pegasus Kid hurts his neck",
-  "njpw-hirata-stands-up"
- ],
- [
   "<b>CMLL</b> Guadalajara: the Dinamitas pin Konnan twice",
   "cmll-dinamitas-stun-guadalajara"
- ],
- [
-  "<b>USWA</b> Kerry steals the pin from Bret in Louisville",
-  "uswa-kerry-steals-the-pin"
  ],
  [
   "<b>WWF</b> WrestleFest: Hogan retains, Sid strikes, LOD save",
