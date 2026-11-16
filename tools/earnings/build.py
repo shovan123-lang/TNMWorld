@@ -54,7 +54,7 @@ for s in S.SHOWS:
   for n,v in pay.items():
     c=cut.get(n,0); amt=v+c; tot+=amt
     p=get(n,s['p'],tier.get((s['p'],n),"F")); p["shows"]+=amt; p["apps"]+=1
-    lab=("{}× base (${:,})".format(s['mult'],R[n]) if n in R else "enhancement fee")+(" + ${:,.2f} gate cut".format(c) if c else "")
+    lab=("{}× base (${:,})".format(s['mult'],R[n]) if n in R else s.get("extra_label","enhancement fee"))+(" + ${:,.2f} gate cut".format(c) if c else "")
     p["lines"].append(dict(p=s['p'],d=s['d'],what=s['show']+" · "+lab,amt=round(amt,2),kind="show"))
   showlist.append(dict(p=s['p'],d=s['d'],show=s['show'],n=len(pay),total=round(tot,2),logged=s['logged']))
 out=[]

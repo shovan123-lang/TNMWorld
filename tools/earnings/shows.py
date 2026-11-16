@@ -68,7 +68,8 @@ SHOWS+=[
    "Sangre Chicana","Blue Panther","Cien Caras","Máscara Año 2000","Universo 2000","Konnan","Atlantis","Rayo De Jalisco Jr"]),
  dict(p="cmll",d="1991-07-17",show="Acapulco · Coliseo Acapulco debut",mult=1,gate=27000,logged=0,  # ledger payroll not set yet
   people=["Ultimo Dragón","The Lightning Kid","Atlantis","Negro Casas","Felino","Art Barr","Jerry Estrada",
-   "La Diabólica","Lola González","Vulcano","Tony Arce","Cien Caras","Konnan"]),
+   "La Diabólica","Lola González","Vulcano","Tony Arce","Cien Caras","Konnan"],
+  extra={"Jushin Liger":810,"The Blue Blazer":810,"Mike Rotunda":810},extra_label="guest fee, 3% of the $27,000 gate"),
  dict(p="asw",d="1991-07-03",show="Southport · Holiday camp tour, Show 1",mult=1,gate=5000,logged=2070,
   people=["Tony St. Clair","El Gran Hamada","Iceman King Parsons","Giant Haystacks","Gary Albright","Dory Funk Jr.","Doc Dean",
    "Hector Guerrero","Bob Backlund","Bruce Hart","Robbie Brookside","Iron Mike Sharpe","Fit Finlay","Steve Regal"]),
@@ -90,7 +91,7 @@ SHOWS+=[
 # ---- Salaried promotions (WWF, WCW): salary accrues day by day through the world date.
 MONTH = "1991-07"; DAYS_IN_MONTH = 31
 SALARY_START = {"Tom Zenk": 11}   # day of the month a salary starts (signed mid-month)
-NOT_ON_SCALE = ["CMLL guests in Acapulco 7/17 (Jushin Liger, The Blue Blazer, Irwin R. Schyster) aren't on the CMLL pay scale; their fees are to be established","Kevin Sullivan (WCW): worked 7/5, 7/6 and 7/8 but quit 7/8 and isn't on the pay scale, so he isn't paid here"]
+NOT_ON_SCALE = ["Kevin Sullivan (WCW): worked 7/5, 7/6 and 7/8 but quit 7/8 and isn't on the pay scale, so he isn't paid here"]
 
 # ---- One-off bonuses: (promo, date, label, {name: amount})
 BONUSES = [
