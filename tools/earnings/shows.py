@@ -66,6 +66,9 @@ SHOWS+=[
  dict(p="cmll",d="1991-07-14",show="Guadalajara · Lucha Libre en Domingo",mult=1,gate=77220,logged=7100,
   people=["Felino","Silver King","Tony Arce","Vulcano","Toshiyo Yamada","Lola González","Apolo Dantes","Pierroth Jr",
    "Sangre Chicana","Blue Panther","Cien Caras","Máscara Año 2000","Universo 2000","Konnan","Atlantis","Rayo De Jalisco Jr"]),
+ dict(p="cmll",d="1991-07-17",show="Acapulco · Coliseo Acapulco debut",mult=1,gate=0,logged=0,  # gate TBD: main-event cut added once Sean gives the gate
+  people=["Ultimo Dragón","The Lightning Kid","Atlantis","Negro Casas","Felino","Art Barr","Jerry Estrada",
+   "La Diabólica","Lola González","Vulcano","Tony Arce","Cien Caras","Konnan"]),
  dict(p="asw",d="1991-07-03",show="Southport · Holiday camp tour, Show 1",mult=1,gate=5000,logged=2070,
   people=["Tony St. Clair","El Gran Hamada","Iceman King Parsons","Giant Haystacks","Gary Albright","Dory Funk Jr.","Doc Dean",
    "Hector Guerrero","Bob Backlund","Bruce Hart","Robbie Brookside","Iron Mike Sharpe","Fit Finlay","Steve Regal"]),
@@ -87,7 +90,7 @@ SHOWS+=[
 # ---- Salaried promotions (WWF, WCW): salary accrues day by day through the world date.
 MONTH = "1991-07"; DAYS_IN_MONTH = 31
 SALARY_START = {"Tom Zenk": 11}   # day of the month a salary starts (signed mid-month)
-NOT_ON_SCALE = ["Kevin Sullivan (WCW): worked 7/5, 7/6 and 7/8 but quit 7/8 and isn't on the pay scale, so he isn't paid here"]
+NOT_ON_SCALE = ["CMLL guests in Acapulco 7/17 (Jushin Liger, The Blue Blazer, Irwin R. Schyster) aren't on the CMLL pay scale; their fees are to be established","Kevin Sullivan (WCW): worked 7/5, 7/6 and 7/8 but quit 7/8 and isn't on the pay scale, so he isn't paid here"]
 
 # ---- One-off bonuses: (promo, date, label, {name: amount})
 BONUSES = [

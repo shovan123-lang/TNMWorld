@@ -9,6 +9,14 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
+  "<b>CMLL</b> Acapulco: Cien Caras counts out Konnan; Atlantis and IRS go ****1/4 on a ladder",
+  "cmll-observer-acapulco-0717"
+ ],
+ [
+  "<b>CMLL</b> From the Road: Atlantis, No clock",
+  "cmll-diary-atlantis-0717"
+ ],
+ [
   "<b>WCW</b> Dayton: Windham DQ'd as Luger strikes; Hughes wins, OMG crashes the main",
   "wcw-observer-dayton-0717"
  ],

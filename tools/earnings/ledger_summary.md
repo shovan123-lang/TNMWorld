@@ -1,4 +1,4 @@
-**July 1991, world date 7/16 (rebuilt 2026-11-14):** paid out so far $972,106 · Japan tour fees still due $723,000 · July projected $1,695,106 · 311 people.
+**July 1991, world date 7/16 (rebuilt 2026-11-15):** paid out so far $977,606 · Japan tour fees still due $753,000 · July projected $1,730,606 · 312 people.
 
 | # | Name | Promotions | Paid so far | Tour fees due | July projected |
 |---|---|---|---|---|---|
@@ -14,6 +14,6 @@
 | 10 | Ted DiBiase | WWF | $15,484 | — | $15,484 |
 | 11 | Kerry Von Erich | USWA | $14,574 | — | $14,574 |
 | 12 | Jake Roberts | WWF | $14,452 | — | $14,452 |
-| 13 | Sting | WCW, NJPW | $12,903 | $15,000 | $27,903 |
-| 14 | Genichiro Tenryu | WWF | $12,903 | — | $12,903 |
-| 15 | Konnan | CMLL | $12,420 | — | $12,420 |
+| 13 | Konnan | CMLL | $13,320 | — | $13,320 |
+| 14 | Sting | WCW, NJPW | $12,903 | $15,000 | $27,903 |
+| 15 | Genichiro Tenryu | WWF | $12,903 | — | $12,903 |
