@@ -66,7 +66,7 @@ SHOWS+=[
  dict(p="cmll",d="1991-07-14",show="Guadalajara · Lucha Libre en Domingo",mult=1,gate=77220,logged=7100,
   people=["Felino","Silver King","Tony Arce","Vulcano","Toshiyo Yamada","Lola González","Apolo Dantes","Pierroth Jr",
    "Sangre Chicana","Blue Panther","Cien Caras","Máscara Año 2000","Universo 2000","Konnan","Atlantis","Rayo De Jalisco Jr"]),
- dict(p="cmll",d="1991-07-17",show="Acapulco · Coliseo Acapulco debut",mult=1,gate=0,logged=0,  # gate TBD: main-event cut added once Sean gives the gate
+ dict(p="cmll",d="1991-07-17",show="Acapulco · Coliseo Acapulco debut",mult=1,gate=27000,logged=0,  # ledger payroll not set yet
   people=["Ultimo Dragón","The Lightning Kid","Atlantis","Negro Casas","Felino","Art Barr","Jerry Estrada",
    "La Diabólica","Lola González","Vulcano","Tony Arce","Cien Caras","Konnan"]),
  dict(p="asw",d="1991-07-03",show="Southport · Holiday camp tour, Show 1",mult=1,gate=5000,logged=2070,
