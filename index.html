@@ -195,6 +195,17 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 .photo-w{margin:4px 0 10px;border:2px solid var(--ink)}
 .photo-w img{display:block;width:100%;height:auto}
 .empty{border:2px dashed var(--soft);padding:18px;text-align:center;font-family:var(--cond);color:var(--mute)}
+.front-bottom{margin-top:10px}
+.cotw{border-left:6px solid var(--c);padding:2px 0 2px 14px}
+.cotw h4{font-family:var(--head);font-weight:400;font-size:28px;line-height:1.05;margin:4px 0 2px;text-transform:uppercase}
+.cotw .ven{font-family:var(--cond);font-size:14px;color:var(--mute)}
+.cotw .rate{font-family:var(--head);font-size:46px;line-height:1;margin:10px 0 8px;color:var(--c)}
+.cotw .motn{font-size:15px;margin:0}
+.cotw-ru{list-style:none;padding:0;margin:4px 0 0;font-family:var(--cond);font-size:14px}
+.cotw-ru li{padding:5px 0;border-bottom:1px dotted var(--soft)}
+.stw{list-style:none;padding:0;margin:0}
+.stw li{border-left:4px solid var(--c);padding:4px 0 4px 12px;margin-bottom:12px;font-size:15px;line-height:1.4}
+.stw li b{display:block;font-family:var(--cond);font-size:17px;margin:1px 0 2px}
 </style>
 </head>
 <body>
@@ -301,9 +312,57 @@ function showCard(e,opts={}){
 function belt(k,t){return `<div class="belt" style="--c:${P[k].c}"><div class="t">${esc(t[0])}</div><div class="h">${esc(t[1])}</div>${t[2]?`<div class="n">${esc(t[2])}</div>`:''}</div>`}
 
 /* =========================== VIEWS =========================== */
+/* ---- Front page bottom row: Card of the Week + Storylines to Watch ---- */
+// Star rating text -> number: "****1/2", "***", "3/4*", "DUD", "-*1/2"
+function starVal(r){
+  const s=String(r||'').replace(/\s+/g,'').toUpperCase();
+  if(!s) return null;
+  if(s==='DUD') return 0;
+  const m=s.match(/^(-?)(\**)(?:(\d)\/(\d))?\**$/);
+  if(!m||(!m[2]&&!m[3])) return null;
+  const v=m[2].length+(m[3]?m[3]/m[4]:0);
+  return m[1]?-v:v;
+}
+function cardOfWeek(shows){
+  const pool=shows.filter(e=>starVal(e.rate)!==null)
+    .sort((a,b)=>starVal(b.rate)-starVal(a.rate)||(b.big||0)-(a.big||0)||b.d.localeCompare(a.d));
+  if(!pool.length) return `<p class="mute" style="font-family:var(--cond)">No rated shows last week.</p>`;
+  const e=pool[0], pr=P[e.p];
+  const best=(e.m||[]).filter(x=>starVal(x[2])!==null).sort((a,b)=>starVal(b[2])-starVal(a[2]))[0];
+  const ru=pool.slice(1,4).map(r=>`<li>${chip(r.p)} <b>${esc(r.type)}</b> · ${esc(r.city||'')} · ${fmt(r.d)} <span class="num" style="float:right">${esc(r.rate)}</span></li>`).join('');
+  return `<div class="cotw" style="--c:${pr.c}">
+    <div class="kicker">${esc(pr.short)} · ${fmt(e.d)} · ${esc(e.city||'')}</div>
+    <h4>${esc(e.type)}</h4>
+    <div class="ven">${esc([e.venue,e.gate].filter(Boolean).join(' · '))}</div>
+    <div class="rate">${esc(e.rate)}</div>
+    ${best?`<p class="motn"><b>Match of the night:</b> ${esc(best[0])} <span class="mute">(${esc(best[1]||'')})</span> <b>${esc(best[2])}</b></p>`:''}
+    ${e.link?`<p style="font-family:var(--cond);font-size:13px;margin:6px 0 0">${siteLink(e.p,e.link,'Full show on the '+pr.short+' site ↗')}</p>`:''}
+  </div>
+  ${ru?`<div class="kicker" style="--c:var(--mute);margin-top:14px">Runners-up</div><ul class="cotw-ru">${ru}</ul>`:''}`;
+}
+function storylinesToWatch(){
+  return ORDER.filter(k=>P[k]&&(P[k].stories||[]).length).map(k=>{
+    const pr=P[k], s=pr.stories[0];   // newest storyline is first in each list
+    const t=String(s[1]||''), cut=t.length>170?t.slice(0,170).replace(/\s+\S*$/,'')+'…':t;
+    return `<li style="--c:${pr.c}"><span class="kicker">${esc(pr.short)}</span><a href="#${k}" style="text-decoration:none"><b>${esc(s[0])}</b></a>${esc(cut)}</li>`;
+  }).join('');
+}
+function frontBottom(lastWeek){
+  return `<section class="grid g2 col-rule front-bottom">
+    <div>
+      <h2 class="sec">Card of the week <small>Best-rated show last week</small></h2>
+      ${cardOfWeek(lastWeek)}
+    </div>
+    <div>
+      <h2 class="sec">Storylines to watch <small>One per territory</small></h2>
+      <ul class="stw">${storylinesToWatch()}</ul>
+    </div>
+  </section>`;
+}
+
 function viewHome(){
   const week=E.filter(e=>{const x=dt(e.d);return x>=W && (x-W)/864e5<=6}).sort((a,b)=>a.d.localeCompare(b.d));
-  const lastWeek=E.filter(e=>{const x=dt(e.d);return pastE(e) && (W-x)/864e5<=7 && e.m}).sort((a,b)=>b.d.localeCompare(a.d));
+  const lastWeek=E.filter(e=>{const days=(W-dt(e.d))/864e5;return pastE(e) && days>=1 && days<=7 && e.m}).sort((a,b)=>b.d.localeCompare(a.d));
   const gates=ORDER.map(k=>{const F=typeof FINANCE!=='undefined'&&FINANCE[k];const rows=(F&&Array.isArray(F.rows))?F.rows:[];return [k,rows.filter(r=>String(r.d||'').startsWith('1991-07')&&typeof r.gate==='number').reduce((s,r)=>s+r.gate,0)]}).filter(g=>g[1]>0).sort((a,b)=>b[1]-a[1]);
   const maxG=Math.max(...gates.map(g=>g[1]));
   const F=FRONT;
@@ -338,7 +397,7 @@ function viewHome(){
 
   <section class="grid g2 col-rule">
     <div>
-      <h2 class="sec">Last week's results <small>Past 7 days</small></h2>
+      <h2 class="sec">Last week's results <small>The 7 days before ${fmt(WORLD_DATE)}</small></h2>
       ${lastWeek.slice(0,4).map(e=>showCard(e,{chip:1})).join('')}
       <p style="font-family:var(--cond);font-size:13px">More on each promotion's page.</p>
     </div>
@@ -347,12 +406,9 @@ function viewHome(){
       ${gates.map(([k,g])=>`<div class="barrow" style="--c:${P[k].c}"><span>${chip(k)}</span><div class="bar" style="width:${(g/maxG*100).toFixed(1)}%"></div><span class="num">$${g.toLocaleString()}</span></div>`).join('')}
       <p class="mute" style="font-family:var(--cond);font-size:13px;margin-top:6px">Live gates logged for July 1991 so far. TV taping crowds count on the taping date. Pay-per-view buys and merchandise aren't included.</p>
       ${(()=>{const t=topEarners(null,5);return t.length?`<h2 class="sec">Top earners <small>${esc(EARNINGS.month)} so far</small></h2>${t.map(([x,v],i)=>`<div style="display:flex;justify-content:space-between;border-bottom:1px dotted var(--soft);padding:4px 0;font-family:var(--cond);font-size:15px"><span>${i+1}. <b>${esc(x.name)}</b> ${x.promos.map(pchip).join('')}</span><span class="num">${eMoney(v)}</span></div>`).join('')}<p style="font-family:var(--cond);font-size:13px;margin-top:6px"><a href="#earnings">Full earnings tracker →</a></p>`:''})()}
-      <h2 class="sec">Booker's desk <small>Open across the world</small></h2>
-      <ul style="padding-left:18px;margin:0;font-size:15px">
-        ${F.desk.map(x=>`<li>${x}</li>`).join('')}
-      </ul>
     </div>
-  </section>`;
+  </section>
+  ${frontBottom(lastWeek)}`;
 }
 
 const TIER_NAMES={A:'Headliners',B:'Upper card',C:'Midcard',D:'Lower card',E:'Prelims',F:'Enhancement',M:'Managers',O:'Announcers',S:'Trainers & staff'};
