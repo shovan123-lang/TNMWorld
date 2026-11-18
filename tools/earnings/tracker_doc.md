@@ -2,8 +2,8 @@
 
 Running record of what every wrestler and manager has been paid this month, across all nine promotions. Started 2026-11-11 (Sean). **Rebuilt every time the world clock moves** and after every show is logged. The same tracker is on the website: World → Talent Earnings (shovan123-lang.github.io/TNMWorld/#earnings), with a top-10 on each promotion's Finance tab and a top-5 on the front page.
 
-**Month:** July 1991 · **World date:** 1991-07-16 · **Last rebuilt:** 2026-11-15
-**Paid out so far:** $980,036 · **Japan tour fees still due:** $753,000 · **July projected:** $1,733,036 · **People:** 312
+**Month:** July 1991 · **World date:** 1991-07-16 · **Last rebuilt:** 2026-11-17
+**Paid out so far:** $981,791 · **Japan tour fees still due:** $753,000 · **July projected:** $1,734,791 · **People:** 312
 
 
 ## How it's counted
@@ -35,6 +35,7 @@ Itemized totals match the ledger's payroll for 10 of 15 shows. Where the itemize
 | 1991-07-03 | ASW | Southport · Holiday camp tour, Show 1 | 14 | $2,070 | $2,070 |
 | 1991-07-06 | ASW | Bognor Regis · Holiday camp tour, Show 2 | 14 | $2,080 | $2,080 |
 | 1991-07-10 | ASW | Camber Sands · Holiday camp tour, Show 3 | 11 | $2,085 | $2,085 |
+| 1991-07-17 | ASW | Skegness · Holiday camp tour, Show 4 | 12 | $1,755 | $0 |
 | 1991-07-19 | TWA | Allentown, PA · Spot show | 13 | $2,875 | $2,875 |
 | 1991-07-28 | Power Pro | Nashville · Power Hour | 19 | $775 | $775 |
 
@@ -184,15 +185,15 @@ Itemized totals match the ledger's payroll for 10 of 15 shows. Where the itemize
 | 140 | Black Bart | WCW | $1,548 | — | — | **$1,548** | — | $1,548 |
 | 141 | Diamond Dallas Page | WCW | $1,548 | — | — | **$1,548** | — | $1,548 |
 | 142 | Brazo de Oro | CMLL | — | $1,500 (4 app.) | — | **$1,500** | — | $1,500 |
-| 143 | Tom Zenk | WCW | $1,355 | — | — | **$1,355** | — | $1,355 |
-| 144 | Stan Hansen | USWA, AJPW | — | $1,350 (3 app.) | — | **$1,350** | $30,000 | $31,350 |
-| 145 | Fuerza Guerrera | CMLL | — | $1,350 (2 app.) | — | **$1,350** | — | $1,350 |
-| 146 | Brooklyn Brawler | WWF | $1,290 | — | — | **$1,290** | — | $1,290 |
-| 147 | Ozz | WCW | $1,290 | — | — | **$1,290** | — | $1,290 |
-| 148 | El Brazo | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
-| 149 | Felino | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
-| 150 | Jerry Estrada | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
-| 151 | Giant Haystacks | ASW | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
+| 143 | Giant Haystacks | ASW | — | $1,400 (4 app.) | — | **$1,400** | — | $1,400 |
+| 144 | Tom Zenk | WCW | $1,355 | — | — | **$1,355** | — | $1,355 |
+| 145 | Stan Hansen | USWA, AJPW | — | $1,350 (3 app.) | — | **$1,350** | $30,000 | $31,350 |
+| 146 | Fuerza Guerrera | CMLL | — | $1,350 (2 app.) | — | **$1,350** | — | $1,350 |
+| 147 | Brooklyn Brawler | WWF | $1,290 | — | — | **$1,290** | — | $1,290 |
+| 148 | Ozz | WCW | $1,290 | — | — | **$1,290** | — | $1,290 |
+| 149 | El Brazo | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
+| 150 | Felino | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
+| 151 | Jerry Estrada | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
 | 152 | Paul Ellering (manager) | USWA | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
 | 153 | Scott Steiner | USWA | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
 | 154 | Tully Blanchard | USWA | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
@@ -209,66 +210,66 @@ Itemized totals match the ledger's payroll for 10 of 15 shows. Where the itemize
 | 165 | Jerry Lawler | USWA | — | $750 (1 app.) | — | **$750** | — | $750 |
 | 166 | La Diabólica | CMLL | — | $750 (3 app.) | — | **$750** | — | $750 |
 | 167 | Sam Houston | USWA | — | $720 (4 app.) | — | **$720** | — | $720 |
-| 168 | Bill Dundee | USWA | — | $625 (3 app.) | — | **$625** | — | $625 |
-| 169 | Lola González | CMLL | — | $600 (3 app.) | — | **$600** | — | $600 |
-| 170 | Silver King | CMLL | — | $600 (2 app.) | — | **$600** | — | $600 |
-| 171 | Apolo Dantes | CMLL | — | $500 (2 app.) | — | **$500** | — | $500 |
-| 172 | Fit Finlay | ASW | — | $450 (3 app.) | — | **$450** | — | $450 |
-| 173 | Robbie Brookside | ASW | — | $450 (3 app.) | — | **$450** | — | $450 |
-| 174 | Chris Adams | USWA | — | $425 (3 app.) | — | **$425** | — | $425 |
-| 175 | Doug Gilbert | USWA | — | $425 (2 app.) | — | **$425** | — | $425 |
-| 176 | Honky Tonk Man | USWA | — | $425 (3 app.) | — | **$425** | — | $425 |
-| 177 | Austin Idol | TWA | — | $400 (1 app.) | — | **$400** | — | $400 |
-| 178 | Bad News Brown | TWA | — | $400 (1 app.) | — | **$400** | — | $400 |
-| 179 | Scotty Flamingo | USWA | — | $375 (3 app.) | — | **$375** | — | $375 |
-| 180 | Steve Regal | ASW | — | $375 (3 app.) | — | **$375** | — | $375 |
-| 181 | Dirty White Boy | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
-| 182 | Eric Embry | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
-| 183 | Jimmy Valiant | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
-| 184 | Tom Prichard | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
-| 185 | Big Daddy | ASW | — | $350 (1 app.) | — | **$350** | — | $350 |
-| 186 | Ivan Putski | ASW | — | $350 (2 app.) | — | **$350** | — | $350 |
-| 187 | Johnny Saint | ASW | — | $350 (2 app.) | — | **$350** | — | $350 |
-| 188 | Sangre Chicana | CMLL | — | $350 (1 app.) | — | **$350** | — | $350 |
-| 189 | Dutch Mantell | USWA | — | $330 (1 app.) | — | **$330** | — | $330 |
-| 190 | Doc Dean | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
-| 191 | Espectro Jr. | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
-| 192 | Mark Canterbury | USWA | — | $300 (3 app.) | — | **$300** | — | $300 |
-| 193 | Tony Arce | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
-| 194 | Vulcano | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
-| 195 | Rex King | USWA | — | $270 (3 app.) | — | **$270** | — | $270 |
-| 196 | Al Snow | TWA | — | $250 (1 app.) | — | **$250** | — | $250 |
-| 197 | Gary Albright | ASW | — | $250 (2 app.) | — | **$250** | — | $250 |
-| 198 | Nightmare Danny Davis | USWA | — | $250 (2 app.) | — | **$250** | — | $250 |
-| 199 | Nightmare Ken Wayne | USWA | — | $250 (2 app.) | — | **$250** | — | $250 |
-| 200 | Brian Christopher | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
-| 201 | Scott Taylor | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
-| 202 | Sweet Daddy Falcone | USWA | — | $240 (3 app.) | — | **$240** | — | $240 |
-| 203 | Tony Williams | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
-| 204 | Bob Armstrong | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
-| 205 | Brickhouse Brown | USWA | — | $225 (1 app.) | — | **$225** | — | $225 |
-| 206 | Buddy Landell | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
-| 207 | Chris Candido | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
-| 208 | Bruce Hart | ASW | — | $200 (2 app.) | — | **$200** | — | $200 |
-| 209 | Moondog Rex | USWA | — | $200 (2 app.) | — | **$200** | — | $200 |
-| 210 | Tony St. Clair | ASW | — | $200 (2 app.) | — | **$200** | — | $200 |
-| 211 | Moondog Spot | USWA | — | $180 (2 app.) | — | **$180** | — | $180 |
-| 212 | Dory Funk Jr. | AJPW, ASW | — | $175 (1 app.) | — | **$175** | $12,000 | $12,175 |
-| 213 | Bunkhouse Buck | TWA | — | $175 (1 app.) | — | **$175** | — | $175 |
-| 214 | The Nightstalker | TWA | — | $175 (1 app.) | — | **$175** | — | $175 |
-| 215 | Hector Guerrero | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
-| 216 | Iron Mike Sharpe | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
-| 217 | Jim Powers | USWA | — | $160 (3 app.) | — | **$160** | — | $160 |
-| 218 | Action Jackson | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
-| 219 | J.T. Smith | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
-| 220 | Mr. Sandman | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
-| 221 | Rob Zakowski | USWA | — | $150 (3 app.) | — | **$150** | — | $150 |
-| 222 | Gran Hamada | NJPW, ASW | — | $125 (1 app.) | — | **$125** | $6,000 | $6,125 |
-| 223 | Bill Watts (staff) | Power Pro | — | $100 (1 app.) | — | **$100** | — | $100 |
-| 224 | Dave Taylor | ASW | — | $100 (1 app.) | — | **$100** | — | $100 |
-| 225 | Iceman King Parsons | ASW | — | $100 (1 app.) | — | **$100** | — | $100 |
-| 226 | Danny Boy Collins | ASW | — | $85 (1 app.) | — | **$85** | — | $85 |
-| 227 | Skull Murphy | ASW | — | $85 (1 app.) | — | **$85** | — | $85 |
+| 168 | Big Daddy | ASW | — | $700 (2 app.) | — | **$700** | — | $700 |
+| 169 | Bill Dundee | USWA | — | $625 (3 app.) | — | **$625** | — | $625 |
+| 170 | Lola González | CMLL | — | $600 (3 app.) | — | **$600** | — | $600 |
+| 171 | Robbie Brookside | ASW | — | $600 (4 app.) | — | **$600** | — | $600 |
+| 172 | Silver King | CMLL | — | $600 (2 app.) | — | **$600** | — | $600 |
+| 173 | Apolo Dantes | CMLL | — | $500 (2 app.) | — | **$500** | — | $500 |
+| 174 | Steve Regal | ASW | — | $500 (4 app.) | — | **$500** | — | $500 |
+| 175 | Fit Finlay | ASW | — | $450 (3 app.) | — | **$450** | — | $450 |
+| 176 | Chris Adams | USWA | — | $425 (3 app.) | — | **$425** | — | $425 |
+| 177 | Doug Gilbert | USWA | — | $425 (2 app.) | — | **$425** | — | $425 |
+| 178 | Honky Tonk Man | USWA | — | $425 (3 app.) | — | **$425** | — | $425 |
+| 179 | Austin Idol | TWA | — | $400 (1 app.) | — | **$400** | — | $400 |
+| 180 | Bad News Brown | TWA | — | $400 (1 app.) | — | **$400** | — | $400 |
+| 181 | Gary Albright | ASW | — | $375 (3 app.) | — | **$375** | — | $375 |
+| 182 | Scotty Flamingo | USWA | — | $375 (3 app.) | — | **$375** | — | $375 |
+| 183 | Dirty White Boy | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
+| 184 | Eric Embry | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
+| 185 | Jimmy Valiant | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
+| 186 | Tom Prichard | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
+| 187 | Ivan Putski | ASW | — | $350 (2 app.) | — | **$350** | — | $350 |
+| 188 | Johnny Saint | ASW | — | $350 (2 app.) | — | **$350** | — | $350 |
+| 189 | Sangre Chicana | CMLL | — | $350 (1 app.) | — | **$350** | — | $350 |
+| 190 | Dutch Mantell | USWA | — | $330 (1 app.) | — | **$330** | — | $330 |
+| 191 | Bruce Hart | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
+| 192 | Doc Dean | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
+| 193 | Espectro Jr. | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
+| 194 | Mark Canterbury | USWA | — | $300 (3 app.) | — | **$300** | — | $300 |
+| 195 | Tony Arce | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
+| 196 | Tony St. Clair | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
+| 197 | Vulcano | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
+| 198 | Rex King | USWA | — | $270 (3 app.) | — | **$270** | — | $270 |
+| 199 | Iron Mike Sharpe | ASW | — | $255 (3 app.) | — | **$255** | — | $255 |
+| 200 | Al Snow | TWA | — | $250 (1 app.) | — | **$250** | — | $250 |
+| 201 | Nightmare Danny Davis | USWA | — | $250 (2 app.) | — | **$250** | — | $250 |
+| 202 | Nightmare Ken Wayne | USWA | — | $250 (2 app.) | — | **$250** | — | $250 |
+| 203 | Brian Christopher | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
+| 204 | Scott Taylor | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
+| 205 | Sweet Daddy Falcone | USWA | — | $240 (3 app.) | — | **$240** | — | $240 |
+| 206 | Tony Williams | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
+| 207 | Bob Armstrong | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
+| 208 | Brickhouse Brown | USWA | — | $225 (1 app.) | — | **$225** | — | $225 |
+| 209 | Buddy Landell | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
+| 210 | Chris Candido | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
+| 211 | Dave Taylor | ASW | — | $200 (2 app.) | — | **$200** | — | $200 |
+| 212 | Iceman King Parsons | ASW | — | $200 (2 app.) | — | **$200** | — | $200 |
+| 213 | Moondog Rex | USWA | — | $200 (2 app.) | — | **$200** | — | $200 |
+| 214 | Moondog Spot | USWA | — | $180 (2 app.) | — | **$180** | — | $180 |
+| 215 | Dory Funk Jr. | AJPW, ASW | — | $175 (1 app.) | — | **$175** | $12,000 | $12,175 |
+| 216 | Bunkhouse Buck | TWA | — | $175 (1 app.) | — | **$175** | — | $175 |
+| 217 | The Nightstalker | TWA | — | $175 (1 app.) | — | **$175** | — | $175 |
+| 218 | Danny Boy Collins | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
+| 219 | Hector Guerrero | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
+| 220 | Skull Murphy | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
+| 221 | Jim Powers | USWA | — | $160 (3 app.) | — | **$160** | — | $160 |
+| 222 | Action Jackson | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
+| 223 | J.T. Smith | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
+| 224 | Mr. Sandman | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
+| 225 | Rob Zakowski | USWA | — | $150 (3 app.) | — | **$150** | — | $150 |
+| 226 | Gran Hamada | NJPW, ASW | — | $125 (1 app.) | — | **$125** | $6,000 | $6,125 |
+| 227 | Bill Watts (staff) | Power Pro | — | $100 (1 app.) | — | **$100** | — | $100 |
 | 228 | The Spellbinder | USWA | — | $80 (1 app.) | — | **$80** | — | $80 |
 | 229 | Rocky Johnson (staff) | Power Pro | — | $75 (1 app.) | — | **$75** | — | $75 |
 | 230 | Chris Jericho | Power Pro | — | $60 (1 app.) | — | **$60** | — | $60 |

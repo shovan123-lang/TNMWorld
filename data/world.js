@@ -9,6 +9,18 @@ const ARRIVALS = [["9/5/91", "WCW", "Bill Kazmaier", "Arrival. \"World's Stronge
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
+  "<b>WCW</b> Cleveland: NIKITA KOLOFF chokes out Luger for the World Title; Sting gives notice",
+  "wcw-observer-cleveland-0718"
+ ],
+ [
+  "<b>AJPW</b> Kumamoto: Kobashi moonsaults Rude (****1/4), and Misawa names him his new partner",
+  "ajpw-observer-kumamoto-0717"
+ ],
+ [
+  "<b>ASW</b> Skegness: Albright beats St. Clair 3–0 in a **** death match; Nagasaki a no-show again",
+  "asw-observer-skegness-0717"
+ ],
+ [
   "<b>CMLL</b> Acapulco: Cien Caras counts out Konnan; Atlantis and IRS go ****1/4 on a ladder",
   "cmll-observer-acapulco-0717"
  ],
@@ -41,44 +53,12 @@ const TICKER = [
   "fmw-frontier-joins"
  ],
  [
-  "<b>WCW</b> Salisbury: Sting makes Big Van Vader submit in a five-star main",
-  "wcw-sting-conquers-mastodon"
- ],
- [
-  "<b>WCW</b> Observer: Muta no-shows, Big Josh tears his quad",
-  "wcw-observer-salisbury-0715"
- ],
- [
-  "<b>AJPW</b> Kawada's last night: Miracle Violence take the World Tag titles",
-  "ajpw-mvc-take-the-gold"
- ],
- [
-  "<b>AJPW</b> Observer: Okayama, the best card of the tour",
-  "ajpw-observer-okayama-0715"
- ],
- [
-  "<b>AJPW</b> From the Road: Kawada, I didn't look back",
-  "ajpw-diary-kawada-0715"
- ],
- [
   "<b>NJPW</b> El Samurai replaces Pegasus Kid vs. Liger at Sumo Hall",
   "njpw-samurai-gets-liger"
  ],
  [
-  "<b>NJPW</b> Pegasus Kid is off the tour; Liger needs a Sumo Hall challenger",
-  "njpw-pegasus-off-tour"
- ],
- [
-  "<b>CMLL</b> Guadalajara: the Dinamitas pin Konnan twice",
-  "cmll-dinamitas-stun-guadalajara"
- ],
- [
   "<b>WWF</b> WrestleFest: Hogan retains, Sid strikes, LOD save",
   "wwf-wrestlefest-recap"
- ],
- [
-  "<b>ASW</b> Observer: three shows in, three sellouts, and Big Daddy arrives",
-  "asw-observer-three-shows"
  ],
  [
   "<b>POWER PRO</b> Power Hour taped in Nashville, airs 7/28",

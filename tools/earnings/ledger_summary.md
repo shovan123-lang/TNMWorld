@@ -1,4 +1,4 @@
-**July 1991, world date 7/16 (rebuilt 2026-11-15):** paid out so far $980,036 · Japan tour fees still due $753,000 · July projected $1,733,036 · 312 people.
+**July 1991, world date 7/16 (rebuilt 2026-11-17):** paid out so far $981,791 · Japan tour fees still due $753,000 · July projected $1,734,791 · 312 people.
 
 | # | Name | Promotions | Paid so far | Tour fees due | July projected |
 |---|---|---|---|---|---|

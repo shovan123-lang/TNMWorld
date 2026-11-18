@@ -79,6 +79,9 @@ SHOWS+=[
  dict(p="asw",d="1991-07-10",show="Camber Sands · Holiday camp tour, Show 3",mult=1,gate=5000,logged=2085,
   people=["Doc Dean","Skull Murphy","Gary Albright","Ivan Putski","Johnny Saint","Steve Regal","Bob Backlund","Fit Finlay",
    "Giant Haystacks","Robbie Brookside","Big Daddy"]),
+ dict(p="asw",d="1991-07-17",show="Skegness · Holiday camp tour, Show 4",mult=1,gate=5000,logged=0,  # ledger payroll not set yet
+  people=["Gary Albright","Tony St. Clair","Bruce Hart","Iceman King Parsons","Skull Murphy","Iron Mike Sharpe",
+   "Steve Regal","Danny Boy Collins","Big Daddy","Robbie Brookside","Giant Haystacks","Dave Taylor"]),
  dict(p="twa",d="1991-07-19",show="Allentown, PA · Spot show",mult=1,gate=10800,logged=2875,
   people=["Austin Idol","Bob Armstrong","Buddy Landell","Chris Candido","J.T. Smith","The Nightstalker","Bunkhouse Buck",
    "Don Harris","Ron Harris","Bad News Brown","Mr. Sandman","Al Snow","Action Jackson"]),
