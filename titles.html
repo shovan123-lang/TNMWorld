@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TNM World — The Championship Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0c0a08; --ink2:#15120e; --ink3:#1d1913; --line:#2e2820; --line2:#3d3428;
+  --paper:#efe6d2; --muted:#a39780; --dim:#6f6555;
+  --gold1:#fbe6a2; --gold2:#e2b552; --gold3:#a8761f; --gold4:#5e3f0c;
+  --red:#e0483e;
+  --gold-grad:linear-gradient(135deg,#fff2c4 0%,#f0c865 22%,#b98326 48%,#f6d886 70%,#8a5d14 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink); color:var(--paper);
+  font-family:"Source Serif 4",Georgia,serif; font-size:16px; line-height:1.5;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+body::before{ /* grain */
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:100; opacity:.07; mix-blend-mode:screen;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;padding:56px 0 40px;text-align:center;overflow:hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 38%, rgba(226,181,82,.20), transparent 70%),
+    repeating-conic-gradient(from 0deg at 50% 40%, rgba(255,220,140,.035) 0deg 6deg, transparent 6deg 12deg),
+    var(--ink);
+  border-bottom:1px solid var(--line);
+}
+.back{position:absolute;left:20px;top:16px;font-family:Oswald,sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.back:hover{color:var(--gold1)}
+.kicker{font-family:Oswald,sans-serif;letter-spacing:.42em;text-transform:uppercase;font-size:12px;color:var(--gold2);font-weight:500}
+.kicker .dot{display:inline-block;width:5px;height:5px;background:var(--red);border-radius:50%;margin:0 10px 2px;box-shadow:0 0 8px var(--red)}
+.belt{width:min(760px,100%);height:auto;margin:22px auto 10px;display:block;filter:drop-shadow(0 18px 30px rgba(0,0,0,.6))}
+h1{font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;line-height:.92;
+  font-size:clamp(38px,8.4vw,108px);letter-spacing:.01em;
+  background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 0 #3a2706) drop-shadow(0 8px 24px rgba(226,181,82,.25));
+}
+.sub{font-style:italic;color:var(--muted);margin-top:14px;font-size:17px}
+.sub b{font-style:normal;color:var(--paper);font-weight:600}
+
+/* ---------- STATS ---------- */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:34px auto 0;max-width:980px}
+.stat{background:var(--ink2);padding:16px 10px;text-align:center}
+.stat .n{font-family:Anton,sans-serif;font-size:36px;line-height:1;color:var(--gold1)}
+.stat .l{font-family:Oswald,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+@media(max-width:640px){.stats{grid-template-columns:repeat(6,1fr)}.stat{grid-column:span 2}.stat:nth-child(n+4){grid-column:span 3}.stat .n{font-size:28px}}
+
+/* ---------- NAV ---------- */
+.bar{position:sticky;top:0;z-index:50;background:rgba(12,10,8,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:12px;align-items:center;padding-top:10px;padding-bottom:10px}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;padding:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font-family:Oswald,sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+  padding:7px 13px;border-radius:999px;border:1px solid var(--line2);background:transparent;color:var(--muted);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:7px}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--c,var(--gold2));display:block}
+.chip:hover{color:var(--paper);border-color:var(--muted)}
+.chip.on{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.search{flex:none;position:relative}
+.search input{width:190px;background:var(--ink3);border:1px solid var(--line2);color:var(--paper);border-radius:999px;padding:8px 14px 8px 34px;font:14px "Source Serif 4",serif;outline:none;transition:.15s}
+.search input:focus{border-color:var(--gold2);width:230px}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6}
+@media(max-width:700px){.bar .wrap{flex-direction:column;align-items:stretch}.search input,.search input:focus{width:100%}}
+
+/* ---------- LEADERBOARDS ---------- */
+.boards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:40px auto 10px}
+@media(max-width:820px){.boards{grid-template-columns:1fr}}
+.board{background:linear-gradient(180deg,var(--ink2),var(--ink));border:1px solid var(--line);padding:22px 22px 18px;position:relative}
+.board h3{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:13px;color:var(--gold2);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.board h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line2),transparent)}
+.lb{display:grid;grid-template-columns:22px 1fr auto;gap:4px 12px;align-items:center;margin-bottom:12px}
+.lb .rk{font-family:Anton,sans-serif;color:var(--dim);font-size:18px}
+.lb .who{font-family:Oswald,sans-serif;font-weight:600;font-size:16px;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb .who small{font-weight:400;color:var(--muted);font-size:12px;letter-spacing:.06em;margin-left:6px;text-transform:uppercase}
+.lb .val{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--gold1);text-align:right}
+.lb .track{grid-column:2/4;height:6px;background:var(--ink3);border-radius:3px;overflow:hidden}
+.lb .track b{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 40%,#fff));box-shadow:0 0 10px color-mix(in srgb,var(--c) 60%,transparent)}
+.mt{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:10px 0;border-top:1px dashed var(--line)}
+.mt:first-of-type{border-top:0;padding-top:0}
+.mt .m{font-size:14.5px}
+.mt .m em{display:block;font-style:normal;font-family:Oswald,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+
+/* ---------- PROMOTION SECTIONS ---------- */
+.promo{margin:56px 0 0;scroll-margin-top:80px}
+.promo-head{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;padding-bottom:14px;border-bottom:3px solid var(--c);position:relative}
+.promo-head::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:1px;background:var(--c);opacity:.4}
+.badge{width:64px;height:64px;flex:none;border-radius:50%;display:grid;place-items:center;font-family:Anton,sans-serif;font-size:17px;letter-spacing:.02em;color:#fff;
+  background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--c) 70%,#fff),var(--c) 55%,color-mix(in srgb,var(--c) 50%,#000));
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.18),0 0 0 2px var(--ink),0 0 0 4px var(--gold3),0 8px 24px color-mix(in srgb,var(--c) 40%,transparent)}
+.promo-head h2{font-family:Anton,sans-serif;font-weight:400;font-size:clamp(30px,5vw,48px);line-height:1;text-transform:uppercase;letter-spacing:.01em}
+.promo-head .meta{font-family:Oswald,sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.promo-head .meta a{color:var(--gold2);text-decoration:none;border-bottom:1px solid transparent}
+.promo-head .meta a:hover{border-color:var(--gold2)}
+.titles{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:22px;margin-top:26px}
+@media(max-width:420px){.titles{grid-template-columns:1fr}}
+
+/* ---------- TITLE CARD ---------- */
+.card{background:var(--ink2);border:1px solid var(--line);position:relative;display:flex;flex-direction:column;transition:border-color .2s, transform .2s}
+.card:hover{border-color:var(--line2)}
+.plate{position:relative;padding:22px 22px 20px;overflow:hidden;
+  background:
+   radial-gradient(ellipse 90% 120% at 100% 0%, color-mix(in srgb,var(--c) 28%,transparent), transparent 60%),
+   linear-gradient(180deg,var(--ink3),var(--ink2));
+  border-bottom:1px solid var(--line)}
+.plate::before{content:"";position:absolute;inset:8px;border:1px solid rgba(226,181,82,.22);pointer-events:none}
+.plate .tname{font-family:Oswald,sans-serif;font-weight:600;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);display:flex;align-items:center;gap:8px}
+.plate .tname svg{flex:none}
+.plate .champ{font-family:Anton,sans-serif;font-size:clamp(28px,4vw,36px);line-height:1.02;text-transform:uppercase;margin-top:10px;letter-spacing:.01em;
+  background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.plate .champ.vac{background:none;color:var(--dim);-webkit-text-fill-color:var(--dim)}
+.plate .since{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);margin-top:6px}
+.plate .since b{color:var(--paper);font-weight:600}
+.live{display:inline-flex;align-items:center;gap:6px;font-family:Oswald,sans-serif;font-size:10.5px;letter-spacing:.2em;font-weight:600;color:#ffd7d2;background:rgba(224,72,62,.16);border:1px solid rgba(224,72,62,.45);padding:2px 8px;border-radius:3px;margin-left:auto}
+.live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);animation:pulse 1.8s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.plate .counts{display:flex;gap:18px;margin-top:14px}
+.plate .counts div{font-family:Oswald,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.plate .counts b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:22px;color:var(--paper);letter-spacing:0;line-height:1.1}
+
+/* lineage */
+.lineage{list-style:none;padding:18px 18px 8px 18px;position:relative;flex:1}
+.reign{position:relative;padding:0 0 18px 46px}
+.reign::before{content:"";position:absolute;left:15px;top:30px;bottom:0;width:2px;background:linear-gradient(var(--line2),var(--line))}
+.reign:last-child::before{display:none}
+.num{position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-family:Anton,sans-serif;font-size:15px;color:#2a1b03;
+  background:radial-gradient(circle at 35% 30%,#fff2c4,#e2b552 55%,#8a5d14);box-shadow:0 0 0 2px var(--ink2),0 0 0 3px var(--gold3)}
+.reign.cur .num{box-shadow:0 0 0 2px var(--ink2),0 0 0 3px var(--gold2),0 0 18px rgba(240,200,101,.55)}
+.reign.vac .num{background:var(--ink3);color:var(--dim);box-shadow:0 0 0 2px var(--ink2),0 0 0 1px var(--line2);font-size:13px}
+.reign .who{font-family:Oswald,sans-serif;font-weight:600;font-size:19px;line-height:1.15;letter-spacing:.01em;padding-top:3px}
+.reign.vac .who{color:var(--dim);font-style:normal;font-weight:500;font-size:15px;letter-spacing:.14em;text-transform:uppercase;padding-top:6px}
+.reign .when{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--muted);margin-top:3px}
+.reign .when .ev{color:var(--paper);opacity:.75}
+.reign .how{font-size:14.5px;color:#d8ccb4;margin-top:6px;line-height:1.45}
+.reign.vac .how{color:var(--muted);font-style:italic}
+.rowline{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.days{flex:1;min-width:120px;display:flex;align-items:center;gap:8px}
+.days .t{flex:1;height:5px;background:var(--ink3);border-radius:3px;overflow:hidden}
+.days .t b{display:block;height:100%;background:linear-gradient(90deg,var(--gold3),var(--gold1));border-radius:3px}
+.reign.cur .days .t b{background:linear-gradient(90deg,var(--gold3),var(--gold1));animation:grow 1.2s ease-out}
+@keyframes grow{from{width:0!important}}
+.days span{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--gold1);white-space:nowrap}
+.tag{font-family:Oswald,sans-serif;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid var(--line2);color:var(--muted)}
+.tag.c{color:var(--gold1);border-color:var(--gold3);background:rgba(226,181,82,.08)}
+
+/* stars */
+.stars{display:inline-flex;align-items:center;gap:1px;font-size:14px;line-height:1;white-space:nowrap;vertical-align:middle}
+.stars .s{position:relative;color:#3a3226;display:inline-block}
+.stars .s::after{content:"★";position:absolute;left:0;top:0;color:var(--gold2);width:var(--f);overflow:hidden;text-shadow:0 0 6px rgba(240,200,101,.45)}
+.stars.neg .s::after{color:var(--red);text-shadow:none}
+.stars .minus{color:var(--red);font-family:"JetBrains Mono",monospace;font-size:13px;margin-right:2px}
+.stars .dud{font-family:Oswald,sans-serif;font-size:11px;letter-spacing:.14em;color:var(--dim);border:1px solid var(--line2);padding:1px 5px;border-radius:2px}
+.stars .txt{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim);margin-left:6px}
+
+/* defenses */
+details.def{margin-top:10px;border:1px solid var(--line);background:rgba(0,0,0,.25);border-radius:4px}
+details.def summary{list-style:none;cursor:pointer;padding:7px 10px;font-family:Oswald,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold2);display:flex;align-items:center;gap:8px;user-select:none}
+details.def summary::-webkit-details-marker{display:none}
+details.def summary .chev{transition:transform .2s;display:inline-block}
+details.def[open] summary .chev{transform:rotate(90deg)}
+details.def summary .avg{margin-left:auto;color:var(--muted);font-family:"JetBrains Mono",monospace;letter-spacing:0;text-transform:none;font-size:11px}
+details.def ol{list-style:none;padding:0 10px 8px}
+details.def li{display:grid;grid-template-columns:78px 1fr;gap:2px 10px;padding:8px 0;border-top:1px dashed var(--line);font-size:13.5px;line-height:1.4}
+details.def li .d{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);padding-top:2px}
+details.def li .x{color:#d8ccb4}
+details.def li .r{grid-column:2}
+
+.status{padding:22px;flex:1;display:flex;align-items:center;gap:14px;color:var(--muted);font-style:italic}
+.status .ic{width:44px;height:44px;flex:none;border-radius:50%;border:1px dashed var(--line2);display:grid;place-items:center;color:var(--dim);font-style:normal;font-family:Anton,sans-serif}
+
+mark{background:rgba(240,200,101,.28);color:inherit;border-radius:2px;padding:0 1px}
+.empty{text-align:center;padding:60px 0;color:var(--muted);font-style:italic;display:none}
+
+footer{margin:80px 0 0;padding:34px 0 46px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;text-align:center}
+footer .k{font-family:Oswald,sans-serif;letter-spacing:.3em;font-size:11px;text-transform:uppercase;color:var(--gold3);margin-bottom:10px}
+.hide{display:none!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <a class="back" href="index.html">← The World Report</a>
+    <div class="kicker">The TNM World Wrestling Report<span class="dot"></span>Vol. I · Summer 1991</div>
+    <svg class="belt" viewBox="0 0 760 230" aria-hidden="true">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff2c4"/><stop offset=".25" stop-color="#f0c865"/><stop offset=".5" stop-color="#b98326"/><stop offset=".72" stop-color="#f6d886"/><stop offset="1" stop-color="#7a5010"/>
+        </linearGradient>
+        <linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5d14"/><stop offset="1" stop-color="#4a3008"/></linearGradient>
+        <linearGradient id="strap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a201a"/><stop offset=".5" stop-color="#15100c"/><stop offset="1" stop-color="#0a0806"/></linearGradient>
+        <radialGradient id="glob" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#3f6fb0"/><stop offset=".7" stop-color="#173763"/><stop offset="1" stop-color="#0b1c36"/></radialGradient>
+        <radialGradient id="gem" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#ff9a8f"/><stop offset=".6" stop-color="#c41e1e"/><stop offset="1" stop-color="#5a0808"/></radialGradient>
+      </defs>
+      <!-- strap -->
+      <rect x="0" y="72" width="760" height="86" rx="10" fill="url(#strap)"/>
+      <g stroke="#3a2e22" stroke-width="1.5" stroke-dasharray="5 5" fill="none"><line x1="8" y1="80" x2="752" y2="80"/><line x1="8" y1="150" x2="752" y2="150"/></g>
+      <!-- side plates -->
+      <g>
+        <path d="M120 82 h88 l10 33 -10 33 h-88 l-10 -33z" fill="url(#g)" stroke="#5e3f0c" stroke-width="2"/>
+        <path d="M128 90 h72 l7 25 -7 25 h-72 l-7 -25z" fill="url(#gd)"/>
+        <text x="164" y="122" text-anchor="middle" font-family="Anton,Impact" font-size="20" fill="url(#g)">TNM</text>
+        <path d="M552 82 h88 l10 33 -10 33 h-88 l-10 -33z" fill="url(#g)" stroke="#5e3f0c" stroke-width="2"/>
+        <path d="M560 90 h72 l7 25 -7 25 h-72 l-7 -25z" fill="url(#gd)"/>
+        <text x="596" y="122" text-anchor="middle" font-family="Anton,Impact" font-size="20" fill="url(#g)">1991</text>
+        <circle cx="54" cy="115" r="22" fill="url(#g)" stroke="#5e3f0c" stroke-width="2"/><circle cx="54" cy="115" r="9" fill="url(#gem)"/>
+        <circle cx="706" cy="115" r="22" fill="url(#g)" stroke="#5e3f0c" stroke-width="2"/><circle cx="706" cy="115" r="9" fill="url(#gem)"/>
+      </g>
+      <!-- main plate -->
+      <path d="M380 6 C 455 6 520 30 540 70 L 552 115 L 540 160 C 520 200 455 224 380 224 C 305 224 240 200 220 160 L 208 115 L 220 70 C 240 30 305 6 380 6Z" fill="url(#g)" stroke="#5e3f0c" stroke-width="3"/>
+      <path d="M380 20 C 446 20 504 40 522 76 L 532 115 L 522 154 C 504 190 446 210 380 210 C 314 210 256 190 238 154 L 228 115 L 238 76 C 256 40 314 20 380 20Z" fill="none" stroke="#7a5010" stroke-width="2"/>
+      <!-- laurel dots -->
+      <g fill="#fff2c4" opacity=".85">
+        <circle cx="262" cy="70" r="3"/><circle cx="252" cy="92" r="3"/><circle cx="248" cy="115" r="3"/><circle cx="252" cy="138" r="3"/><circle cx="262" cy="160" r="3"/>
+        <circle cx="498" cy="70" r="3"/><circle cx="508" cy="92" r="3"/><circle cx="512" cy="115" r="3"/><circle cx="508" cy="138" r="3"/><circle cx="498" cy="160" r="3"/>
+      </g>
+      <!-- globe -->
+      <circle cx="380" cy="104" r="50" fill="url(#glob)" stroke="#5e3f0c" stroke-width="3"/>
+      <g fill="none" stroke="#f0c865" stroke-width="1.6" opacity=".9">
+        <ellipse cx="380" cy="104" rx="50" ry="18"/><ellipse cx="380" cy="104" rx="20" ry="50"/><line x1="330" y1="104" x2="430" y2="104"/><line x1="380" y1="54" x2="380" y2="154"/><ellipse cx="380" cy="104" rx="38" ry="50"/>
+      </g>
+      <!-- banner -->
+      <path d="M282 160 h196 l-10 14 10 14 h-196 l10 -14z" fill="#8f1515" stroke="#5e3f0c" stroke-width="2"/>
+      <text x="380" y="180" text-anchor="middle" font-family="Oswald,Arial Narrow" font-weight="700" font-size="14" letter-spacing="4" fill="#fbe6a2">WORLD CHAMPION</text>
+      <!-- crown -->
+      <path d="M356 40 l8 -18 8 12 8 -16 8 16 8 -12 8 18z" fill="url(#g)" stroke="#5e3f0c" stroke-width="1.5" transform="translate(-4 -14) scale(1.02)"/>
+    </svg>
+    <h1>The Championship<br>Ledger</h1>
+    <p class="sub">Every belt, every reign, every defense across <b id="pcount"></b> promotions — from the Mid-South Coliseum to Sumo Hall.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<nav class="bar">
+  <div class="wrap">
+    <div class="chips" id="chips"></div>
+    <label class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Find a wrestler…" autocomplete="off">
+    </label>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="boards" id="boards"></section>
+  <div id="promos"></div>
+  <p class="empty" id="empty">No reigns match that name.</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="k">Editor's note</div>
+    <p>Lineages start when each promotion's archive begins. Only results that have aired in TNM7 are listed — no booked finishes.<br>Records current through each promotion's latest show (dates shown per promotion).</p>
+  </div>
+</footer>
+
+<script>
+/* ===== DATA =====
+   reign: {c:champion, w:won, e:event, h:how, r:rating, d:days, cur:bool, x:ended note, def:[[date,text,rating]]}
+   vacancy: {v:1, w:date, e:event, h:note} */
+const P = [
+{id:"uswa",name:"USWA",full:"United States Wrestling Association",home:"Memphis, TN",c:"#d4232f",asof:"7/17/1991",url:"https://shovan123-lang.github.io/USWA/HTML/WELCOME.HTM",titles:[
+ {t:"Unified World Heavyweight",L:[
+  {v:1,w:"9/1/1990",e:"Championship TV S1E1",h:"Vacant. Eddie Marlin announces a one-night tournament for October 8 at the Mid-South Coliseum."},
+  {c:"Jerry Lawler",w:"10/8/1990",e:"Unified Title Tournament, Memphis",h:"Tournament final: Lawler made Terry Funk submit to a sleeperhold in 9:26.",r:"***3/4",d:105,def:[
+   ["10/16/1990","Lawler pinned Terry Funk with the piledriver in 12:34.","****"],
+   ["10/18/1990","Lawler pinned Terry Funk after a fistdrop in 23:19.","***3/4"],
+   ["10/19/1990","Lawler pinned Terry Funk with the piledriver in 35:18.","*****"],
+   ["10/29/1990","Cage match: Lawler pinned Terry Funk with the piledriver in 13:38.","***1/2"],
+   ["11/5/1990","Lawler pinned Dick Murdoch with the piledriver in 20:41.","****"],
+   ["11/12/1990","Lawler pinned Dick Murdoch with the piledriver in 25:49.","****"],
+   ["11/22/1990","Barbed wire match: Lawler pinned Terry Funk with the piledriver in 20:25.","****1/4"],
+   ["1/19/1991","Lawler beat Robert Fuller by countout in 14:45.","***1/4"]]},
+  {c:"Andre the Giant",w:"Jan. 1991",e:"Gauntlet For The Gold",h:"Andre pinned Jerry Lawler with the elbowdrop in 5:23.",r:"**1/2",d:42,def:[
+   ["2/23/1991","Andre beat Robert Fuller by disqualification in 7:25.","*3/4"]]},
+  {c:"Bret Hart",w:"3/4/1991",e:"Fully Loaded, Memphis",h:"No-countout, no-DQ: Hart pinned Andre the Giant with an inside cradle in 27:50.",r:"**1/4",d:135,cur:1,def:[
+   ["4/8/1991","Hart made Jacques Rougeau submit to the Sharpshooter in 21:22.","*****"],
+   ["4/13/1991","Hart and Eddie Gilbert went to a draw in 1:00:11.","****1/4"],
+   ["4/27/1991","Hart made Toshiaki Kawada submit to a scorpion deathlock in 34:12.","*****3/4"],
+   ["7/1/1991","Hart made Kerry Von Erich submit to the Sharpshooter in 30:16.","****1/4"]]}
+ ]},
+ {t:"Southern Heavyweight",L:[
+  {v:1,w:"9/1/1990",e:"Championship TV S1E1",h:"The title is vacant when the USWA archive begins."},
+  {c:"Dick Slater",w:"9/1/1990",e:"Championship TV S1E1",h:"For the vacant title: Slater pinned Dustin Rhodes with the piledriver in 8:03.",r:"*1/2",d:47,def:[
+   ["9/3/1990","Managers banned from ringside: Dustin Rhodes beat Slater by disqualification.","**1/2"],
+   ["9/10/1990","Special referee Robert Fuller: Dustin Rhodes beat Slater by disqualification.","*1/4"],
+   ["9/22/1990","Slater pinned Robert Fuller with the piledriver in 11:09.","**1/4"],
+   ["10/1/1990","Slater pinned Steven Doll with the piledriver in 2:09.","-3/4*"]]},
+  {c:"Robert Fuller",w:"10/18/1990",e:"Louisville, KY",h:"Fuller made Dick Slater submit to the Fuller Leglock in 13:15.",r:"**3/4",d:35,def:[
+   ["10/22/1990","Fuller beat Dick Slater, who passed out in the Fuller Leglock.","****1/4"],
+   ["10/23/1990","Fuller made Sweet Daddy Falcone submit to the Fuller Leglock in 9:16.","**1/4"],
+   ["10/26/1990","Fuller made Sweet Daddy Falcone submit to the Fuller Leglock in 10:55.","**"],
+   ["10/27/1990","Fuller beat The Masked Avenger, who passed out in the Fuller Leglock.","***"],
+   ["10/30/1990","Fuller pinned Dutch Mantell with a small package in 23:20.","****1/4"],
+   ["11/8/1990","Fuller beat Billy Joe Travis, who passed out in the Fuller Leglock.","***3/4"],
+   ["11/19/1990","Fuller pinned Billy Joe Travis after a piledriver in 14:01.","**1/2"]]},
+  {c:"Eddie Gilbert",w:"11/22/1990",e:"Thanksgiving Thunder 1990",h:"Gilbert pinned Robert Fuller with the piledriver in 17:17.",r:"***1/2",d:60,def:[
+   ["12/3/1990","Gilbert pinned Dustin Rhodes with the piledriver in 12:16.","***1/4"]]},
+  {c:"Jeff Jarrett",w:"Jan. 1991",e:"Gauntlet For The Gold",h:"Jarrett pinned Eddie Gilbert after a bodypress in 13:14.",r:"***1/4",d:21,def:[
+   ["1/28/1991","Jarrett pinned Honky Tonk Man with a second-rope dropkick in 18:51.","***1/2"],
+   ["2/1/1991","Jarrett beat Eddie Gilbert by countout in 9:10.","**3/4"],
+   ["2/2/1991","Jarrett beat Scotty Flamingo by disqualification in 23:41.","**3/4"],
+   ["2/9/1991","Eddie Gilbert beat Jarrett by countout in 14:15.","***1/2"]]},
+  {c:"Steve Austin",w:"2/11/1991",e:"Memphis, TN",h:"Austin pinned Jeff Jarrett after hitting him with a fire extinguisher in 8:03.",r:"**3/4",d:156,cur:1,def:[
+   ["3/1/1991","Austin pinned Jeff Jarrett with the Stun Gun in 15:33.","***1/4"],
+   ["3/4/1991","No-countout, no-DQ: Austin pinned Jeff Jarrett in 13:54.","***1/4"],
+   ["3/29/1991","Austin pinned Sweet Daddy Falcone in 6:12.","*1/4"],
+   ["3/30/1991","Austin pinned Robert Fuller with the Stun Gun in 21:57.","***1/2"],
+   ["4/8/1991","Austin pinned Sam Houston after a headlock takedown in 5:55.","***1/4"],
+   ["5/11/1991","Austin pinned Toshiaki Kawada with the Stun Gun in 20:21.","***1/2"],
+   ["5/24/1991","Austin pinned Nightmare Danny Davis with the Stun Gun in 10:26.","**3/4"],
+   ["6/1/1991","Managers banned from ringside: Austin pinned The Spellbinder with the Stun Gun.","***1/2"],
+   ["7/1/1991","Austin pinned Brickhouse Brown with the Stun Gun in 15:05.","***"],
+   ["7/13/1991","Austin and Diamond Studd went to a double countout in 21:15.","****"]]}
+ ]},
+ {t:"World Tag Team",L:[
+  {v:1,w:"9/1/1990",e:"Championship TV S1E1",h:"Stripped from Don Harris & Brian Lee after they refused to sign exclusive USWA contracts."},
+  {c:"The Dirty White Boys",m:"Dirty White Boy & Tom Burton",w:"10/4/1990",e:"Tag Team Frenzy, Louisville",h:"Won a six-team elimination match for the vacant titles.",r:"**1/4",d:37,def:[
+   ["10/9/1990","Beat the Viet Cong Express.","***"],
+   ["10/15/1990","Against Jeff Jarrett & Jeff Gaylord — no decision.","****1/4"],
+   ["10/16/1990","Beat Jeff Jarrett & Jeff Gaylord.","**1/4"],
+   ["10/19/1990","Beat Jeff Jarrett & Jeff Gaylord.","**1/4"],
+   ["10/22/1990","Beat Jeff Jarrett & Jeff Gaylord.","**1/2"],
+   ["10/26/1990","Beat the Southern Rockers.","***"],
+   ["11/1/1990","Beat Scott Taylor & Joey Maggs.","**1/4"]]},
+  {c:"The Nightmares",m:"Danny Davis & Ken Wayne",w:"11/10/1990",e:"Championship TV S1E11",h:"Danny Davis pinned Tom Burton with the flying stomp in 8:20.",r:"*1/2",d:72,def:[
+   ["1/14/1991","Beat the Hart Foundation.","**1/2"]]},
+  {c:"The Steiner Brothers",m:"Rick & Scott Steiner",w:"Jan. 1991",e:"Gauntlet For The Gold",h:"Scott Steiner pinned Nightmare Danny Davis after a powerslam in 17:51.",r:"***3/4",d:49,def:[
+   ["1/28/1991","Beat the Nightmares.","**1/2"],
+   ["2/25/1991","Beat the Moondogs.","***1/4"],
+   ["3/1/1991","Beat the Twilight Zone.","**3/4"],
+   ["3/4/1991","No-countout, no-DQ: the Steiners retained.","****3/4"]]},
+  {c:"The Von Erich Brothers",m:"Kerry & Kevin Von Erich",w:"3/11/1991",e:"Memphis, TN",h:"Kevin Von Erich made Rick Steiner submit to a wristlock in 34:41.",r:"*****",d:47,def:[
+   ["3/30/1991","Title could change on a DQ or countout: the Von Erichs retained.","**1/4"]]},
+  {c:"The Steiner Brothers",m:"Rick & Scott Steiner",w:"4/27/1991",e:"The Three Way Dance, Memphis",h:"Three-way over the Von Erichs and Dutch Mantell & Jerry Lawler; Scott Steiner pinned Mantell after a powerslam in 26:53.",r:"****",d:70,def:[
+   ["5/24/1991","Beat Honky Tonk Man & Dirty White Boy.","***1/4"]]},
+  {c:"Scott Steiner & Tully Blanchard",w:"7/6/1991",e:"Championship TV S2E26",h:"Recognized as champions: Scott Steiner hands Tully Blanchard one of the belts and Eddie Marlin announces them as champions.",d:11,cur:1,def:[]}
+ ]},
+ {t:"Television",L:[
+  {v:1,w:"4/24/1991",e:"Worldwide S1E1",h:"Eddie Marlin announces the new USWA Television Title, to be decided by a tournament."},
+  {c:"Bill Dundee",w:"6/21/1991",e:"Friday Night Fights, Nashville",h:"Tournament final: Dundee pinned Brickhouse Brown after a dragon suplex in 3:13.",r:"***",d:26,cur:1,def:[
+   ["6/28/1991","Andre the Giant beat Dundee by countout in 12:42.","1/2*"],
+   ["7/10/1991","Dundee pinned Chris Adams with the piledriver in 17:10.","**1/2"]]}
+ ]}
+]},
+{id:"wcw",name:"WCW",full:"World Championship Wrestling",home:"Atlanta, GA",c:"#2f6fd6",asof:"7/18/1991",url:"https://shovan123-lang.github.io/WCW1/HTML/WELCOME.HTM",titles:[
+ {t:"World Heavyweight",L:[
+  {v:1,w:"7/6/1991",e:"Saturday Night, Atlanta",h:"Jim Herd announces Ric Flair is gone and the title is vacant. A new belt is unveiled; the champion will be crowned in a cage at the Great American Bash."},
+  {c:"Lex Luger",w:"7/14/1991",e:"Great American Bash 1991",h:"Cage match for the vacant title: Luger pinned Barry Windham after a piledriver in 23:07.",r:"****",d:4,def:[]},
+  {c:"Nikita Koloff",w:"7/18/1991",e:"House show, Cleveland",h:"Koloff beat Lex Luger, who passed out in a front facelock, in 23:17.",r:"***1/2",d:0,cur:1,def:[]}
+ ]},
+ {t:"United States Heavyweight",L:[
+  {c:"Sting",w:null,e:null,h:null,cur:1,def:[
+   ["7/2/1991","Sting made Kevin Sullivan submit to the Scorpion Deathlock in 10:06.","**1/2"],
+   ["7/4/1991","Sting beat Abdullah the Butcher, who passed out in the Scorpion Deathlock.","***"],
+   ["7/8/1991","Sting beat Ozz, who passed out in the Scorpion Deathlock, in 12:16.","**3/4"],
+   ["7/12/1991","Sting beat Arn Anderson, who passed out in the Scorpion Deathlock.","***3/4"],
+   ["7/14/1991","Sting made Nikita Koloff submit to the Scorpion Deathlock in 18:44.","***1/2"],
+   ["7/16/1991","Sting pinned Bill Irwin after a diving crossbody.","*1/4"]]}
+ ]},
+ {t:"World Tag Team",L:[
+  {v:1,w:"7/2/1991",e:"Ritz-Epps Center, Ft. Bragg, NC",h:"The tag titles are vacant. A one-night tournament is advertised for Johnson City on 7/20."}
+ ]},
+ {t:"World Television",L:[
+  {v:1,w:"7/9/1991",e:"WCW Pro TV taping",h:"The title is vacant. A tournament on WCW Pro will crown the new champion; it is under way."}
+ ]}
+]},
+{id:"wwf",name:"WWF",full:"World Wrestling Federation",home:"Stamford, CT",c:"#e8b923",asof:"7/14/1991",url:"https://shovan123-lang.github.io/WWF/HTML/WELCOME.HTM",titles:[
+ {t:"World Heavyweight",L:[{c:"Hulk Hogan",cur:1,def:[
+   ["7/14/1991","Special referee Jim Duggan: Hogan pinned Sgt. Slaughter with the big leg drop.","**3/4"]]}]},
+ {t:"Intercontinental Heavyweight",L:[{c:"Mr. Perfect",cur:1,def:[
+   ["7/5/1991","Perfect pinned Davey Boy Smith with the Perfect-Plex in 17:35.","***1/2"],
+   ["7/8/1991","Perfect pinned Tito Santana after outside interference in 24:16.","**1/4"],
+   ["7/14/1991","Perfect pinned Owen Hart with a roll-up in 15:14.","***"]]}]},
+ {t:"World Tag Team",L:[{c:"The Nasty Boys",m:"Brian Knobbs & Jerry Sags",cur:1,def:[
+   ["7/1/1991","Beat the Rockers.","**1/4"],
+   ["7/10/1991","Beat the Legion of Doom.","*1/2"],
+   ["7/14/1991","Beat the Rockers.","***"]]}]},
+ {t:"Million Dollar Championship",holder:"Ted DiBiase",note:"No title matches in the archive yet."}
+]},
+{id:"ajpw",name:"AJPW",full:"All Japan Pro Wrestling",home:"Tokyo",c:"#d93b2b",asof:"7/17/1991",url:"https://shovan123-lang.github.io/AJPW/HTML/WELCOME.HTM",titles:[
+ {t:"Triple Crown Heavyweight",L:[{c:"Jumbo Tsuruta",cur:1,def:[
+   ["7/3/1991","Jumbo pinned Toshiaki Kawada with the Jumbo knee in 9:13.","***"],
+   ["7/15/1991","Jumbo pinned Kenta Kobashi with a backdrop driver in 18:55.","****1/4"]]}]},
+ {t:"World Tag Team",L:[
+  {c:"Misawa & Kawada",m:"Mitsuharu Misawa & Toshiaki Kawada",x:"Lost 7/15/1991",def:[
+   ["7/11/1991","Beat Rick Rude & Abdullah the Butcher.","***1/2"]]},
+  {c:"Miracle Violence Connection",m:"Steve Williams & Terry Gordy",w:"7/15/1991",e:"Okayama Budokan (Night 8)",h:"Terry Gordy pinned Kawada after a powerbomb in 20:21.",r:"****",d:2,cur:1,def:[]}
+ ]},
+ {t:"All Asia Tag Team",L:[{c:"The Can-Am Express",m:"Doug Furnas & Dan Kroffat",cur:1,def:[
+   ["7/1/1991","Beat the Fantastics.","**3/4"],
+   ["7/5/1991","Retained in a match alongside the Miracle Violence Connection.","**3/4"],
+   ["7/9/1991","Beat Kenta Kobashi & Akira Taue.","****1/4"],
+   ["7/11/1991","Beat Yoshinari Ogawa & Masao Inoue.","***1/4"],
+   ["7/17/1991","Kroffat pinned Davey Boy Smith with a tiger driver to beat the British Bulldogs in 15:06.","***1/4"]]}]},
+ {t:"World Junior Heavyweight",note:"To confirm. No title matches in the archive yet."}
+]},
+{id:"njpw",name:"NJPW",full:"New Japan Pro Wrestling",home:"Tokyo",c:"#c9a227",asof:"7/14/1991",url:"https://shovan123-lang.github.io/NJPW/HTML/WELCOME.HTM",titles:[
+ {t:"IWGP Heavyweight",L:[{c:"Riki Choshu",cur:1,def:[
+   ["7/4/1991","Choshu pinned Bam Bam Bigelow with the Riki lariat in 25:55.","*****"],
+   ["7/6/1991","Choshu pinned Mike Rotunda with the Riki lariat in 15:08.","**1/2"]]}]},
+ {t:"IWGP Tag Team",L:[
+  {c:"Hase & Sasaki",m:"Hiroshi Hase & Kensuke Sasaki",x:"Lost 7/5/1991",def:[
+   ["7/4/1991","Beat Junji Hirata & Shinya Hashimoto.","***"]]},
+  {c:"Hirata & Hashimoto",m:"Junji Hirata & Shinya Hashimoto",w:"7/5/1991",e:"Summer Crush '91, Niigata City Gym",h:"Hirata pinned Hase with the Machine Suplex in 15:37.",r:"**",d:9,cur:1,def:[]}
+ ]},
+ {t:"IWGP Junior Heavyweight",L:[{c:"Jushin Liger",cur:1,def:[
+   ["7/5/1991","Liger pinned El Samurai with a moonsault in 10:55.","***3/4"]]}]}
+]},
+{id:"cmll",name:"CMLL",full:"Consejo Mundial de Lucha Libre",home:"Arena México",c:"#1f9d6b",asof:"7/17/1991",url:"https://shovan123-lang.github.io/CMLL/HTML/WELCOME.HTM",titles:[
+ {t:"Mexican National Heavyweight",L:[{c:"Konnan",cur:1,def:[
+   ["7/8/1991","Konnan beat Vampiro Canadiense by disqualification in 14:30.","*1/4"],
+   ["7/17/1991","Cien Caras beat Konnan by countout in 15:54 in Acapulco; the title can't change on a countout.","*3/4"]]}]},
+ {t:"Mexican National Light Heavyweight",L:[{c:"El Dandy",cur:1,def:[
+   ["7/6/1991","El Dandy pinned Blue Panther with the Dandina cradle in 13:03.","****1/4"]]}]},
+ {t:"Mexican National Tag Team",L:[
+  {c:"Volador & El Hijo del Santo",w:"7/5/1991",e:"Viernes Espectacular",h:"Two out of three falls for the vacant titles, captain's rules: beat Los Infernales (MS-1 & Satánico) 3 falls to 0.",r:"***1/2",d:12,cur:1,def:[
+   ["7/13/1991","Beat Jerry Estrada & Javier Cruz.","****"]]}
+ ]},
+ {t:"CMLL World Trios",note:"To be crowned. No title matches in the archive yet."}
+]},
+{id:"asw",name:"ASW",full:"All Star Wrestling",home:"Great Britain",c:"#8b5cf6",asof:"7/17/1991",url:"https://shovan123-lang.github.io/ASW/HTML/WELCOME.HTM",titles:[
+ {t:"British Heavyweight",L:[{c:"Giant Haystacks",cur:1,def:[
+   ["7/6/1991","Haystacks beat Johnny Saint by countout in 16:00.","1/2*"],
+   ["7/10/1991","Haystacks beat Robbie Brookside by disqualification when Big Daddy interfered.","*1/2"]]}]},
+ {t:"British Heavy-Middleweight",note:"To establish. No title matches in the archive yet."},
+ {t:"British Tag Team",note:"To establish. No title matches in the archive yet."}
+]},
+{id:"twa",name:"TWA",full:"Tri-State Wrestling Alliance",home:"Philadelphia, PA",c:"#ef7d22",asof:"7/19/1991",url:"https://shovan123-lang.github.io/TriState/HTML/WELCOME.HTM",titles:[
+ {t:"TWA Heavyweight",note:"Vacant. A tournament is under way."},
+ {t:"TWA Tag Team",note:"To establish. No title matches in the archive yet."},
+ {t:"TWA Television",note:"To establish. No title matches in the archive yet."}
+]},
+{id:"powerpro",name:"Power Pro",full:"Power Pro Wrestling",home:"Memphis, TN",c:"#14b8c4",asof:"7/28/1991",url:"https://shovan123-lang.github.io/Powerpro/HTML/WELCOME.HTM",titles:[
+ {t:"Power Pro Heavyweight",L:[
+  {c:"Chris Jericho",w:"6/30/1991",e:"First Strike",h:"For the vacant title: Jericho pinned Marcus Alexander Bagwell with a German suplex in 13:03.",r:"**1/2",d:28,cur:1,def:[
+   ["7/28/1991","Jericho beat Bart Gunn, who passed out in the Lion Tamer, in 10:02.","***1/2"]]}
+ ]},
+ {t:"Power Pro Tag Team",note:"To establish. No title matches in the archive yet."}
+]}
+];
+
+/* ===== HELPERS ===== */
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function rv(s){
+  if(!s) return null; s=s.replace(/\s/g,"");
+  if(/^dud$/i.test(s)) return 0;
+  const neg=s.startsWith("-"); let st=(s.match(/\*/g)||[]).length;
+  const fm=s.match(/([123])\/4|1\/2/); const f=!fm?0:fm[0]==="3/4"?.75:fm[0]==="1/2"?.5:.25;
+  const iF=s.search(/\d\/\d/), iS=s.indexOf("*"); if(iF>=0&&iS>iF) st-=1;
+  const v=st+f; return neg?-v:v;
+}
+function starsHTML(s,showTxt){
+  const v=rv(s); if(v===null) return "";
+  if(v===0) return `<span class="stars"><span class="dud">DUD</span></span>`;
+  const a=Math.abs(v), n=Math.ceil(a); let h="";
+  for(let i=0;i<n;i++){const f=Math.min(1,a-i);h+=`<span class="s" style="--f:${f*100}%">★</span>`}
+  const label=s.replace(/\s/g,"");
+  return `<span class="stars${v<0?" neg":""}" title="${esc(label)}">${v<0?'<span class="minus">−</span>':""}${h}${showTxt?`<span class="txt">${esc(label)}</span>`:""}</span>`;
+}
+const fmtR=v=>{const a=Math.abs(v),w=Math.floor(a),f=a-w;const fr=f===.25?"¼":f===.5?"½":f===.75?"¾":"";return (v<0?"−":"")+(w?w:"")+fr+(w||fr?"★":"DUD")};
+const beltIcon=c=>`<svg width="22" height="12" viewBox="0 0 44 24"><rect x="0" y="7" width="44" height="10" rx="2" fill="#2a201a"/><ellipse cx="22" cy="12" rx="11" ry="11" fill="${c}" stroke="#e2b552" stroke-width="2.5"/><rect x="4" y="8" width="7" height="8" fill="#e2b552"/><rect x="33" y="8" width="7" height="8" fill="#e2b552"/></svg>`;
+
+/* ===== DERIVED ===== */
+let totals={titles:0,reigns:0,changes:0,defs:0,five:0};
+const curReigns=[], bestMatches=[];
+P.forEach(p=>p.titles.forEach(t=>{
+  totals.titles++;
+  (t.L||[]).forEach(r=>{
+    if(r.v) return;
+    totals.reigns++; if(r.w) totals.changes++;
+    const defs=r.def||[]; totals.defs+=defs.length;
+    if(r.cur && r.d!=null) curReigns.push({p,t,r});
+    if(r.r){bestMatches.push({p,t,date:r.w,text:r.h,rate:r.r,v:rv(r.r),change:1,champ:r.c})}
+    defs.forEach(d=>bestMatches.push({p,t,date:d[0],text:d[1],rate:d[2],v:rv(d[2]),champ:r.c}));
+  });
+}));
+totals.five=bestMatches.filter(m=>m.v>=5).length;
+
+/* ===== RENDER: HERO STATS ===== */
+document.getElementById("pcount").textContent=P.length;
+document.getElementById("stats").innerHTML=[
+ [totals.titles,"Titles"],[totals.reigns,"Reigns"],[totals.changes,"Title changes"],[totals.defs,"Defenses"],[totals.five,"Five-star title bouts"]
+].map(([n,l])=>`<div class="stat"><div class="n" data-n="${n}">0</div><div class="l">${l}</div></div>`).join("");
+document.querySelectorAll(".stat .n").forEach(el=>{
+  const n=+el.dataset.n, t0=performance.now();
+  const step=t=>{const k=Math.min(1,(t-t0)/900);el.textContent=Math.round(n*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step)};
+  requestAnimationFrame(step);
+});
+
+/* ===== RENDER: BOARDS ===== */
+(function(){
+  const top=curReigns.slice().sort((a,b)=>b.r.d-a.r.d).slice(0,6), mx=top[0].r.d;
+  const lb=top.map((x,i)=>`<div class="lb" style="--c:${x.p.c}"><span class="rk">${i+1}</span><span class="who">${esc(x.r.c)}<small>${esc(x.p.name)} ${esc(x.t.t)}</small></span><span class="val">${x.r.d}+ days</span><span class="track"><b style="width:${Math.max(3,x.r.d/mx*100)}%"></b></span></div>`).join("");
+  const best=bestMatches.filter(m=>m.v!=null).sort((a,b)=>b.v-a.v).slice(0,6);
+  const bm=best.map(m=>`<div class="mt"><div class="m">${esc(m.text)}<em>${esc(m.p.name)} ${esc(m.t.t)} · ${esc(m.date)}${m.change?" · title change":""}</em></div><div>${starsHTML(m.rate)}</div></div>`).join("");
+  document.getElementById("boards").innerHTML=
+   `<div class="board"><h3>Longest current reigns</h3>${lb}</div><div class="board"><h3>Best title matches on record</h3>${bm}</div>`;
+})();
+
+/* ===== RENDER: PROMOTIONS ===== */
+function reignHTML(r,i,maxD){
+  if(r.v) return `<li class="reign vac" data-s=""><span class="num">—</span><div class="who">Vacant</div><div class="when">${esc(r.w)} · <span class="ev">${esc(r.e)}</span></div><div class="how">${esc(r.h)}</div></li>`;
+  const defs=r.def||[];
+  const when = r.w ? `Won ${esc(r.w)} · <span class="ev">${esc(r.e)}</span>` : `Champion when records begin`;
+  const dayTxt = r.d!=null ? (r.cur?`${r.d}+ days`:`${r.d} day${r.d===1?"":"s"}`) : (r.x||"");
+  const bar = r.d!=null && maxD ? `<div class="days"><div class="t"><b style="width:${Math.max(2,r.d/maxD*100)}%"></b></div><span>${dayTxt}</span></div>` : (dayTxt?`<div class="days"><span>${esc(dayTxt)}</span></div>`:"");
+  const vals=defs.map(d=>rv(d[2])).filter(v=>v!=null);
+  const avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null;
+  const dl = defs.length ? `<details class="def"><summary><span class="chev">▸</span>${defs.length} defense${defs.length>1?"s":""}${avg!=null?`<span class="avg">avg ${avg.toFixed(2)}★</span>`:""}</summary><ol>${defs.map(d=>`<li><span class="d">${esc(d[0])}</span><span class="x">${esc(d[1])}</span><span class="r">${starsHTML(d[2],1)}</span></li>`).join("")}</ol></details>` : "";
+  const search=(r.c+" "+(r.m||"")+" "+defs.map(d=>d[1]).join(" ")+" "+(r.h||"")).toLowerCase();
+  return `<li class="reign${r.cur?" cur":""}" data-s="${esc(search)}">
+    <span class="num">${i}</span>
+    <div class="who" data-name>${esc(r.c)}</div>
+    ${r.m?`<div class="when">${esc(r.m)}</div>`:""}
+    <div class="when">${when}</div>
+    ${r.h?`<div class="how">${esc(r.h)}</div>`:""}
+    <div class="rowline">${bar}${r.r?starsHTML(r.r,1):""}${r.cur?'<span class="tag c">Current</span>':""}</div>
+    ${dl}
+  </li>`;
+}
+function titleHTML(p,t){
+  if(!t.L){
+    const who=t.holder||"";
+    return `<article class="card" data-s="${esc((who+" "+t.t).toLowerCase())}">
+      <div class="plate"><div class="tname">${beltIcon(p.c)}${esc(t.t)}</div>
+      <div class="champ${who?"":" vac"}">${esc(who||(t.note.startsWith("Vacant")?"Vacant":"Not yet crowned"))}</div></div>
+      <div class="status"><span class="ic">?</span><span>${esc(t.note)}</span></div></article>`;
+  }
+  const L=t.L, cur=L.filter(r=>r.cur&&!r.v).pop(), last=L[L.length-1];
+  const maxD=Math.max(0,...L.filter(r=>r.d!=null).map(r=>r.d));
+  let n=0; const items=L.map(r=>reignHTML(r,r.v?0:++n,maxD)).reverse().join("");
+  const reigns=L.filter(r=>!r.v).length, defs=L.reduce((a,r)=>a+(r.def?r.def.length:0),0);
+  const champName = cur?cur.c:(last.v?"Vacant":last.c);
+  const since = cur ? (cur.w?`Since <b>${esc(cur.w)}</b>${cur.d!=null?` · ${cur.d}+ days`:""}`:"Champion when records begin") : (last.v?`Vacated <b>${esc(last.w)}</b>`:"");
+  return `<article class="card" style="--c:${p.c}">
+    <div class="plate">
+      <div class="tname">${beltIcon(p.c)}${esc(t.t)}${cur?'<span class="live">CHAMP</span>':""}</div>
+      <div class="champ${cur?"":" vac"}">${esc(champName)}</div>
+      ${cur&&cur.m?`<div class="since">${esc(cur.m)}</div>`:""}
+      <div class="since">${since}</div>
+      <div class="counts"><div><b>${reigns}</b>Reigns</div><div><b>${defs}</b>Defenses</div><div><b>${L.filter(r=>r.w&&!r.v).length}</b>Changes</div></div>
+    </div>
+    <ol class="lineage">${items}</ol>
+  </article>`;
+}
+document.getElementById("promos").innerHTML=P.map(p=>`
+  <section class="promo" id="${p.id}" style="--c:${p.c}">
+    <div class="promo-head">
+      <div class="badge">${esc(p.name.replace(" ","").slice(0,5))}</div>
+      <div><h2>${esc(p.full)}</h2>
+      <div class="meta">${esc(p.home)} · Records through ${esc(p.asof)} · <a href="${p.url}" target="_blank" rel="noopener">Show archive ↗</a></div></div>
+    </div>
+    <div class="titles">${p.titles.map(t=>titleHTML(p,t)).join("")}</div>
+  </section>`).join("");
+
+/* ===== NAV + FILTER ===== */
+const chips=document.getElementById("chips");
+chips.innerHTML=`<button class="chip on" data-id="all">All</button>`+P.map(p=>`<button class="chip" data-id="${p.id}" style="--c:${p.c}"><i></i>${esc(p.name)}</button>`).join("");
+let sel="all";
+function apply(){
+  const q=document.getElementById("q").value.trim().toLowerCase();
+  let any=false;
+  document.querySelectorAll(".promo").forEach(s=>{
+    const showP = sel==="all"||s.id===sel; let vis=0;
+    s.querySelectorAll(".card").forEach(c=>{
+      let hit=!q;
+      c.querySelectorAll(".reign").forEach(r=>{
+        const nm=r.querySelector("[data-name]");
+        if(nm){nm.innerHTML=esc(nm.textContent); if(q && nm.textContent.toLowerCase().includes(q)) nm.innerHTML=esc(nm.textContent).replace(new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig"),"<mark>$1</mark>");}
+        if(q && r.dataset.s.includes(q)) hit=true;
+      });
+      if(q && c.dataset.s && c.dataset.s.includes(q)) hit=true;
+      if(q && c.querySelector(".tname").textContent.toLowerCase().includes(q)) hit=true;
+      c.classList.toggle("hide",!hit); if(hit) vis++;
+    });
+    const on=showP&&vis>0; s.classList.toggle("hide",!on); if(on) any=true;
+  });
+  document.getElementById("boards").classList.toggle("hide",!!q||sel!=="all");
+  document.getElementById("empty").style.display=any?"none":"block";
+}
+chips.addEventListener("click",e=>{
+  const b=e.target.closest(".chip"); if(!b) return;
+  sel=b.dataset.id; chips.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c===b));
+  try{history.replaceState(null,"",sel==="all"?" ":"#"+sel)}catch(_){location.hash=sel==="all"?"":sel}
+  apply(); if(sel!=="all") document.getElementById("promos").scrollIntoView({behavior:"smooth",block:"start"});
+});
+document.getElementById("q").addEventListener("input",apply);
+function fromHash(){const h=location.hash.slice(1);if(P.some(p=>p.id===h)){sel=h;chips.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c.dataset.id===h));apply()}}
+window.addEventListener("hashchange",fromHash); fromHash();
+</script>
+</body>
+</html>
