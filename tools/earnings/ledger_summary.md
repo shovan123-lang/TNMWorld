@@ -1,19 +1,19 @@
-**July 1991, world date 7/16 (rebuilt 2026-11-17):** paid out so far $981,791 · Japan tour fees still due $753,000 · July projected $1,734,791 · 312 people.
+**July 1991, world date 7/17 (rebuilt 2026-11-17):** paid out so far $1,026,998 · Japan tour fees still due $753,000 · July projected $1,779,998 · 314 people.
 
 | # | Name | Promotions | Paid so far | Tour fees due | July projected |
 |---|---|---|---|---|---|
-| 1 | Hulk Hogan | WWF | $90,195 (incl. $25,678 bonus) | — | $90,195 |
-| 2 | The Ultimate Warrior | WWF | $46,452 | — | $46,452 |
-| 3 | Sgt. Slaughter | WWF | $46,324 (incl. $25,678 bonus) | — | $46,324 |
-| 4 | Roddy Piper | WWF | $20,645 | — | $20,645 |
-| 5 | Sid Justice | WWF | $20,645 | — | $20,645 |
-| 6 | The Undertaker | WWF | $20,645 | — | $20,645 |
-| 7 | Randy Savage | WWF | $18,065 | — | $18,065 |
-| 8 | Lex Luger | WCW | $16,053 (incl. $3,150 bonus) | — | $16,053 |
-| 9 | Mr. Perfect | WWF | $15,484 | — | $15,484 |
-| 10 | Ted DiBiase | WWF | $15,484 | — | $15,484 |
-| 11 | Kerry Von Erich | USWA | $14,574 | — | $14,574 |
-| 12 | Jake Roberts | WWF | $14,452 | — | $14,452 |
-| 13 | Konnan | CMLL | $13,320 | — | $13,320 |
-| 14 | Sting | WCW, NJPW | $12,903 | $15,000 | $27,903 |
-| 15 | Genichiro Tenryu | WWF | $12,903 | — | $12,903 |
+| 1 | Hulk Hogan | WWF | $94,227 (incl. $25,678 bonus) | — | $94,227 |
+| 2 | The Ultimate Warrior | WWF | $49,355 | — | $49,355 |
+| 3 | Sgt. Slaughter | WWF | $47,614 (incl. $25,678 bonus) | — | $47,614 |
+| 4 | Roddy Piper | WWF | $21,935 | — | $21,935 |
+| 5 | Sid Justice | WWF | $21,935 | — | $21,935 |
+| 6 | The Undertaker | WWF | $21,935 | — | $21,935 |
+| 7 | Randy Savage | WWF | $19,194 | — | $19,194 |
+| 8 | Lex Luger | WCW | $16,860 (incl. $3,150 bonus) | — | $16,860 |
+| 9 | Mr. Perfect | WWF | $16,452 | — | $16,452 |
+| 10 | Ted DiBiase | WWF | $16,452 | — | $16,452 |
+| 11 | Jake Roberts | WWF | $15,355 | — | $15,355 |
+| 12 | Kerry Von Erich | USWA | $14,574 | — | $14,574 |
+| 13 | Sting | WCW, NJPW | $13,710 | $15,000 | $28,710 |
+| 14 | Genichiro Tenryu | WWF | $13,710 | — | $13,710 |
+| 15 | Konnan | CMLL | $13,320 | — | $13,320 |

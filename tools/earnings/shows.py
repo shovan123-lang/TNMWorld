@@ -33,6 +33,11 @@ SHOWS=[
    "Eddie Gilbert","Stan Hansen","Dan Spivey",*NK,"Ric Flair","Terry Funk","Kevin Von Erich","Scott Steiner",
    "Tully Blanchard","Dirty White Boy","Rex King","Robert Fuller",*NH,"Eric Embry","Tom Prichard","Steve Austin",
    "Diamond Studd","Kerry Von Erich","Bret Hart","Andre the Giant","Jamie Dundee","Paul Ellering","Missy Hyatt"]),
+ dict(p="uswa",d="1991-07-17",show="Jonesboro · Worldwide (S1 E13)",mult=1,gate=3500,logged=0,  # ledger payroll not set yet
+  people=["Scotty Flamingo","Jim Powers","Sam Houston","Dirty White Boy","Rex King","Jerry Lawler","Eddie Guerrero",
+   "The Spellbinder","Jimmy Valiant","Bill Dundee","Brickhouse Brown","Dennis Condrey","Doug Gilbert","Missy Hyatt",
+   "Moondog Spot","Moondog Rex","Mark Canterbury","Honky Tonk Man","Robert Fuller"],
+  extra={"Les Thornton":15,"Lino Ingram":15}),
 ]
 BRAZOS=["Brazo De Oro","Brazo De Plata","El Brazo"]; INTO=["Jaque Mate","Masakre","Pierroth Jr"]
 SHOWS+=[
