@@ -396,7 +396,7 @@ function viewHome(){
         <ul style="margin:0;padding-left:18px;font-size:15px">${ORDER.flatMap(k=>(P[k].roster||[]).filter(r=>/^INJ/.test(r[1]||'')).map(r=>`<li><b>${esc(r[0])}</b> (${esc(P[k].short)}): ${esc(r[1].replace(/^INJ:\s*/,'').replace(/^\d+\s*·\s*/,'').split(' · ')[0])}</li>`)).join('')}</ul>
       </div>
       <h2 class="sec" style="font-size:22px">This week <small>${fmt(WORLD_DATE)} →</small></h2>
-      <ul class="tl wk">${weekDays.map(d=>`<li><div class="d">${fmt(d)}${isToday(d)?'<small style="color:var(--red)">Tonight</small>':''}</div><div>${week.filter(e=>e.d===d).map(e=>`<div class="wk-show${e.big?' big':''}">${chip(e.p)} <b>${esc(e.type)}</b> <span class="mute">· ${esc(String(e.city||'').split(',')[0])}</span>${pastE(e)&&!isToday(e.d)?' <span class="flag" style="color:var(--mute)">ran</span>':''}</div>`).join('')}</div></li>`).join('')}</ul>
+      <ul class="tl wk">${weekDays.map(d=>`<li><div class="d">${fmt(d)}${isToday(d)?'<small style="color:var(--red)">Tonight</small>':''}</div><div>${week.filter(e=>e.d===d).map(e=>`<div class="wk-show${e.big?' big':''}">${chip(e.p)} <b>${esc(e.type)}</b> <span class="mute">· ${esc(String(e.city||'').split(',')[0])}</span>${pastE(e)?' <span class="flag" style="color:var(--mute)">ran</span>':''}</div>`).join('')}</div></li>`).join('')}</ul>
       <p style="font-family:var(--cond);font-size:13px">${weekMore?`${weekMore} more show${weekMore>1?'s':''} through ${fmt(week[week.length-1].d)}. `:''}<a href="#calendar">Full world calendar →</a></p>
     </aside>
   </section>
