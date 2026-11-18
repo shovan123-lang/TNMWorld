@@ -461,9 +461,9 @@ function frontBottom(lastWeek){
 
 function viewHome(){
   const week=E.filter(e=>{const x=dt(e.d);return x>=W && (x-W)/864e5<=6}).sort((a,b)=>a.d.localeCompare(b.d));
-  // This week: show whole days until about 12 shows are listed, then link to the calendar
-  const weekDays=[];let shown=0;
-  for(const d of [...new Set(week.map(e=>e.d))]){const n=week.filter(e=>e.d===d).length;if(weekDays.length>=2&&shown+n>12)break;weekDays.push(d);shown+=n;}
+  // This week: the next 3 days with shows, then link to the calendar
+  const weekDays=[...new Set(week.map(e=>e.d))].slice(0,3);
+  const shown=week.filter(e=>weekDays.includes(e.d)).length;
   const weekMore=week.length-shown;
   const lastWeek=E.filter(e=>{const days=(W-dt(e.d))/864e5;return pastE(e) && days>=1 && days<=7 && e.m}).sort((a,b)=>b.d.localeCompare(a.d));
   const gates=ORDER.map(k=>{const F=typeof FINANCE!=='undefined'&&FINANCE[k];const rows=(F&&Array.isArray(F.rows))?F.rows:[];return [k,rows.filter(r=>String(r.d||'').startsWith('1991-07')&&typeof r.gate==='number').reduce((s,r)=>s+r.gate,0)]}).filter(g=>g[1]>0).sort((a,b)=>b[1]-a[1]);
