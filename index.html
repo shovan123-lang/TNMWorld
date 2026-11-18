@@ -10,7 +10,7 @@
 <style>
 :root{
   --paper:#f3eee3; --paper2:#e9e2d2; --ink:#1b1a17; --mute:#6a645a; --rule:#1b1a17; --soft:#cfc6b3;
-  --red:#b3261e; --women:#a3195b;
+  --red:#b3261e; --women:#a3195b; --minis:#2a6f97;
   --wcw:#1d3f8f; --wwf:#c8102e; --uswa:#a8650f; --ajpw:#136f63; --njpw:#d4481a; --cmll:#6b2fa0; --asw:#4a5d23; --twa:#a3162b; --pp:#b5179e; --fmw:#3a3a46;
   --head:'Anton',Impact,sans-serif; --cond:'Roboto Condensed',Arial Narrow,sans-serif; --serif:'Source Serif 4',Georgia,serif;
 }
@@ -214,12 +214,15 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 .rhead{font-family:var(--cond);font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin:18px 0 4px;padding-bottom:4px;border-bottom:2px solid var(--ink)}
 .rhead small{font-weight:400;color:var(--mute);margin-left:4px}
 .rhead.w{color:var(--women);border-bottom-color:var(--women)}
-.roster.wom div{border-left:4px solid var(--women);padding-left:8px;background:rgba(163,25,91,.05)}
-.roster.wom div b{color:var(--women)}
+.roster.w div{border-left:4px solid var(--women);padding-left:8px;background:rgba(163,25,91,.05)}
+.roster.w div b{color:var(--women)}
 .amonth{font-family:var(--head);font-weight:400;font-size:28px;text-transform:uppercase;margin:26px 0 4px;padding-bottom:4px;border-bottom:3px solid var(--ink)}
 .amonth small{font-family:var(--cond);font-size:13px;letter-spacing:.1em;color:var(--mute);margin-left:8px}
 .arate{font-family:var(--cond);font-weight:700;font-size:13px;margin-left:6px}
 .adet{padding-left:58px;font-family:var(--cond);font-size:13px;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:2px}
+.rhead.mini{color:var(--minis);border-bottom-color:var(--minis)}
+.roster.mini div{border-left:4px solid var(--minis);padding-left:8px;background:rgba(42,111,151,.06)}
+.roster.mini div b{color:var(--minis)}
 </style>
 </head>
 <body>
@@ -600,10 +603,10 @@ function viewPromo(k,tab){
   } else if(SERIES[tab]){
     body=viewSeries(k,tab);
   } else if(tab==='roster'){
-    body = p.roster.length? `<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0;gap:10px;flex-wrap:wrap"><input class="search" id="rsearch" placeholder="Search ${p.roster.length} names…"><span class="mute" style="font-family:var(--cond);font-size:13px">${k==='ajpw'?'Number = age as of July 1991':''}</span></div>${(()=>{const card=([n,note],w)=>{const inj=note.startsWith('INJ:');return `<div data-n="${esc(n.toLowerCase())}"${w?' class="w"':''}><b>${esc(n)}</b>${inj?'<span class="flag inj">INJ</span>':''}<span>${esc(inj?note.slice(4):note)||'&nbsp;'}</span></div>`};
-      const isW=r=>typeof WOMEN!=='undefined'&&WOMEN.has(r[0]);const men=p.roster.filter(r=>!isW(r)), wom=p.roster.filter(isW);
-      const womLabel=wom.some(r=>!/manager/i.test(r[1]||''))?"Women's division":'Women';
-      return wom.length?`<h3 class="rhead">Men <small>${men.length}</small></h3><div class="roster rgrid">${men.map(r=>card(r,0)).join('')}</div><h3 class="rhead w">${womLabel} <small>${wom.length}</small></h3><div class="roster rgrid wom">${wom.map(r=>card(r,1)).join('')}</div>`:`<div class="roster rgrid">${men.map(r=>card(r,0)).join('')}</div>`})()}`
+    body = p.roster.length? `<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0;gap:10px;flex-wrap:wrap"><input class="search" id="rsearch" placeholder="Search ${p.roster.length} names…"><span class="mute" style="font-family:var(--cond);font-size:13px">${k==='ajpw'?'Number = age as of July 1991':''}</span></div>${(()=>{const card=([n,note],cls)=>{const inj=note.startsWith('INJ:');return `<div data-n="${esc(n.toLowerCase())}"${cls?` class="${cls}"`:''}><b>${esc(n)}</b>${inj?'<span class="flag inj">INJ</span>':''}<span>${esc(inj?note.slice(4):note)||'&nbsp;'}</span></div>`};
+      const isW=r=>typeof WOMEN!=='undefined'&&WOMEN.has(r[0]), isMini=r=>/^Mini\b/i.test(r[1]||'');
+      const groups=[["Men's division",'',p.roster.filter(r=>!isW(r)&&!isMini(r))],["Women's division",'w',p.roster.filter(isW)],["Mini's division",'mini',p.roster.filter(r=>!isW(r)&&isMini(r))]].filter(g=>g[2].length);
+      return groups.length>1?groups.map(([t,c,list])=>`<h3 class="rhead ${c}">${t} <small>${list.length}</small></h3><div class="roster rgrid ${c}">${list.map(r=>card(r,c)).join('')}</div>`).join(''):`<div class="roster rgrid">${p.roster.map(r=>card(r,'')).join('')}</div>`})()}`
       : `<div class="empty" style="margin-top:20px">No roster on file. Build it as you go.</div>`;
   } else {
     body = `<h2 class="sec">Schedule <small>${ev.length} dates</small></h2><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>City</th><th>Venue</th><th>Show</th><th>Gate</th></tr></thead><tbody>${ev.map(e=>`<tr class="${pastE(e)?'past':''} ${e.big?'big':''}"><td>${fmt(e.d)}</td><td>${esc(e.city)}</td><td>${esc(e.venue)}</td><td>${esc(e.type)}${isToday(e.d)?' <span class="flag" style="color:var(--red)">tonight</span>':''}</td><td class="num">${esc(e.gate||'')}</td></tr>`).join('')}</tbody></table></div>
