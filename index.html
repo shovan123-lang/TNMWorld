@@ -692,7 +692,10 @@ function viewPromo(k,tab){
       return groups.length>1?groups.map(([t,c,list])=>`<h3 class="rhead ${c}">${t} <small>${list.length}</small></h3><div class="roster rgrid ${c}">${list.map(r=>card(r,c)).join('')}</div>`).join(''):`<div class="roster rgrid">${p.roster.map(r=>card(r,'')).join('')}</div>`})()}`
       : `<div class="empty" style="margin-top:20px">No roster on file. Build it as you go.</div>`;
   } else {
-    body = `<h2 class="sec">Schedule <small>${ev.length} dates</small></h2><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>City</th><th>Venue</th><th>Show</th><th>Gate</th></tr></thead><tbody>${ev.map(e=>`<tr class="${pastE(e)?'past':''} ${e.big?'big':''}"><td>${fmt(e.d)}</td><td>${esc(e.city)}</td><td>${esc(e.venue)}</td><td>${esc(e.type)}${isToday(e.d)?' <span class="flag" style="color:var(--red)">tonight</span>':''}</td><td class="num">${esc(e.gate||'')}</td></tr>`).join('')}</tbody></table></div>
+    const ran=e=>isPast(e.d)&&pastE(e), sch=ev.filter(e=>!ran(e)), done=ev.filter(ran).sort((a,b)=>b.d.localeCompare(a.d));
+    body = `<h2 class="sec">Schedule <small>${sch.length} date${sch.length===1?'':'s'}</small></h2>${sch.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>City</th><th>Venue</th><th>Show</th><th>Gate</th></tr></thead><tbody>${sch.map(e=>`<tr class="${e.big?'big':''}"><td>${fmt(e.d)}</td><td>${esc(e.city)}</td><td>${esc(e.venue)}</td><td>${esc(e.type)}${isToday(e.d)?' <span class="flag" style="color:var(--red)">tonight</span>':isPast(e.d)?' <span class="flag" style="color:var(--red)">overdue</span>':pastE(e)?' <span class="flag" style="color:var(--mute)">ran</span>':''}</td><td class="num">${esc(e.gate||'')}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Nothing on the schedule yet.</div>'}
+    <h2 class="sec" style="margin-top:28px">Past Events <small>Every ${esc(p.short)} show that has run, by month</small></h2>
+    ${done.length?archiveMonths(done):'<div class="empty">No shows have run yet.</div>'}
 `;
   }
   return `<section style="--c:${p.c}">
@@ -720,16 +723,18 @@ function showRow(e,withDate){
   return (()=>{const b=best(e);return `<div class="ev ${e.big?'big':''}">${withDate?`<span class="lwd">${fmt(e.d)}</span>`:''}${chip(e.p)}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${e.rate?` <span class="num arate">${esc(e.rate)}</span>`:''}
     <div class="adet">${e.gate?`<span>${esc(e.gate)}</span>`:''}${b?`<span>Best: ${esc(b[0][0])} ${esc(b[0][2])}</span>`:''}${(e.reads||[]).filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])}</a>`).join('')}${e.link&&SITES[e.p]?siteLink(e.p,e.link,'Full show ↗'):''}</div></div>`})();
 }
-function viewShowArchive(){
+/* Shows grouped by month, then by day, newest first (the Show Archive format). */
+function archiveMonths(shows){
   const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const shows=E.filter(e=>calFilter.has(e.p)&&isPast(e.d)&&pastE(e)).sort((a,b)=>b.d.localeCompare(a.d)||a.p.localeCompare(b.p));
   const months={};shows.forEach(e=>{const m=e.d.slice(0,7);(months[m]=months[m]||[]).push(e)});
-  const row=showRow;
+  return Object.entries(months).map(([m,list])=>{const [y,mo]=m.split('-');const days={};list.forEach(e=>(days[e.d]=days[e.d]||[]).push(e));
+    return `<h3 class="amonth">${MONTHS[+mo-1]} ${y} <small>${list.length} show${list.length>1?'s':''}</small></h3>${Object.entries(days).map(([d,evs])=>`<div class="cal-day"><div class="d">${MON[dt(d).getUTCMonth()]} ${dt(d).getUTCDate()}<small>${DOW[dt(d).getUTCDay()]}</small></div><div>${evs.map(e=>showRow(e)).join('')}</div></div>`).join('')}`}).join('');
+}
+function viewShowArchive(){
+  const shows=E.filter(e=>calFilter.has(e.p)&&isPast(e.d)&&pastE(e)).sort((a,b)=>b.d.localeCompare(a.d)||a.p.localeCompare(b.p));
   return `<h2 class="sec">Show Archive <small>Every show that has run, by month</small></h2>
   <div class="filters">${ORDER.map(k=>`<button data-f="${k}" class="${calFilter.has(k)?'':'off'}" style="--c:${P[k].c}">${P[k].short}</button>`).join('')}</div>
-  ${Object.keys(months).length?'':`<div class="empty" style="margin-top:20px">No shows have run yet for these promotions.</div>`}
-  ${Object.entries(months).map(([m,list])=>{const [y,mo]=m.split('-');const days={};list.forEach(e=>(days[e.d]=days[e.d]||[]).push(e));
-    return `<h3 class="amonth">${MONTHS[+mo-1]} ${y} <small>${list.length} show${list.length>1?'s':''}</small></h3>${Object.entries(days).map(([d,evs])=>`<div class="cal-day"><div class="d">${MON[dt(d).getUTCMonth()]} ${dt(d).getUTCDate()}<small>${DOW[dt(d).getUTCDay()]}</small></div><div>${evs.map(row).join('')}</div></div>`).join('')}`}).join('')}
+  ${shows.length?archiveMonths(shows):`<div class="empty" style="margin-top:20px">No shows have run yet for these promotions.</div>`}
   <p class="mute" style="font-family:var(--cond);font-size:13px;margin-top:14px">Upcoming shows are on the <a href="#calendar">World Calendar</a>.</p>`;
 }
 
