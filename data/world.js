@@ -9,6 +9,12 @@ const ARRIVALS = [["8/1/91", "Shoot", "Mitsuya Nagai", "RINGS debut vs. Herman R
 // Women on any roster. Promotion pages list them in their own section. Add new women here when they join a roster.
 const WOMEN = new Set(["Miss Elizabeth", "Missy Hyatt", "La Diabólica", "Lola González", "Pantera Sureña", "Toshiyo Yamada", "Megumi Kudo", "Combat Toyoda", "Svetlana Goundarenko", "Debbie Combs", "Reggie Bennett", "Debbie Malenko", "Eriko Tsuchiya", "Yoshika Maedomari", "Keiko Iwami", "Kumiko Matsuda", "Yuki Morimatsu", "Rie Nakamura", "Yukie Nabeno"]);
 
+// Talent File: the wrestler showcased on the front page and at #file. Change it whenever you want a new spotlight.
+// "match" is a pattern that finds this wrestler in match listings (include tag-team and trio names he's part of).
+// "record" is kept by hand (wins–losses–draws), because results are written as text.
+const SPOTLIGHT = {"name": "Eddie Guerrero", "match": "Eddie(?! Gilbert)|Los Guerreros", "record": "7–0", "since": "1991-07-03",
+ "blurb": "Unbeaten in two countries. Eddie has gone 5–0 in CMLL with his family, Chavo and Fuerza, and 2–0 on USWA's Worldwide, where he beat the Spellbinder at ****1/4 in Jonesboro. Next up: the Torneo de Tercias semifinals at Arena México on 7/19."};
+
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [

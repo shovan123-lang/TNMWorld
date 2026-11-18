@@ -223,6 +223,23 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 .rhead.mini{color:var(--minis);border-bottom-color:var(--minis)}
 .roster.mini div{border-left:4px solid var(--minis);padding-left:8px;background:rgba(42,111,151,.06)}
 .roster.mini div b{color:var(--minis)}
+.tfile{border:2px solid var(--ink);padding:12px 14px;background:var(--paper)}
+.tf-name{font-family:var(--head);font-size:30px;line-height:1.05;text-transform:uppercase}
+.tf-name .chip{vertical-align:6px;margin-left:4px}
+.tf-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--soft);border-bottom:1px solid var(--soft);margin:10px 0}
+.tf-stats div{padding:6px 8px;border-right:1px solid var(--soft)}
+.tf-stats div:last-child{border-right:0}
+.tf-stats b{display:block;font-family:var(--head);font-weight:400;font-size:24px;line-height:1.1}
+.tf-stats span{font-family:var(--cond);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.tf-stats.nums{border:2px solid var(--ink);margin-top:4px}
+.tf-blurb{font-size:15px;margin:6px 0 8px}
+.tf-last{list-style:none;margin:0;padding:0;font-family:var(--cond);font-size:14px}
+.tf-last li{padding:5px 0;border-bottom:1px dotted var(--soft)}
+.tf-last .d{display:inline-block;min-width:78px;font-weight:700;text-transform:uppercase;font-size:12px}
+.tfile.big .tf-name{font-size:44px}
+.lwd{position:absolute;left:0;top:11px;font-family:var(--cond);font-weight:700;font-size:12px;text-transform:uppercase}
+.lw .adet{padding-left:0}
+.lw .ev{position:relative;padding-left:84px!important;padding:8px 0;border-bottom:1px dotted var(--soft)}
 </style>
 </head>
 <body>
@@ -280,7 +297,7 @@ const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
 
 /* =========================== NAV =========================== */
-const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['talent','Talent Exchange'],['arrivals','Arrivals'],['money','Money'],['earnings','Talent Earnings']];
+const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
 const TAB_LABEL={overview:'Overview',shows:'Cards & Results',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road'};
@@ -292,11 +309,11 @@ function renderNav(cur,curT){
     <div class="menu" role="menu">${promoTabs(k).map(t=>`<a role="menuitem" href="#${k}/${t}" class="${cur===k&&(curT||'overview')===t?'cur':''}">${TAB_LABEL[t]}</a>`+(t==='overview'&&SITES[k]?`<a role="menuitem" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')}
     ${SITES[k]?`<a role="menuitem" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${esc(p.short)} site ↗</a>`:''}
     ${la?`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#${la}">${esc(ARTICLES[la].title)}</a>`:''}</div></div>`;};
-  const worldOn=['calendar','showarchive','talent','arrivals','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
-  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',showarchive:'Show Archive',talent:'Talent Exchange',arrivals:'Arrivals',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
+  const worldOn=['calendar','showarchive','file','talent','arrivals','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
+  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',showarchive:'Show Archive',file:'Talent File',talent:'Talent Exchange',arrivals:'Arrivals',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
   <div class="items"><a href="#home" class="top ${cur==='home'?'on':''}">Front Page</a>${ORDER.map(promo).join('')}
   <div class="dd" style="--c:var(--red)"><a href="#calendar" class="top ${worldOn?'on':''}" aria-haspopup="true">World<span class="caret">▾</span></a>
-    <div class="menu" role="menu"><a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a><a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a><div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a></div></div></div>`;
+    <div class="menu" role="menu"><a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a><a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a><a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a><div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a></div></div></div>`;
   $('#burger').onclick=()=>{const n=document.querySelector('nav.main');n.classList.toggle('open');$('#burger').setAttribute('aria-expanded',n.classList.contains('open'));};
   // Touch / small screens: first tap on a promotion opens its menu instead of navigating
   document.querySelectorAll('nav.main .dd>.top').forEach(a=>a.addEventListener('click',ev=>{
@@ -346,7 +363,7 @@ function cardOfWeek(shows){
   if(!pool.length) return `<p class="mute" style="font-family:var(--cond)">No rated shows last week.</p>`;
   const e=pool[0], pr=P[e.p];
   const best=(e.m||[]).filter(x=>starVal(x[2])!==null).sort((a,b)=>starVal(b[2])-starVal(a[2]))[0];
-  const ru=pool.slice(1,4).map(r=>`<li>${chip(r.p)} <b>${esc(r.type)}</b> · ${esc(r.city||'')} · ${fmt(r.d)} <span class="num" style="float:right">${esc(r.rate)}</span></li>`).join('');
+  const ru=pool.slice(1,4).map(r=>`<li>${chip(r.p)} <b>${esc(r.type)}</b> · ${esc(r.city||'')} · ${fmt(r.d)} <b class="num">${esc(r.rate)}</b></li>`).join('');
   return `<div class="cotw" style="--c:${pr.c}">
     <div class="kicker">${esc(pr.short)} · ${fmt(e.d)} · ${esc(e.city||'')}</div>
     <h4>${esc(e.type)}</h4>
@@ -360,15 +377,80 @@ function cardOfWeek(shows){
 function storylinesToWatch(){
   return ORDER.filter(k=>P[k]&&(P[k].stories||[]).length).map(k=>{
     const pr=P[k], s=pr.stories[0];   // newest storyline is first in each list
-    const t=String(s[1]||''), cut=t.length>170?t.slice(0,170).replace(/\s+\S*$/,'')+'…':t;
+    const t=String(s[1]||''), cut=t.length>125?t.slice(0,125).replace(/\s+\S*$/,'')+'…':t;
     return `<li style="--c:${pr.c}"><span class="kicker">${esc(pr.short)}</span><a href="#${k}" style="text-decoration:none"><b>${esc(s[0])}</b></a>${esc(cut)}</li>`;
   }).join('');
+}
+
+/* ---- Talent File (front page spotlight + #file page) ---- */
+function spotMatches(){
+  if(typeof SPOTLIGHT==='undefined') return [];
+  const re=new RegExp(SPOTLIGHT.match);const out=[];
+  E.filter(e=>!e.plan||true).forEach(e=>(e.m||[]).forEach(m=>{if(re.test(m[0]))out.push({e,m,past:pastE(e)})}));
+  return out.sort((a,b)=>a.e.d.localeCompare(b.e.d));
+}
+function spotStats(list){
+  const run=list.filter(x=>x.past&&x.m[1]);const promos=[...new Set(run.map(x=>x.e.p))];
+  const best=run.filter(x=>starVal(x.m[2])!==null).sort((a,b)=>starVal(b.m[2])-starVal(a.m[2]))[0];
+  return {run,promos,best};
+}
+function talentFileBox(){
+  if(typeof SPOTLIGHT==='undefined') return '';
+  const list=spotMatches(), {run,promos,best}=spotStats(list);
+  const last=run.slice(-3).reverse();
+  return `<h2 class="sec">Talent File <small>In the spotlight</small></h2>
+  <div class="tfile">
+    <div class="tf-name">${esc(SPOTLIGHT.name)} ${promos.map(pchip).join('')}</div>
+    <div class="tf-stats"><div><b>${run.length}</b><span>Matches</span></div><div><b>${esc(SPOTLIGHT.record)}</b><span>Record</span></div><div><b>${promos.length}</b><span>Promotions</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div></div>
+    <p class="tf-blurb">${esc(SPOTLIGHT.blurb)}</p>
+    <ul class="tf-last">${last.map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${pchip(x.e.p)} ${esc(x.m[0])} <span class="mute">· ${esc(x.m[1])}</span> <b class="num">${esc(x.m[2]||'')}</b></li>`).join('')}</ul>
+    <p style="font-family:var(--cond);font-size:13px;margin:6px 0 0"><a href="#file">Every match →</a></p>
+  </div>`;
+}
+function viewTalentFile(){
+  if(typeof SPOTLIGHT==='undefined') return `<div class="empty">No Talent File set.</div>`;
+  const list=spotMatches(), {run,promos,best}=spotStats(list);
+  const up=list.filter(x=>!x.past);
+  const row=(x,fut)=>`<tr class="${fut?'':'past'}"><td style="white-space:nowrap">${fmt(x.e.d)}</td><td>${pchip(x.e.p)}</td><td><b>${esc(x.m[0])}</b><br><span class="mute" style="font-size:13px">${esc([x.e.city,x.e.type].filter(Boolean).join(' · '))}</span></td><td>${fut?(x.m[1]?`<span class="spoil">${esc(x.m[1])}</span>`:'<span class="mute">TBA</span>'):esc(x.m[1])}</td><td class="num">${fut?'':esc(x.m[2]||'')}</td></tr>`;
+  return `<h2 class="sec">Talent File <small>${esc(SPOTLIGHT.name)}</small></h2>
+  <div class="tfile big">
+    <div class="tf-name">${esc(SPOTLIGHT.name)} ${promos.map(pchip).join('')}</div>
+    <div class="tf-stats"><div><b>${run.length}</b><span>Matches</span></div><div><b>${esc(SPOTLIGHT.record)}</b><span>Record</span></div><div><b>${promos.length}</b><span>Promotions</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div></div>
+    <p class="tf-blurb">${esc(SPOTLIGHT.blurb)}</p>
+  </div>
+  <h3 class="amonth" style="font-size:22px">Results <small>${run.length}</small></h3>
+  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th>Result</th><th>Rating</th></tr></thead><tbody>${run.map(x=>row(x,0)).join('')}</tbody></table></div>
+  ${up.length?`<h3 class="amonth" style="font-size:22px">Booked <small>plan · finishes hidden until they happen</small></h3><div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th>Finish</th><th></th></tr></thead><tbody>${up.map(x=>row(x,1)).join('')}</tbody></table></div>`:''}
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Built from every card on the site. Matches before ${fmt(SPOTLIGHT.since)} are To establish.</p>`;
+}
+function worldNumbers(){
+  const mo=WORLD_DATE.slice(0,7);
+  const shows=E.filter(e=>e.d.startsWith(mo)&&isPast(e.d)&&pastE(e));
+  let fans=0,gate=0;shows.forEach(e=>{const g=String(e.gate||'');const a=g.match(/^~?([\d,]+)/);const m=g.match(/\$([\d,]+)/);if(a&&!/^\$/.test(g))fans+=+a[1].replace(/,/g,'');if(m)gate+=+m[1].replace(/,/g,'')});
+  const ms=[];shows.forEach(e=>(e.m||[]).forEach(m=>{const v=starVal(m[2]);if(v!==null)ms.push([v,m,e])}));
+  ms.sort((a,b)=>b[0]-a[0]);const top=ms[0], worst=ms[ms.length-1];
+  const fours=ms.filter(x=>x[0]>=4).length;
+  const busy=Object.entries(shows.reduce((o,e)=>(o[e.p]=(o[e.p]||0)+1,o),{})).sort((a,b)=>b[1]-a[1])[0];
+  const big=shows.filter(e=>/\$/.test(e.gate||'')).sort((a,b)=>+((b.gate.match(/\$([\d,]+)/)||[0,'0'])[1].replace(/,/g,''))-+((a.gate.match(/\$([\d,]+)/)||[0,'0'])[1].replace(/,/g,'')))[0];
+  const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const stat=(n,l)=>`<div><b>${n}</b><span>${l}</span></div>`;
+  return `<h2 class="sec">By the numbers <small>${MONTHS[+mo.slice(5)-1]} so far</small></h2>
+  <div class="tf-stats nums">${stat(shows.length,'Shows run')}${stat(fans.toLocaleString(),'Fans')}${stat('$'+(gate>=1e6?(gate/1e6).toFixed(2)+'M':Math.round(gate/1000)+'K'),'Live gates')}${stat(fours,'**** or better')}</div>
+  <ul class="tf-last">
+    ${top?`<li><span class="d">Best</span>${pchip(top[2].p)} ${esc(top[1][0])} <b class="num">${esc(top[1][2])}</b> <span class="mute">· ${fmt(top[2].d)}</span></li>`:''}
+    ${worst?`<li><span class="d">Worst</span>${pchip(worst[2].p)} ${esc(worst[1][0])} <b class="num">${esc(worst[1][2])}</b> <span class="mute">· ${fmt(worst[2].d)}</span></li>`:''}
+    ${big?`<li><span class="d">Top gate</span>${pchip(big.p)} ${esc(big.type)} <span class="mute">· ${esc(big.gate)}</span></li>`:''}
+    ${busy?`<li><span class="d">Busiest</span>${pchip(busy[0])} ${busy[1]} shows</li>`:''}
+  </ul>
+  <p style="font-family:var(--cond);font-size:13px;margin:6px 0 0"><a href="#showarchive">Show archive →</a></p>
+  ${(()=>{const ahead=E.filter(e=>e.big&&!isPast(e.d)&&!pastE(e)).sort((a,b)=>a.d.localeCompare(b.d)).slice(0,5);return ahead.length?`<h2 class="sec">Big shows ahead <small>plan</small></h2><ul class="tf-last">${ahead.map(e=>{const ms=(e.m||[]).filter(m=>!/^(Promo|Interview|Segment|Angle|Closing)/i.test(m[0]));const main=ms.find(m=>/^Main/i.test(m[0]))||ms.find(m=>/Title|Triple Crown|IWGP|Championship/i.test(m[0]))||ms.slice(-1)[0];return `<li><span class="d">${fmt(e.d)}</span>${pchip(e.p)} <b>${esc(e.type)}</b> <span class="mute">· ${esc(e.city||'')}</span>${main?`<br><span style="padding-left:78px;display:inline-block" class="mute">${esc(main[0])}</span>`:''}</li>`}).join('')}</ul>`:''})()}`;
 }
 function frontBottom(lastWeek){
   return `<section class="grid g2 col-rule front-bottom">
     <div>
       <h2 class="sec">Card of the week <small>Best-rated show last week</small></h2>
       ${cardOfWeek(lastWeek)}
+      ${worldNumbers()}
     </div>
     <div>
       <h2 class="sec">Storylines to watch <small>One per territory</small></h2>
@@ -420,14 +502,15 @@ function viewHome(){
   <section class="grid g2 col-rule">
     <div>
       <h2 class="sec">Last week's results <small>The 7 days before ${fmt(WORLD_DATE)}</small></h2>
-      ${lastWeek.slice(0,4).map(e=>showCard(e,{chip:1})).join('')}
-      <p style="font-family:var(--cond);font-size:13px">More on each promotion's page.</p>
+      <div class="lw">${lastWeek.slice(0,8).map(e=>showRow(e,1)).join('')}</div>
+      <p style="font-family:var(--cond);font-size:13px">${lastWeek.length>8?`${lastWeek.length-8} more in the `:'Every result is in the '}<a href="#showarchive">Show Archive →</a></p>
     </div>
     <div>
       <h2 class="sec">The Ledger <small>July 1991 money</small></h2>
       ${gates.map(([k,g])=>`<div class="barrow" style="--c:${P[k].c}"><span>${chip(k)}</span><div class="bar" style="width:${(g/maxG*100).toFixed(1)}%"></div><span class="num">$${g.toLocaleString()}</span></div>`).join('')}
       <p class="mute" style="font-family:var(--cond);font-size:13px;margin-top:6px">Live gates logged for July 1991 so far. TV taping crowds count on the taping date. Pay-per-view buys and merchandise aren't included.</p>
       ${(()=>{const t=topEarners(null,5);return t.length?`<h2 class="sec">Top earners <small>${esc(EARNINGS.month)} so far</small></h2>${t.map(([x,v],i)=>`<div style="display:flex;justify-content:space-between;border-bottom:1px dotted var(--soft);padding:4px 0;font-family:var(--cond);font-size:15px"><span>${i+1}. <b>${esc(x.name)}</b> ${x.promos.map(pchip).join('')}</span><span class="num">${eMoney(v)}</span></div>`).join('')}<p style="font-family:var(--cond);font-size:13px;margin-top:6px"><a href="#earnings">Full earnings tracker →</a></p>`:''})()}
+      ${talentFileBox()}
     </div>
   </section>
   ${frontBottom(lastWeek)}`;
@@ -632,13 +715,16 @@ function viewCalendar(){
   ${keys.map(d=>`<div class="cal-day ${isToday(d)?'today':''}"><div class="d">${MON[dt(d).getUTCMonth()]} ${dt(d).getUTCDate()}<small>${DOW[dt(d).getUTCDay()]}${isToday(d)?' · today':''}</small></div><div>${days[d].map(e=>`<div class="ev ${e.big?'big':''}">${chip(e.p)}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${isPast(e.d)?' <span class="flag" style="color:var(--red)">overdue</span>':pastE(e)?' <span class="flag" style="color:var(--mute)">ran</span>':''}${e.m&&e.m[0]&&e.m[0][0]!=='Card not set'?`<br><span style="padding-left:58px;display:inline-block;font-size:13px" class="mute">${esc(e.m[0][0])}</span>`:''}</div>`).join('')}</div></div>`).join('')}`;
 }
 
+function showRow(e,withDate){
+  const best=e=>(e.m||[]).filter(x=>x[2]).map(x=>[x,starVal(x[2])]).filter(x=>x[1]!==null).sort((a,b)=>b[1]-a[1])[0];
+  return (()=>{const b=best(e);return `<div class="ev ${e.big?'big':''}">${withDate?`<span class="lwd">${fmt(e.d)}</span>`:''}${chip(e.p)}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${e.rate?` <span class="num arate">${esc(e.rate)}</span>`:''}
+    <div class="adet">${e.gate?`<span>${esc(e.gate)}</span>`:''}${b?`<span>Best: ${esc(b[0][0])} ${esc(b[0][2])}</span>`:''}${(e.reads||[]).filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])}</a>`).join('')}${e.link&&SITES[e.p]?siteLink(e.p,e.link,'Full show ↗'):''}</div></div>`})();
+}
 function viewShowArchive(){
   const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
   const shows=E.filter(e=>calFilter.has(e.p)&&isPast(e.d)&&pastE(e)).sort((a,b)=>b.d.localeCompare(a.d)||a.p.localeCompare(b.p));
   const months={};shows.forEach(e=>{const m=e.d.slice(0,7);(months[m]=months[m]||[]).push(e)});
-  const best=e=>(e.m||[]).filter(x=>x[2]).map(x=>[x,starVal(x[2])]).filter(x=>x[1]!==null).sort((a,b)=>b[1]-a[1])[0];
-  const row=e=>{const b=best(e);return `<div class="ev ${e.big?'big':''}">${chip(e.p)}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${e.rate?` <span class="num arate">${esc(e.rate)}</span>`:''}
-    <div class="adet">${e.gate?`<span>${esc(e.gate)}</span>`:''}${b?`<span>Best: ${esc(b[0][0])} ${esc(b[0][2])}</span>`:''}${(e.reads||[]).filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])}</a>`).join('')}${e.link&&SITES[e.p]?siteLink(e.p,e.link,'Full show ↗'):''}</div></div>`};
+  const row=showRow;
   return `<h2 class="sec">Show Archive <small>Every show that has run, by month</small></h2>
   <div class="filters">${ORDER.map(k=>`<button data-f="${k}" class="${calFilter.has(k)?'':'off'}" style="--c:${P[k].c}">${P[k].short}</button>`).join('')}</div>
   ${Object.keys(months).length?'':`<div class="empty" style="margin-top:20px">No shows have run yet for these promotions.</div>`}
@@ -698,6 +784,7 @@ function route(){
   if(P[key]) html=viewPromo(key,curTab[key]);
   else if(key==='calendar') html=viewCalendar();
   else if(key==='showarchive') html=viewShowArchive();
+  else if(key==='file') html=viewTalentFile();
   else if(key==='talent') html=viewTalent();
   else if(key==='arrivals') html=viewArrivals();
   else if(key==='money') html=viewMoney();
