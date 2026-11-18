@@ -206,6 +206,10 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 .stw{list-style:none;padding:0;margin:0}
 .stw li{border-left:4px solid var(--c);padding:4px 0 4px 12px;margin-bottom:12px;font-size:15px;line-height:1.4}
 .stw li b{display:block;font-family:var(--cond);font-size:17px;margin:1px 0 2px}
+.tl.wk li{padding:6px 0}
+.wk-show{font-family:var(--cond);font-size:14px;line-height:1.3;padding:2px 0}
+.wk-show b{font-weight:600}
+.wk-show.big b{font-weight:700;color:var(--red)}
 </style>
 </head>
 <body>
@@ -362,6 +366,10 @@ function frontBottom(lastWeek){
 
 function viewHome(){
   const week=E.filter(e=>{const x=dt(e.d);return x>=W && (x-W)/864e5<=6}).sort((a,b)=>a.d.localeCompare(b.d));
+  // This week: show whole days until about 12 shows are listed, then link to the calendar
+  const weekDays=[];let shown=0;
+  for(const d of [...new Set(week.map(e=>e.d))]){const n=week.filter(e=>e.d===d).length;if(weekDays.length>=2&&shown+n>12)break;weekDays.push(d);shown+=n;}
+  const weekMore=week.length-shown;
   const lastWeek=E.filter(e=>{const days=(W-dt(e.d))/864e5;return pastE(e) && days>=1 && days<=7 && e.m}).sort((a,b)=>b.d.localeCompare(a.d));
   const gates=ORDER.map(k=>{const F=typeof FINANCE!=='undefined'&&FINANCE[k];const rows=(F&&Array.isArray(F.rows))?F.rows:[];return [k,rows.filter(r=>String(r.d||'').startsWith('1991-07')&&typeof r.gate==='number').reduce((s,r)=>s+r.gate,0)]}).filter(g=>g[1]>0).sort((a,b)=>b[1]-a[1]);
   const maxG=Math.max(...gates.map(g=>g[1]));
@@ -387,8 +395,8 @@ function viewHome(){
         <ul style="margin:0;padding-left:18px;font-size:15px">${ORDER.flatMap(k=>(P[k].roster||[]).filter(r=>/^INJ/.test(r[1]||'')).map(r=>`<li><b>${esc(r[0])}</b> (${esc(P[k].short)}): ${esc(r[1].replace(/^INJ:\s*/,'').replace(/^\d+\s*·\s*/,'').split(' · ')[0])}</li>`)).join('')}</ul>
       </div>
       <h2 class="sec" style="font-size:22px">This week <small>${fmt(WORLD_DATE)} →</small></h2>
-      <ul class="tl">${week.map(e=>`<li class="${e.big?'big':''}"><div class="d">${fmt(e.d)}${isToday(e.d)?'<small style="color:var(--red)">Tonight</small>':''}</div><div>${chip(e.p)} <b style="font-family:var(--cond)">${esc(e.type)}</b>${pastE(e)&&!isToday(e.d)?' <span class="flag" style="color:var(--mute)">already run</span>':''}<br><span class="mute" style="font-size:14px">${esc([e.city,e.venue].filter(Boolean).join(', '))}</span></div></li>`).join('')}</ul>
-      <p style="font-family:var(--cond);font-size:13px"><a href="#calendar">Full world calendar →</a></p>
+      <ul class="tl wk">${weekDays.map(d=>`<li><div class="d">${fmt(d)}${isToday(d)?'<small style="color:var(--red)">Tonight</small>':''}</div><div>${week.filter(e=>e.d===d).map(e=>`<div class="wk-show${e.big?' big':''}">${chip(e.p)} <b>${esc(e.type)}</b> <span class="mute">· ${esc(String(e.city||'').split(',')[0])}</span>${pastE(e)&&!isToday(e.d)?' <span class="flag" style="color:var(--mute)">ran</span>':''}</div>`).join('')}</div></li>`).join('')}</ul>
+      <p style="font-family:var(--cond);font-size:13px">${weekMore?`${weekMore} more show${weekMore>1?'s':''} through ${fmt(week[week.length-1].d)}. `:''}<a href="#calendar">Full world calendar →</a></p>
     </aside>
   </section>
 
