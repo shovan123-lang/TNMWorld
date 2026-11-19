@@ -22,7 +22,7 @@ const TICKER = [
   "njpw-observer-fukuoka-0718"
  ],
  [
-  "<b>WWF</b> Richfield: Rockers and Demolition brawl to a double countout on Prime Time taping",
+  "<b>WWF</b> Richfield: Jimmy Hart fires Dino Bravo; Michaels walks out on Jannetty",
   "wwf-observer-richfield-0718"
  ],
  [
