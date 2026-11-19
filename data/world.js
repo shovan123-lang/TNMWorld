@@ -18,6 +18,14 @@ const SPOTLIGHT = {"name": "Eddie Guerrero", "match": "Eddie(?! Gilbert)|Los Gue
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
 const TICKER = [
  [
+  "<b>NJPW</b> Fukuoka: Chono makes Kido tap to the STF; Sasaki stands with Chono after Norton no-shows",
+  "njpw-observer-fukuoka-0718"
+ ],
+ [
+  "<b>WWF</b> Richfield: Rockers and Demolition brawl to a double countout on Prime Time taping",
+  "wwf-observer-richfield-0718"
+ ],
+ [
   "<b>WCW</b> Observer exclusive: Sting is going to New Japan full-time for the G1 Climax and Wrestle Kingdom (January 4, 1992, Tokyo Dome)",
   "wcw-observer-sting-njpw-0718"
  ],
@@ -64,14 +72,6 @@ const TICKER = [
  [
   "<b>NJPW</b> El Samurai replaces Pegasus Kid vs. Liger at Sumo Hall",
   "njpw-samurai-gets-liger"
- ],
- [
-  "<b>WWF</b> WrestleFest: Hogan retains, Sid strikes, LOD save",
-  "wwf-wrestlefest-recap"
- ],
- [
-  "<b>POWER PRO</b> Power Hour taped in Nashville, airs 7/28",
-  "pp"
  ],
  [
   "<b>TWA</b> Idol wins with his feet on the ropes",
