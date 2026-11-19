@@ -15,7 +15,7 @@ const WOMEN = new Set(["Miss Elizabeth", "Missy Hyatt", "La Diabólica", "Lola G
 const SPOTLIGHT = {"name": "Eddie Guerrero", "match": "Eddie(?! Gilbert)|Los Guerreros", "record": "7–0", "since": "1991-07-03",
  "blurb": "Unbeaten in two countries. Eddie has gone 5–0 in CMLL with his family, Chavo and Fuerza, and 2–0 on USWA's Worldwide, where he beat the Spellbinder at ****1/4 in Jonesboro. Next up: the Torneo de Tercias semifinals at Arena México on 7/19."};
 
-// Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest (Sean, 2026-11-11).
+// Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest.
 const TICKER = [
  [
   "<b>NJPW</b> Fukuoka: Chono makes Kido tap to the STF; Sasaki stands with Chono after Norton no-shows",

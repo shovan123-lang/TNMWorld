@@ -812,7 +812,7 @@ $('#spoilBtn').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault()
 /* Ticker + dates */
 $('#worlddate').textContent='World date: '+fmtLong(WORLD_DATE);
 $('#wd2').textContent=fmtLong(WORLD_DATE);
-/* Ticker: at most 15 headlines (Sean, 2026-11-11). The newest posted (top of TICKER) win,
+/* Ticker: at most 15 headlines. The newest posted (top of TICKER) win,
    but every promotion keeps its newest headline. Shown in TICKER order, newest first. */
 const TICKER_MAX=15;
 function pickTicker(list){
