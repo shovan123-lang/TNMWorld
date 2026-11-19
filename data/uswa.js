@@ -37,7 +37,6 @@ E.push(...[
 {"d": "1991-08-28", "p": "uswa", "city": "Evansville, IN", "venue": "Veterans Memorial Coliseum", "type": "House show"},
 {"d": "1991-08-29", "p": "uswa", "city": "Humboldt, TN", "venue": "To establish", "type": "House show"},
 {"d": "1991-08-31", "p": "uswa", "city": "Memphis, TN", "venue": "WMC-TV Studio", "type": "Championship Wrestling (live TV)"},
-{"d": "1991-08-31", "p": "uswa", "city": "Nashville, TN", "venue": "Fairgrounds", "type": "House show"},
 {"d": "1991-09-02", "p": "uswa", "city": "Memphis, TN", "venue": "Mid South Coliseum", "type": "Star Wars '91", "big": 1},
 {"d": "1991-09-03", "p": "uswa", "city": "Louisville, KY", "venue": "Louisville Gardens", "type": "House show"},
 {"d": "1991-09-04", "p": "uswa", "city": "Evansville, IN", "venue": "Veterans Memorial Coliseum", "type": "House show"},
