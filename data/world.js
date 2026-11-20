@@ -18,6 +18,10 @@ const SPOTLIGHT = {"name": "Eddie Guerrero", "match": "Eddie(?! Gilbert)|Los Gue
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest.
 const TICKER = [
  [
+  "<b>CMLL</b> Arena México: 15,500 see the Guerreros and Santo, Volador & Dragón reach the trios final; Konnan ends his slide",
+  "cmll-observer-arena-mexico-0719"
+ ],
+ [
   "<b>FMW</b> Sagamihara: Sullivan shakes Pogo's hand; The Shooter taps Verichev on night one",
   "fmw-observer-sagamihara-0719"
  ],
