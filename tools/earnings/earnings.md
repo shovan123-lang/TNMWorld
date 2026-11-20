@@ -148,172 +148,200 @@
 | 146 | Giant Haystacks | ASW | — | $1,400 (4 app.) | — | **$1,400** | — | $1,400 |
 | 147 | Stan Hansen | USWA, AJPW | — | $1,350 (3 app.) | — | **$1,350** | $30,000 | $31,350 |
 | 148 | Fuerza Guerrera | CMLL | — | $1,350 (2 app.) | — | **$1,350** | — | $1,350 |
-| 149 | El Brazo | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
-| 150 | Felino | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
-| 151 | Jerry Estrada | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
-| 152 | Missy Hyatt (manager) | USWA | — | $1,125 (5 app.) | — | **$1,125** | — | $1,125 |
-| 153 | Paul Ellering (manager) | USWA | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
-| 154 | Scott Steiner | USWA | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
-| 155 | Tully Blanchard | USWA | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
-| 156 | Black Magic | CMLL | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
-| 157 | Jaque Mate | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
-| 158 | Jerry Lawler | USWA | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
-| 159 | Masakre | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
-| 160 | Robert Fuller | USWA | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
-| 161 | Ángel Azteca | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
-| 162 | Dan Spivey | USWA, AJPW | — | $900 (3 app.) | — | **$900** | $12,000 | $12,900 |
-| 163 | Bob Backlund | ASW | — | $900 (3 app.) | — | **$900** | — | $900 |
-| 164 | Sam Houston | USWA | — | $810 (5 app.) | — | **$810** | — | $810 |
-| 165 | The Lightning Kid | Power Pro, CMLL | — | $785 (3 app.) | — | **$785** | — | $785 |
-| 166 | Bill Dundee | USWA | — | $750 (4 app.) | — | **$750** | — | $750 |
-| 167 | Javier Cruz | CMLL | — | $750 (2 app.) | — | **$750** | — | $750 |
-| 168 | La Diabólica | CMLL | — | $750 (3 app.) | — | **$750** | — | $750 |
-| 169 | Big Daddy | ASW | — | $700 (2 app.) | — | **$700** | — | $700 |
-| 170 | Lola González | CMLL | — | $600 (3 app.) | — | **$600** | — | $600 |
-| 171 | Robbie Brookside | ASW | — | $600 (4 app.) | — | **$600** | — | $600 |
-| 172 | Silver King | CMLL | — | $600 (2 app.) | — | **$600** | — | $600 |
-| 173 | Doug Gilbert | USWA | — | $510 (3 app.) | — | **$510** | — | $510 |
-| 174 | Honky Tonk Man | USWA | — | $510 (4 app.) | — | **$510** | — | $510 |
-| 175 | Apolo Dantes | CMLL | — | $500 (2 app.) | — | **$500** | — | $500 |
-| 176 | Steve Regal | ASW | — | $500 (4 app.) | — | **$500** | — | $500 |
-| 177 | Fit Finlay | ASW | — | $450 (3 app.) | — | **$450** | — | $450 |
-| 178 | Scotty Flamingo | USWA | — | $450 (4 app.) | — | **$450** | — | $450 |
-| 179 | Chris Adams | USWA | — | $425 (3 app.) | — | **$425** | — | $425 |
-| 180 | Dirty White Boy | USWA | — | $420 (4 app.) | — | **$420** | — | $420 |
-| 181 | Jimmy Valiant | USWA | — | $420 (4 app.) | — | **$420** | — | $420 |
-| 182 | Austin Idol | TWA | — | $400 (1 app.) | — | **$400** | — | $400 |
-| 183 | Bad News Brown | TWA | — | $400 (1 app.) | — | **$400** | — | $400 |
-| 184 | Gary Albright | ASW | — | $375 (3 app.) | — | **$375** | — | $375 |
-| 185 | Eric Embry | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
-| 186 | Mark Canterbury | USWA | — | $360 (4 app.) | — | **$360** | — | $360 |
-| 187 | Tom Prichard | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
-| 188 | Ivan Putski | ASW | — | $350 (2 app.) | — | **$350** | — | $350 |
-| 189 | Johnny Saint | ASW | — | $350 (2 app.) | — | **$350** | — | $350 |
-| 190 | Sangre Chicana | CMLL | — | $350 (1 app.) | — | **$350** | — | $350 |
-| 191 | Dutch Mantell | USWA | — | $330 (1 app.) | — | **$330** | — | $330 |
-| 192 | Rex King | USWA | — | $315 (4 app.) | — | **$315** | — | $315 |
-| 193 | Brickhouse Brown | USWA | — | $300 (2 app.) | — | **$300** | — | $300 |
-| 194 | Bruce Hart | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
-| 195 | Doc Dean | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
-| 196 | Espectro Jr. | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
-| 197 | Tony Arce | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
-| 198 | Tony St. Clair | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
-| 199 | Vulcano | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
-| 200 | Iron Mike Sharpe | ASW | — | $255 (3 app.) | — | **$255** | — | $255 |
-| 201 | Al Snow | TWA | — | $250 (1 app.) | — | **$250** | — | $250 |
-| 202 | Moondog Rex | USWA | — | $250 (3 app.) | — | **$250** | — | $250 |
-| 203 | Nightmare Danny Davis | USWA | — | $250 (2 app.) | — | **$250** | — | $250 |
-| 204 | Nightmare Ken Wayne | USWA | — | $250 (2 app.) | — | **$250** | — | $250 |
-| 205 | Brian Christopher | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
-| 206 | Scott Taylor | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
-| 207 | Sweet Daddy Falcone | USWA | — | $240 (3 app.) | — | **$240** | — | $240 |
-| 208 | Tony Williams | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
-| 209 | Bob Armstrong | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
-| 210 | Buddy Landell | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
-| 211 | Chris Candido | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
-| 212 | Moondog Spot | USWA | — | $225 (3 app.) | — | **$225** | — | $225 |
-| 213 | Dave Taylor | ASW | — | $200 (2 app.) | — | **$200** | — | $200 |
-| 214 | Iceman King Parsons | ASW | — | $200 (2 app.) | — | **$200** | — | $200 |
-| 215 | Jim Powers | USWA | — | $200 (4 app.) | — | **$200** | — | $200 |
-| 216 | Dory Funk Jr. | AJPW, ASW | — | $175 (1 app.) | — | **$175** | $12,000 | $12,175 |
-| 217 | Bunkhouse Buck | TWA | — | $175 (1 app.) | — | **$175** | — | $175 |
-| 218 | The Nightstalker | TWA | — | $175 (1 app.) | — | **$175** | — | $175 |
-| 219 | Danny Boy Collins | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
-| 220 | Hector Guerrero | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
-| 221 | Skull Murphy | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
-| 222 | Action Jackson | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
-| 223 | J.T. Smith | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
-| 224 | Mr. Sandman | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
-| 225 | Rob Zakowski | USWA | — | $150 (3 app.) | — | **$150** | — | $150 |
-| 226 | Gran Hamada | NJPW, ASW | — | $125 (1 app.) | — | **$125** | $6,000 | $6,125 |
-| 227 | The Spellbinder | USWA | — | $120 (2 app.) | — | **$120** | — | $120 |
-| 228 | Bill Watts (staff) | Power Pro | — | $100 (1 app.) | — | **$100** | — | $100 |
-| 229 | Rocky Johnson (staff) | Power Pro | — | $75 (1 app.) | — | **$75** | — | $75 |
-| 230 | Chris Jericho | Power Pro | — | $60 (1 app.) | — | **$60** | — | $60 |
-| 231 | Chris Benoit | Power Pro | — | $45 (1 app.) | — | **$45** | — | $45 |
-| 232 | Johnny Rich | USWA | — | $45 (2 app.) | — | **$45** | — | $45 |
-| 233 | Mike Awesome | Power Pro | — | $45 (1 app.) | — | **$45** | — | $45 |
-| 234 | Buzz Sawyer (staff) | Power Pro | — | $40 (1 app.) | — | **$40** | — | $40 |
-| 235 | Lance Storm | Power Pro | — | $40 (1 app.) | — | **$40** | — | $40 |
-| 236 | The Masked Avenger | USWA | — | $40 (1 app.) | — | **$40** | — | $40 |
-| 237 | Brad Armstrong | Power Pro | — | $35 (1 app.) | — | **$35** | — | $35 |
-| 238 | Johnny B. Badd | Power Pro | — | $35 (1 app.) | — | **$35** | — | $35 |
-| 239 | Tatanka | Power Pro | — | $35 (1 app.) | — | **$35** | — | $35 |
-| 240 | Bart Gunn | Power Pro | — | $30 (1 app.) | — | **$30** | — | $30 |
-| 241 | Bobby Duncum Jr. | Power Pro | — | $30 (1 app.) | — | **$30** | — | $30 |
-| 242 | Leatherface | Power Pro | — | $30 (1 app.) | — | **$30** | — | $30 |
-| 243 | Marcus Alexander Bagwell | Power Pro | — | $30 (1 app.) | — | **$30** | — | $30 |
-| 244 | Devon Hughes | Power Pro | — | $25 (1 app.) | — | **$25** | — | $25 |
-| 245 | Judge Dread | Power Pro | — | $25 (1 app.) | — | **$25** | — | $25 |
-| 246 | Steven Dunn | Power Pro | — | $20 (1 app.) | — | **$20** | — | $20 |
-| 247 | Jan Vang | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
-| 248 | Jody Burt | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
-| 249 | Jos LeDuc | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
-| 250 | Kerry Brown | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
-| 251 | Les Thornton | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
-| 252 | Lino Ingram | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
-| 253 | Oliver Peters | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
-| 254 | Giant Baba | AJPW | — | — | — | **$0** | $30,000 | $30,000 |
-| 255 | Jumbo Tsuruta | AJPW | — | — | — | **$0** | $30,000 | $30,000 |
-| 256 | Riki Chōshu | NJPW | — | — | — | **$0** | $28,000 | $28,000 |
-| 257 | Mitsuharu Misawa | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
-| 258 | Steve Williams | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
-| 259 | Tatsumi Fujinami | NJPW | — | — | — | **$0** | $22,000 | $22,000 |
-| 260 | Terry Gordy | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
-| 261 | Bam Bam Bigelow | NJPW | — | — | — | **$0** | $18,000 | $18,000 |
-| 262 | Keiji Mutoh | NJPW | — | — | — | **$0** | $18,000 | $18,000 |
-| 263 | Masahiro Chono | NJPW | — | — | — | **$0** | $16,000 | $16,000 |
-| 264 | Shinya Hashimoto | NJPW | — | — | — | **$0** | $16,000 | $16,000 |
-| 265 | Akira Taue | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
-| 266 | Dynamite Kid | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
-| 267 | Kenta Kobashi | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
-| 268 | Dan Kroffat | AJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 269 | Doug Furnas | AJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 270 | Hiroshi Hase | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 271 | Mil Mascaras | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 272 | Pegasus Kid | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 273 | Scott Norton | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 274 | Tiger Jeet Singh | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
-| 275 | Bobby Fulton | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 276 | Junji Hirata | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 277 | Kensuke Sasaki | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 278 | Kim Duk | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 279 | Masanobu Fuchi | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 280 | Shiro Koshinaka | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 281 | Tommy Rogers | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
-| 282 | Dean Malenko | AJPW | — | — | — | **$0** | $7,000 | $7,000 |
-| 283 | Jim Neidhart | NJPW | — | — | — | **$0** | $7,000 | $7,000 |
-| 284 | Joe Malenko | AJPW | — | — | — | **$0** | $7,000 | $7,000 |
-| 285 | Dos Caras | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 286 | El Samurai | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 287 | Hiro Saito | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 288 | Johnny Ace | AJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 289 | Kengo Kimura | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 290 | Osamu Kido | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 291 | Rusher Kimura | AJPW | — | — | — | **$0** | $6,000 | $6,000 |
-| 292 | Akira Nogami | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 293 | Giant Kimala II | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 294 | Haruka Eigen | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 295 | Ken Patera | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 296 | Kokina | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 297 | Kuniaki Kobayashi | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 298 | Masashi Aoyagi | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 299 | Norio Honaga | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 300 | Samu | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 301 | Tarzan Goto | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 302 | Tony Halme | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 303 | Too Cold Scorpio | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 304 | Tsuyoshi Kikuchi | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
-| 305 | Billy Joe Travis | AJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 306 | Corporal Kirchner | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 307 | Keith Hart | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 308 | Mando Guerrero | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 309 | Yoshinari Ogawa | AJPW | — | — | — | **$0** | $4,000 | $4,000 |
-| 310 | Hiroyoshi Tenzan | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
-| 311 | Jeff Gaylord | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
-| 312 | Masao Inoue | AJPW | — | — | — | **$0** | $3,000 | $3,000 |
-| 313 | Richard Slinger | AJPW | — | — | — | **$0** | $3,000 | $3,000 |
-| 314 | Savio Vega | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 149 | Atsushi Onita | FMW | — | $1,200 (1 app.) | — | **$1,200** | — | $1,200 |
+| 150 | El Brazo | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
+| 151 | Felino | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
+| 152 | Jerry Estrada | CMLL | — | $1,200 (3 app.) | — | **$1,200** | — | $1,200 |
+| 153 | Missy Hyatt (manager) | USWA | — | $1,125 (5 app.) | — | **$1,125** | — | $1,125 |
+| 154 | Paul Ellering (manager) | USWA | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
+| 155 | Scott Steiner | USWA | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
+| 156 | Tully Blanchard | USWA | — | $1,050 (3 app.) | — | **$1,050** | — | $1,050 |
+| 157 | Black Magic | CMLL | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
+| 158 | Jaque Mate | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
+| 159 | Jerry Lawler | USWA | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
+| 160 | Masakre | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
+| 161 | Robert Fuller | USWA | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
+| 162 | The Sheik | FMW | — | $1,000 (1 app.) | — | **$1,000** | — | $1,000 |
+| 163 | Ángel Azteca | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
+| 164 | Dan Spivey | USWA, AJPW | — | $900 (3 app.) | — | **$900** | $12,000 | $12,900 |
+| 165 | Bob Backlund | ASW | — | $900 (3 app.) | — | **$900** | — | $900 |
+| 166 | Sam Houston | USWA | — | $810 (5 app.) | — | **$810** | — | $810 |
+| 167 | The Lightning Kid | Power Pro, CMLL | — | $785 (3 app.) | — | **$785** | — | $785 |
+| 168 | Bill Dundee | USWA | — | $750 (4 app.) | — | **$750** | — | $750 |
+| 169 | Javier Cruz | CMLL | — | $750 (2 app.) | — | **$750** | — | $750 |
+| 170 | La Diabólica | CMLL | — | $750 (3 app.) | — | **$750** | — | $750 |
+| 171 | Big Daddy | ASW | — | $700 (2 app.) | — | **$700** | — | $700 |
+| 172 | Mr. Pogo | FMW | — | $700 (1 app.) | — | **$700** | — | $700 |
+| 173 | Leon Spinks | FMW | — | $600 (1 app.) | — | **$600** | — | $600 |
+| 174 | Lola González | CMLL | — | $600 (3 app.) | — | **$600** | — | $600 |
+| 175 | Robbie Brookside | ASW | — | $600 (4 app.) | — | **$600** | — | $600 |
+| 176 | Silver King | CMLL | — | $600 (2 app.) | — | **$600** | — | $600 |
+| 177 | Doug Gilbert | USWA | — | $510 (3 app.) | — | **$510** | — | $510 |
+| 178 | Honky Tonk Man | USWA | — | $510 (4 app.) | — | **$510** | — | $510 |
+| 179 | Apolo Dantes | CMLL | — | $500 (2 app.) | — | **$500** | — | $500 |
+| 180 | Grigory Verichev | FMW | — | $500 (1 app.) | — | **$500** | — | $500 |
+| 181 | Steve Regal | ASW | — | $500 (4 app.) | — | **$500** | — | $500 |
+| 182 | Fit Finlay | ASW | — | $450 (3 app.) | — | **$450** | — | $450 |
+| 183 | Kevin Sullivan | FMW | — | $450 (1 app.) | — | **$450** | — | $450 |
+| 184 | Sabu | FMW | — | $450 (1 app.) | — | **$450** | — | $450 |
+| 185 | Scotty Flamingo | USWA | — | $450 (4 app.) | — | **$450** | — | $450 |
+| 186 | Chris Adams | USWA | — | $425 (3 app.) | — | **$425** | — | $425 |
+| 187 | Dirty White Boy | USWA | — | $420 (4 app.) | — | **$420** | — | $420 |
+| 188 | Jimmy Valiant | USWA | — | $420 (4 app.) | — | **$420** | — | $420 |
+| 189 | Austin Idol | TWA | — | $400 (1 app.) | — | **$400** | — | $400 |
+| 190 | Bad News Brown | TWA | — | $400 (1 app.) | — | **$400** | — | $400 |
+| 191 | Combat Toyoda | FMW | — | $400 (1 app.) | — | **$400** | — | $400 |
+| 192 | Megumi Kudo | FMW | — | $400 (1 app.) | — | **$400** | — | $400 |
+| 193 | Mitsuhiro Matsunaga | FMW | — | $400 (1 app.) | — | **$400** | — | $400 |
+| 194 | Gary Albright | ASW | — | $375 (3 app.) | — | **$375** | — | $375 |
+| 195 | Eric Embry | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
+| 196 | Mark Canterbury | USWA | — | $360 (4 app.) | — | **$360** | — | $360 |
+| 197 | Tom Prichard | USWA | — | $360 (3 app.) | — | **$360** | — | $360 |
+| 198 | Big Titan | FMW | — | $350 (1 app.) | — | **$350** | — | $350 |
+| 199 | Ivan Putski | ASW | — | $350 (2 app.) | — | **$350** | — | $350 |
+| 200 | Johnny Saint | ASW | — | $350 (2 app.) | — | **$350** | — | $350 |
+| 201 | Sangre Chicana | CMLL | — | $350 (1 app.) | — | **$350** | — | $350 |
+| 202 | Svetlana Goundarenko | FMW | — | $350 (1 app.) | — | **$350** | — | $350 |
+| 203 | Dutch Mantell | USWA | — | $330 (1 app.) | — | **$330** | — | $330 |
+| 204 | Rex King | USWA | — | $315 (4 app.) | — | **$315** | — | $315 |
+| 205 | Brickhouse Brown | USWA | — | $300 (2 app.) | — | **$300** | — | $300 |
+| 206 | Bruce Hart | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
+| 207 | Debbie Combs | FMW | — | $300 (1 app.) | — | **$300** | — | $300 |
+| 208 | Doc Dean | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
+| 209 | Espectro Jr. | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
+| 210 | Horace Boulder | FMW | — | $300 (1 app.) | — | **$300** | — | $300 |
+| 211 | Ricky Fuji | FMW | — | $300 (1 app.) | — | **$300** | — | $300 |
+| 212 | Tony Arce | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
+| 213 | Tony St. Clair | ASW | — | $300 (3 app.) | — | **$300** | — | $300 |
+| 214 | Vulcano | CMLL | — | $300 (2 app.) | — | **$300** | — | $300 |
+| 215 | Iron Mike Sharpe | ASW | — | $255 (3 app.) | — | **$255** | — | $255 |
+| 216 | Al Snow | TWA | — | $250 (1 app.) | — | **$250** | — | $250 |
+| 217 | Jimmy Backlund | FMW | — | $250 (1 app.) | — | **$250** | — | $250 |
+| 218 | Katsuji Ueda | FMW | — | $250 (1 app.) | — | **$250** | — | $250 |
+| 219 | Moondog Rex | USWA | — | $250 (3 app.) | — | **$250** | — | $250 |
+| 220 | Nightmare Danny Davis | USWA | — | $250 (2 app.) | — | **$250** | — | $250 |
+| 221 | Nightmare Ken Wayne | USWA | — | $250 (2 app.) | — | **$250** | — | $250 |
+| 222 | Sambo Asako | FMW | — | $250 (1 app.) | — | **$250** | — | $250 |
+| 223 | Brian Christopher | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
+| 224 | Scott Taylor | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
+| 225 | Sweet Daddy Falcone | USWA | — | $240 (3 app.) | — | **$240** | — | $240 |
+| 226 | Tony Williams | USWA | — | $240 (4 app.) | — | **$240** | — | $240 |
+| 227 | Bob Armstrong | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
+| 228 | Buddy Landell | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
+| 229 | Chris Candido | TWA | — | $225 (1 app.) | — | **$225** | — | $225 |
+| 230 | Moondog Spot | USWA | — | $225 (3 app.) | — | **$225** | — | $225 |
+| 231 | Boris Gogichashvili | FMW | — | $200 (1 app.) | — | **$200** | — | $200 |
+| 232 | Dave Taylor | ASW | — | $200 (2 app.) | — | **$200** | — | $200 |
+| 233 | Iceman King Parsons | ASW | — | $200 (2 app.) | — | **$200** | — | $200 |
+| 234 | Jim Powers | USWA | — | $200 (4 app.) | — | **$200** | — | $200 |
+| 235 | Koba Kurtanidze | FMW | — | $200 (1 app.) | — | **$200** | — | $200 |
+| 236 | Mark Starr | FMW | — | $200 (1 app.) | — | **$200** | — | $200 |
+| 237 | Dory Funk Jr. | AJPW, ASW | — | $175 (1 app.) | — | **$175** | $12,000 | $12,175 |
+| 238 | Bunkhouse Buck | TWA | — | $175 (1 app.) | — | **$175** | — | $175 |
+| 239 | The Nightstalker | TWA | — | $175 (1 app.) | — | **$175** | — | $175 |
+| 240 | Danny Boy Collins | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
+| 241 | Hector Guerrero | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
+| 242 | Skull Murphy | ASW | — | $170 (2 app.) | — | **$170** | — | $170 |
+| 243 | Action Jackson | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
+| 244 | J.T. Smith | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
+| 245 | Masashi Honda | FMW | — | $150 (1 app.) | — | **$150** | — | $150 |
+| 246 | Mr. Sandman | TWA | — | $150 (1 app.) | — | **$150** | — | $150 |
+| 247 | Rob Zakowski | USWA | — | $150 (3 app.) | — | **$150** | — | $150 |
+| 248 | The Shooter | FMW | — | $150 (1 app.) | — | **$150** | — | $150 |
+| 249 | Gran Hamada | NJPW, ASW | — | $125 (1 app.) | — | **$125** | $6,000 | $6,125 |
+| 250 | Akihito Ichihara | FMW | — | $120 (1 app.) | — | **$120** | — | $120 |
+| 251 | Eiji Ezaki | FMW | — | $120 (1 app.) | — | **$120** | — | $120 |
+| 252 | Rie Nakamura | FMW | — | $120 (1 app.) | — | **$120** | — | $120 |
+| 253 | The Spellbinder | USWA | — | $120 (2 app.) | — | **$120** | — | $120 |
+| 254 | Yukie Nabeno | FMW | — | $120 (1 app.) | — | **$120** | — | $120 |
+| 255 | Yukihide Ueno | FMW | — | $120 (1 app.) | — | **$120** | — | $120 |
+| 256 | Bill Watts (staff) | Power Pro | — | $100 (1 app.) | — | **$100** | — | $100 |
+| 257 | Rocky Johnson (staff) | Power Pro | — | $75 (1 app.) | — | **$75** | — | $75 |
+| 258 | Chris Jericho | Power Pro | — | $60 (1 app.) | — | **$60** | — | $60 |
+| 259 | Chris Benoit | Power Pro | — | $45 (1 app.) | — | **$45** | — | $45 |
+| 260 | Johnny Rich | USWA | — | $45 (2 app.) | — | **$45** | — | $45 |
+| 261 | Mike Awesome | Power Pro | — | $45 (1 app.) | — | **$45** | — | $45 |
+| 262 | Buzz Sawyer (staff) | Power Pro | — | $40 (1 app.) | — | **$40** | — | $40 |
+| 263 | Lance Storm | Power Pro | — | $40 (1 app.) | — | **$40** | — | $40 |
+| 264 | The Masked Avenger | USWA | — | $40 (1 app.) | — | **$40** | — | $40 |
+| 265 | Brad Armstrong | Power Pro | — | $35 (1 app.) | — | **$35** | — | $35 |
+| 266 | Johnny B. Badd | Power Pro | — | $35 (1 app.) | — | **$35** | — | $35 |
+| 267 | Tatanka | Power Pro | — | $35 (1 app.) | — | **$35** | — | $35 |
+| 268 | Bart Gunn | Power Pro | — | $30 (1 app.) | — | **$30** | — | $30 |
+| 269 | Bobby Duncum Jr. | Power Pro | — | $30 (1 app.) | — | **$30** | — | $30 |
+| 270 | Leatherface | Power Pro | — | $30 (1 app.) | — | **$30** | — | $30 |
+| 271 | Marcus Alexander Bagwell | Power Pro | — | $30 (1 app.) | — | **$30** | — | $30 |
+| 272 | Devon Hughes | Power Pro | — | $25 (1 app.) | — | **$25** | — | $25 |
+| 273 | Judge Dread | Power Pro | — | $25 (1 app.) | — | **$25** | — | $25 |
+| 274 | Steven Dunn | Power Pro | — | $20 (1 app.) | — | **$20** | — | $20 |
+| 275 | Jan Vang | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
+| 276 | Jody Burt | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
+| 277 | Jos LeDuc | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
+| 278 | Kerry Brown | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
+| 279 | Les Thornton | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
+| 280 | Lino Ingram | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
+| 281 | Oliver Peters | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
+| 282 | Giant Baba | AJPW | — | — | — | **$0** | $30,000 | $30,000 |
+| 283 | Jumbo Tsuruta | AJPW | — | — | — | **$0** | $30,000 | $30,000 |
+| 284 | Riki Chōshu | NJPW | — | — | — | **$0** | $28,000 | $28,000 |
+| 285 | Mitsuharu Misawa | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
+| 286 | Steve Williams | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
+| 287 | Tatsumi Fujinami | NJPW | — | — | — | **$0** | $22,000 | $22,000 |
+| 288 | Terry Gordy | AJPW | — | — | — | **$0** | $22,000 | $22,000 |
+| 289 | Bam Bam Bigelow | NJPW | — | — | — | **$0** | $18,000 | $18,000 |
+| 290 | Keiji Mutoh | NJPW | — | — | — | **$0** | $18,000 | $18,000 |
+| 291 | Masahiro Chono | NJPW | — | — | — | **$0** | $16,000 | $16,000 |
+| 292 | Shinya Hashimoto | NJPW | — | — | — | **$0** | $16,000 | $16,000 |
+| 293 | Akira Taue | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
+| 294 | Dynamite Kid | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
+| 295 | Kenta Kobashi | AJPW | — | — | — | **$0** | $12,000 | $12,000 |
+| 296 | Dan Kroffat | AJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 297 | Doug Furnas | AJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 298 | Hiroshi Hase | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 299 | Mil Mascaras | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 300 | Pegasus Kid | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 301 | Scott Norton | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 302 | Tiger Jeet Singh | NJPW | — | — | — | **$0** | $10,000 | $10,000 |
+| 303 | Bobby Fulton | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 304 | Junji Hirata | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 305 | Kensuke Sasaki | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 306 | Kim Duk | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 307 | Masanobu Fuchi | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 308 | Shiro Koshinaka | NJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 309 | Tommy Rogers | AJPW | — | — | — | **$0** | $8,000 | $8,000 |
+| 310 | Dean Malenko | AJPW | — | — | — | **$0** | $7,000 | $7,000 |
+| 311 | Jim Neidhart | NJPW | — | — | — | **$0** | $7,000 | $7,000 |
+| 312 | Joe Malenko | AJPW | — | — | — | **$0** | $7,000 | $7,000 |
+| 313 | Dos Caras | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 314 | El Samurai | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 315 | Hiro Saito | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 316 | Johnny Ace | AJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 317 | Kengo Kimura | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 318 | Osamu Kido | NJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 319 | Rusher Kimura | AJPW | — | — | — | **$0** | $6,000 | $6,000 |
+| 320 | Akira Nogami | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 321 | Giant Kimala II | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 322 | Haruka Eigen | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 323 | Ken Patera | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 324 | Kokina | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 325 | Kuniaki Kobayashi | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 326 | Masashi Aoyagi | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 327 | Norio Honaga | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 328 | Samu | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 329 | Tarzan Goto | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 330 | Tony Halme | NJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 331 | Too Cold Scorpio | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 332 | Tsuyoshi Kikuchi | AJPW | — | — | — | **$0** | $5,000 | $5,000 |
+| 333 | Billy Joe Travis | AJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 334 | Corporal Kirchner | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 335 | Keith Hart | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 336 | Mando Guerrero | NJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 337 | Yoshinari Ogawa | AJPW | — | — | — | **$0** | $4,000 | $4,000 |
+| 338 | Hiroyoshi Tenzan | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 339 | Jeff Gaylord | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 340 | Masao Inoue | AJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 341 | Richard Slinger | AJPW | — | — | — | **$0** | $3,000 | $3,000 |
+| 342 | Savio Vega | NJPW | — | — | — | **$0** | $3,000 | $3,000 |
 
 SHOWS
 | Date | Promotion | Show | Paid | Itemized total | Ledger payroll |
@@ -338,3 +366,4 @@ SHOWS
 | 1991-07-17 | ASW | Skegness · Holiday camp tour, Show 4 | 12 | $1,755 | $0 |
 | 1991-07-19 | TWA | Allentown, PA · Spot show | 13 | $2,875 | $2,875 |
 | 1991-07-28 | Power Pro | Nashville · Power Hour | 19 | $775 | $775 |
+| 1991-07-19 | FMW | Sagamihara · Summer tour, Night 1 | 28 | $9,950 | $9,950 |

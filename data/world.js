@@ -18,6 +18,10 @@ const SPOTLIGHT = {"name": "Eddie Guerrero", "match": "Eddie(?! Gilbert)|Los Gue
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest.
 const TICKER = [
  [
+  "<b>FMW</b> Sagamihara: Sullivan shakes Pogo's hand; The Shooter taps Verichev on night one",
+  "fmw-observer-sagamihara-0719"
+ ],
+ [
   "<b>NJPW</b> Fukuoka: Chono makes Kido tap to the STF; Sasaki stands with Chono after Norton no-shows",
   "njpw-observer-fukuoka-0718"
  ],

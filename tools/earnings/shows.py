@@ -94,6 +94,12 @@ SHOWS+=[
   people=["The Lightning Kid","Judge Dread","Chris Benoit","Johnny B. Badd","Brad Armstrong","Bobby Duncum Jr.","Devon Hughes",
    "Buzz Sawyer","Mike Awesome","Lance Storm","Marcus Alexander Bagwell","Tatanka","Leatherface","Steven Dunn","Paul Bearer",
    "Chris Jericho","Bart Gunn","Bill Watts","Rocky Johnson"]),
+ dict(p="fmw",d="1991-07-19",show="Sagamihara · Summer tour, Night 1",mult=1,gate=15580,logged=9950,
+  people=["Eiji Ezaki","Akihito Ichihara","Rie Nakamura","Yukie Nabeno","The Shooter","Grigory Verichev",
+   "Boris Gogichashvili","Koba Kurtanidze","Mark Starr","Jimmy Backlund","Combat Toyoda","Megumi Kudo",
+   "Svetlana Goundarenko","Debbie Combs","Atsushi Onita","Leon Spinks","Masashi Honda","Kevin Sullivan",
+   "Yukihide Ueno","The Sheik","Sabu","Mitsuhiro Matsunaga","Katsuji Ueda","Mr. Pogo","Big Titan",
+   "Horace Boulder","Sambo Asako","Ricky Fuji"]),  # Tarzan Goto on tape only (NJPW Sapporo), not paid
 ]
 
 # ---- Salaried promotions (WWF, WCW): salary accrues day by day through the world date.
