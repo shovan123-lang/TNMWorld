@@ -306,7 +306,7 @@ function latestArticle(k){return Object.keys(ARTICLES).filter(id=>aired(id)&&ART
 function renderNav(cur,curT){
   const promo=k=>{const p=P[k],la=latestArticle(k);
     return `<div class="dd" style="--c:${p.c}"><a href="#${k}" class="top ${cur===k?'on':''}" aria-haspopup="true">${esc(p.nav||p.short)}<span class="caret">▾</span></a>
-    <div class="menu" role="menu">${promoTabs(k).map(t=>`<a role="menuitem" href="#${k}/${t}" class="${cur===k&&(curT||'overview')===t?'cur':''}">${TAB_LABEL[t]}</a>`+(t==='overview'&&SITES[k]?`<a role="menuitem" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')}
+    <div class="menu" role="menu">${promoTabs(k).map(t=>`<a role="menuitem" href="#${k}/${t}" class="${cur===k&&(curT||'overview')===t?'cur':''}">${TAB_LABEL[t]}</a>`+(t==='overview'&&SITES[k]&&!SITES[k].noTitles?`<a role="menuitem" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')}
     ${SITES[k]?`<a role="menuitem" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${esc(p.short)} site ↗</a>`:''}
     ${la?`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#${la}">${esc(ARTICLES[la].title)}</a>`:''}</div></div>`;};
   const worldOn=['calendar','showarchive','file','talent','arrivals','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
@@ -702,7 +702,7 @@ function viewPromo(k,tab){
     ${(BANNER_SVG[k]||BANNER_OF[k])?`<div style="margin-top:6px;border:2px solid var(--ink);line-height:0">${BANNER_SVG[k]?BANNER_SVG[k]:`<img src="${BANNER_OF[k][0]}" alt="${BANNER_OF[k][1]}" style="display:block;width:100%;height:auto">`}</div>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext" style="margin-top:0" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${p.short} site ↗</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right"><b style="font-family:var(--head);font-weight:400;font-size:30px;line-height:1">${esc(p.stat[0])}</b> ${esc(p.stat[1])}</div></div>`:`
     <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${p.short} site ↗</a>`:''}</div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>`}
-    <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab?'on':''}">${l}</button>`+(t==='overview'&&SITES[k]?`<a class="tabx" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')}</div>
+    <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab?'on':''}">${l}</button>`+(t==='overview'&&SITES[k]&&!SITES[k].noTitles?`<a class="tabx" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')}</div>
     ${body}
   </section>`;
 }
