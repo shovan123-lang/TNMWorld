@@ -1,6 +1,6 @@
 /* TNM World Wrestling Report: world-wide data (world date, ticker, talent exchange, arrivals). */
 
-const WORLD_DATE = "1991-07-19";   // move this forward as the world advances
+const WORLD_DATE = "1991-07-20";   // move this forward as the world advances
 
 const SHARED = [["Bruise Brothers (Ron & Don Harris)", "WCW", "TWA", "Working both for now. WCW Dark Circle. Lost to Landell & Armstrong at Super Summer Sizzler '91."], ["Billy Joe Travis", "TWA", "AJPW", "On the AJPW Summer Action Series (7/5–7/27). Out of the TWA for July."], ["Bam Bam Bigelow", "TWA", "NJPW", "TWA main eventer. Signed with NJPW 7/4 and on the Summer Crush tour through 7/30. Back for TWA 8/2."], ["Rick Rude", "WCW", "AJPW", "Works both. AJPW 7/1, 7/5, 7/9, 7/11 so far. Flew back for Richmond 7/7. Greenville 7/13 and the Bash 7/14 next."], ["Abdullah the Butcher", "WCW", "AJPW", "AJPW 7/1, 7/3, 7/5, 7/9, 7/11. ⚠ Conflict: worked WCW Columbus 7/8 and AJPW Kanazawa 7/9. Pulled from the Bash."], ["Stan Hansen", "USWA", "AJPW", "Shuttles between them. Missed AJPW Niigata 7/7 while in USWA."], ["Dan Spivey", "USWA", "AJPW", "Same shuttle as Hansen. Both join Ellering's USWA stable 7/27."], ["Toshiaki Kawada", "AJPW", "USWA", "USWA deal over: wanted to re-sign, but All Japan asked for him back full-time. Turned down Ellering."], ["Eddie Guerrero", "CMLL", "USWA", "4–0 in CMLL. Not on the USWA July plan after 7/3."], ["El Hijo Del Santo", "CMLL", "USWA", "On both rosters."], ["Jushin Liger", "WCW", "NJPW", "Guest in CMLL Acapulco 7/17, so he misses NJPW Fukuoka 7/18. IWGP Junior Champion. ⚠ Worked NJPW 7/5 and 7/6 while booked in WCW Philly and Atlanta. Sumo Hall title defense vs. El Samurai (replacing the injured Pegasus Kid) depends on WCW dates."], ["Brian Pillman", "WCW", "NJPW", "⚠ Worked NJPW 7/4 and 7/6 around WCW Philly 7/5. Kept off NJPW while he has U.S. dates."], ["Mike Rotunda (IRS)", "WWF", "NJPW", "CMLL Acapulco 7/17 vs. Atlantis. ⚠ IRS in the WWF. Worked NJPW Osaka 7/6, the same night as WWF Anaheim."], ["Owen Hart (Blue Blazer)", "WWF", "NJPW", "CMLL Acapulco 7/17 as the Blazer, then WWF Richfield 7/18. ⚠ Blue Blazer in NJPW 7/4, 7/5, 7/10 around WWF Calgary 7/8 and Edmonton 7/9."], ["Sting", "WCW", "Gave notice to WCW 7/18. Going to NJPW full-time at New Japan's request: G1 Climax in August as the top babyface foreigner, building to Wrestle Kingdom (January 4, 1992, Tokyo Dome). WCW agreed. Last WCW date To establish.", "Listed in NJPW as \"Sting 1992.\" No NJPW dates."], ["El Gigante", "WCW", "NJPW", "NJPW 7/4 and 7/5, WCW Atlanta 7/6. Tight but doable."], ["Great Muta", "WCW", "NJPW", "Watch list. No NJPW dates booked."], ["Big Van Vader", "WCW", "NJPW", "On the NJPW roster. No NJPW dates booked."], ["Masanobu Fuchi", "AJPW", "(NJPW, released)", "Worked NJPW 7/4 and 7/5, then released. AJPW only."], ["Toshiyo Yamada", "CMLL", "Joshi", "Touring CMLL. 2–0, beat Ultimo Dragón and La Diabólica."], ["Black Magic", "CMLL", "ASW", "Foreign rudo in CMLL. Unused by ASW so far; keep him off July ASW Wednesdays."], ["The Lightning Kid", "CMLL", "Power Pro", "CMLL debut 7/12. Power Pro's Power Hour is 7/28."], ["Kevin Sullivan", "(free agent)", "CMLL?", "Walked out of WCW 7/8. Rumored for Arena México 7/12 but didn't appear. Negotiations with CMLL ongoing."]];
 
@@ -17,6 +17,30 @@ const SPOTLIGHT = {"name": "Eddie Guerrero", "match": "Eddie(?! Gilbert)|Los Gue
 
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest.
 const TICKER = [
+ [
+  "<b>WCW</b> Charleston, WV: RICK RUDE beats Sting for the U.S. Title (****3/4) in Sting's WCW farewell; Koloff keeps the World Title by DQ",
+  "wcw-observer-charleston-0719"
+ ],
+ [
+  "<b>AJPW</b> Fukuoka: Ogawa pins Dean Malenko (****1/4); Jumbo and MVC keep their gold in unadvertised title defenses",
+  "ajpw-observer-fukuoka-0719"
+ ],
+ [
+  "<b>NJPW</b> Sapporo: Chono jumps Chōshu after the TV main; El Samurai gets Liger at Sumo Hall",
+  "njpw-observer-sapporo-0719"
+ ],
+ [
+  "<b>WWF</b> Dayton: Martel steals one from SATO (****1/4); Sid powerbombs Boss Man after the DQ",
+  "wwf-observer-dayton-0719"
+ ],
+ [
+  "<b>WWF</b> Marty Jannetty re-signs after Dayton",
+  "wwf-jannetty-resigns-0719"
+ ],
+ [
+  "<b>ASW</b> Sonny Beach signs with All Star on a non-exclusive deal",
+  "asw-sonny-beach-signs-0719"
+ ],
  [
   "<b>CMLL</b> Arena México: 15,500 see the Guerreros and Santo, Volador & Dragón reach the trios final; Konnan ends his slide",
   "cmll-observer-arena-mexico-0719"
@@ -46,40 +70,8 @@ const TICKER = [
   "ajpw-observer-kumamoto-0717"
  ],
  [
-  "<b>ASW</b> Skegness: Albright beats St. Clair 3–0 in a **** death match; Nagasaki a no-show again",
-  "asw-observer-skegness-0717"
- ],
- [
-  "<b>CMLL</b> Acapulco: Cien Caras counts out Konnan; Atlantis and IRS go ****1/4 on a ladder",
-  "cmll-observer-acapulco-0717"
- ],
- [
-  "<b>CMLL</b> From the Road: Atlantis, No clock",
-  "cmll-diary-atlantis-0717"
- ],
- [
-  "<b>WCW</b> Dayton: Windham DQ'd as Luger strikes; Hughes wins, OMG crashes the main",
-  "wcw-observer-dayton-0717"
- ],
- [
-  "<b>WCW</b> From the Road: Arn Anderson, Alone, you lose",
-  "wcw-diary-arn-0717"
- ],
- [
-  "<b>WCW</b> Farmland: Paul E.'s phone hands Zenk a 2–0 lead; Bruise Brothers lose",
-  "wcw-observer-farmland-0716"
- ],
- [
   "<b>USWA</b> Observer: Jonesboro, Guerrero goes ****1/4 on Worldwide",
   "uswa-observer-jonesboro-0717"
- ],
- [
-  "<b>FMW</b> Frontier joins the world: Onita, Pogo, Goto, Sabu and a women's division",
-  "fmw-frontier-joins"
- ],
- [
-  "<b>NJPW</b> El Samurai replaces Pegasus Kid vs. Liger at Sumo Hall",
-  "njpw-samurai-gets-liger"
  ],
  [
   "<b>TWA</b> Idol wins with his feet on the ropes",
@@ -89,4 +81,4 @@ const TICKER = [
 
 FINANCE._streams = ["Merchandise", "TV rights", "Pay-per-view share", "Home video", "900 hotline", "Licensing", "Programs & magazines", "Concessions & parking", "Talent loan fees", "Sponsorships"];
 // Front page: lead, rest of the world, backstage, breaking, booker's desk. Refreshed each time the world clock advances.
-const FRONT = {"asOf":"1991-07-19","lead":{"p":"wcw","kicker":"WCW · Cleveland Convention Center · July 18","id":"wcw-koloff-champion-0718","title":"Koloff Chokes Out Luger! The Russian Nightmare Is World Champion","dek":"Four days into his reign, Lex Luger passed out in Nikita Koloff's front facelock, and WCW has its third World Champion in a week.","paras":["Nikita Koloff made Lex Luger pass out in a front facelock at 23:17 in Cleveland on Thursday night, with Harley Race and Mr. Hughes at ringside unable to stop it. Luger's reign lasted four days. On the same card, Paul Orndorff pinned Sting clean, the night Sting gave WCW notice that he's leaving for New Japan full-time.","The match went ***1/2 in front of 5,200 fans paying $52,000. The WWF ran the Richfield Coliseum twenty miles away that same night and drew 8,500 for $102,000 without Hogan or the Warrior. Every World Title match on the July loop was advertised as a Luger defense, and Luger now goes into Charleston as the challenger."]},"rest":[["wwf","WWF · Richfield","wwf-observer-richfield-0718","Richfield Doubles Cleveland","Jimmy Hart fired Dino Bravo, who press slammed him out of the ring, and Shawn Michaels walked out on Marty Jannetty after a double countout with Demolition. 8,500 paid $102,000."],["njpw","NJPW · Fukuoka","njpw-observer-fukuoka-0718","Observer: Fukuoka","Chono made Kido tap to the STF with Kensuke Sasaki, a fill-in for Scott Norton, at his side. Tony Halme shoved referee Tiger Hattori after his fifth straight loss."],["ajpw","AJPW · Kumamoto","ajpw-kobashi-new-partner-0717","Kobashi Moonsaults Rude","Kobashi pinned Rick Rude at ****1/4, and Misawa named him his new partner. MVC and Dory Funk Jr. beat Jumbo's team."],["cmll","CMLL · Acapulco","cmll-caras-counts-out-konnan","Cien Caras Counts Out the Champion","Konnan kept the title but lost his third straight. Atlantis and IRS went ****1/4 to a ladder-match draw, and Liger pinned Ultimo Dragón."]],"backstage":[["wcw","WCW · Backstage","wcw-observer-sting-njpw-0718","Sting to New Japan","New Japan asked WCW for Sting full-time for the G1 Climax and a Wrestle Kingdom main event at the Tokyo Dome, and WCW said yes."],["wcw","WCW · Backstage","wcw-observer-dayton-0717","One Man Gang Goes Off Script","Dayton drew 7,000 and $63,000 for a *3/4 taping. Windham lost by DQ to Mr. Hughes, and One Man Gang ran in on Hughes unannounced."],["uswa","USWA · Jonesboro","uswa-observer-jonesboro-0717","Guerrero Steals a TV Taping","Eddie Guerrero went ****1/4 on a Wednesday taping. Flamingo cheated to stay unbeaten, and Doug Gilbert shoved Dennis Condrey."],["ajpw","AJPW · Backstage","ajpw-observer-kumamoto-0717","Hansen Misses, Kobashi Delivers","Misawa vs. Hansen never happened, so Kobashi and Rude went on last. Dory Funk Jr. has lined up with MVC."],["asw","All Star · Backstage","asw-observer-skegness-0717","Nagasaki No-Shows Again","Albright and St. Clair went ****, the rest of the card dragged Skegness to DUD, and Kendo Nagasaki missed another date."],["fmw","FMW · News","fmw-frontier-joins","Frontier Joins the World","Atsushi Onita's FMW is the tenth promotion on the board, with Mr. Pogo, Tarzan Goto, Sabu and a full women's division."],["wcw","WCW · Backstage","wcw-observer-salisbury-0715","Big Josh Goes Down","Big Josh tore his quad in Salisbury and is out 70 cards; his July bookings have to be redone."],["pp","Power Pro · Backstage","pp-young-lions-abroad","Young Lions Abroad","The Lightning Kid is the first Power Pro student on excursion in Mexico. Chris Benoit, hurt in New Japan as the Pegasus Kid, could be next."]],"breaking":[["wcw-koloff-champion-0718","Koloff is World Champion","Nikita Koloff made Lex Luger pass out in Cleveland, four days into Luger's reign."],["wwf-observer-richfield-0718","Jimmy Hart fires Dino Bravo","Bravo lost to Tito Santana in Richfield, got fired on the spot, and press slammed Hart out of the ring."]],"desk":["<b>Sting's last WCW date</b> is Charleston, 7/19. He's still the U.S. Champion, and he shows up next in New Japan.","<b>Koloff</b> is World Champion but was booked to leave WCW in August.","<b>Sasaki and Chono:</b> Kensuke Sasaki stood with Chono in Fukuoka, the night before he and Hase challenge for the IWGP Tag titles in Sapporo.","<b>The Rockers:</b> Michaels walked out on Jannetty in Richfield, and Jannetty's deal was down to its last card.","<b>Dino Bravo</b> walks alone after Jimmy Hart fired him. Hart's stable is down to IRS, DiBiase, the Mountie and the injured Earthquake.","<b>Tony Halme</b> is 0–5 in New Japan and just shoved a referee.","<b>WCW tag titles</b> are crowned in Johnson City 7/20. Cactus Jack is out 20 cards.","<b>Flair vs. Funk</b> in Dallas 7/20, and Big Gold vs. the Unified Title still hangs over the USWA.","<b>SummerSlam vs. the Omni:</b> WWF and WCW go head to head again on 8/25.","<b>Kawada's next stop:</b> the rumors say New Japan. All Japan needs a new partner for Misawa.","<b>Hansen/Spivey</b> double-booked between AJPW and USWA.","<b>Autumn Armageddon</b> is name-checked by both WCW and USWA, with no date.","<b>Titles to establish:</b> NJPW, AJPW Triple Crown, CMLL World Trios (Tercias final 7/26).","<b>Davey Boy Smith</b> is out of WWF until about 7/29. <b>Steamboat's return</b>: spring 1992."]};
+const FRONT = {"asOf":"1991-07-20","lead":{"p":"wcw","kicker":"WCW · Charleston Civic Center · July 19","id":"wcw-rude-us-champion-0719","title":"Rude Ends Sting's Reign! Ravishing Rick Is U.S. Champion","dek":"In his last WCW date before leaving for New Japan, Sting dropped the United States Title to Rick Rude in a 27-minute war.","paras":["Rick Rude pinned Sting with a vertical facebuster at 27:07 in Charleston, WV on Friday night, seconds after Paul E. Dangerously got involved behind the referee's back. It was Sting's last WCW date before he leaves for New Japan, and Rude is the new United States Champion. In the main event Nikita Koloff kept the World Title when Harley Race and Mr. Hughes got Lex Luger disqualified.","The title change went ****3/4, one of the two best WCW matches of the summer. Charleston drew 8,250 at $13 for $107,250, double Cleveland's gate the night before, plus $20,265 in merchandise. Rude flies to All Japan for Sapporo on Sunday, and WCW's house shows have to carry on without either of the men who just wrestled for the belt."]},"rest":[["njpw","NJPW · Sapporo","njpw-chono-strikes-0719","Chōshu Beats Mutoh, Then Chono Strikes","Chōshu pinned Mutoh on the TV taping, then Chono came over the rail and locked the STF on the champion. 5,000 sold out the Nakajima Sports Center."],["ajpw","AJPW · Fukuoka","ajpw-mvc-keep-gold-0719","Gordy Powerbombs Rogers, Miracle Violence Keep the Gold","MVC beat the Fantastics and Jumbo beat Dory Funk Jr., both with titles on the line. Ogawa pinned Dean Malenko at ****1/4."],["cmll","CMLL · Arena México","cmll-konnan-stops-slide-0719","Konnan Stops the Slide","15,500 saw the Guerreros and Santo, Volador & Dragón reach the trios final, and Konnan ended his three-match skid a week before Title vs. Hair."],["wwf","WWF · Dayton","wwf-martel-steals-one-0719","Martel Steals One","Martel beat SATO with his feet on the ropes at ****1/4, Bravo won his first match on his own, and Sid powerbombed Boss Man after the main."]],"backstage":[["wcw","WCW · Backstage","wcw-observer-charleston-0719","Sting's Last Night Draws","Sting's farewell drew $107,250 and $20,265 in merchandise. The office now has to rework the house show loop without him."],["wwf","WWF · Backstage","wwf-jannetty-resigns-0719","Jannetty Re-signs","Marty Jannetty, down to the last card of his deal, signed a new contract after Dayton with a raise from Philadelphia."],["wwf","WWF · Dayton","wwf-observer-dayton-0719","WCW Outdraws the WWF in Dayton","WCW did $63,000 at the Nutter Center two nights before the WWF did $48,000 at the Hara Arena. Bravo's babyface debut went -****3/4."],["njpw","NJPW · Backstage","njpw-observer-sapporo-0719","Observer: Sapporo","Hashimoto is back with no word on why he missed Hiroshima, and Sasaki is back beside Hase a night after standing with Chono."],["ajpw","AJPW · Backstage","ajpw-observer-fukuoka-0719","Two Title Matches Nobody Advertised","Fukuoka drew $128,250, the second-best gate of the tour, and the office put both belts on the line on the night."],["asw","All Star · News","asw-sonny-beach-signs-0719","Sonny Beach Signs with All Star","Sonny Beach signed a 32-card deal that leaves him free to work for other promotions. His debut date hasn't been set."],["twa","Tri-State · Allentown","twa-observer-allentown-0719","Match Observations: Allentown","900 in a 1,500-seat hall for a **1/4 card, and the tournament favorite got hurt."],["fmw","FMW · Sagamihara","fmw-observer-sagamihara-0719","Observer: Sagamihara","FMW nearly filled the building on night one, The Shooter tapped Verichev, and Kevin Sullivan shook Mr. Pogo's hand."]],"breaking":[["wcw-rude-us-champion-0719","Rude is U.S. Champion","Rick Rude beat Sting in Charleston, WV, the last night of Sting's WCW run."],["njpw-chono-strikes-0719","Chono puts the STF on Chōshu","Chono jumped the champion after the Sapporo TV main, eleven days before their Sumo Hall title match."]],"desk":["<b>Sting</b> is gone from WCW after losing the U.S. Title to Rude. He's next seen in New Japan.","<b>Rick Rude</b> is U.S. Champion and in Japan for AJPW Sapporo 7/21. His first WCW defense: To establish.","<b>Koloff</b> kept the World Title by DQ, but Luger has his rematch clause every town, every night.","<b>Arn & Zbyszko:</b> Zbyszko ran in for Arn in Charleston. Paul E.'s new team is coming.","<b>Sasaki:</b> stood with Chono in Fukuoka, back with Hase in Sapporo. Fill-in or a turn later?","<b>Hashimoto</b> is back for New Japan with no word on why he missed Hiroshima.","<b>Dory Funk Jr.</b> sided with MVC and lost a Triple Crown match to Jumbo two nights later.","<b>The Rockers:</b> Jannetty re-signed, so there's no rush on the split Michaels keeps hinting at.","<b>Dino Bravo</b> is a babyface on his own, but needs a better opponent than Typhoon.","<b>WCW tag titles</b> are crowned in Johnson City 7/20. Flair vs. Funk is in Dallas the same night.","<b>Hansen</b> is booked for AJPW Sapporo 7/21 after missing Kumamoto. Osaka 7/25 has priority over the USWA.","<b>Tercias final and Title vs. Hair</b> at Verano 7/26; <b>Jumbo vs. Williams</b> at Budokan 7/27; <b>Chōshu vs. Chono</b> at Sumo Hall 7/30.","<b>Sonny Beach</b> signed with All Star; debut To establish.","<b>SummerSlam vs. the Omni:</b> WWF and WCW go head to head again on 8/25."]};
