@@ -41,6 +41,12 @@ SHOWS=[
 ]
 BRAZOS=["Brazo De Oro","Brazo De Plata","El Brazo"]; INTO=["Jaque Mate","Masakre","Pierroth Jr"]
 SHOWS+=[
+ dict(p="uswa",d="1991-07-20",show="Dallas · Championship TV Special (Sportatorium)",mult=2,gate=49500,logged=0,  # no ledger payroll yet
+  main=[(0.10,["Ric Flair","Terry Funk"])],semi=[(0.05,["Sam Houston","Scotty Flamingo"])],
+  people=["Jamie Dundee","Jimmy Valiant","Kevin Von Erich","Eric Embry","Tom Prichard",*NH,"Dennis Condrey",
+   "Scott Steiner","Tully Blanchard","Dirty White Boy","Rex King","Dan Spivey","Diamond Studd","Brickhouse Brown",
+   "Doug Gilbert","Eddie Gilbert","El Hijo Del Santo","Rob Zakowski","Sam Houston","Scotty Flamingo","Ric Flair",
+   "Terry Funk","Chris Adams","Kerry Von Erich","Bret Hart","Paul Ellering","Missy Hyatt"]),  # CMLL guests Volador, Ultimo Dragón, Black Magic, Pierroth Jr.: fees To establish
  dict(p="cmll",d="1991-07-05",show="Mexico City · Viernes Espectacular",mult=2,gate=189000,logged=44780,
   main=[(0.08,["Konnan","Atlantis","Rayo De Jalisco Jr","Vampiro Canadiense","Cien Caras","Universo 2000"])],
   semi=[(0.04,["Blue Panther","Kamala"])],
@@ -83,6 +89,9 @@ SHOWS+=[
    "Octagón","The Lightning Kid","Vulcano","Masakre","Pierroth Jr","Sangre Chicana","Apolo Dantes","Silver King","Felino",
    "Konnan","Blue Panther","Negro Casas","Vampiro Canadiense","Kamala","Black Magic"],
   extra={"Rob Zakowski":50},extra_label="USWA guest, flat fee"),
+ dict(p="cmll",d="1991-07-20",show="Mexico City · Sábado de Lucha Libre (Arena Coliseo)",mult=1,gate=45360,logged=0,  # no ledger payroll yet
+  people=["Ángel Azteca","Jerry Estrada","Silver King","Apolo Dantes","Eddie Guerrero","Chavo Guerrero","Fuerza Guerrera",
+   *BRAZOS,"La Diabólica","Pantera Sureña","Toshiyo Yamada","Lola González"]),
  dict(p="asw",d="1991-07-03",show="Southport · Holiday camp tour, Show 1",mult=1,gate=5000,logged=2070,
   people=["Tony St. Clair","El Gran Hamada","Iceman King Parsons","Giant Haystacks","Gary Albright","Dory Funk Jr.","Doc Dean",
    "Hector Guerrero","Bob Backlund","Bruce Hart","Robbie Brookside","Iron Mike Sharpe","Fit Finlay","Steve Regal"]),
@@ -108,6 +117,9 @@ SHOWS+=[
    "Svetlana Goundarenko","Debbie Combs","Atsushi Onita","Leon Spinks","Masashi Honda","Kevin Sullivan",
    "Yukihide Ueno","The Sheik","Sabu","Mitsuhiro Matsunaga","Katsuji Ueda","Mr. Pogo","Big Titan",
    "Horace Boulder","Sambo Asako","Ricky Fuji"]),  # Tarzan Goto on tape only (NJPW Sapporo), not paid
+ dict(p="fmw",d="1991-07-20",show="Konan · Summer tour, Night 2",mult=1,gate=26540,logged=0,  # no ledger payroll yet
+  people=["Masashi Honda","Yukihide Ueno","Eriko Tsuchiya","Rie Nakamura","Keiko Iwami","Yukie Nabeno","The Sheik",
+   "Horace Boulder","Sabu","Ricky Fuji","Big Titan","Sambo Asako","Atsushi Onita","Grigory Verichev","Tarzan Goto","Mr. Pogo"]),
 ]
 
 # ---- Salaried promotions (WWF, WCW): salary accrues day by day through the world date.

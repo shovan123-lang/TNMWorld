@@ -1,19 +1,19 @@
-**July 1991, world date 7/20 (rebuilt 2026-11-21):** paid out so far $1,216,798 · Japan tour fees still due $753,000 · July projected $1,969,798 · 343 people.
+**July 1991, world date 7/21 (rebuilt 2026-11-24):** paid out so far $1,829,045 · Japan tour fees still due $210,444 · July projected $2,039,490 · 345 people.
 
 | # | Name | Promotions | Paid so far | Tour fees due | July projected |
 |---|---|---|---|---|---|
-| 1 | Hulk Hogan | WWF | $106,324 (incl. $25,678 bonus) | — | $106,324 |
-| 2 | The Ultimate Warrior | WWF | $58,065 | — | $58,065 |
-| 3 | Sgt. Slaughter | WWF | $51,485 (incl. $25,678 bonus) | — | $51,485 |
-| 4 | Roddy Piper | WWF | $25,806 | — | $25,806 |
-| 5 | Sid Justice | WWF | $25,806 | — | $25,806 |
-| 6 | The Undertaker | WWF | $25,806 | — | $25,806 |
-| 7 | Randy Savage | WWF | $22,581 | — | $22,581 |
-| 8 | Mr. Perfect | WWF | $19,355 | — | $19,355 |
-| 9 | Ted DiBiase | WWF | $19,355 | — | $19,355 |
-| 10 | Lex Luger | WCW | $19,279 (incl. $3,150 bonus) | — | $19,279 |
-| 11 | Jake Roberts | WWF | $18,065 | — | $18,065 |
-| 12 | Konnan | CMLL | $17,910 | — | $17,910 |
-| 13 | Sting | WCW, NJPW | $16,129 | $15,000 | $31,129 |
-| 14 | Genichiro Tenryu | WWF | $16,129 | — | $16,129 |
-| 15 | Kerry Von Erich | USWA | $14,574 | — | $14,574 |
+| 1 | Hulk Hogan | WWF | $110,356 (incl. $25,678 bonus) | — | $110,356 |
+| 2 | The Ultimate Warrior | WWF | $60,968 | — | $60,968 |
+| 3 | Sgt. Slaughter | WWF | $52,775 (incl. $25,678 bonus) | — | $52,775 |
+| 4 | Roddy Piper | WWF | $27,097 | — | $27,097 |
+| 5 | Sid Justice | WWF | $27,097 | — | $27,097 |
+| 6 | The Undertaker | WWF | $27,097 | — | $27,097 |
+| 7 | Sting | WCW, NJPW | $26,935 | $5,000 | $31,935 |
+| 8 | Stan Hansen | USWA, AJPW | $24,683 | $6,667 | $31,350 |
+| 9 | Davey Boy Smith | WWF, AJPW | $23,860 | $3,333 | $27,194 |
+| 10 | Randy Savage | WWF | $23,710 | — | $23,710 |
+| 11 | Rick Rude | WCW, AJPW | $23,484 | $4,000 | $27,484 |
+| 12 | Giant Baba | AJPW | $23,333 | $6,667 | $30,000 |
+| 13 | Jumbo Tsuruta | AJPW | $23,333 | $6,667 | $30,000 |
+| 14 | Big Van Vader | WCW, NJPW | $21,462 | $6,667 | $28,129 |
+| 15 | Mr. Perfect | WWF | $20,323 | — | $20,323 |
