@@ -844,7 +844,7 @@ function viewPromo(k,tab){
   } else if(tab==='archive'){
     const S=SITES[k], n=S.arch.reduce((a,g)=>a+g[1].length,0);
     body=`<div class="box" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div class="kicker">${p.short} Official Archive</div><b style="font-family:var(--head);font-weight:400;font-size:24px;text-transform:uppercase">${S.label}</b><div class="mute" style="font-family:var(--cond);font-size:14px">${n} show pages. Links open the ${p.short} site in a new tab.</div></div><a class="ext" href="${S.base}WELCOME.HTM" target="_blank" rel="noopener">Open the ${p.short} site ↗</a></div>
-    ${S.arch.map(([g,items])=>`<h2 class="sec">${g} <small>${items.length} shows</small></h2><div class="arch">${items.map(([t,f])=>siteLink(k,f,esc(t))).join('')}</div>`).join('')}`;
+    ${S.arch.map(([g,items])=>`<h2 class="sec">${g} <small>${items.length} shows</small></h2>${items.length?`<div class="arch">${items.map(([t,f])=>siteLink(k,f,esc(t))).join('')}</div>`:'<div class="empty">Nothing archived here yet.</div>'}`).join('')}`;
   } else if(tab==='contracts'){
     body=viewContracts(k);
   } else if(tab==='finance'){
