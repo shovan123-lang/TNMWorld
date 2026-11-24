@@ -587,7 +587,8 @@ function finSum(k){
   const hasE=typeof EARNINGS!=='undefined', mo=hasE?EARNINGS.world.slice(0,7):WORLD_DATE.slice(0,7);
   const TVd=(FINANCE._tv||{})[k], dimTV=new Date(Date.UTC(+mo.slice(0,4),+mo.slice(5,7),0)).getUTCDate();
   const tvDays=WORLD_DATE.slice(0,7)===mo?+WORLD_DATE.slice(8,10):dimTV;
-  if(TVd&&TVd.amt&&!other.some(o=>o.stream==='TV rights'))other=[...other,{d:WORLD_DATE,stream:'TV rights',amt:TVd.amt*tvDays/dimTV,note:`${TVd.note}: $${TVd.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}];
+  if(TVd&&TVd.amt&&!other.some(o=>o.stream==='TV rights'))other=[...other,{d:WORLD_DATE,stream:'TV rights',daily:1,amt:TVd.amt*tvDays/dimTV,note:`${TVd.note}: $${TVd.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}];
+  (FINANCE._recurring||[]).filter(x=>x.p===k&&x.amt).forEach(x=>{other=[...other,{d:WORLD_DATE,stream:x.stream,daily:1,amt:x.amt*tvDays/dimTV,note:`${x.note}: $${x.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}]});
   const oth=other.reduce((a,o)=>a+(o.amt||0),0), rev=gate+merch+oth;
   const ledgerPay=rows.filter(r=>r.gate!=null).reduce((a,r)=>a+(r.payroll||0),0);
   let paid=null,due=0;
@@ -608,6 +609,7 @@ function finSum(k){
   const first=rows.map(r=>String(r.d)).filter(d=>d.startsWith(mo)).sort()[0];
   const startDay=first?Math.min(+first.slice(8,10),day):1;
   cost.office=(C.office||0)*(WORLD_DATE.slice(0,7)===mo?Math.max(0,day-startDay+1)/dim:1);
+  cost.tv+=(C.tvMonthly||0)*(WORLD_DATE.slice(0,7)===mo?day/dim:1);
   const ctr=CONTRACTS[k], O=ctr?ctr.rows.filter(r=>r[0]==='O').reduce((a,r)=>a+r[2],0):0;
   if(f.period==='Monthly') cost.staff=O*frac;
   else if(f.period==='Per tour'){const T={ajpw:['1991-07-01','1991-07-27'],njpw:['1991-07-04','1991-07-30']}[k];
@@ -628,18 +630,18 @@ function finDaily(k,S){
   const rows=S.rows.filter(r=>String(r.d).startsWith(mo)&&r.gate!=null);
   const first=rows.map(r=>+r.d.slice(8,10)).sort((a,b)=>a-b)[0]||1;
   const days=[];let cum=0,rev=0,cost=0;
-  const talentDaily=S.f.fixed?S.pay/last:0, officeDaily=(C.office||0)/dim;
+  const talentDaily=S.f.fixed?S.pay/last:0, officeDaily=(C.office||0)/dim, tvDaily=(C.tvMonthly||0)/dim;
   const staffTotal=S.cost.staff||0, staffDaily=S.f.period==='Per show'?0:staffTotal/last;
   const O=CONTRACTS[k]?CONTRACTS[k].rows.filter(r=>r[0]==='O').reduce((a,r)=>a+r[2],0):0;
   // Per-show talent: the tracker's pay lines, by date (same source as the P&L).
   const TL=(typeof EARNINGS!=='undefined'&&S.src==='tracker')?EARNINGS.people.flatMap(x=>x.lines.filter(l=>l.p===k&&l.kind!=='due')):null;
   for(let d=1;d<=last;d++){
     const ds=mo+'-'+String(d).padStart(2,'0');
-    let r=0,c=talentDaily+staffDaily+(d>=first?officeDaily:0);
+    let r=0,c=talentDaily+staffDaily+tvDaily+(d>=first?officeDaily:0);
     rows.filter(x=>x.d===ds).forEach(x=>{r+=x.gate+(x.merch||0);const o=showCosts(k,x);if(o)c+=Object.values(o).reduce((a,v)=>a+v,0);
       if(!S.f.fixed){c+=TL?0:(x.payroll||0);if(S.f.period==='Per show')c+=O;}});
     if(!S.f.fixed&&TL)c+=TL.filter(l=>l.d===ds).reduce((a,l)=>a+l.amt,0);
-    S.other.forEach(o=>{if(o.stream==='TV rights')r+=o.amt/last;else if(o.d===ds)r+=o.amt;});
+    S.other.forEach(o=>{if(o.daily)r+=o.amt/last;else if(o.d===ds)r+=o.amt;});
     rev+=r;cost+=c;cum+=r-c;days.push({d:ds,r,c,cum,rev,cost});
   }
   return days;
@@ -715,7 +717,7 @@ function viewFinance(k){
     <tr><td><b>Total costs</b></td><td class="num"><b>−${money(S.costTot)}</b></td></tr>
     <tr><td><b>Operating profit</b></td><td class="num"><b style="font-size:18px;color:${S.profit<0?'var(--red)':'inherit'}">${money(S.profit)}</b></td></tr>
   </tbody></table></div>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Building, tax, crew, advertising, travel, TV and pay-per-view costs are estimates from standard rates for each promotion, show by show, unless a show's real figures have been logged. Office and announcer costs count day by day.</p>`;
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Building, tax, crew, advertising, travel, TV and pay-per-view costs are estimates from standard rates for each promotion, show by show, unless a show's real figures have been logged. Office, announcer and monthly TV production costs count day by day.</p>`;
   const byStream={}; S.other.forEach(o=>{(byStream[o.stream]=byStream[o.stream]||[]).push(o)});
   const streams=[...FINANCE._streams,...Object.keys(byStream).filter(s=>!FINANCE._streams.includes(s))];
   return `
@@ -736,7 +738,7 @@ function viewFinance(k){
   <h2 class="sec">Other revenue <small>${S.oth?money(S.oth)+' logged':'Coming later'}</small></h2>
   <div class="tbl-wrap"><table><thead><tr><th>Stream</th><th>Amount</th><th>Notes</th></tr></thead><tbody>${streams.map(s=>{const L=byStream[s];
     if(s==='Merchandise')return `<tr><td>${esc(s)}</td>${hasM?`<td class="num"><b>${money(S.merch)}</b></td><td class="mute">Counted show by show above</td>`:'<td class="mute">Not tracked yet</td><td></td>'}</tr>`;
-    return L?`<tr><td>${esc(s)}</td><td class="num"><b>${money(L.reduce((a,o)=>a+o.amt,0))}</b></td><td>${L.map(o=>`${o.stream==='TV rights'?'To '+fmt(o.d):fmt(o.d)}: ${esc(o.note||'')}`).join('<br>')}</td></tr>`:`<tr><td>${esc(s)}</td><td class="mute">Not tracked yet</td><td></td></tr>`;}).join('')}</tbody></table></div>
+    return L?`<tr><td>${esc(s)}</td><td class="num"><b>${money(L.reduce((a,o)=>a+o.amt,0))}</b></td><td>${L.map(o=>`${o.daily?'To '+fmt(o.d):fmt(o.d)}: ${esc(o.note||'')}`).join('<br>')}</td></tr>`:`<tr><td>${esc(s)}</td><td class="mute">Not tracked yet</td><td></td></tr>`;}).join('')}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Payroll uses the rates on the Contracts tab. "Show costs" is the building, tax, crew, advertising, travel, TV, pay-per-view and merchandise costs for that night, not talent.</p>`;
 }
 
@@ -752,7 +754,7 @@ function viewMoney(){
   ${a?`<div class="box" style="margin:16px 0"><div class="kicker">${esc(a.kicker)}</div><h3 style="font-family:var(--head);font-weight:400;font-size:30px;margin:4px 0;text-transform:uppercase"><a href="#world-who-gets-paid" style="color:inherit;text-decoration:none">${esc(a.title)}</a></h3><p style="margin:6px 0">${esc(a.dek)}</p><a href="#world-who-gets-paid" style="font-family:var(--cond);font-weight:700">Read the full story →</a></div>`:''}
   <div class="tbl-wrap"><table><thead><tr><th>Promotion</th><th>Pay basis</th><th>Top of the scale</th><th>Gate</th><th>Merch &amp; other</th><th>Revenue</th><th>Talent</th><th>Other costs</th><th>Operating profit</th><th>Margin</th><th>Pages</th></tr></thead><tbody>${rows}<tr><td colspan="5"><b>World</b></td><td class="num"><b>${m(T.rev)}</b></td><td class="num"><b>${m(T.pay)}</b></td><td class="num"><b>${m(T.oc)}</b></td><td class="num"><b>${m(T.pr)}</b></td><td class="num">${T.rev?Math.round(T.pr/T.rev*100)+'%':'—'}</td><td></td></tr></tbody></table></div>
   <p style="font-family:var(--cond);font-weight:700;font-size:15px"><a href="#earnings">Who's made the most this month: the Talent Earnings tracker →</a></p>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Talent matches the Talent Earnings tracker: WWF and WCW salaries and Japan tour fees count day by day to the world date, and per-show pay counts every show run. Other costs are buildings, taxes, crews, advertising, travel, TV and pay-per-view production, merchandise stock, office overhead and announcers, estimated show by show from each promotion's standard rates. "Merch &amp; other" includes pay-per-view and TV rights money (TV rights count day by day through the month).</p>`;
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Talent matches the Talent Earnings tracker: WWF and WCW salaries and Japan tour fees count day by day to the world date, and per-show pay counts every show run. Other costs are buildings, taxes, crews, advertising, travel, TV and pay-per-view production, merchandise stock, office overhead and announcers, estimated show by show from each promotion's standard rates. "Merch &amp; other" includes pay-per-view, TV rights and hotline money (TV and hotline money count day by day through the month).</p>`;
 }
 
 
