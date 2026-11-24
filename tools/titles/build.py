@@ -208,30 +208,86 @@ def esc(s):
     return html.escape(s or '', quote=True)
 
 
-CSS = """body{font-family:Georgia,'Times New Roman',serif;max-width:980px;margin:24px auto;padding:0 16px;color:#111;line-height:1.4}
-h1{margin-bottom:2px}h2{margin-top:34px;border-bottom:2px solid #222;padding-bottom:3px}
-.sub{color:#555;margin-top:0}table{border-collapse:collapse;width:100%;margin:8px 0 6px;font-size:15px}
-th,td{border:1px solid #bbb;padding:5px 7px;text-align:left;vertical-align:top}th{background:#eee}
-tr.vac td{background:#f6f6f6;color:#555;font-style:italic}td.n{text-align:center;width:28px}
-details{margin:2px 0 10px}summary{cursor:pointer;color:#036}ul{margin:4px 0 8px 18px;padding:0}
-li{margin:2px 0;font-size:14px}.cur{font-weight:bold}.toc a{margin-right:14px}.muted{color:#666}"""
+FRONT = 'https://shovan123-lang.github.io/TNMWorld/'
+COLORS = {'uswa': '#a8650f', 'wcw': '#1d3f8f', 'wwf': '#c8102e', 'ajpw': '#136f63', 'njpw': '#d4481a',
+          'cmll': '#6b2fa0', 'asw': '#4a5d23', 'twa': '#a3162b', 'pp': '#b5179e'}
+FONTS = ('<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Condensed:wght@400;600;700'
+         '&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">')
+# Same newsprint look as the World Report front page (index.html in TNMWorld).
+CSS = """:root{--paper:#f3eee3;--paper2:#e9e2d2;--ink:#1b1a17;--mute:#6a645a;--soft:#cfc6b3;--red:#b3261e;
+--head:'Anton',Impact,sans-serif;--cond:'Roboto Condensed',Arial Narrow,sans-serif;--serif:'Source Serif 4',Georgia,serif}
+*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font-family:var(--serif);font-size:16px;line-height:1.5;background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:3px 3px}
+a{color:inherit}.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+nav.main{position:sticky;top:0;z-index:20;background:var(--ink);color:var(--paper)}
+nav.main .wrap{display:flex;flex-wrap:wrap;align-items:stretch}
+nav.main a{font-family:var(--cond);font-weight:700;font-size:13.5px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:11px 12px;border-bottom:4px solid transparent;white-space:nowrap}
+nav.main a:hover{background:#2c2a26}nav.main a.on{border-bottom-color:var(--c);background:#2c2a26}nav.main .sp{flex:1}
+.mast{border-bottom:4px double var(--ink);padding:18px 0 10px;text-align:center}
+.mast .top{display:flex;justify-content:space-between;gap:10px;font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--ink);padding-bottom:6px}
+.mast .top a{text-decoration:none}.mast .top a:hover{color:var(--red)}
+.mast .name{font-family:var(--head);font-weight:400;font-size:clamp(30px,5vw,52px);line-height:.95;margin:12px 0 4px;letter-spacing:.01em;text-transform:uppercase}
+.mast .name span{color:var(--red)}.mast .tag{font-style:italic;color:var(--mute);font-size:15px}
+.phead{border-top:10px solid var(--c);margin-top:22px;padding:14px 0 6px;border-bottom:1px solid var(--ink);display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
+.phead h1{font-family:var(--head);font-weight:400;font-size:clamp(38px,7vw,72px);line-height:.9;margin:0;text-transform:uppercase;color:var(--c)}
+.phead .stat{font-family:var(--cond);text-align:right;text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--mute)}
+.phead .stat b{display:block;font-family:var(--head);font-weight:400;font-size:28px;line-height:1;color:var(--ink);letter-spacing:.01em}
+.sub{font-style:italic;color:var(--mute);margin:10px 0 0}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 0}
+.toc a{font-family:var(--cond);font-weight:700;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:1.5px solid var(--ink);padding:4px 10px;background:var(--paper)}
+.toc a:hover{background:var(--ink);color:var(--paper)}
+h2.sec{font-family:var(--head);font-weight:400;text-transform:uppercase;font-size:28px;letter-spacing:.02em;margin:34px 0 10px;border-bottom:3px solid var(--ink);padding-bottom:4px;scroll-margin-top:60px}
+h2.sec::before{content:"";display:inline-block;width:12px;height:12px;background:var(--c);margin:0 10px 5px 0;vertical-align:middle}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-family:var(--cond);font-size:14.5px}
+th{text-align:left;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:12px;border-bottom:2px solid var(--ink);padding:6px 8px}
+td{border-bottom:1px solid var(--soft);padding:7px 8px;vertical-align:top}
+td a{color:var(--c);text-decoration:none;font-weight:600}td a:hover{text-decoration:underline}
+td.n{font-family:var(--head);font-size:20px;color:var(--mute);width:34px;text-align:center}
+td.who b{font-family:var(--serif);font-size:16px}
+tr.vac td{background:var(--paper2);color:var(--mute);font-style:italic}
+tr.now td{background:color-mix(in srgb,var(--c) 9%,transparent)}
+.cur{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--c);color:#fff;padding:1px 6px;margin-right:4px}
+.muted{color:var(--mute)}.star{font-weight:700;white-space:nowrap}
+.status{font-family:var(--cond);border-left:4px solid var(--c);background:var(--paper2);padding:8px 12px}
+details{margin:6px 0 4px;border-left:3px solid var(--soft);padding-left:12px}
+summary{cursor:pointer;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--c);padding:3px 0}
+details ul{margin:4px 0 10px 16px;padding:0}details li{margin:3px 0;font-size:14.5px}
+details li a{color:var(--c);font-family:var(--cond);font-weight:700;text-decoration:none}
+footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font-family:var(--cond);font-size:13px;color:var(--mute);text-align:center}
+footer a{font-weight:700;color:var(--ink);text-decoration:none;margin:0 8px}footer a:hover{color:var(--red)}
+@media(max-width:640px){nav.main .opt{display:none}nav.main a{padding:11px 9px}.mast .top span:not(:first-child){display:none}.mast .top{justify-content:center}.phead .stat{text-align:left}}"""
 
 
 def render_html(r):
-    out = [f'<html><head><meta charset="utf-8"><title>{esc(r["name"])} Title Histories</title>',
-           f'<style>{CSS}</style></head><body>',
-           f'<p><a href="WELCOME.HTM">&larr; Back to the card list</a></p>',
-           f'<h1>{esc(r["name"])} Title Histories</h1>',
+    key = REPOS[r['repo']][0]
+    c = COLORS.get(key, '#b3261e')
+    reigns = sum(1 for t in r['titles'] for g in t['reigns'] if g['type'] == 'reign')
+    out = ['<!DOCTYPE html>', '<html lang="en"><head><meta charset="utf-8">',
+           '<meta name="viewport" content="width=device-width, initial-scale=1">',
+           f'<title>{esc(r["name"])} Title Histories · The TNM World Wrestling Report</title>',
+           '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+           FONTS, f'<style>{CSS}</style></head><body style="--c:{c}">',
+           f'<nav class="main"><div class="wrap"><a href="{FRONT}">&larr; Front Page</a>'
+           f'<a href="WELCOME.HTM">{esc(r["name"])} Card List</a><a class="on" href="#">Title Histories</a>'
+           f'<span class="sp"></span><a class="opt" href="{FRONT}#calendar">World Calendar</a></div></nav>',
+           '<div class="wrap">',
+           f'<header class="mast"><div class="top"><span><a href="{FRONT}">The TNM World Wrestling Report</a></span>'
+           f'<span>{esc(r["name"])} Archive</span><span>Through {fmt_date(r["as_of"])}</span></div>'
+           f'<div class="name"><a href="{FRONT}" style="text-decoration:none">The TNM World <span>Wrestling</span> Report</a></div>'
+           '<div class="tag">The Championship Ledger</div></header>',
+           f'<div class="phead"><h1>{esc(r["name"])}<br>Title Histories</h1>'
+           f'<div class="stat"><b>{len(r["titles"])}</b>titles &middot; {reigns} reigns<br>through {fmt_date(r["as_of"])}</div></div>',
            f'<p class="sub">Built from the show results on this site, through {fmt_date(r["as_of"])}. '
            'Reign lengths run to that date. Lineages start when this site\'s records begin.</p>']
-    out.append('<p class="toc">' + ''.join(f'<a href="#t{i}">{esc(t["name"])}</a>' for i, t in enumerate(r['titles'])) + '</p>')
+    out.append('<div class="toc">' + ''.join(f'<a href="#t{i}">{esc(t["name"])}</a>' for i, t in enumerate(r['titles'])) + '</div>')
     for i, t in enumerate(r['titles']):
-        out.append(f'<h2 id="t{i}">{esc(t["name"])}</h2>')
+        out.append(f'<h2 class="sec" id="t{i}">{esc(t["name"])}</h2>')
         if not t['reigns']:
-            out.append(f'<p>Current status: <b>{esc(t.get("status", "No title matches on record yet"))}</b>. '
+            out.append(f'<p class="status">Current status: <b>{esc(t.get("status", "No title matches on record yet"))}</b>. '
                        'No title matches on this site yet.</p>')
             continue
-        out.append('<table><tr><th>#</th><th>Champion</th><th>Won</th><th>Event</th><th>How</th><th>Reign</th></tr>')
+        out.append('<div class="tbl-wrap"><table><tr><th>#</th><th>Champion</th><th>Won</th><th>Event</th><th>How</th><th>Reign</th></tr>')
         n = 0
         for rg in t['reigns']:
             ev = rg.get('show')
@@ -241,37 +297,42 @@ def render_html(r):
                            f'<td>{esc(rg["note"])}</td><td></td></tr>')
                 continue
             n += 1
+            now = not rg.get('end')
             if rg['start'] and rg.get('end'):
                 length = f'{days(rg["start"], rg["end"])} days'
             elif rg['start']:
-                length = f'<span class="cur">Current</span>, {days(rg["start"], r["as_of"])}+ days'
+                length = f'<span class="cur">Current</span>{days(rg["start"], r["as_of"])}+ days'
             elif rg.get('end'):
                 length = f'Lost {fmt_date(rg["end"])}'
             else:
                 length = '<span class="cur">Current</span>'
             won = esc(rg['shown']) if rg['start'] else '<span class="muted">Champion when records begin</span>'
-            how = esc(rg['how']) + (f' <b>{esc(rg["rating"])}</b>' if rg['rating'] else '')
+            how = esc(rg['how']) + (f' <span class="star">{esc(rg["rating"])}</span>' if rg['rating'] else '')
             nd = len(rg['defenses'])
             length += f'<br><span class="muted">{nd} defense{"s" if nd != 1 else ""}</span>'
-            out.append(f'<tr><td class="n">{n}</td><td><b>{esc(rg["who"])}</b></td><td>{won}</td><td>{evl}</td>'
-                       f'<td>{how}</td><td>{length}</td></tr>')
-        out.append('</table>')
+            trc = ' class="now"' if now else ''
+            out.append(f'<tr{trc}><td class="n">{n}</td><td class="who"><b>{esc(rg["who"])}</b></td>'
+                       f'<td>{won}</td><td>{evl}</td><td>{how}</td><td>{length}</td></tr>')
+        out.append('</table></div>')
         for rg in t['reigns']:
             items = sorted(rg.get('defenses', []) + rg.get('notes', []), key=lambda e: (e['show']['date'] or '', e['n']))
             if not items:
                 continue
             who = rg.get('who', 'Vacancy')
-            out.append(f'<details><summary>{esc(who)}: title defenses and notes ({len(rg.get("defenses", []))} defenses)</summary><ul>')
+            nd = len(rg.get('defenses', []))
+            out.append(f'<details><summary>{esc(who)}: title defenses and notes ({nd} defense{"" if nd == 1 else "s"})</summary><ul>')
             for e in items:
                 s = e['show']
                 link = f'<a href="{esc(s["href"])}">{esc(s["shown"])} &middot; {esc(s["label"])}</a>'
                 if e['kind'] == 'note':
                     out.append(f'<li>{link}: <i>{esc(e["note"])}</i></li>')
                 else:
-                    rt = f' <b>{esc(e["rating"])}</b>' if e['rating'] else ''
+                    rt = f' <span class="star">{esc(e["rating"])}</span>' if e['rating'] else ''
                     out.append(f'<li>{link}: {esc(e["how"])}{rt}</li>')
             out.append('</ul></details>')
-    out.append(f'<p><hr><span class="muted">Updated {dt.date.today().strftime("%m-%d-%Y")}</span></p></body></html>')
+    out.append(f'<footer><a href="{FRONT}">&larr; Back to the World Report front page</a> &middot; '
+               f'<a href="WELCOME.HTM">{esc(r["name"])} card list</a><br>'
+               f'Updated {dt.date.today().strftime("%m-%d-%Y")}</footer></div></body></html>')
     return '\n'.join(out)
 
 
