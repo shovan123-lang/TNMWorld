@@ -33,7 +33,7 @@ SHOWS=[
    "Eddie Gilbert","Stan Hansen","Dan Spivey",*NK,"Ric Flair","Terry Funk","Kevin Von Erich","Scott Steiner",
    "Tully Blanchard","Dirty White Boy","Rex King","Robert Fuller",*NH,"Eric Embry","Tom Prichard","Steve Austin",
    "Diamond Studd","Kerry Von Erich","Bret Hart","Andre the Giant","Jamie Dundee","Paul Ellering","Missy Hyatt"]),
- dict(p="uswa",d="1991-07-17",show="Jonesboro · Worldwide (S1 E13)",mult=1,gate=3500,logged=0,  # ledger payroll not set yet
+ dict(p="uswa",d="1991-07-17",show="Jonesboro · Worldwide (S1 E13)",mult=1,gate=3500,logged=1610,
   people=["Scotty Flamingo","Jim Powers","Sam Houston","Dirty White Boy","Rex King","Jerry Lawler","Eddie Guerrero",
    "The Spellbinder","Jimmy Valiant","Bill Dundee","Brickhouse Brown","Dennis Condrey","Doug Gilbert","Missy Hyatt",
    "Moondog Spot","Moondog Rex","Mark Canterbury","Honky Tonk Man","Robert Fuller"],
@@ -71,7 +71,7 @@ SHOWS+=[
  dict(p="cmll",d="1991-07-14",show="Guadalajara · Lucha Libre en Domingo",mult=1,gate=77220,logged=7100,
   people=["Felino","Silver King","Tony Arce","Vulcano","Toshiyo Yamada","Lola González","Apolo Dantes","Pierroth Jr",
    "Sangre Chicana","Blue Panther","Cien Caras","Máscara Año 2000","Universo 2000","Konnan","Atlantis","Rayo De Jalisco Jr"]),
- dict(p="cmll",d="1991-07-17",show="Acapulco · Coliseo Acapulco debut",mult=1,gate=27000,logged=0,  # ledger payroll not set yet
+ dict(p="cmll",d="1991-07-17",show="Acapulco · Coliseo Acapulco debut",mult=1,gate=27000,logged=7930,
   people=["Ultimo Dragón","The Lightning Kid","Atlantis","Negro Casas","Felino","Art Barr","Jerry Estrada",
    "La Diabólica","Lola González","Vulcano","Tony Arce","Cien Caras","Konnan"],
   extra={"Jushin Liger":810,"The Blue Blazer":810,"Mike Rotunda":810},extra_label="guest fee, 3% of the $27,000 gate"),
@@ -92,13 +92,13 @@ SHOWS+=[
  dict(p="asw",d="1991-07-10",show="Camber Sands · Holiday camp tour, Show 3",mult=1,gate=5000,logged=2085,
   people=["Doc Dean","Skull Murphy","Gary Albright","Ivan Putski","Johnny Saint","Steve Regal","Bob Backlund","Fit Finlay",
    "Giant Haystacks","Robbie Brookside","Big Daddy"]),
- dict(p="asw",d="1991-07-17",show="Skegness · Holiday camp tour, Show 4",mult=1,gate=5000,logged=0,  # ledger payroll not set yet
+ dict(p="asw",d="1991-07-17",show="Skegness · Holiday camp tour, Show 4",mult=1,gate=5000,logged=1755,
   people=["Gary Albright","Tony St. Clair","Bruce Hart","Iceman King Parsons","Skull Murphy","Iron Mike Sharpe",
    "Steve Regal","Danny Boy Collins","Big Daddy","Robbie Brookside","Giant Haystacks","Dave Taylor"]),
  dict(p="twa",d="1991-07-19",show="Allentown, PA · Spot show",mult=1,gate=10800,logged=2875,
   people=["Austin Idol","Bob Armstrong","Buddy Landell","Chris Candido","J.T. Smith","The Nightstalker","Bunkhouse Buck",
    "Don Harris","Ron Harris","Bad News Brown","Mr. Sandman","Al Snow","Action Jackson"]),
- dict(p="pp",d="1991-07-28",show="Nashville · Power Hour",mult=1,gate=1000,logged=775,
+ dict(p="pp",d="1991-07-02",show="Nashville · Power Hour",mult=1,gate=1000,logged=775,
   people=["The Lightning Kid","Judge Dread","Chris Benoit","Johnny B. Badd","Brad Armstrong","Bobby Duncum Jr.","Devon Hughes",
    "Buzz Sawyer","Mike Awesome","Lance Storm","Marcus Alexander Bagwell","Tatanka","Leatherface","Steven Dunn","Paul Bearer",
    "Chris Jericho","Bart Gunn","Bill Watts","Rocky Johnson"]),
@@ -123,9 +123,10 @@ BONUSES = [
   {"Lex Luger":3150,"Barry Windham":3150}),
 ]
 
-# ---- Japan: one fee per tour, paid on the last night. Listed as "due" until that date has run.
-TOURS = {"ajpw":("1991-07-27","Summer Action Series tour fee"),
-         "njpw":("1991-07-30","Summer Crush '91 tour fee")}
+# ---- Japan: one fee per tour, earned day by day from the first night to the last
+# (start, end, label). The part not yet earned shows as "due". Sean, 2026-11-23.
+TOURS = {"ajpw":("1991-07-01","1991-07-27","Summer Action Series tour fee"),
+         "njpw":("1991-07-04","1991-07-30","Summer Crush '91 tour fee")}
 
 # ---- Tour wrestlers switched to per-appearance pay (taken out of the tour fee).
 # rate per night worked; add each night once it has run.

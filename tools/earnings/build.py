@@ -30,14 +30,19 @@ for k in ("wwf","wcw"):
 for k,d,lab,m in S.BONUSES:
   for n,v in m.items():
     p=get(n,k,tier.get((k,n),"A")); p["bonus"]+=v; p["lines"].append(dict(p=k,d=d,what=lab,amt=v,kind="bonus"))
-for k,(d,lab) in S.TOURS.items():
-  paid=WORLD>=d
+from datetime import date as _D
+_dd=lambda s:_D(int(s[:4]),int(s[5:7]),int(s[8:10]))
+for k,(st,d,lab) in S.TOURS.items():
+  span=(_dd(d)-_dd(st)).days+1; done=max(0,min(span,(_dd(WORLD)-_dd(st)).days+1))
   for t,n,r,note in C[k]['rows']:
     if t=="O" or n in S.PER_NIGHT.get(k,{}): continue
-    p=get(n,k,t)
-    if paid: p["shows"]+=r
-    else: p["due"]+=r
-    p["lines"].append(dict(p=k,d=d,what=lab+(" (paid)" if paid else " (due on the last night, before any proration)"),amt=r,kind="tour" if paid else "due"))
+    p=get(n,k,t); earned=r*done/span; left=r-earned
+    if earned:
+      p["shows"]+=earned
+      p["lines"].append(dict(p=k,d=min(WORLD,d),what=lab+" earned to date: ${:,} × {} of {} tour days".format(r,done,span),amt=round(earned,2),kind="tour"))
+    if left>0.005:
+      p["due"]+=left
+      p["lines"].append(dict(p=k,d=d,what=lab+" still to earn ({} tour days left)".format(span-done),amt=round(left,2),kind="due"))
 for k,who in S.PER_NIGHT.items():
   for n,(r,nights) in who.items():
     p=get(n,k,tier.get((k,n),"A"))
