@@ -305,6 +305,18 @@ nav.main .menu{border-top-color:var(--c,var(--red));box-shadow:4px 4px 0 rgba(0,
 nav.main .menu a{transition:background .12s,box-shadow .12s,color .12s}
 nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-shadow:inset 4px 0 0 var(--c2,var(--c,var(--red)))}
 .arch a:hover{color:var(--c);text-decoration-color:var(--c2,var(--c))}
+
+/* Coming Up (promotion overview sidebar) */
+.nextup{list-style:none;margin:0;padding:0;font-family:var(--cond)}
+.nextup li{display:grid;grid-template-columns:58px 1fr;column-gap:10px;padding:8px 0 8px 10px;border-bottom:1px dotted var(--soft);border-left:3px solid transparent;transition:border-color .15s,background .15s}
+.nextup li:hover{border-left-color:var(--c2,var(--c));background:var(--paper2)}
+.nextup li.big{border-left-color:var(--c)}
+.nextup .d{grid-row:span 3;font-weight:700;text-transform:uppercase;font-size:12.5px;line-height:1.25;color:var(--c);max-width:52px}
+.nextup .d small{display:block;color:var(--red);font-size:11px;letter-spacing:.08em}
+.nextup b{font-size:15px;line-height:1.2}
+.nextup .mute{font-size:13px}
+.nextup .mm{font-size:13.5px;line-height:1.3;margin-top:2px}
+.nextall{display:inline-block;margin-top:8px;font-family:var(--cond);font-weight:700;font-size:14px;color:var(--c);text-decoration-color:var(--c2,var(--c))}
 </style>
 </head>
 <body>
@@ -922,8 +934,7 @@ function viewPromo(k,tab){
       <aside>
         <h2 class="sec" style="font-size:22px">Champions</h2>
         <div class="grid" style="gap:10px">${p.titles.map(t=>belt(k,t)).join('')}</div>
-        <h2 class="sec" style="font-size:22px">Booker's Desk</h2>
-        <ul style="padding-left:18px;margin:0;font-size:15px">${p.desk.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+        ${(()=>{const nx=ev.filter(e=>!pastE(e)).slice(0,5);return `<h2 class="sec" style="font-size:22px">Coming Up</h2>${nx.length?`<ul class="nextup">${nx.map(e=>{const ms=(e.m||[]).filter(m=>!/^(Promo|Interview|Segment|Angle|Closing)/i.test(m[0]));const main=ms.find(m=>/^Main/i.test(m[0]))||ms.find(m=>/Title|Triple Crown|IWGP|Championship/i.test(m[0]))||ms.slice(-1)[0];return `<li class="${e.big?'big':''}"><span class="d">${fmt(e.d)}${isToday(e.d)?' <small>Tonight</small>':''}</span><b>${esc(e.type)}</b><span class="mute">${esc([String(e.city||'').split(',')[0],e.venue].filter(Boolean).join(' · '))}</span>${main?`<span class="mm">${esc(main[0].replace(/^Main( event)?:\s*/i,''))}</span>`:''}</li>`}).join('')}</ul><a class="nextall" href="#${k}/schedule">Full schedule →</a>`:'<div class="empty">Nothing on the calendar yet.</div>'}`})()}
         ${p.departures.length?`<h2 class="sec" style="font-size:22px">Departures</h2><ul style="padding-left:18px;margin:0;font-size:15px">${p.departures.map(d=>`<li><b>${esc(d[0])}</b>: ${esc(d[1])}</li>`).join('')}</ul>`:''}
       </aside>
     </div>`;
