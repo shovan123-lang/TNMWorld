@@ -270,7 +270,7 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 .filters button.logo,.efilters button.logo{background:none;border-color:transparent;padding:0 3px;line-height:0;display:inline-flex;align-items:center}
 .filters button.logo .plogo,.efilters button.logo .plogo{height:26px}
 .filters button.logo.off .plogo,.efilters button.logo.off .plogo{opacity:.3;filter:grayscale(1)}
-.ext.logo{display:inline-flex;align-items:center;gap:6px}.ext.logo .plogo{height:22px}
+.ext.logo{display:inline-flex;align-items:center;gap:6px}.ext.logo .plogo{height:22px;background:var(--paper);padding:2px 5px;box-sizing:content-box}
 </style>
 </head>
 <body>
@@ -324,7 +324,7 @@ const fmtLong = s=>{const x=dt(s);return `${['Sunday','Monday','Tuesday','Wednes
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
 const aired = id=>{const a=ARTICLES[id];return !(a&&a.airs&&dt(a.airs)>W)||spoilers};
 const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
-const LOGO = {njpw:'img/njpw-logo.svg',wwf:'img/wwf-logo.webp'};
+const LOGO = {njpw:'img/njpw-logo.svg',wwf:'img/wwf-logo.webp',wcw:'img/wcw-logo.png'};
 const plabel = k=>LOGO[k]?`<img class="plogo" src="${LOGO[k]}" alt="${P[k].short}">`:P[k].short;
 const chip = k=>`<a class="chip${LOGO[k]?' logo':''}" href="#${k}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</a>`;
 const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
