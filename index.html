@@ -315,7 +315,7 @@ const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
 
 /* =========================== NAV =========================== */
-const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['money','Money'],['earnings','Talent Earnings']];
+const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
 const TAB_LABEL={overview:'Overview',shows:'Cards & Results',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road'};
@@ -327,11 +327,11 @@ function renderNav(cur,curT){
     <div class="menu" role="menu">${promoTabs(k).map(t=>`<a role="menuitem" href="#${k}/${t}" class="${cur===k&&(curT||'overview')===t?'cur':''}">${TAB_LABEL[t]}</a>`+(t==='overview'&&SITES[k]&&!SITES[k].noTitles?`<a role="menuitem" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')}
     ${SITES[k]?`<a role="menuitem" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${esc(p.short)} site ↗</a>`:''}
     ${la?`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#${la}">${esc(ARTICLES[la].title)}</a>`:''}</div></div>`;};
-  const worldOn=['calendar','showarchive','file','talent','arrivals','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
-  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',showarchive:'Show Archive',file:'Talent File',talent:'Talent Exchange',arrivals:'Arrivals',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
+  const worldOn=['calendar','showarchive','file','talent','arrivals','departures','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
+  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',showarchive:'Show Archive',file:'Talent File',talent:'Talent Exchange',arrivals:'Arrivals',departures:'Departures',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
   <div class="items"><a href="#home" class="top ${cur==='home'?'on':''}">Front Page</a>${ORDER.map(promo).join('')}
   <div class="dd" style="--c:var(--red)"><a href="#calendar" class="top ${worldOn?'on':''}" aria-haspopup="true">World<span class="caret">▾</span></a>
-    <div class="menu" role="menu"><a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a><a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a><a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a><div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a></div></div></div>`;
+    <div class="menu" role="menu"><a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a><a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a><a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#departures" class="${cur==='departures'?'cur':''}">Departures</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a><div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a></div></div></div>`;
   $('#burger').onclick=()=>{const n=document.querySelector('nav.main');n.classList.toggle('open');$('#burger').setAttribute('aria-expanded',n.classList.contains('open'));};
   // Touch / small screens: first tap on a promotion opens its menu instead of navigating
   document.querySelectorAll('nav.main .dd>.top').forEach(a=>a.addEventListener('click',ev=>{
@@ -923,6 +923,22 @@ function viewArrivals(){
   </tbody></table></div>`;
 }
 
+function viewDepartures(){
+  const here=ORDER.flatMap(k=>(P[k].departures||[]).map(d=>[k,d[0],d[1]]));
+  return `<h2 class="sec">Departures Board <small>1991 exit class</small></h2>
+  <p style="max-width:760px">Real-world exits from July to December 1991: firings, walkouts, retirements and deaths. The world has already gone its own way with several of them, so each note says where the wrestler stands here. Use it the way you use the arrivals board: they're ready to happen, or not, as the calendar gets there.</p>
+  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Where</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
+  ${DEPARTURES.map(a=>`<tr><td style="white-space:nowrap">${esc(a[0])}</td><td>${tagFor(a[1])}</td><td><b>${esc(a[2])}</b></td><td>${esc(a[3])}</td></tr>`).join('')}
+  </tbody></table></div>
+  <p style="max-width:760px;font-size:14px"><b>Just after the window:</b> the Barbarian, Lex Luger and Jim Neidhart all leave in February 1992, and JWP splits into JWP and LLPW in January 1992.</p>
+  <h2 class="sec">Gone From This World <small>exits so far, from each promotion's file</small></h2>
+  ${here.length?`<div class="tbl-wrap"><table><thead><tr><th>From</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
+  ${here.map(([k,n,t])=>`<tr><td>${chip(k)}</td><td><b>${esc(n)}</b></td><td>${esc(t)}</td></tr>`).join('')}
+  </tbody></table></div>`:'<p>No departures logged yet.</p>'}
+  <h2 class="sec">In Memoriam <small>July to December 1991</small></h2>
+  <p style="max-width:760px">${MEMORIAM.map(m=>`<b>${esc(m[1])}</b> (${esc(m[0])})`).join(' · ')}</p>`;
+}
+
 
 /* =========================== ARTICLES =========================== */
 function viewArticle(id){
@@ -958,6 +974,7 @@ function route(){
   else if(key==='file') html=viewTalentFile();
   else if(key==='talent') html=viewTalent();
   else if(key==='arrivals') html=viewArrivals();
+  else if(key==='departures') html=viewDepartures();
   else if(key==='money') html=viewMoney();
   else if(key==='earnings') html=viewEarnings();
   else html=viewHome();

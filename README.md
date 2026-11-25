@@ -7,7 +7,7 @@ Live site: https://shovan123-lang.github.io/TNMWorld/
 | Path | What it holds |
 |---|---|
 | `index.html` | The page itself: layout, styles and the code that draws every view. No promotion data lives here. |
-| `data/world.js` | World-wide data: the world date, the headline ticker, the talent exchange and the arrivals board. |
+| `data/world.js` | World-wide data: the world date, the headline ticker, the talent exchange, the arrivals board and the departures board (`DEPARTURES`, `MEMORIAM`). The departures page also lists every promotion's own `departures` automatically. |
 | `data/<promotion>.js` | Everything for one promotion: overview, champions, roster, cards and results, articles (Observer reports, From the Road diaries, news), contracts, finance, archive links and banner. One file each: `wcw`, `wwf`, `uswa`, `pp` (Power Pro), `ajpw`, `njpw`, `cmll`, `asw`, `twa` (Tri-State). |
 | `data/earnings.js` | The Talent Earnings tracker (World → Talent Earnings). **Generated**: don't edit by hand. |
 | `tools/earnings/` | Builds the tracker. `shows.py` lists who worked each per-appearance show, plus bonuses and Japan tour dates; `build.py` reads the pay rates from `CONTRACTS` and writes `data/earnings.js` and `earnings.md`. |
