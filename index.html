@@ -324,7 +324,7 @@ const fmtLong = s=>{const x=dt(s);return `${['Sunday','Monday','Tuesday','Wednes
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
 const aired = id=>{const a=ARTICLES[id];return !(a&&a.airs&&dt(a.airs)>W)||spoilers};
 const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
-const LOGO = {njpw:'img/njpw-logo.svg',wwf:'img/wwf-logo.webp',wcw:'img/wcw-logo.png',cmll:'img/cmll-logo.png',fmw:'img/fmw-logo.png',uswa:'img/uswa-logo.png'};
+const LOGO = {njpw:'img/njpw-logo.svg',wwf:'img/wwf-logo.webp',wcw:'img/wcw-logo.png',cmll:'img/cmll-logo.png',fmw:'img/fmw-logo.png',uswa:'img/uswa-logo.png',ajpw:'img/ajpw-logo.png'};
 const plabel = k=>LOGO[k]?`<img class="plogo" src="${LOGO[k]}" alt="${P[k].short}">`:P[k].short;
 const chip = k=>`<a class="chip${LOGO[k]?' logo':''}" href="#${k}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</a>`;
 const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
