@@ -925,18 +925,36 @@ function viewArrivals(){
 
 function viewDepartures(){
   const here=ORDER.flatMap(k=>(P[k].departures||[]).map(d=>[k,d[0],d[1]]));
-  return `<h2 class="sec">Departures Board <small>1991 exit class</small></h2>
-  <p style="max-width:760px">Real-world exits from July to December 1991: firings, walkouts, retirements and deaths. The world has already gone its own way with several of them, so each note says where the wrestler stands here. Use it the way you use the arrivals board: they're ready to happen, or not, as the calendar gets there.</p>
+  const star=f=>f?` <span class="chip" style="--c:#b8862b">On a roster here</span>`:'';
+  const row=(cells)=>`<tr>${cells.map((c,i)=>`<td${i===0?' style="white-space:nowrap"':''}>${c}</td>`).join('')}</tr>`;
+  return `<h2 class="sec">Departures Board <small>Retirements · deaths · exits, July to December 1991</small></h2>
+  <p style="max-width:760px">Real-world exits from the back half of 1991, retirements first so their exports can be retired, then deaths so tribute shows can be booked. <span class="chip" style="--c:#b8862b">On a roster here</span> marks anyone who is on a roster in this world.</p>
+  <h2 class="sec" style="font-size:24px">Retirements <small>retire the export</small></h2>
+  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Where</th><th>Wrestler</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+  ${RETIREMENTS.map(r=>row([esc(r[0]),tagFor(r[1]),`<b>${esc(r[2])}</b>${star(r[5])}`,esc(r[3]),esc(r[4])])).join('')}
+  </tbody></table></div>
+  <p style="max-width:760px;font-size:15px;margin-bottom:6px"><b>Retired in 1991, month not found.</b> Retire these exports whenever it suits the story.</p>
+  <div class="tbl-wrap"><table><thead><tr><th>Where</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
+  ${RETIRED_1991.map(r=>row([tagFor(r[0]),`<b>${esc(r[1])}</b>${star(r[3])}`,esc(r[2])])).join('')}
+  </tbody></table></div>
+  <p style="max-width:760px;font-size:14px">Also listed as retiring in 1991: ${RETIRED_1991_OTHERS.map(esc).join(', ')}.</p>
+  <h2 class="sec" style="font-size:24px">Deaths <small>for tribute shows</small></h2>
+  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Name</th><th>Notes</th></tr></thead><tbody>
+  ${DEATHS.map(d=>row([esc(d[0]),`<b>${esc(d[1])}</b>${star(d[3])}`,esc(d[2])])).join('')}
+  </tbody></table></div>
+  <p style="max-width:760px;font-size:15px;margin-bottom:6px"><b>Coming up early in 1992</b>, if you want to plan ahead:</p>
+  <div class="tbl-wrap"><table><tbody>
+  ${DEATHS_NEXT.map(d=>row([esc(d[0]),`<b>${esc(d[1])}</b>${star(d[3])}`,esc(d[2])])).join('')}
+  </tbody></table></div>
+  <h2 class="sec" style="font-size:24px">Other Exits <small>firings, walkouts, jumps</small></h2>
   <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Where</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
-  ${DEPARTURES.map(a=>`<tr><td style="white-space:nowrap">${esc(a[0])}</td><td>${tagFor(a[1])}</td><td><b>${esc(a[2])}</b></td><td>${esc(a[3])}</td></tr>`).join('')}
+  ${DEPARTURES.map(a=>row([esc(a[0]),tagFor(a[1]),`<b>${esc(a[2])}</b>`,esc(a[3])])).join('')}
   </tbody></table></div>
   <p style="max-width:760px;font-size:14px"><b>Just after the window:</b> the Barbarian, Lex Luger and Jim Neidhart all leave in February 1992, and JWP splits into JWP and LLPW in January 1992.</p>
   <h2 class="sec">Gone From This World <small>exits so far, from each promotion's file</small></h2>
   ${here.length?`<div class="tbl-wrap"><table><thead><tr><th>From</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
   ${here.map(([k,n,t])=>`<tr><td>${chip(k)}</td><td><b>${esc(n)}</b></td><td>${esc(t)}</td></tr>`).join('')}
-  </tbody></table></div>`:'<p>No departures logged yet.</p>'}
-  <h2 class="sec">In Memoriam <small>July to December 1991</small></h2>
-  <p style="max-width:760px">${MEMORIAM.map(m=>`<b>${esc(m[1])}</b> (${esc(m[0])})`).join(' · ')}</p>`;
+  </tbody></table></div>`:'<p>No departures logged yet.</p>'}`;
 }
 
 
