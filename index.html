@@ -337,19 +337,19 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 /* Data containers. Each promotion's file in data/ fills these in. */
 const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={};
 </script>
-<script src="data/world.js"></script>
-<script src="data/wcw.js"></script>
-<script src="data/wwf.js"></script>
-<script src="data/uswa.js"></script>
-<script src="data/pp.js"></script>
-<script src="data/ajpw.js"></script>
-<script src="data/njpw.js"></script>
-<script src="data/cmll.js"></script>
-<script src="data/asw.js"></script>
-<script src="data/twa.js"></script>
-<script src="data/fmw.js"></script>
-<script src="data/earnings.js"></script>
-<script src="data/apuestas.js"></script>
+<script src="data/world.js?v=dc80c15c"></script>
+<script src="data/wcw.js?v=f82cdbb6"></script>
+<script src="data/wwf.js?v=5201e715"></script>
+<script src="data/uswa.js?v=8fb84145"></script>
+<script src="data/pp.js?v=749db14d"></script>
+<script src="data/ajpw.js?v=f5449525"></script>
+<script src="data/njpw.js?v=30373269"></script>
+<script src="data/cmll.js?v=581b1378"></script>
+<script src="data/asw.js?v=37e6ea1d"></script>
+<script src="data/twa.js?v=a82b244a"></script>
+<script src="data/fmw.js?v=70118c26"></script>
+<script src="data/earnings.js?v=2ef482a8"></script>
+<script src="data/apuestas.js?v=9006aede"></script>
 <script>
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -370,7 +370,7 @@ const fmtLong = s=>{const x=dt(s);return `${['Sunday','Monday','Tuesday','Wednes
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
 const aired = id=>{const a=ARTICLES[id];return !(a&&a.airs&&dt(a.airs)>W)||spoilers};
 const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
-const LOGO = {njpw:'img/njpw-logo.svg',wwf:'img/wwf-logo.webp',wcw:'img/wcw-logo.png',cmll:'img/cmll-logo.png',fmw:'img/fmw-logo.png',uswa:'img/uswa-logo.png',ajpw:'img/ajpw-logo.png',asw:'img/asw-logo.png',pp:'img/pp-logo.jpg',twa:'img/tsw-logo.png'};
+const LOGO = {njpw:'img/njpw-logo.svg?v=df09466d',wwf:'img/wwf-logo.webp?v=81c1e15d',wcw:'img/wcw-logo.png?v=9d5ac90c',cmll:'img/cmll-logo.png?v=62af0a6b',fmw:'img/fmw-logo.png?v=ad8b0729',uswa:'img/uswa-logo.png?v=504eb8f3',ajpw:'img/ajpw-logo.png?v=0e4c9c64',asw:'img/asw-logo.png?v=761e67a7',pp:'img/pp-logo.jpg?v=fcfe09b5',twa:'img/tsw-logo.png?v=0a5ea135'};
 const plabel = k=>LOGO[k]?`<img class="plogo" src="${LOGO[k]}" alt="${P[k].short}">`:P[k].short;
 const chip = k=>`<a class="chip${LOGO[k]?' logo':''}" href="#${k}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</a>`;
 const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
