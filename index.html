@@ -262,15 +262,15 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 .lw .ev{position:relative;padding-left:84px!important;padding:8px 0;border-bottom:1px dotted var(--soft)}
 
 /* Promotion logo buttons (replace the coloured text chip) */
-.plogo{display:block;width:24px;height:24px}
-.chip.logo,.pc.logo{background:none;padding:0;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;line-height:0;border-radius:50%;transition:transform .12s}
-.pc.logo{margin-right:3px}.pc.logo .plogo{width:20px;height:20px}
+.plogo{display:block;width:auto;height:24px}
+.chip.logo,.pc.logo{background:none;padding:0;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;line-height:0;transition:transform .12s}
+.pc.logo{margin-right:3px}.pc.logo .plogo{height:20px}
 .chip.logo:hover{transform:scale(1.12)}
 .chip.logo .plogo,.pc.logo .plogo{filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
 .filters button.logo,.efilters button.logo{background:none;border-color:transparent;padding:0 3px;line-height:0;display:inline-flex;align-items:center}
-.filters button.logo .plogo,.efilters button.logo .plogo{width:26px;height:26px}
+.filters button.logo .plogo,.efilters button.logo .plogo{height:26px}
 .filters button.logo.off .plogo,.efilters button.logo.off .plogo{opacity:.3;filter:grayscale(1)}
-.ext.logo{display:inline-flex;align-items:center;gap:6px}.ext.logo .plogo{width:22px;height:22px}
+.ext.logo{display:inline-flex;align-items:center;gap:6px}.ext.logo .plogo{height:22px}
 </style>
 </head>
 <body>
@@ -324,7 +324,7 @@ const fmtLong = s=>{const x=dt(s);return `${['Sunday','Monday','Tuesday','Wednes
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
 const aired = id=>{const a=ARTICLES[id];return !(a&&a.airs&&dt(a.airs)>W)||spoilers};
 const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
-const LOGO = {njpw:'img/njpw-logo.svg'};
+const LOGO = {njpw:'img/njpw-logo.svg',wwf:'img/wwf-logo.webp'};
 const plabel = k=>LOGO[k]?`<img class="plogo" src="${LOGO[k]}" alt="${P[k].short}">`:P[k].short;
 const chip = k=>`<a class="chip${LOGO[k]?' logo':''}" href="#${k}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</a>`;
 const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
