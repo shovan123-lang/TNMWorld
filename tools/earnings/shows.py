@@ -92,6 +92,9 @@ SHOWS+=[
  dict(p="cmll",d="1991-07-20",show="Mexico City · Sábado de Lucha Libre (Arena Coliseo)",mult=1,gate=45360,logged=0,  # no ledger payroll yet
   people=["Ángel Azteca","Jerry Estrada","Silver King","Apolo Dantes","Eddie Guerrero","Chavo Guerrero","Fuerza Guerrera",
    *BRAZOS,"La Diabólica","Pantera Sureña","Toshiyo Yamada","Lola González"]),
+ dict(p="cmll",d="1991-07-21",show="Puebla · Domingo de Coliseo (Arena Puebla)",mult=1,gate=27216,logged=0,  # payroll To establish
+  people=["Jerry Estrada","Javier Cruz","Tony Arce","Vulcano","The Lightning Kid","Pierroth Jr","Art Barr","Ángel Azteca",
+   "Toshiyo Yamada","Lola González","Negro Casas","Felino","MS-1","Satánico","Blue Panther","El Dandy","Octagón","Masakre"]),
  dict(p="asw",d="1991-07-03",show="Southport · Holiday camp tour, Show 1",mult=1,gate=5000,logged=2070,
   people=["Tony St. Clair","El Gran Hamada","Iceman King Parsons","Giant Haystacks","Gary Albright","Dory Funk Jr.","Doc Dean",
    "Hector Guerrero","Bob Backlund","Bruce Hart","Robbie Brookside","Iron Mike Sharpe","Fit Finlay","Steve Regal"]),
