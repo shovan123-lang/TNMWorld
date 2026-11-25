@@ -166,6 +166,8 @@ tr.big td{font-weight:700}
 .show>header span{font-family:var(--cond);font-size:13px;color:var(--mute)}
 .show .notes{padding:8px 12px;font-size:14.5px;border-top:1px solid var(--soft)}
 .show .notes ul{margin:4px 0;padding-left:18px}
+.apl{margin:4px 0 0;padding-left:16px;text-align:left;font-size:13px;font-family:var(--cond)}
+.apu-card{border-left:6px solid var(--red)}
 .spoil{background:var(--ink);color:var(--ink);border-radius:2px;padding:0 3px}
 .spoilers-on .spoil{background:transparent;color:inherit;padding:0}
 .hidefin .fin{display:none}
@@ -290,6 +292,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/twa.js"></script>
 <script src="data/fmw.js"></script>
 <script src="data/earnings.js"></script>
+<script src="data/apuestas.js"></script>
 <script>
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -318,8 +321,8 @@ let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e
 const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
-const TAB_LABEL={overview:'Overview',shows:'Cards & Results',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road'};
-function promoTabs(k){const t=['overview','shows','roster','schedule'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)t.push(sr)});return t;}
+const TAB_LABEL={overview:'Overview',shows:'Cards & Results',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas'};
+function promoTabs(k){const t=['overview','shows','roster','schedule'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');if(typeof APUESTAS!=='undefined'&&APUESTAS[k])t.push('apuestas');Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)t.push(sr)});return t;}
 function latestArticle(k){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||''))[0];}
 function renderNav(cur,curT){
   const promo=k=>{const p=P[k],la=latestArticle(k);
@@ -810,6 +813,42 @@ function bindEarnings(){
   renderEarningsRows();
 }
 
+/* Luchas de apuestas: mask and hair match tracker (data/apuestas.js). */
+const WAGER={m:'mask',h:'hair',t:'title',c:'career','?':'stakes unrecorded','':''};
+function apuTally(k){
+  const A=APUESTAS[k], roster=new Set(P[k].roster.map(r=>r[0])), T={};
+  const get=n=>T[n]=T[n]||{n,mw:[],hw:[],ml:[],hl:[]};
+  [...A.career.map(r=>[r,0]),...A.tnm.map(r=>[r,1])].forEach(([r,era])=>{
+    r.w.forEach(([n])=>{if(!roster.has(n))return; r.l.forEach(([o,wg])=>{if(wg==='m')get(n).mw.push([o,r.d,era]); else if(wg==='h')get(n).hw.push([o,r.d,era]);});});
+    r.l.forEach(([n,wg])=>{if(!roster.has(n))return; const by=r.draw?'draw':r.w.map(x=>x[0]).join(' & '); if(wg==='m')get(n).ml.push([by,r.d,era]); else if(wg==='h')get(n).hl.push([by,r.d,era]);});
+  });
+  P[k].roster.forEach(r=>get(r[0]));
+  return Object.values(T).sort((a,b)=>b.mw.length-a.mw.length||b.hw.length-a.hw.length||a.ml.length+a.hl.length-b.ml.length-b.hl.length||a.n.localeCompare(b.n));
+}
+function apuSide(side,roster){return side.map(([n,w])=>`${roster.has(n)?`<b>${esc(n)}</b>`:esc(n)}${w?` <span class="mute">(${WAGER[w]})</span>`:''}`).join(' &amp; ');}
+function apuDate(d){const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];if(d.length===10)return `${MO[+d.slice(5,7)-1]} ${+d.slice(8)}, ${d.slice(0,4)}`;if(d.length===7)return `${MO[+d.slice(5,7)-1]} ${d.slice(0,4)}`;return esc(d);}
+function apuRows(list,roster){
+  return list.slice().reverse().map(r=>`<tr data-n="${esc([...r.w,...r.l].map(x=>x[0]).join(' ').toLowerCase())}"><td style="white-space:nowrap">${apuDate(r.d)}</td><td>${r.draw?'<span class="mute">Draw</span>':apuSide(r.w,roster)}</td><td>${apuSide(r.l,roster)}${r.draw?' <span class="mute">(both shaved)</span>':''}</td><td>${esc(r.at)}${r.note?`<br><span class="mute" style="font-size:13px">${esc(r.note)}</span>`:''}</td></tr>`).join('');
+}
+function viewApuestas(k){
+  const A=APUESTAS[k], roster=new Set(P[k].roster.map(r=>r[0])), tally=apuTally(k);
+  const up=A.booked.filter(b=>!(b.d.length===10&&isPast(b.d)&&A.tnm.some(t=>t.d===b.d)));
+  const trophies=(list,verb)=>list.length?`<details><summary>${list.length}</summary><ul class="apl">${list.map(([o,d,era])=>`<li>${verb} ${esc(o)} <span class="mute">· ${apuDate(d)}${era?' · TNM':''}</span></li>`).join('')}</ul></details>`:'<span class="mute">0</span>';
+  const st=n=>{const s=A.status[n];return s?`${esc(s[0])}${s[1]?`<br><span class="mute" style="font-size:12px">${esc(s[1])}</span>`:''}`:'<span class="mute">To establish</span>';};
+  return `
+  <div class="box" style="margin:16px 0"><div class="kicker">Luchas de Apuestas</div><p style="margin:6px 0 0;font-size:16px">${esc(A.blurb)}</p><p class="mute" style="margin:6px 0 0;font-family:var(--cond);font-size:13px">${esc(A.rules)}</p></div>
+  <h2 class="sec">On the Line <small>${up.length} booked</small></h2>
+  ${up.length?`<div class="grid g2" style="gap:12px">${up.map(b=>`<div class="box apu-card"><div class="kicker">${esc(b.kind)}</div><div style="font-family:var(--head);font-size:22px;text-transform:uppercase;line-height:1.1;margin:4px 0">${esc(b.a[0])} <span class="mute" style="font-size:15px">(${WAGER[b.a[1]]||'To establish'})</span><br>vs. ${esc(b.b[0])} <span class="mute" style="font-size:15px">(${WAGER[b.b[1]]||'To establish'})</span></div><div class="mute" style="font-family:var(--cond);font-size:14px">${apuDate(b.d)} · ${esc(b.at)}</div>${b.fin?`<div style="margin-top:6px;font-family:var(--cond);font-size:14px">Booked: <span class="spoil">${esc(b.fin)}</span></div>`:''}</div>`).join('')}</div>`:'<div class="empty">No mask or hair matches booked.</div>'}
+  <h2 class="sec" style="margin-top:26px">Since July 1991 <small>Run in this world</small></h2>
+  ${A.tnm.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Winner</th><th>Loser</th><th>Where</th></tr></thead><tbody>${apuRows(A.tnm,roster)}</tbody></table></div>`:'<div class="empty">No apuestas have run yet. The first are booked for Verano de Escándalo, July 26.</div>'}
+  <h2 class="sec" style="margin-top:26px">Trophy Case <small>Masks and hair taken, career to date</small></h2>
+  <div style="margin:10px 0"><input class="search" id="asearch" placeholder="Search a wrestler…"></div>
+  <div class="tbl-wrap"><table id="atbl"><thead><tr><th>Wrestler</th><th>Status, July 1991</th><th class="num">Masks won</th><th class="num">Hair won</th><th class="num">Mask lost</th><th class="num">Hair lost</th></tr></thead><tbody>
+  ${tally.map(x=>`<tr data-n="${esc(x.n.toLowerCase())}"><td><b>${esc(x.n)}</b></td><td style="font-size:14px">${st(x.n)}</td><td class="num">${trophies(x.mw,'Mask of')}</td><td class="num">${trophies(x.hw,'Hair of')}</td><td class="num">${trophies(x.ml,'To')}</td><td class="num">${trophies(x.hl,'To')}</td></tr>`).join('')}
+  </tbody></table></div>
+  <h2 class="sec" style="margin-top:26px">The Record Books <small>Before July 1991 · ${A.career.length} matches · newest first</small></h2>
+  <div class="tbl-wrap"><table id="acareer"><thead><tr><th>Date</th><th>Winner</th><th>Loser</th><th>Where</th></tr></thead><tbody>${apuRows(A.career,roster)}</tbody></table></div>`;
+}
 function viewPromo(k,tab){
   const p=P[k]; tab=tab||'overview';
   const ev=E.filter(e=>e.p===k).sort((a,b)=>a.d.localeCompare(b.d));
@@ -817,6 +856,7 @@ function viewPromo(k,tab){
   if(SITES[k]) tabs.push(['archive',k==='uswa'?'TV Archive':'Show Archive']);
   if(CONTRACTS[k]) tabs.push(['contracts','Contracts']);
   if(FINANCE[k]) tabs.push(['finance','Finance']);
+  if(typeof APUESTAS!=='undefined'&&APUESTAS[k]) tabs.push(['apuestas','Apuestas']);
   Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)tabs.push([sr,SERIES[sr].label])});
   let body='';
   if(tab==='overview'){
@@ -849,6 +889,8 @@ function viewPromo(k,tab){
     body=viewContracts(k);
   } else if(tab==='finance'){
     body=viewFinance(k);
+  } else if(tab==='apuestas'){
+    body=viewApuestas(k);
   } else if(SERIES[tab]){
     body=viewSeries(k,tab);
   } else if(tab==='roster'){
@@ -1018,6 +1060,7 @@ function bind(key){
   document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;calFilter.has(f)?calFilter.delete(f):calFilter.add(f);if(!calFilter.size)ORDER.forEach(k=>calFilter.add(k));route();});
   const cs=$('#csearch'); if(cs) cs.oninput=()=>{const q=cs.value.toLowerCase();document.querySelectorAll('#ctbl tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   if(key==='earnings') bindEarnings();
+  const as=$('#asearch'); if(as) as.oninput=()=>{const q=as.value.toLowerCase();document.querySelectorAll('#atbl tbody tr,#acareer tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('.rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
 }
 function setSpoil(v){spoilers=v;document.body.classList.toggle('spoilers-on',v);$('#spoilBtn').classList.toggle('on',v);$('#spoilBtn').lastChild.textContent=v?'Hide booked finishes':'Show booked finishes';try{localStorage.setItem('tnm-spoil',v?'1':'0')}catch(e){}}
