@@ -1,40 +1,319 @@
 {
-  "_about": "Hand-entered facts the TNM7 result tags don't carry. Each one is taken from the show page named in href.",
-  "dates": {
-    "uswa": {"GAUNTLET.HTM": ["1991-01-21", "Jan. 1991"], "THE_GAUN.HTM": ["1991-01-21", "Jan. 1991"]},
-    "ajpw": {"OKAYAMA_.HTM": ["1991-07-15", null]},
-    "njpw": {"SUMMER-5.HTM": ["1991-07-14", null]},
-    "powerpro": {"POWER_HO.HTM": ["1991-07-28", null]}
+ "_about": "Hand-entered facts the TNM7 result tags don't carry. Each one is taken from the show page named in href.",
+ "dates": {
+  "uswa": {
+   "GAUNTLET.HTM": [
+    "1991-01-21",
+    "Jan. 1991"
+   ],
+   "THE_GAUN.HTM": [
+    "1991-01-21",
+    "Jan. 1991"
+   ]
   },
-  "titles": {
-    "uswa": [["Unified Heavyweight", "USWA Unified World Heavyweight"], ["Southern Heavyweight", "USWA Southern Heavyweight"], ["World Tag Team", "USWA World Tag Team"], ["World Television", "USWA Television"]],
-    "wcw1": [["WCW World Heavyweight", "WCW World Heavyweight"], ["WCW United States", "WCW United States Heavyweight"], ["WCW World Tag Team", "WCW World Tag Team"], ["WCW Television", "WCW World Television"]],
-    "wwf": [["WWF", "WWF World Heavyweight"], ["WWF Intercontinental", "WWF Intercontinental Heavyweight"], ["WWF Tag Team", "WWF World Tag Team"]],
-    "ajpw": [["Triple Crown Heavyweight", "Triple Crown Heavyweight"], ["World Tag Team", "World Tag Team"], ["All Asia Tag Team", "All Asia Tag Team"]],
-    "njpw": [["IWGP Heavyweight", "IWGP Heavyweight"], ["IWGP Tag Team", "IWGP Tag Team"], ["IWGP Junior Heavyweight", "IWGP Junior Heavyweight"]],
-    "cmll": [["Mexican National Heavyweight", "Mexican National Heavyweight"], ["Mexican National Light Heavyweight", "Mexican National Light Heavyweight"], ["Mexican National Tag Team", "Mexican National Tag Team"]],
-    "asw": [["British Heavyweight", "British Heavyweight"]],
-    "tristate": [],
-    "powerpro": [["Power Pro Heavyweight", "Power Pro Heavyweight"]]
+  "ajpw": {
+   "OKAYAMA_.HTM": [
+    "1991-07-15",
+    null
+   ]
   },
-  "events": [
-    {"repo": "uswa", "title": "Southern Heavyweight", "kind": "vacant", "date": "1990-09-01", "href": "CHAMP-2B.HTM", "note": "The title is vacant when the USWA archive begins."},
-    {"repo": "uswa", "title": "Unified Heavyweight", "kind": "vacant", "date": "1990-09-01", "href": "CHAMP-2B.HTM", "note": "Vacant. Eddie Marlin announces a one-night tournament for October 8 at the Mid South Coliseum."},
-    {"repo": "uswa", "title": "World Tag Team", "kind": "vacant", "date": "1990-09-01", "href": "CHAMP-2B.HTM", "note": "Stripped from Don Harris & Brian Lee after they refused to sign exclusive USWA contracts."},
-    {"repo": "uswa", "title": "World Tag Team", "kind": "note", "date": "1991-06-15", "href": "CHAMPI-3.HTM", "note": "With Rick Steiner injured, Eddie Marlin asks Scott Steiner to bring the belts so they can be vacated. Robert Fuller offers to help defend them."},
-    {"repo": "uswa", "title": "World Tag Team", "kind": "awarded", "date": "1991-07-06", "href": "CHAMPION.HTM", "who": "Scott Steiner & Tully Blanchard", "how": "Recognized as champions: Scott Steiner hands Tully Blanchard one of the belts and Eddie Marlin announces them as champions."},
-    {"repo": "uswa", "title": "World Television", "kind": "note", "date": "1991-04-24", "href": "WORLDW-C.HTM", "note": "Eddie Marlin announces the new USWA Television Title, to be decided by a tournament."},
-    {"repo": "uswa", "title": "World Television", "kind": "won", "date": "1991-06-21", "href": "FRIDAY-1.HTM", "who": "Bill Dundee", "how": "Tournament final: Bill Dundee pinned Brickhouse Brown after a dragon suplex in 0:03:13.", "rating": "***", "first": true},
-    {"repo": "wcw1", "title": "WCW World Heavyweight", "kind": "vacant", "date": "1991-07-06", "href": "WCW_SATU.HTM", "note": "Jim Herd announces that Ric Flair is gone and the title is vacant. A new belt is unveiled, and the champion will be crowned in a cage at the Great American Bash."},
-    {"repo": "wcw1", "title": "WCW World Tag Team", "kind": "vacant", "date": "1991-07-02", "href": "WCW_FT__.HTM", "note": "The tag titles are vacant."},
-    {"repo": "wcw1", "title": "WCW Television", "kind": "vacant", "date": "1991-07-09", "href": "WCW_PRO_.HTM", "note": "The title is vacant. A tournament on WCW Pro will crown the new champion."}
-  ],
-  "other_titles": {
-    "wwf": [["Million Dollar Championship", "Ted DiBiase"]],
-    "ajpw": [["World Junior Heavyweight", "To confirm"]],
-    "cmll": [["CMLL World Trios", "To be crowned"]],
-    "asw": [["British Heavy-Middleweight", "To establish"], ["British Tag Team", "To establish"]],
-    "tristate": [["TWA Heavyweight", "Vacant (tournament under way)"], ["TWA Tag Team", "To establish"], ["TWA Television", "To establish"]],
-    "powerpro": [["Power Pro Tag Team", "To establish"]]
+  "njpw": {
+   "SUMMER-5.HTM": [
+    "1991-07-14",
+    null
+   ]
+  },
+  "powerpro": {
+   "POWER_HO.HTM": [
+    "1991-07-28",
+    null
+   ]
   }
+ },
+ "titles": {
+  "uswa": [
+   [
+    "Unified Heavyweight",
+    "USWA Unified World Heavyweight"
+   ],
+   [
+    "Southern Heavyweight",
+    "USWA Southern Heavyweight"
+   ],
+   [
+    "World Tag Team",
+    "USWA World Tag Team"
+   ],
+   [
+    "World Television",
+    "USWA Television"
+   ]
+  ],
+  "wcw1": [
+   [
+    "WCW World Heavyweight",
+    "WCW World Heavyweight"
+   ],
+   [
+    "WCW United States",
+    "WCW United States Heavyweight"
+   ],
+   [
+    "WCW World Tag Team",
+    "WCW World Tag Team"
+   ],
+   [
+    "WCW Television",
+    "WCW World Television"
+   ]
+  ],
+  "wwf": [
+   [
+    "WWF",
+    "WWF World Heavyweight"
+   ],
+   [
+    "WWF Intercontinental",
+    "WWF Intercontinental Heavyweight"
+   ],
+   [
+    "WWF Tag Team",
+    "WWF World Tag Team"
+   ]
+  ],
+  "ajpw": [
+   [
+    "Triple Crown Heavyweight",
+    "Triple Crown Heavyweight"
+   ],
+   [
+    "World Tag Team",
+    "World Tag Team"
+   ],
+   [
+    "All Asia Tag Team",
+    "All Asia Tag Team"
+   ]
+  ],
+  "njpw": [
+   [
+    "IWGP Heavyweight",
+    "IWGP Heavyweight"
+   ],
+   [
+    "IWGP Tag Team",
+    "IWGP Tag Team"
+   ],
+   [
+    "IWGP Junior Heavyweight",
+    "IWGP Junior Heavyweight"
+   ]
+  ],
+  "cmll": [
+   [
+    "Mexican National Heavyweight",
+    "Mexican National Heavyweight"
+   ],
+   [
+    "Mexican National Light Heavyweight",
+    "Mexican National Light Heavyweight"
+   ],
+   [
+    "Mexican National Tag Team",
+    "Mexican National Tag Team"
+   ]
+  ],
+  "asw": [
+   [
+    "British Heavyweight",
+    "British Heavyweight"
+   ]
+  ],
+  "tristate": [],
+  "powerpro": [
+   [
+    "Power Pro Heavyweight",
+    "Power Pro Heavyweight"
+   ]
+  ]
+ },
+ "events": [
+  {
+   "repo": "uswa",
+   "title": "Southern Heavyweight",
+   "kind": "vacant",
+   "date": "1990-09-01",
+   "href": "CHAMP-2B.HTM",
+   "note": "The title is vacant when the USWA archive begins."
+  },
+  {
+   "repo": "uswa",
+   "title": "Unified Heavyweight",
+   "kind": "vacant",
+   "date": "1990-09-01",
+   "href": "CHAMP-2B.HTM",
+   "note": "Vacant. Eddie Marlin announces a one-night tournament for October 8 at the Mid South Coliseum."
+  },
+  {
+   "repo": "uswa",
+   "title": "World Tag Team",
+   "kind": "vacant",
+   "date": "1990-09-01",
+   "href": "CHAMP-2B.HTM",
+   "note": "Stripped from Don Harris & Brian Lee after they refused to sign exclusive USWA contracts."
+  },
+  {
+   "repo": "uswa",
+   "title": "World Tag Team",
+   "kind": "note",
+   "date": "1991-06-15",
+   "href": "CHAMPI-3.HTM",
+   "note": "With Rick Steiner injured, Eddie Marlin asks Scott Steiner to bring the belts so they can be vacated. Robert Fuller offers to help defend them."
+  },
+  {
+   "repo": "uswa",
+   "title": "World Tag Team",
+   "kind": "awarded",
+   "date": "1991-07-06",
+   "href": "CHAMPION.HTM",
+   "who": "Scott Steiner & Tully Blanchard",
+   "how": "Recognized as champions: Scott Steiner hands Tully Blanchard one of the belts and Eddie Marlin announces them as champions."
+  },
+  {
+   "repo": "uswa",
+   "title": "World Television",
+   "kind": "note",
+   "date": "1991-04-24",
+   "href": "WORLDW-C.HTM",
+   "note": "Eddie Marlin announces the new USWA Television Title, to be decided by a tournament."
+  },
+  {
+   "repo": "uswa",
+   "title": "World Television",
+   "kind": "won",
+   "date": "1991-06-21",
+   "href": "FRIDAY-1.HTM",
+   "who": "Bill Dundee",
+   "how": "Tournament final: Bill Dundee pinned Brickhouse Brown after a dragon suplex in 0:03:13.",
+   "rating": "***",
+   "first": true
+  },
+  {
+   "repo": "wcw1",
+   "title": "WCW World Heavyweight",
+   "kind": "vacant",
+   "date": "1991-07-06",
+   "href": "WCW_SATU.HTM",
+   "note": "Jim Herd announces that Ric Flair is gone and the title is vacant. A new belt is unveiled, and the champion will be crowned in a cage at the Great American Bash."
+  },
+  {
+   "repo": "wcw1",
+   "title": "WCW World Tag Team",
+   "kind": "vacant",
+   "date": "1991-07-02",
+   "href": "WCW_FT__.HTM",
+   "note": "The tag titles are vacant."
+  },
+  {
+   "repo": "wcw1",
+   "title": "WCW Television",
+   "kind": "vacant",
+   "date": "1991-07-09",
+   "href": "WCW_PRO_.HTM",
+   "note": "The title is vacant. A tournament on WCW Pro will crown the new champion."
+  },
+  {
+   "repo": "wwf",
+   "title": "WWF Intercontinental",
+   "kind": "retained",
+   "date": "1991-07-21",
+   "href": "WWF_TORO.HTM",
+   "who": "Mr. Perfect",
+   "how": "Mr. Perfect pinned SATO with the Perfect Plex in 0:14:03. Bobby Heenan interfered against SATO.",
+   "rating": "**** 1/4"
+  },
+  {
+   "repo": "wcw1",
+   "title": "WCW World Heavyweight",
+   "kind": "retained",
+   "date": "1991-07-19",
+   "href": "WELCOME.HTM",
+   "who": "Nikita Koloff",
+   "how": "Charleston, WV: Nikita Koloff beat Lex Luger by disqualification in 0:15:23 when Harley Race and Mr. Hughes interfered.",
+   "rating": "** 3/4",
+   "label": "WCW Charleston, WV 7.19.1991 (page not uploaded yet)"
+  },
+  {
+   "repo": "wcw1",
+   "title": "WCW United States",
+   "kind": "won",
+   "date": "1991-07-19",
+   "href": "WELCOME.HTM",
+   "who": "Rick Rude",
+   "how": "Charleston, WV: Rick Rude pinned Sting with a vertical facebuster in 0:27:07 after Paul E. Dangerously interfered. It was Sting's last WCW date.",
+   "rating": "**** 3/4",
+   "label": "WCW Charleston, WV 7.19.1991 (page not uploaded yet)"
+  },
+  {
+   "repo": "wcw1",
+   "title": "WCW World Tag Team",
+   "kind": "won",
+   "date": "1991-07-20",
+   "href": "WELCOME.HTM",
+   "who": "The Fabulous Freebirds (Michael Hayes and Jimmy Garvin)",
+   "how": "Saturday Night, Johnson City: won the one-night tournament. Beat the Bruise Brothers (Hayes victory roll on Don Harris, 0:10:49), then the Young Pistols in the final when Hayes pinned Tracy Smothers with a DDT in 0:12:44.",
+   "rating": "***",
+   "label": "WCW Saturday Night, Johnson City 7.20.1991 (page not uploaded yet)"
+  }
+ ],
+ "other_titles": {
+  "wwf": [
+   [
+    "Million Dollar Championship",
+    "Ted DiBiase"
+   ]
+  ],
+  "ajpw": [
+   [
+    "World Junior Heavyweight",
+    "To confirm"
+   ]
+  ],
+  "cmll": [
+   [
+    "CMLL World Trios",
+    "To be crowned"
+   ]
+  ],
+  "asw": [
+   [
+    "British Heavy-Middleweight",
+    "To establish"
+   ],
+   [
+    "British Tag Team",
+    "To establish"
+   ]
+  ],
+  "tristate": [
+   [
+    "TWA Heavyweight",
+    "Vacant (tournament under way)"
+   ],
+   [
+    "TWA Tag Team",
+    "To establish"
+   ],
+   [
+    "TWA Television",
+    "To establish"
+   ]
+  ],
+  "powerpro": [
+   [
+    "Power Pro Tag Team",
+    "To establish"
+   ]
+  ]
+ }
 }

@@ -152,7 +152,7 @@ def build_repo(root, repo, data, ov):
     for e in ov['events']:
         if e['repo'] != repo:
             continue
-        s = shows.get(e['href']) or dict(i=0, href=e['href'], label=e['href'], date=e['date'], shown=fmt_date(e['date']))
+        s = shows.get(e['href']) or dict(i=0, href=e['href'], label=e.get('label', e['href']), date=e['date'], shown=fmt_date(e['date']))
         events.append(dict(show=s, n=-1 if e['kind'] in ('vacant', 'note') else 99, kind=e['kind'], title=e['title'],
                            who=e.get('who', ''), how=e.get('how', ''), note=e.get('note', ''), rating=e.get('rating', '')))
     events.sort(key=lambda e: (order(e['show']), e['n']))
