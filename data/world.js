@@ -18,6 +18,14 @@ const SPOTLIGHT = {"name": "Eddie Guerrero", "match": "Eddie(?! Gilbert)|Los Gue
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest.
 const TICKER = [
  [
+  "<b>WWF</b> Toronto: Perfect escapes SATO with Heenan's help as LOD retain; Animal hurt",
+  "wwf-toronto-perfect-sato-0721"
+ ],
+ [
+  "<b>WWF</b> Challenge: Martel makes Snuka submit, puts SATO on notice",
+  "wwf-challenge-ep1-martel-0721"
+ ],
+ [
   "<b>WCW</b> Johnson City: THE FREEBIRDS are the first WCW World Tag Team Champions; Koloff announces his last ride",
   "wcw-freebirds-crowned-0720"
  ],
