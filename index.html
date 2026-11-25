@@ -916,11 +916,25 @@ function viewTalent(){
 function tagFor(s){const k=ORDER.find(k=>P[k].short===s);return k?chip(k):`<span class="chip" style="--c:#6a645a">${esc(s)}</span>`}
 
 function viewArrivals(){
-  return `<h2 class="sec">Arrivals Board <small>1991 debut class</small></h2>
-  <p style="max-width:760px">Real-world debuts and promotion arrivals from April 1991 to January 1992. The spring class (April to June) arrived before the world began in July; the rest are ready to drop into the world as the calendar gets there.</p>
-  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Where</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
-  ${ARRIVALS.map(a=>`<tr><td style="white-space:nowrap">${esc(a[0])}</td><td>${tagFor(a[1])}</td><td><b>${esc(a[2])}</b></td><td>${esc(a[3])}</td></tr>`).join('')}
+  const here=ORDER.flatMap(k=>(P[k].arrivals||[]).map(d=>[k,d[0],d[1]]));
+  const star=f=>f?` <span class="chip" style="--c:#b8862b">On a roster here</span>`:'';
+  const exp=f=>f?` <span class="chip" style="--c:#3f6e4a" title="${esc(f)}">Export built</span>`:'';
+  const row=cells=>`<tr>${cells.map((c,i)=>`<td${i===0?' style="white-space:nowrap"':''}>${c}</td>`).join('')}</tr>`;
+  const tbl=(kind)=>`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Where</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
+  ${ARRIVALS.filter(a=>a[3]===kind).map(a=>row([esc(a[0]),tagFor(a[1]),`<b>${esc(a[2])}</b>${star(a[5])}${exp(a[6])}`,esc(a[4])])).join('')}
   </tbody></table></div>`;
+  return `<h2 class="sec">Arrivals Board <small>Debuts · arrivals · new gimmicks, April 1991 to January 1992</small></h2>
+  <p style="max-width:760px">Real-world debuts and promotion arrivals around the world's first year, career debuts first so their exports can be built. The spring class (April to June) arrived before the world began in July; the rest are ready to drop in as the calendar gets there. <span class="chip" style="--c:#b8862b">On a roster here</span> marks anyone already on a roster in this world, and <span class="chip" style="--c:#3f6e4a">Export built</span> anyone with an export file ready.</p>
+  <h2 class="sec" style="font-size:24px">Career Debuts <small>build the export</small></h2>
+  ${tbl('debut')}
+  <h2 class="sec" style="font-size:24px">Promotion Arrivals <small>hire or move the export</small></h2>
+  ${tbl('arrival')}
+  <h2 class="sec" style="font-size:24px">New Gimmicks &amp; Returns <small>update the export</small></h2>
+  ${tbl('gimmick')}
+  ${here.length?`<h2 class="sec">New in This World <small>arrivals so far, from each promotion's file</small></h2>
+  <div class="tbl-wrap"><table><thead><tr><th>To</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
+  ${here.map(([k,n,t])=>`<tr><td>${chip(k)}</td><td><b>${esc(n)}</b></td><td>${esc(t)}</td></tr>`).join('')}
+  </tbody></table></div>`:''}`;
 }
 
 function viewDepartures(){
