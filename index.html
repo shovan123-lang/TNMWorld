@@ -260,6 +260,17 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 .lwd{position:absolute;left:0;top:11px;font-family:var(--cond);font-weight:700;font-size:12px;text-transform:uppercase}
 .lw .adet{padding-left:0}
 .lw .ev{position:relative;padding-left:84px!important;padding:8px 0;border-bottom:1px dotted var(--soft)}
+
+/* Promotion logo buttons (replace the coloured text chip) */
+.plogo{display:block;width:24px;height:24px}
+.chip.logo,.pc.logo{background:none;padding:0;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;line-height:0;border-radius:50%;transition:transform .12s}
+.pc.logo{margin-right:3px}.pc.logo .plogo{width:20px;height:20px}
+.chip.logo:hover{transform:scale(1.12)}
+.chip.logo .plogo,.pc.logo .plogo{filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+.filters button.logo,.efilters button.logo{background:none;border-color:transparent;padding:0 3px;line-height:0;display:inline-flex;align-items:center}
+.filters button.logo .plogo,.efilters button.logo .plogo{width:26px;height:26px}
+.filters button.logo.off .plogo,.efilters button.logo.off .plogo{opacity:.3;filter:grayscale(1)}
+.ext.logo{display:inline-flex;align-items:center;gap:6px}.ext.logo .plogo{width:22px;height:22px}
 </style>
 </head>
 <body>
@@ -313,7 +324,9 @@ const fmtLong = s=>{const x=dt(s);return `${['Sunday','Monday','Tuesday','Wednes
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
 const aired = id=>{const a=ARTICLES[id];return !(a&&a.airs&&dt(a.airs)>W)||spoilers};
 const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
-const chip = k=>`<a class="chip" href="#${k}" style="--c:${P[k].c}">${P[k].short}</a>`;
+const LOGO = {njpw:'img/njpw-logo.svg'};
+const plabel = k=>LOGO[k]?`<img class="plogo" src="${LOGO[k]}" alt="${P[k].short}">`:P[k].short;
+const chip = k=>`<a class="chip${LOGO[k]?' logo':''}" href="#${k}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</a>`;
 const ORDER = ['wcw','wwf','uswa','pp','ajpw','njpw','fmw','cmll','asw','twa'];
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
 
@@ -765,7 +778,7 @@ function viewMoney(){
 const EKEY=Object.fromEntries(ORDER.map(k=>[P[k].short,k]));
 let eFilter=new Set(ORDER), eSort='earned', eQ='';
 const eMoney=v=>v?'$'+Math.round(v).toLocaleString('en-US'):'—';
-const pchip=k=>`<span class="pc" style="--c:${P[k].c}">${esc(P[k].short)}</span>`;
+const pchip=k=>`<span class="pc${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${esc(P[k].short)}">${LOGO[k]?plabel(k):esc(P[k].short)}</span>`;
 // money a person made from one promotion (paid so far)
 function earnedFrom(x,k){return x.lines.filter(l=>l.p===k&&l.kind!=='due').reduce((a,l)=>a+l.amt,0);}
 function topEarners(k,n){if(typeof EARNINGS==='undefined')return[];
@@ -787,7 +800,7 @@ function viewEarnings(){
   <h2 class="sec">By promotion <small>Paid so far</small></h2>
   ${(()=>{const mx=Math.max(...byP.map(r=>r[1]),1);return byP.filter(r=>r[1]>0).sort((a,b)=>b[1]-a[1]).map(([k,v,n])=>`<div class="barrow" style="--c:${P[k].c}"><span>${chip(k)}</span><div class="bar" style="width:${(v/mx*100).toFixed(1)}%"></div><span class="num">${eMoney(v)} <span class="mute">· ${n} paid</span></span></div>`).join('')})()}
   <h2 class="sec">Leaderboard</h2>
-  <div class="efilters">${ORDER.map(k=>`<button data-f="${k}" class="${eFilter.has(k)?'':'off'}" style="--c:${P[k].c}">${P[k].short}</button>`).join('')}</div>
+  <div class="efilters">${ORDER.map(k=>`<button data-f="${k}" class="${eFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px;font-family:var(--cond);font-size:14px">
    <input id="esearch" placeholder="Search a name…" value="${esc(eQ)}" style="font:inherit;padding:5px 8px;border:2px solid var(--ink);min-width:220px">
    <label>Sort by <select id="esort" style="font:inherit;padding:4px">${[['earned','Paid so far'],['proj','July projected'],['due','Tour fees due'],['shows','Show pay'],['apps','Appearances']].map(([v,l])=>`<option value="${v}" ${eSort===v?'selected':''}>${l}</option>`).join('')}</select></label>
@@ -911,8 +924,8 @@ function viewPromo(k,tab){
   }
   return `<section style="--c:${p.c}">
     ${(BANNER_SVG[k]||BANNER_OF[k])?`<div style="margin-top:6px;border:2px solid var(--ink);line-height:0">${BANNER_SVG[k]?BANNER_SVG[k]:`<img src="${BANNER_OF[k][0]}" alt="${BANNER_OF[k][1]}" style="display:block;width:100%;height:auto">`}</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext" style="margin-top:0" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${p.short} site ↗</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right"><b style="font-family:var(--head);font-weight:400;font-size:30px;line-height:1">${esc(p.stat[0])}</b> ${esc(p.stat[1])}</div></div>`:`
-    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${p.short} site ↗</a>`:''}</div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>`}
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" style="margin-top:0" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'} ↗</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right"><b style="font-family:var(--head);font-weight:400;font-size:30px;line-height:1">${esc(p.stat[0])}</b> ${esc(p.stat[1])}</div></div>`:`
+    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'} ↗</a>`:''}</div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>`}
     <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab?'on':''}">${l}</button>`+(t==='overview'&&SITES[k]&&!SITES[k].noTitles?`<a class="tabx" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')}</div>
     ${body}
   </section>`;
@@ -925,7 +938,7 @@ function viewCalendar(){
   const keys=Object.keys(days).sort();
   return `<h2 class="sec">World Calendar <small>Today and beyond</small></h2>
   <p class="mute" style="font-family:var(--cond);font-size:14px;margin:4px 0 0">Shows that have run are in the <a href="#showarchive">Show Archive</a>. Earlier shows still waiting to run are listed first, marked "overdue".</p>
-  <div class="filters">${ORDER.map(k=>`<button data-f="${k}" class="${calFilter.has(k)?'':'off'}" style="--c:${P[k].c}">${P[k].short}</button>`).join('')}</div>
+  <div class="filters">${ORDER.map(k=>`<button data-f="${k}" class="${calFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
   ${keys.map(d=>`<div class="cal-day ${isToday(d)?'today':''}"><div class="d">${MON[dt(d).getUTCMonth()]} ${dt(d).getUTCDate()}<small>${DOW[dt(d).getUTCDay()]}${isToday(d)?' · today':''}</small></div><div>${days[d].map(e=>`<div class="ev ${e.big?'big':''}">${chip(e.p)}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${isPast(e.d)?' <span class="flag" style="color:var(--red)">overdue</span>':pastE(e)?' <span class="flag" style="color:var(--mute)">ran</span>':''}${e.m&&e.m[0]&&e.m[0][0]!=='Card not set'?`<br><span style="padding-left:58px;display:inline-block;font-size:13px" class="mute">${esc(e.m[0][0])}</span>`:''}</div>`).join('')}</div></div>`).join('')}`;
 }
 
@@ -944,7 +957,7 @@ function archiveMonths(shows){
 function viewShowArchive(){
   const shows=E.filter(e=>calFilter.has(e.p)&&isPast(e.d)&&pastE(e)).sort((a,b)=>b.d.localeCompare(a.d)||a.p.localeCompare(b.p));
   return `<h2 class="sec">Show Archive <small>Every show that has run, by month</small></h2>
-  <div class="filters">${ORDER.map(k=>`<button data-f="${k}" class="${calFilter.has(k)?'':'off'}" style="--c:${P[k].c}">${P[k].short}</button>`).join('')}</div>
+  <div class="filters">${ORDER.map(k=>`<button data-f="${k}" class="${calFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
   ${shows.length?archiveMonths(shows):`<div class="empty" style="margin-top:20px">No shows have run yet for these promotions.</div>`}
   <p class="mute" style="font-family:var(--cond);font-size:13px;margin-top:14px">Upcoming shows are on the <a href="#calendar">World Calendar</a>.</p>`;
 }
