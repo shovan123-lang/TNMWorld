@@ -11,7 +11,17 @@
 :root{
   --paper:#f3eee3; --paper2:#e9e2d2; --ink:#1b1a17; --mute:#6a645a; --rule:#1b1a17; --soft:#cfc6b3;
   --red:#b3261e; --women:#a3195b; --minis:#2a6f97;
-  --wcw:#1d3f8f; --wwf:#c8102e; --uswa:#a8650f; --ajpw:#136f63; --njpw:#d4481a; --cmll:#6b2fa0; --asw:#4a5d23; --twa:#a3162b; --pp:#b5179e; --fmw:#3a3a46;
+  /* Promotion palettes, taken from each logo: main colour (headlines, text, bars) and -2 accent (hovers, underlines, active tabs) */
+  --wcw:#33318f; --wcw-2:#d4a62a;   /* WCW purple-blue, gold edge */
+  --wwf:#8a6408; --wwf-2:#4f9fd1;   /* WWF chrome gold, sky blue */
+  --uswa:#1e3a6e; --uswa-2:#c8283a; /* USWA flag navy and red */
+  --pp:#b3261b; --pp-2:#f28c28;     /* Power Pro red, flame orange */
+  --ajpw:#c8151b; --ajpw-2:#ef5a5f; /* All Japan red globe */
+  --njpw:#9d1419; --njpw-2:#f0a800; /* New Japan lion red and gold */
+  --fmw:#1f55a6; --fmw-2:#e8b800;   /* FMW blue oval, lightning bolt */
+  --cmll:#1c3d8f; --cmll-2:#e2a80b; /* CMLL blue and gold ring */
+  --asw:#1b1a17; --asw-2:#e0202f;   /* ASW black, red star */
+  --twa:#a81e2a; --twa-2:#8d939a;   /* Tri-State red, skyline silver */
   --head:'Anton',Impact,sans-serif; --cond:'Roboto Condensed',Arial Narrow,sans-serif; --serif:'Source Serif 4',Georgia,serif;
 }
 *{box-sizing:border-box}
@@ -271,6 +281,30 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 .filters button.logo .plogo,.efilters button.logo .plogo{height:26px}
 .filters button.logo.off .plogo,.efilters button.logo.off .plogo{opacity:.3;filter:grayscale(1)}
 .ext.logo{display:inline-flex;align-items:center;gap:6px}.ext.logo .plogo{height:22px;background:var(--paper);padding:2px 5px;box-sizing:content-box}
+
+/* Promotion accents: anything that sets --c to a promotion colour also gets its accent as --c2 */
+[style*="--c:var(--wcw)"]{--c2:var(--wcw-2)}[style*="--c:var(--wwf)"]{--c2:var(--wwf-2)}[style*="--c:var(--uswa)"]{--c2:var(--uswa-2)}[style*="--c:var(--pp)"]{--c2:var(--pp-2)}[style*="--c:var(--ajpw)"]{--c2:var(--ajpw-2)}[style*="--c:var(--njpw)"]{--c2:var(--njpw-2)}[style*="--c:var(--fmw)"]{--c2:var(--fmw-2)}[style*="--c:var(--cmll)"]{--c2:var(--cmll-2)}[style*="--c:var(--asw)"]{--c2:var(--asw-2)}[style*="--c:var(--twa)"]{--c2:var(--twa-2)}
+[style*="--c:var(--asw)"] .kicker,.kicker[style*="--c:var(--asw)"]{color:var(--asw)}
+/* Headlines: colour shift plus an accent underline that wipes in */
+.story h4 a,.stw li b a{text-decoration:none;background-image:linear-gradient(var(--c2,var(--c,var(--red))),var(--c2,var(--c,var(--red))));background-repeat:no-repeat;background-position:0 96%;background-size:0 .12em;transition:background-size .22s ease,color .15s}
+.story h4 a:hover,.stw li b a:hover{color:var(--c,var(--red));background-size:100% .12em}
+/* Promotion pages: section rules lead with the promotion colours */
+section[style*="--c:var(--"] h2.sec{border-image:linear-gradient(90deg,var(--c) 0 72px,var(--c2,var(--c)) 72px 120px,var(--ink) 120px) 1}
+.sub button{transition:color .15s,border-color .15s}
+.sub button:hover{color:var(--c);border-bottom-color:var(--c2,var(--c))}
+.sub button.on{color:var(--c);border-bottom-color:var(--c)}
+.sub a.tabx:hover{color:var(--c)}
+.ext{transition:background .15s,box-shadow .15s}
+.ext:hover{box-shadow:inset 0 -4px 0 var(--c2,rgba(0,0,0,.25))}
+.fac{border-left-color:var(--c);box-shadow:inset 3px 0 0 var(--c2,var(--c))}
+.belt:before{background:linear-gradient(var(--c) 0 70%,var(--c2,var(--c)) 70%)}
+/* Nav: accent shows on the dark bar, main colour on the paper menus */
+nav.main .top.on{border-bottom-color:var(--c2,var(--c,var(--red)))}
+nav.main .dd:hover>.top{box-shadow:inset 0 -4px 0 var(--c2,var(--c,var(--red)))}
+nav.main .menu{border-top-color:var(--c,var(--red));box-shadow:4px 4px 0 rgba(0,0,0,.25),inset 0 3px 0 var(--c2,transparent)}
+nav.main .menu a{transition:background .12s,box-shadow .12s,color .12s}
+nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-shadow:inset 4px 0 0 var(--c2,var(--c,var(--red)))}
+.arch a:hover{color:var(--c);text-decoration-color:var(--c2,var(--c))}
 </style>
 </head>
 <body>
