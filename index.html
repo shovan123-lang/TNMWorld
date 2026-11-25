@@ -916,8 +916,8 @@ function viewTalent(){
 function tagFor(s){const k=ORDER.find(k=>P[k].short===s);return k?chip(k):`<span class="chip" style="--c:#6a645a">${esc(s)}</span>`}
 
 function viewArrivals(){
-  return `<h2 class="sec">Arrivals Board <small>Fall 1991 debut class</small></h2>
-  <p style="max-width:760px">Real-world debuts and promotion arrivals from September to December 1991, ready to drop into the world as the calendar gets there.</p>
+  return `<h2 class="sec">Arrivals Board <small>1991 debut class</small></h2>
+  <p style="max-width:760px">Real-world debuts and promotion arrivals from April 1991 to January 1992. The spring class (April to June) arrived before the world began in July; the rest are ready to drop into the world as the calendar gets there.</p>
   <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Where</th><th>Wrestler</th><th>Notes</th></tr></thead><tbody>
   ${ARRIVALS.map(a=>`<tr><td style="white-space:nowrap">${esc(a[0])}</td><td>${tagFor(a[1])}</td><td><b>${esc(a[2])}</b></td><td>${esc(a[3])}</td></tr>`).join('')}
   </tbody></table></div>`;
