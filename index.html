@@ -832,6 +832,8 @@ function apuRows(list,roster){
 }
 function viewApuestas(k){
   const A=APUESTAS[k], roster=new Set(P[k].roster.map(r=>r[0])), tally=apuTally(k);
+  const inGame=new Set();Object.values(P).forEach(p=>(p.roster||[]).forEach(r=>inGame.add(r[0])));
+  const book=A.career.filter(r=>[...r.w,...r.l].every(x=>inGame.has(x[0])));
   const up=A.booked.filter(b=>!(b.d.length===10&&isPast(b.d)&&A.tnm.some(t=>t.d===b.d)));
   const trophies=(list,verb)=>list.length?`<details><summary>${list.length}</summary><ul class="apl">${list.map(([o,d,era])=>`<li>${verb} ${esc(o)} <span class="mute">· ${apuDate(d)}${era?' · TNM':''}</span></li>`).join('')}</ul></details>`:'<span class="mute">0</span>';
   const st=n=>{const s=A.status[n];return s?`${esc(s[0])}${s[1]?`<br><span class="mute" style="font-size:12px">${esc(s[1])}</span>`:''}`:'<span class="mute">To establish</span>';};
@@ -846,8 +848,9 @@ function viewApuestas(k){
   <div class="tbl-wrap"><table id="atbl"><thead><tr><th>Wrestler</th><th>Status, July 1991</th><th class="num">Masks won</th><th class="num">Hair won</th><th class="num">Mask lost</th><th class="num">Hair lost</th></tr></thead><tbody>
   ${tally.map(x=>`<tr data-n="${esc(x.n.toLowerCase())}"><td><b>${esc(x.n)}</b></td><td style="font-size:14px">${st(x.n)}</td><td class="num">${trophies(x.mw,'Mask of')}</td><td class="num">${trophies(x.hw,'Hair of')}</td><td class="num">${trophies(x.ml,'To')}</td><td class="num">${trophies(x.hl,'To')}</td></tr>`).join('')}
   </tbody></table></div>
-  <h2 class="sec" style="margin-top:26px">The Record Books <small>Before July 1991 · ${A.career.length} matches · newest first</small></h2>
-  <div class="tbl-wrap"><table id="acareer"><thead><tr><th>Date</th><th>Winner</th><th>Loser</th><th>Where</th></tr></thead><tbody>${apuRows(A.career,roster)}</tbody></table></div>`;
+  <h2 class="sec" style="margin-top:26px">The Record Books <small>Before July 1991 · ${book.length} matches between wrestlers in the TNM world · newest first</small></h2>
+  <p class="mute" style="margin:6px 0 10px;font-family:var(--cond);font-size:13px">Trophy Case counts every career match (${A.career.length} on record). This list shows only the ones where everyone involved is on a TNM roster.</p>
+  <div class="tbl-wrap"><table id="acareer"><thead><tr><th>Date</th><th>Winner</th><th>Loser</th><th>Where</th></tr></thead><tbody>${apuRows(book,roster)}</tbody></table></div>`;
 }
 function viewPromo(k,tab){
   const p=P[k]; tab=tab||'overview';
