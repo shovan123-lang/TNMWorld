@@ -48,17 +48,22 @@ for k,(st,d,lab) in S.TOURS.items():
   span=(_dd(d)-_dd(st)).days+1; done=max(0,min(span,(_dd(WORLD)-_dd(st)).days+1))
   for t,n,r,note in C[k]['rows']:
     if t=="O" or n in S.PER_NIGHT.get(k,{}): continue
-    md=getattr(S,'MONTHLY_DEALS',{}).get(k,{}).get(n); dn=done
-    if md:   # on a monthly deal from md['start']: the tour fee counts only up to the day before, and nothing more is owed
-      r=md['tour_rate']; dn=min(done,max(0,(_dd(md['start'])-_dd(st)).days))
-    p=get(n,k,t); earned=r*dn/span; left=0 if md else r-earned
+    md=getattr(S,'MONTHLY_DEALS',{}).get(k,{}).get(n); dn=done; cap=span
+    if md:   # on a monthly deal from md['start']: the tour fee counts only up to the day before, and no more is owed after that
+      r=md['tour_rate']; cap=min(span,max(0,(_dd(md['start'])-_dd(st)).days)); dn=min(done,cap)
+      sm,sd=int(md['start'][5:7]),int(md['start'][8:10]); last=(_dd(md['start'])-_TD0(days=1))
+    p=get(n,k,t); earned=r*dn/span; left=r*(cap-dn)/span
     if earned:
       p["shows"]+=earned
-      lbl=lab+(" to {}/{}, before his monthly deal: ${:,} × {} of {} tour days".format(int(md['start'][5:7]),int(md['start'][8:10])-1,r,dn,span) if md else " earned to date: ${:,} × {} of {} tour days".format(r,dn,span))
-      p["lines"].append(dict(p=k,d=min(WORLD,d,(_dd(md['start'])-_TD0(days=1)).isoformat() if md else d),what=lbl,amt=round(earned,2),kind="tour"))
+      if md and dn==cap: lbl=lab+" to {}/{}, before his monthly deal: ${:,} × {} of {} tour days".format(last.month,last.day,r,dn,span)
+      elif md: lbl=lab+" earned to date: ${:,} × {} of {} tour days (his monthly deal starts {}/{})".format(r,dn,span,sm,sd)
+      else: lbl=lab+" earned to date: ${:,} × {} of {} tour days".format(r,dn,span)
+      p["lines"].append(dict(p=k,d=min(WORLD,d,last.isoformat() if md else d),what=lbl,amt=round(earned,2),kind="tour"))
     if left>0.005:
       p["due"]+=left
-      p["lines"].append(dict(p=k,d=d,what=lab+" still to earn ({} tour days left)".format(span-dn),amt=round(left,2),kind="due"))
+      what=(lab+" still to earn to {}/{} ({} tour days left before his monthly deal)".format(last.month,last.day,cap-dn) if md
+            else lab+" still to earn ({} tour days left)".format(span-dn))
+      p["lines"].append(dict(p=k,d=min(d,last.isoformat()) if md else d,what=what,amt=round(left,2),kind="due"))
 for k,who in getattr(S,'MONTHLY_DEALS',{}).items():
   for n,g in who.items():
     a=_dd(g['start']); m0=_dd(S.MONTH+"-01")

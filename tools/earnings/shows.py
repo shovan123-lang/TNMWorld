@@ -136,14 +136,14 @@ SALARY_END = {
 # (both day by day, like WWF and WCW salaries) in place of his tour fee. Before `start` the tour fee counts at
 # `tour_rate` (CONTRACTS now carries the monthly figure), and the rest of that tour isn't owed.
 MONTHLY_DEALS = {
- "njpw": {"Sting 1992": dict(month=25000, year_fee=10000, start="1991-07-20", tour_rate=15000,
-                             why="full-time; matches his WCW salary")},   # Sean, 2026-11-26
+ "njpw": {"Sting 1992": dict(month=25000, year_fee=10000, start="1991-07-30", tour_rate=15000,
+                             why="full-time; matches his WCW salary")},   # Sean, 2026-11-26; start date 7/30 per Sean
 }
 # Salaries that ended mid-month (quit or released): no longer on the pay scale, paid day by day to the last day.
 SALARY_ENDED = {
  "wcw": {"Kevin Sullivan": dict(rate=5000, tier="C", last="1991-07-08", why="quit after Columbus")},   # Sean, 2026-11-26
 }
-NOT_ON_SCALE = ["Sting (WCW, NJPW): WCW's $25,000 a month stops at 7/19, when he left. From 7/20 New Japan pays him the same $25,000 a month plus a $10,000 a year talent fee, in place of his $15,000 Summer Crush tour fee",
+NOT_ON_SCALE = ["Sting (WCW, NJPW): WCW's $25,000 a month stops at 7/19, when he left. He's on his $15,000 Summer Crush tour fee to 7/29. From 7/30 New Japan pays him the same $25,000 a month plus a $10,000 a year talent fee, in place of the tour fee",
  "Kevin Sullivan (WCW): paid his $5,000 a month salary for 7/1 to 7/8, the day he quit",
  "Rob Zakowski (USWA): re-signed 7/22 at $45 an appearance (was $30) with $300 a week guaranteed for 40 cards; a week his USWA pay comes in under $300 is topped up once the week is over"]
 
