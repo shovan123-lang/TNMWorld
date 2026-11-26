@@ -157,8 +157,9 @@ RATE_BEFORE = {
 # cards into career totals only (this month's pay and the Finance tabs don't change). Who wrestled on each card comes
 # from the Talent File engine (hist_cards.js), so the paid cards are the ones counted as Matches on the Talent File.
 # Each appearance pays the wrestler's base rate (CONTRACTS, or RATE_BEFORE) × the card's class below; one appearance
-# per card, however many matches. Main-event and semi-main gate cuts are paid only where the card's gate is known
-# (EARLY_GATES, or a $ figure on the site's card); the main event is the card's last match, the semi-main the one before.
+# per card, however many matches. Main-event and semi-main gate cuts are paid where the card's gate is known
+# (EARLY_GATES, or a $ figure on the site's card) or estimated from attendance (EARLY_ATTENDANCE); the main event is
+# the card's last match, the semi-main the one before.
 # Managers and announcers aren't named in the old results, so they aren't paid for these cards.
 EARLY_SUPERSHOWS = {   # USWA's named specials at the Mid South Coliseum
  "Unified Title Tournament", "Grave Consequences", "Thanksgiving Thunder 1990", "Gauntlet For The Gold", "Fully Loaded",
@@ -177,9 +178,34 @@ def EARLY_CLASS(c):
     return ("Spot show", 1, 0, 0)
   if p in ("pp", "asw", "cmll", "fmw"): return ("Card", 1, 0, 0)
   return None   # salaried (WWF, WCW) and per-tour (AJPW, NJPW) promotions aren't paid per card
-EARLY_GATES = {   # gates printed on the official USWA pages (the other old pages give attendance only)
+EARLY_GATES = {   # gates printed on the official USWA pages (the other old pages give attendance only, see EARLY_ATTENDANCE)
  ("uswa", "MEMPH-15"): 66573, ("uswa", "CHAMPI-5"): 45000, ("uswa", "CHAMPI-2"): 53250, ("uswa", "CHAMPI-1"): 78000,
- ("uswa", "FRIDAY_N"): 46000, ("uswa", "WORLDW-3"): 3200}
+ ("uswa", "FRIDAY_N"): 46000, ("uswa", "WORLDW-3"): 3200, ("uswa", "FRIDAY-1"): 17112}
+# Gates estimated from attendance (Sean, 2026-11-26): where an old USWA page gives the attendance but no gate, the gate
+# is the attendance × the average ticket that the printed gates show for the city: Memphis $11 (6/1, 6/22 and 6/29/91),
+# Louisville $10 (6/28/91), Nashville $12 (6/21/91) and Dallas $11 (the 7/20/91 Sportatorium card, the first printed there).
+# Supershows use the $13 all-seats price printed for the 10/8/90 supershow. build.py marks these gates as estimates.
+EARLY_TICKET = {"Memphis": 11, "Louisville": 10, "Nashville": 12, "Dallas": 11, "Supershow": 13}
+EARLY_ATTENDANCE = {   # official page: (attendance, city)
+ "MEMPH-1A": (1200, "Memphis"), "LOUIS-15": (550, "Louisville"), "MEMPH-19": (1700, "Memphis"), "LOUIS-14": (795, "Louisville"),
+ "MEMPH-18": (2300, "Memphis"), "LOUIS-13": (811, "Louisville"), "MEMPH-17": (1923, "Memphis"), "LOUIS-12": (1010, "Louisville"),
+ "MEMPH-16": (1432, "Memphis"), "LOUIS-11": (2500, "Louisville"), "LOUIS-10": (1100, "Louisville"), "MEMPH-14": (4500, "Memphis"),
+ "LOUISV-F": (984, "Louisville"), "MEMPH-13": (3900, "Memphis"), "LOUISV-E": (2000, "Louisville"), "MEMPH-12": (4500, "Memphis"),
+ "LOUISV-D": (1932, "Louisville"), "MEMPH-11": (3500, "Memphis"), "LOUISV-C": (2302, "Louisville"), "MEMPH-10": (2700, "Memphis"),
+ "LOUISV-B": (1900, "Louisville"), "MEMPHI-F": (4200, "Memphis"), "THANKSGI": (6000, "Memphis"), "MEMPHI-E": (6500, "Memphis"),
+ "LOUISV-A": (1650, "Louisville"), "MEMPHI-D": (8126, "Memphis"), "LOUISV-9": (1721, "Louisville"), "MEMPHI-C": (9126, "Memphis"),
+ "MEMPHI-B": (9600, "Memphis"), "MEMPHI-A": (9750, "Memphis"), "GAUNTLET": (10085, "Memphis"), "MEMPHI-9": (6600, "Memphis"),
+ "LOUISV-8": (1800, "Louisville"), "MEMPHI-8": (7600, "Memphis"), "LOUISV-7": (1450, "Louisville"), "MEMPHI-7": (8600, "Memphis"),
+ "LOUISV-6": (1645, "Louisville"), "MEMPHI-6": (6000, "Memphis"), "LOUISV-5": (1001, "Louisville"), "MEMPHI-5": (6815, "Memphis"),
+ "LOUISV-4": (2000, "Louisville"), "MEMPHI-4": (10085, "Memphis"), "LOUISV-3": (950, "Louisville"), "MEMPHI-3": (5800, "Memphis"),
+ "LOUISV-2": (700, "Louisville"), "DALLAS__": (4000, "Dallas"), "LOUISV-1": (2000, "Louisville"), "MEMPHI-2": (6500, "Memphis"),
+ "MEMPHI-1": (8624, "Memphis"), "MEMPHIS_": (6500, "Memphis"), "FRIDAY-2": (2381, "Louisville"), "SLAMBORE": (5200, "Memphis"),
+ "CHAMPI-4": (4000, "Memphis"), "CHAMPI-3": (4500, "Memphis")}
+def EARLY_EST(p, link, cls):
+  """(estimated gate, attendance, average ticket) for a USWA card whose page gives attendance but no gate; None otherwise."""
+  if p != "uswa" or link not in EARLY_ATTENDANCE: return None
+  att, city = EARLY_ATTENDANCE[link]; tix = EARLY_TICKET["Supershow" if cls == "Supershow" else city]
+  return (att * tix, att, tix)
 
 # ---- Weekly guarantees: the promotion tops a wrestler's pay up to `week` for every pay week (Monday to Sunday)
 # from `start`, until `cards` appearances are used. A week counts once the world date is past its Sunday,

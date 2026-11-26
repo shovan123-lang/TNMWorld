@@ -657,7 +657,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/twa.js?v=a82b244a"></script>
 <script src="data/fmw.js?v=d5c8dbe0"></script>
 <script src="data/history.js?v=8be05e77"></script>
-<script src="data/earnings.js?v=0ee6fad8"></script>
+<script src="data/earnings.js?v=c24083dd"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
 <script src="data/ratings.js?v=8d9e4ac1"></script>
 <script>
@@ -2030,8 +2030,8 @@ function earlySection(X){
   const Q=X.early; if(!Q||!Q.cards.length) return '';
   const tot=Q.cards.reduce((a,c)=>a+c.total,0), ps=ORDER.filter(k=>Q.cards.some(c=>c.p===k));
   return `<h2 class="sec">Before ${esc(Q.before)} <small>${Q.cards.length} cards, ${eMoney(tot)} in career earnings</small></h2>
-  <p style="font-family:var(--cond);font-size:14px;margin:0 0 8px">${ps.map(k=>esc(P[k].short)).join(', ')} ran cards before the tracker started. Every wrestler on them is paid their base rate × the card's class, once a card, and it counts toward the career totals on the Talent Files, not toward ${esc(X.month)} above. Main-event and semi-main gate cuts are paid only where the official page gives the gate.${Q.unrated&&Q.unrated.length?` No pay rate, so not paid: ${Q.unrated.map(esc).join(', ')}.`:''}</p>
-  <details class="bk"><summary>Card by card (${Q.cards.length})</summary><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Promotion</th><th>Card</th><th>Class</th><th>Gate</th><th>Paid</th><th>Total</th></tr></thead><tbody>${Q.cards.map(c=>`<tr><td style="white-space:nowrap">${fmt(c.d)}</td><td>${chip(c.p)}</td><td>${esc(c.show)}</td><td>${esc(c.cls)}, ${c.mult}×</td><td class="num">${c.gate?eMoney(c.gate):'—'}</td><td class="num">${c.n}</td><td class="num">${eMoney(c.total)}</td></tr>`).join('')}</tbody></table></div></details>`;
+  <p style="font-family:var(--cond);font-size:14px;margin:0 0 8px">${ps.map(k=>esc(P[k].short)).join(', ')} ran cards before the tracker started. Every wrestler on them is paid their base rate × the card's class, once a card, and it counts toward the career totals on the Talent Files, not toward ${esc(X.month)} above. Main-event and semi-main gate cuts are paid on every USWA arena show and supershow. Where the official page gives the attendance but no gate, the gate is estimated (marked ~) at the attendance × the average ticket in that city: $11 in Memphis, $10 in Louisville, $11 in Dallas and $13 at the supershows.${Q.unrated&&Q.unrated.length?` No pay rate, so not paid: ${Q.unrated.map(esc).join(', ')}.`:''}</p>
+  <details class="bk"><summary>Card by card (${Q.cards.length})</summary><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Promotion</th><th>Card</th><th>Class</th><th>Gate</th><th>Paid</th><th>Total</th></tr></thead><tbody>${Q.cards.map(c=>`<tr><td style="white-space:nowrap">${fmt(c.d)}</td><td>${chip(c.p)}</td><td>${esc(c.show)}</td><td>${esc(c.cls)}, ${c.mult}×</td><td class="num"${c.est?` title="Estimated: ${c.est[0].toLocaleString('en-US')} fans × $${c.est[1]}"`:''}>${c.gate?(c.est?'~':'')+eMoney(c.gate):'—'}</td><td class="num">${c.n}</td><td class="num">${eMoney(c.total)}</td></tr>`).join('')}</tbody></table></div></details>`;
 }
 /* Champions' pool: each card puts a share of its gate (X.pool.pct) into a pool split evenly among the champions
    who worked it. tools/earnings/pool.py builds X.pool.cards (paid cards) and X.pool.nogate (cards with champions but no gate). */

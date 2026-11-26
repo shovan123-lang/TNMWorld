@@ -152,7 +152,11 @@ for c in ecards:
   cls=S.EARLY_CLASS(c)
   if not cls: early_warn.append("{} {} {}: not a per-card promotion, not paid".format(c['p'],c['d'],c['type'])); continue
   lab,mult,mp,sp=cls; k=c['p']; R=rate.get(k,{}); RB=getattr(S,'RATE_BEFORE',{}).get(k,{})
-  gate=S.EARLY_GATES.get((k,c['link'])) or POOLM._gate(c['gate'])
+  gate=S.EARLY_GATES.get((k,c['link'])) or POOLM._gate(c['gate']); est=None
+  if not gate and mp:   # attendance but no gate on the page: estimated (shows.py EARLY_ATTENDANCE)
+    est=S.EARLY_EST(k,c['link'],lab)
+    if est: gate=est[0]
+    else: early_warn.append("{} {} {}: no gate or attendance, so no gate cuts".format(k,c['d'],c['link']))
   show=((c['city'].split(',')[0]+' · ') if c['city'] and not c['city'].startswith(('Friday Night','Dallas, TX S')) else (c['city']+' · ' if c['city'] else ''))+c['type']
   cut={}
   if gate:
@@ -166,7 +170,7 @@ for c in ecards:
     b=RB[n][1] if n in RB and c['d']<RB[n][0] else R[n]; amt=round(b*mult+cut.get(n0,0),2); tot+=amt
     p=get(n,k,tier.get((k,n),"F")); p.setdefault("early",[]).append((len(early),amt)); paid.append(n)
   early.append(dict(p=k,d=c['d'],show=show,links=c['links'],cls=lab,mult=mult,gate=gate,n=len(paid),total=round(tot,2),
-    cut=round(sum(v for n,v in cut.items() if rateN.get(k,{}).get(_nk(n))),2)))
+    cut=round(sum(v for n,v in cut.items() if rateN.get(k,{}).get(_nk(n))),2),**(dict(est=[est[1],est[2]]) if est else {})))
 closed={m:v for m,v in LIFE["months"].items() if m!=S.MONTH}
 lifeBy={}
 for m,v in closed.items():
@@ -209,7 +213,7 @@ S3=["| Date | Promotion | Card | Gate | Pool (3%) | Champions on the card | Each
 for c in POOL_CARDS: S3.append("| {} | {} | {} | {} | {} | {} | {} |".format(c['d'],PN[c['p']],c['show'],m(c['gate']),"${:,.2f}".format(c['pool']),", ".join("{} ({})".format(n,t) for n,t in c['champs']),"${:,.2f}".format(c['each'])))
 for c in POOL_NOGATE: S3.append("| {} | {} | {} | no gate logged | — | {} | — |".format(c['d'],PN[c['p']],c['show'],", ".join(c['champs'])))
 S4=["| Date | Promotion | Card | Class | Gate | Paid | Total |","|---|---|---|---|---|---|---|"]
-for c in early: S4.append("| {} | {} | {} | {} ({}×) | {} | {} | {} |".format(c['d'],PN[c['p']],c['show'],c['cls'],c['mult'],m(c['gate']) if c['gate'] else "—",c['n'],m(c['total'])))
+for c in early: S4.append("| {} | {} | {} | {} ({}×) | {} | {} | {} |".format(c['d'],PN[c['p']],c['show'],c['cls'],c['mult'],(("~"+m(c['gate'])+" est. ({:,} × ${})".format(*c['est'])) if c.get('est') else m(c['gate'])) if c['gate'] else "—",c['n'],m(c['total'])))
 open(os.path.join(HERE,'earnings.md'),'w').write("\n".join(L)+"\n\nSHOWS\n"+"\n".join(S2)+"\n\nCHAMPIONS' POOL\n"+"\n".join(S3)+"\n\nCARDS BEFORE "+_mn(FIRST).upper()+" (career totals only)\n"+"\n".join(S4)+"\n")
 tot=sum(x["earned"] for x in out); due=sum(x["due"] for x in out)
 print("world",WORLD,"people",len(out),"earned",round(tot),"due",round(due))
@@ -217,5 +221,6 @@ for x in out[:12]: print(" ",x["name"],round(x["earned"]))
 print("champions' pool: {} cards, ${:,.2f}".format(len(POOL_CARDS),sum(c['pool'] for c in POOL_CARDS)))
 for w in POOL_WARN: print("  pool check:",w)
 print("cards before {}: {} cards, ${:,.2f} into career totals".format(_mn(FIRST),len(early),sum(c['total'] for c in early)))
+print("  gate cuts: ${:,.2f} ({} cards with an estimated gate, ${:,.2f} of it)".format(sum(c['cut'] for c in early),sum(1 for c in early if c.get('est')),sum(c['cut'] for c in early if c.get('est'))))
 for w in early_warn: print("  early check:",w)
 if early_unrated: print("  no pay rate, not paid:",", ".join(sorted(early_unrated)))
