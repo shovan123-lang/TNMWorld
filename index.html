@@ -296,6 +296,10 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 
 /* Promotion logo buttons (replace the coloured text chip) */
 .plogo{display:block;width:auto;height:24px}
+/* Lead story on a promotion's Overview: the promotion logo with the text wrapping around it; stacks on phones */
+.leadstory::after{content:'';display:block;clear:both}
+.lead-logo{float:left;height:84px;width:auto;max-width:150px;object-fit:contain;margin:4px 16px 4px 0;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+@media(max-width:520px){.lead-logo{float:none;display:block;height:64px;margin:0 0 10px}}
 .chip.logo,.pc.logo{background:none;padding:0;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;line-height:0;transition:transform .12s}
 .pc.logo{margin-right:3px}.pc.logo .plogo{height:20px}
 .chip.logo:hover{transform:scale(1.12)}
@@ -1530,7 +1534,7 @@ function viewPromo(k,tab){
     body=`
     <div class="grid lead col-rule">
       <div>
-        <p style="font-size:18px;font-style:italic;margin:14px 0">${esc(p.status)}</p>
+        <p class="leadstory" style="font-size:18px;font-style:italic;margin:14px 0">${LOGO[k]?`<img class="lead-logo" src="${LOGO[k]}" alt="${esc(p.short)}">`:''}${esc(p.status)}</p>
         <h2 class="sec">Top Storylines</h2>
         ${(()=>{const recent=p.stories.filter(st=>{const id=storyId(k,st),d=id&&ARTICLES[id].date;return !d||d>=LAST_WEEK});const older=p.stories.length-recent.length;return (recent.length?'':`<div class="empty">No new storylines this week or last.</div>`)+recent.map(s=>{const aid=storyId(k,s);return `<div class="story sm" style="margin-bottom:12px"><h4 style="font-size:21px;color:${p.c}">${aid?`<a href="#${aid}" style="text-decoration:none">${esc(s[0])}</a>`:esc(s[0])}</h4><p>${esc(s[1])}${aid?` <a href="#${aid}" style="font-family:var(--cond);font-weight:700;font-size:14px">Read the full story →</a>`:''}</p></div>`}).join('')+(older||pubArticles(k).some(id=>ARTICLES[id].date<LAST_WEEK)?`<p style="font-family:var(--cond);font-weight:700;font-size:14px;margin:4px 0 0"><a href="#${k}/stories">Earlier stories this month →</a></p>`:'')})()}
         ${p.earlier&&p.earlier.length?`<h2 class="sec">Earlier coverage</h2><ul style="padding-left:18px;margin:0 0 10px;font-family:var(--cond);font-size:15px">${p.earlier.filter(id=>ARTICLES[id]).map(id=>`<li><a href="#${id}">${esc(ARTICLES[id].title)}</a> <span class="mute">· ${fmt(ARTICLES[id].date)}</span></li>`).join('')}</ul>`:''}
