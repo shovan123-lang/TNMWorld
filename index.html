@@ -647,6 +647,9 @@ function tfAll(){
     list.push(f);byName.set(f.name,f);
   }
   list.sort((a,b)=>a.name.localeCompare(b.name));
+  // A roster spelling that differs only in case or accents points at the same file
+  const byNorm=new Map(list.map(f=>[tfNorm(f.name),f]));
+  ORDER.forEach(k=>(P[k].roster||[]).forEach(([n])=>{if(!byName.has(n)&&byNorm.has(tfNorm(n)))byName.set(n,byNorm.get(tfNorm(n)));}));
   _TF={list,byName,bySlug:new Map(list.map(f=>[f.slug,f]))};return _TF;
 }
 const tfNorm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
