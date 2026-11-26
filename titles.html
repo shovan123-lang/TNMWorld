@@ -381,7 +381,7 @@ document.getElementById("promos").innerHTML=P.map(p=>`
     <div class="promo-head">
       <div class="badge">${esc(p.name.replace(" ","").slice(0,5))}</div>
       <div><h2>${esc(p.full)}</h2>
-      <div class="meta">${esc(p.home)} · Records through ${esc(p.asof)} · <a href="${p.url}" target="_blank" rel="noopener">Show archive ↗</a></div></div>
+      <div class="meta">${esc(p.home)} · Records through ${esc(p.asof)} · <a href="./#${p.id==="powerpro"?"pp":p.id}/page/WELCOME">Show archive</a></div></div>
     </div>
     <div class="titles">${p.titles.map(t=>titleHTML(p,t)).join("")}</div>
   </section>`).join("");

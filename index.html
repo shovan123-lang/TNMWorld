@@ -528,6 +528,39 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 
 .beltsvg.row{width:96px;height:auto}
 .beltgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:6px 0 16px}
+/* Official site pages shown inside the site (#k/page/ID) */
+.av-bar{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:14px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--soft);font-family:var(--cond);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.av-bar a{text-decoration:none}.av-bar a:hover{text-decoration:underline}
+.av-home{color:var(--c)}.av-sep{color:var(--mute)}
+.av-crumb{text-transform:none;letter-spacing:0;font-size:15px;min-width:0}
+.av-orig{margin-left:auto;color:var(--mute);font-weight:400}
+.av{max-width:780px}
+.av-doc{font-size:17px;line-height:1.55}
+.av-doc p{margin:0 0 8px;overflow-wrap:anywhere}
+.av-h{font-family:var(--head);font-weight:400;text-transform:uppercase;font-size:34px;line-height:1.05;margin:4px 0 6px;padding-bottom:10px;border-bottom:3px solid var(--ink)}
+.av-h3{font-family:var(--head);font-weight:400;text-transform:uppercase;font-size:22px;line-height:1.1;margin:2px 0 8px}
+.av-blk{padding:12px 0;border-bottom:1px solid var(--soft)}
+.av-blk.av-m{border-left:4px solid var(--c);padding-left:12px;margin-left:-16px}
+.av-k{margin:0 0 2px}.av-kblk{padding:18px 0 0}
+.av-rate{font-family:var(--cond);font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}.av-rate b{color:var(--ink);font-size:16px;letter-spacing:0}
+.av-title{display:inline-block;font-family:var(--cond);font-weight:700;font-size:15px;background:color-mix(in srgb,#b8862b 16%,transparent);border-left:3px solid #b8862b;padding:2px 8px;margin:6px 0 2px}
+.av-note{font-family:var(--cond);font-size:14px;color:var(--mute);font-style:italic}
+.av-hl{display:inline-block;margin-top:4px;font-family:var(--cond);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;color:var(--c)}
+.av-hl:hover{text-decoration:underline}
+.av-rest{font-family:var(--cond);font-size:16px;margin:14px 0}
+.av-rest>p>a,.av-back{display:inline-block;font-family:var(--cond);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;border:2px solid var(--ink);padding:5px 10px;margin:0 0 10px}
+.av-rest>p>a:hover,.av-back:hover{background:var(--ink);color:var(--paper)}
+.av-rest ul{list-style:none;padding:0;margin:0 0 10px;border-top:1px solid var(--soft)}
+.av-rest li{border-bottom:1px solid var(--soft)}
+.av-rest li a{display:block;padding:9px 4px;text-decoration:none}.av-rest li a:hover{background:var(--paper2)}
+.av-frame{display:block;width:100%;border:0;min-height:320px;overflow:hidden;background:var(--paper)}
+.av-fail{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.av-fail .ext{margin-top:0}
+.av-newbox{margin:0 0 16px;border-color:var(--c)}
+.av-live{margin:0 0 18px;border-color:var(--c)}.av-live>p{font-family:var(--cond);font-size:14px;margin:2px 0 8px}
+.av-lv{padding:8px 0;border-top:1px solid var(--soft)}.av-lv>a{font-family:var(--cond);text-decoration:none}.av-lv>a:hover{text-decoration:underline}
+.av-lv ul{margin:4px 0 0;padding-left:18px;font-size:15px}
+.av-new{font-family:var(--cond);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;background:var(--ink);color:var(--paper);padding:1px 6px;vertical-align:1px}
+@media (max-width:600px){.av-h{font-size:27px}.av-blk.av-m{margin-left:0}.av-orig{margin-left:0}}
 .th-intro{font-family:var(--cond);font-size:14px;margin:4px 0 10px}
 .th-jump{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px}
 .th-jump a{font-family:var(--cond);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;text-decoration:none;border:2px solid var(--ink);padding:5px 10px;background:var(--paper)}
@@ -630,7 +663,8 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const siteLink=(k,f,t)=>`<a href="${SITES[k].base}${f}.HTM" target="_blank" rel="noopener">${t}</a>`;
+// Official site pages open inside the World Report (#k/page/ID, read live from the archive site)
+const siteLink=(k,f,t)=>`<a href="#${k}/page/${f}">${t}</a>`;
 /* TV show logos (SITES.<key>.icons, keyed by show name): the logo for a section, archive label or event whose name starts with that show's name. Tapings and live cards get none. An icon path starting img/ is the hub's own file. */
 const showIcon=(k,name)=>{const S=SITES[k];if(!S||!S.icons||!name||/taping|live card/i.test(name))return '';const n=String(name),key=Object.keys(S.icons).find(x=>n===x||(n.startsWith(x)&&/^[\s,:(\u00b7]/.test(n.slice(x.length))));return key?(/^(img\/|https?:)/.test(S.icons[key])?'':S.base)+S.icons[key]:''};
 /* Show Archive tab: one show list, and the same list split into a drop-down per city (city = the label's part before the first ' · ', newest first inside, cities A to Z) */
@@ -728,7 +762,7 @@ function latestArticle(k){return Object.keys(ARTICLES).filter(id=>aired(id)&&ART
 function renderNav(cur,curT){
   // One list of links per menu, shared by the desktop dropdowns and the phone menu
   const promoLinks=k=>{const p=P[k];return promoTabs(k).map(t=>`<a role="menuitem" href="#${k}/${t}" class="${cur===k&&(curT||'overview')===t?'cur':''}">${TAB_LABEL[t]}</a>`).join('')
-    +(SITES[k]?`<a role="menuitem" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${esc(p.short)} site ↗</a>`:'');};
+    +(SITES[k]?`<a role="menuitem" href="#${k}/page/WELCOME" class="${cur===k&&curT==='page'?'cur':''}">Official ${esc(p.short)} site</a>`:'');};
   const promoLatest=k=>{const la=latestArticle(k);return la?`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#${la}">${esc(ARTICLES[la].title)}</a>`:'';};
   const nLinks=h=>(h.match(/<a /g)||[]).length;
   const promo=k=>{const p=P[k],L=promoLinks(k);
@@ -784,7 +818,7 @@ function showCard(e,opts={}){
     ${e.taped?`<div class="notes"><b>${esc(e.taped)}</b></div>`:''}
     ${e.n?`<div class="notes"><ul>${e.n.map(x=>`<li>${past?esc(x):`<span class="spoil">${esc(x)}</span>`}</li>`).join('')}</ul></div>`:''}
     ${e.reads&&e.reads.some(r=>ARTICLES[r[1]])?`<div class="notes" style="font-family:var(--cond);font-weight:700">${e.reads.filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])} →</a>`).join(' · ')}</div>`:''}
-    ${e.link?`<div class="notes" style="font-family:var(--cond)">${siteLink(e.p,e.link,'Full show on the '+P[e.p].short+' site ↗')}</div>`:''}
+    ${e.link?`<div class="notes" style="font-family:var(--cond)">${siteLink(e.p,e.link,'Full show on the '+P[e.p].short+' site →')}</div>`:''}
   </article>`;
 }
 /* Front page Championship Board: a row of title buttons; a tap opens that title's belt card below, a second tap closes it */
@@ -827,7 +861,7 @@ function cardOfWeek(shows){
     <div class="ven">${esc([e.venue,e.gate].filter(Boolean).join(' · '))}</div>
     <div class="rate">${esc(e.rate)}</div>
     ${best?`<p class="motn"><b>Match of the night:</b> ${esc(best[0])} <span class="mute">(${esc(best[1]||'')})</span> <b>${esc(best[2])}</b></p>`:''}
-    ${e.link?`<p style="font-family:var(--cond);font-size:13px;margin:6px 0 0">${siteLink(e.p,e.link,'Full show on the '+pr.short+' site ↗')}</p>`:''}
+    ${e.link?`<p style="font-family:var(--cond);font-size:13px;margin:6px 0 0">${siteLink(e.p,e.link,'Full show on the '+pr.short+' site →')}</p>`:''}
   </div>
   ${ru?`<div class="kicker" style="--c:var(--mute);margin-top:14px">Runners-up</div><ul class="cotw-ru">${ru}</ul>`:''}`;
 }
@@ -1302,7 +1336,7 @@ function viewPromoTitles(k){
       <ol class="th-line">${items}</ol></section>`;
   }).join('');
   return `<h2 class="sec">Title Histories <small>${led.titles.length} title${led.titles.length===1?'':'s'} · records through ${tlNice(led.asof)}</small></h2>
-  <p class="mute th-intro">Every reign on record, newest first, from the TNM game's own results. Click a champion for their Talent File, or an event for its story.</p>
+  <p class="mute th-intro">Every reign on record, newest first, from the TNM game's own results. Click a champion for their Talent File, or an event for its story.${SITES[k]?` <a href="#${k}/page/TITLES">Official title page</a>`:''}</p><div id="tl-live"></div>
   <div class="th-jump">${led.titles.map((t,i)=>`<a href="#${k}/titles/${i}">${esc(t.t)}</a>`).join('')}</div>
   ${cards}`;
 }
@@ -2097,6 +2131,173 @@ function bindMiniTalent(k){
     r.innerHTML=!q?'':h.length?h.slice(0,8).map(f=>`<li><a href="#file/${f.slug}">${esc(f.name)}</a>${ptagIcons(f.name)}</li>`).join('')+(h.length>8?`<li class="mute">${h.length-8} more on the <a href="#${k}/file">Talent File tab</a></li>`:''):`<li class="mute">No one on the roster matches.</li>`;};
   s.onkeydown=e=>{if(e.key==='Enter'){const h=hits();if(h.length) location.hash='file/'+h[0].slug;}};
 }
+/* ===================== OFFICIAL SITE PAGES, INSIDE THE SITE =====================
+   #k/page/ID shows page ID.HTM of a promotion's official archive site (SITES[k].base) here, read live on every
+   visit (no-store plus a cache-buster), so a page Sean re-uploads shows the next time it is opened. TNM's own text
+   pages are re-set in the World Report's type; our own styled pages (TV episodes, title histories) keep their look
+   in a frame. Links inside stay on the World Report. If a page won't load, it offers the original. */
+let arcPage=null;
+const AV_ID=/^[A-Za-z0-9_][A-Za-z0-9_.-]{0,79}$/;
+const avFile=id=>/\.[a-z0-9]{2,5}$/i.test(id)?id:id+'.HTM';
+const avURL=(k,id)=>SITES[k].base+avFile(id);
+const avHash=(k,id)=>'#'+k+'/page/'+String(id).replace(/\.HTM$/,'');
+const AV_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+/* Which official site page an address is, as [k,id], or null */
+function avMatch(href){
+  let u;try{u=new URL(href,location.href)}catch(e){return null}
+  if(!/^https?:$/.test(u.protocol)||!/\.html?$/i.test(u.pathname)) return null;
+  for(const k of Object.keys(SITES)){let b;try{b=new URL(SITES[k].base)}catch(e){continue}
+    if(u.origin===b.origin&&u.pathname.startsWith(b.pathname)){const rest=decodeURIComponent(u.pathname.slice(b.pathname.length));
+      if(AV_ID.test(rest)) return [k,rest.replace(/\.HTM$/,'')];}}
+  return null;}
+/* Point every link to an official site page (in articles, notes, data) at the page inside the site */
+function avLinks(root){
+  root=root||document;if(!root.querySelectorAll)return;
+  root.querySelectorAll('a[href]:not([data-orig])').forEach(a=>{const m=avMatch(a.getAttribute('href'));
+    if(m){a.setAttribute('href',avHash(m[0],m[1]));a.removeAttribute('target');a.removeAttribute('rel');}});}
+async function avFetch(url){
+  const r=await fetch(url+(url.includes('?')?'&':'?')+'_='+Date.now(),{cache:'no-store'});
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  const b=await r.arrayBuffer();
+  try{return new TextDecoder('utf-8',{fatal:true}).decode(b)}catch(e){return new TextDecoder('windows-1252').decode(b)}}
+/* The official site's card list (WELCOME.HTM), read live; kept 20 seconds so the tabs don't each fetch it */
+const avWel={};
+function avWelcome(k){const c=avWel[k];if(c&&Date.now()-c.t<20000)return c.p;
+  const p=avFetch(SITES[k].base+'WELCOME.HTM').then(html=>{const d=new DOMParser().parseFromString(html,'text/html');
+    return [...d.querySelectorAll('a[href]')].map(a=>[(a.getAttribute('href')||'').trim(),a.textContent.replace(/\s+/g,' ').trim()])
+      .filter(([h])=>/^[A-Za-z0-9_.-]+\.HTM$/i.test(h)).map(([h,t])=>[h.replace(/\.HTM$/i,''),t]);});
+  avWel[k]={t:Date.now(),p};p.catch(()=>{if(avWel[k]&&avWel[k].p===p)delete avWel[k];});return p;}
+/* Show pages on the official site that the World Report doesn't list yet */
+function avKnown(k){const s=new Set();(SITES[k].arch||[]).forEach(g=>(g[1]||[]).forEach(x=>s.add(x[1])));E.forEach(e=>{if(e.p===k&&e.link)s.add(e.link)});return s;}
+async function avNew(k){const all=await avWelcome(k),kn=avKnown(k);return all.filter(([id])=>!/^FIN/i.test(id)&&id!=='TITLES'&&!kn.has(id));}
+function avClean(d,k,framed){
+  d.querySelectorAll('script,noscript,iframe,frame,object,embed,applet,form,meta[http-equiv],base').forEach(x=>x.remove());
+  d.querySelectorAll('*').forEach(el=>[...el.attributes].forEach(a=>{const n=a.name.toLowerCase();
+    if(n.startsWith('on')||(/^(href|src|action|formaction|xlink:href|srcset|poster)$/.test(n)&&/^\s*(javascript|vbscript|data):/i.test(a.value)&&!(n==='src'&&/^\s*data:image\//i.test(a.value))))el.removeAttribute(a.name);}));
+  const base=SITES[k].base, top=location.href.split('#')[0], here=location.origin+location.pathname.replace(/index\.html$/,'');
+  d.querySelectorAll('a[href]').forEach(a=>{const h=(a.getAttribute('href')||'').trim();
+    if(h===''||/^mailto:\s*$/i.test(h)){a.replaceWith(...a.childNodes);return;}
+    if(h.startsWith('#')){if(!framed)a.replaceWith(...a.childNodes);return;}
+    let u;try{u=new URL(h,base)}catch(e){a.removeAttribute('href');return;}
+    const m=avMatch(u.href);
+    const site=u.origin+u.pathname.replace(/index\.html$/,'')===here;
+    if(m||site){const hash=m?avHash(m[0],m[1]):(u.hash||'#home');a.setAttribute('href',framed?top+hash:hash);a.setAttribute('target','_top');a.removeAttribute('rel');}
+    else{a.setAttribute('href',u.href);a.setAttribute('target','_blank');a.setAttribute('rel','noopener');}});
+  d.querySelectorAll('[src]').forEach(el=>{try{el.setAttribute('src',new URL(el.getAttribute('src'),base).href)}catch(e){el.removeAttribute('src')}});
+  d.querySelectorAll('link[href]').forEach(el=>{try{el.setAttribute('href',new URL(el.getAttribute('href'),base).href)}catch(e){el.remove()}});
+  // Our own styled pages carry a copy of the World Report's masthead and menu: the site already shows its own
+  d.querySelectorAll('nav.main,header.mast').forEach(x=>x.remove());}
+/* TNM text pages: blank lines split the <pre> into blocks; hard-wrapped lines are joined back into sentences */
+function avBlock(b){
+  const plain=s=>s.replace(/<[^>]+>/g,'').trim();
+  const L=[];
+  b.split('\n').map(l=>l.replace(/\s+$/,'')).filter(l=>l.trim()).forEach(l=>{const prev=L[L.length-1],t=l.trim();
+    const open=prev!=null&&/^[([]/.test(plain(prev))&&!/[)\]]$/.test(plain(prev));
+    if(prev!=null&&(plain(prev).length>=60||open)&&!/^(Rating:|Interview:|\(|\[|<a\s|<center|<h\d)/i.test(t)&&!/<h\d/i.test(prev)) L[L.length-1]=prev+' '+t; else L.push(t);});
+  if(!L.length) return '';
+  const kind=s=>{const t=plain(s);
+    if(/<h\d/i.test(s)) return 'h';
+    if(/^(Rating|Card rating|Overall card):/i.test(t)) return 'rate';
+    if(/^\(.*\b(won|retained|vacated|lost)\b.*\)$/i.test(t)&&/title|championship|champion|belt|crown/i.test(t)) return 'title';
+    if(/^\[.*\]$/.test(t)) return 'note';
+    if(/^<a\s[^>]*>[^<]*<\/a>\.?$/i.test(s)&&/highlight|click here/i.test(t)) return 'hl';
+    if(/^[A-Z][A-Za-z0-9 .'&-]{1,34}:$/.test(t)) return 'kick';
+    if(t.length<=80&&/[A-Z]{3}/.test(t)&&t===t.toUpperCase()) return 'head';
+    return 'p';};
+  let out='',para=[],match=false;
+  const flush=()=>{if(para.length)out+=`<p>${para.join('<br>')}</p>`;para=[];};
+  L.forEach(s=>{const k=kind(s);if(k!=='p')flush();
+    if(k==='p') para.push(s);
+    else if(k==='h') out+=`<h2 class="av-h">${s.replace(/<\/?(center|h\d)[^>]*>/gi,'')}</h2>`;
+    else if(k==='rate'){const m=s.match(/^\s*([^:]+):\s*(.*)$/);if(/^Rating/i.test(m[1]))match=true;out+=`<div class="av-rate">${m[1]} <b>${m[2]}</b></div>`;}
+    else if(k==='title') out+=`<div class="av-title">${s.replace(/^\(|\)$/g,'')}</div>`;
+    else if(k==='note') out+=`<div class="av-note">${s.replace(/^\[|\]$/g,'')}</div>`;
+    else if(k==='hl') out+=s.replace(/^<a\s/i,'<a class="av-hl" ').replace(/>[^<]*<\/a>\.?$/,'>Highlights →</a>');
+    else if(k==='kick') out+=`<div class="kicker av-k">${s.replace(/:$/,'')}</div>`;
+    else out+=`<h3 class="av-h3">${s}</h3>`;});
+  flush();
+  if(/^<div class="kicker av-k">[^<]*<\/div>$/.test(out)) return `<div class="av-kblk">${out}</div>`;
+  return /^<h2/.test(out)?out:`<div class="av-blk${match?' av-m':''}">${out}</div>`;}
+function avText(d){
+  const body=d.body;if(!body) return '<div class="empty">This page is empty.</div>';
+  let out='';const rest=document.createElement('div');
+  [...body.childNodes].forEach(n=>{
+    if(n.nodeType===1&&n.tagName==='PRE'){if(rest.childNodes.length){out+=avRest(rest);rest.innerHTML='';}
+      out+=n.innerHTML.replace(/\r/g,'').split(/\n[ \t]*\n+/).map(avBlock).join('');}
+    else rest.appendChild(document.importNode(n,true));});
+  if(rest.childNodes.length) out+=avRest(rest);
+  return `<div class="av-doc">${out}</div>`;}
+/* What sits outside the <pre>: the "Click here to return to …" line, lists (the card list), the export footer */
+function avRest(div){
+  div.querySelectorAll('hr').forEach(x=>x.remove());
+  div.querySelectorAll('a').forEach(a=>{if(a.textContent.trim().toLowerCase()!=='here')return;
+    const pv=a.previousSibling,nx=a.nextSibling;
+    if(pv&&pv.nodeType===3&&/Click\s*$/i.test(pv.textContent)&&nx&&nx.nodeType===3){const m=nx.textContent.match(/^\s*to return to ([^\n]*)/i);
+      if(m){pv.textContent=pv.textContent.replace(/Click\s*$/i,'');nx.textContent=nx.textContent.slice(m[0].length);
+        a.textContent='← Back to '+m[1].replace(/\.\s*$/,'').replace(/\s+/g,' ');a.className='av-back';}}});
+  let h=div.innerHTML.replace(/(^|>|\n)\s*,?\s*\d{1,2}-\d{1,2}-\d{4}\s*(?=<|$)/g,'$1').replace(/<p>\s*<\/p>/g,'');
+  return h.trim()?`<div class="av-rest">${h}</div>`:'';}
+function avFrame(box,d){
+  const f=document.createElement('iframe');f.className='av-frame';f.title='Official site page';f.setAttribute('scrolling','no');
+  // no scripts run inside, even if the page carried one; links can still open here or in a new tab
+  f.setAttribute('sandbox','allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation');
+  f.srcdoc='<!DOCTYPE html>'+d.documentElement.outerHTML;
+  box.innerHTML='';box.appendChild(f);
+  const fit=()=>{try{const h=f.contentDocument.documentElement.scrollHeight;if(h)f.style.height=h+'px';}catch(e){}};
+  f.onload=()=>{fit();const fd=f.contentDocument;if(!fd)return;
+    try{new ResizeObserver(fit).observe(fd.body||fd.documentElement)}catch(e){}
+    fd.querySelectorAll('img').forEach(i=>i.addEventListener('load',fit));
+    // in-page anchors (a title page's jump links) scroll the frame's spot on the page
+    fd.addEventListener('click',ev=>{const a=ev.target.closest&&ev.target.closest('a[href^="#"]');if(!a)return;ev.preventDefault();
+      const t=fd.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));if(t)t.scrollIntoView({block:'start'});});
+    setTimeout(fit,300);setTimeout(fit,1500);};}
+function viewArcPage(k,id){
+  const S=SITES[k],p=P[k];
+  if(!S||!AV_ID.test(id||'')) return `<div class="empty" style="margin-top:20px">That page isn't on the ${esc(p.short)} site.</div>`;
+  return `<div class="av-bar"><a class="av-home" href="${avHash(k,'WELCOME')}">${esc(p.short)} official site</a>${id!=='WELCOME'?`<span class="av-sep">›</span><span class="av-crumb" id="av-crumb"></span>`:'<span class="av-sep">›</span><span class="av-crumb">Card list</span>'}<a class="av-orig" data-orig="1" href="${avURL(k,id)}" target="_blank" rel="noopener">Open original ↗</a></div>
+  <div class="av" id="av"><div class="empty">Loading the page from the ${esc(p.short)} site…</div></div>`;}
+async function loadArcPage(k,id){
+  const box=$('#av');if(!box)return;const want=location.hash;
+  let html;
+  try{html=await avFetch(avURL(k,id));}
+  catch(e){if(location.hash!==want||!document.body.contains(box))return;
+    box.innerHTML=`<div class="box av-fail"><b>This page didn't load just now.</b><a class="ext" data-orig="1" href="${avURL(k,id)}" target="_blank" rel="noopener">Open it on the ${esc(P[k].short)} site ↗</a></div>`;return;}
+  if(location.hash!==want||!document.body.contains(box))return;
+  const d=new DOMParser().parseFromString(html,'text/html');
+  const styled=!!d.querySelector('style,link[rel~="stylesheet"]');
+  avClean(d,k,styled);
+  const h=d.querySelector('pre h2,pre h1,h2,h1'), pre=d.querySelector('pre');
+  // a highlights page has no heading: its first line is the headline
+  const first=pre&&(pre.textContent.split('\n').map(x=>x.trim()).find(Boolean)||'');
+  const ttl=(styled?(d.title||'').split(' · ')[0]:h?h.textContent:first&&first.length<=90?first:d.title)||id;
+  const cr=$('#av-crumb');if(cr)cr.textContent=ttl.replace(/\s+/g,' ').trim();
+  if(styled) avFrame(box,d); else box.innerHTML=avText(d);}
+/* Show Archive tab: pages on the official site the World Report doesn't list yet */
+async function loadArcNew(k){const box=$('#av-new');if(!box)return;const want=location.hash;
+  let nw;try{nw=await avNew(k);}catch(e){return;}
+  if(location.hash!==want||!document.body.contains(box)||!nw.length)return;
+  box.innerHTML=`<div class="box av-newbox"><div class="kicker">New on the ${esc(P[k].short)} site</div><div class="arch">${nw.map(([id,t])=>`<a href="${avHash(k,id)}">${esc(t||id)}</a>`).join('')}</div></div>`;}
+/* Title Histories tab: title results on official site pages the World Report hasn't written up yet */
+function avTitleLines(html){
+  const d=new DOMParser().parseFromString(html,'text/html');
+  const pres=[...d.querySelectorAll('pre')];const txt=(pres.length?pres.map(p=>p.textContent).join('\n\n'):(d.body&&d.body.textContent)||'').replace(/\r/g,'');
+  const dm=txt.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})\b/);
+  const date=dm?`${dm[3]}-${String(AV_MONTHS.indexOf(dm[1])+1).padStart(2,'0')}-${dm[2].padStart(2,'0')}`:null;
+  const out=[];
+  txt.split(/\n[ \t]*\n+/).forEach(b=>{const one=b.replace(/\s+/g,' ').trim(),re=/\(([^()]{2,90}?) (won|retained) (?:the )?([^()]{3,90}?)\.?\)/g;let m;
+    while((m=re.exec(one))){if(!/title|championship|champion|crown/i.test(m[3]))continue;
+      const ri=one.search(/ Rating:/i);out.push({who:m[1],won:m[2]==='won',title:m[3],res:(ri>0?one.slice(0,ri):one.slice(0,m.index)).trim()});}});
+  return {date,out};}
+async function loadTitleLive(k){const box=$('#tl-live');if(!box)return;const want=location.hash;
+  let nw;try{nw=(await avNew(k)).slice(0,12);}catch(e){return;}
+  if(!nw.length||location.hash!==want)return;
+  const got=await Promise.all(nw.map(([id,t])=>avFetch(avURL(k,id)).then(h=>Object.assign(avTitleLines(h),{id,t})).catch(()=>null)));
+  if(location.hash!==want||!document.body.contains(box))return;
+  const pages=got.filter(g=>g&&g.out.length), shown=pages.filter(g=>spoilers||!g.date||g.date<=WORLD_DATE), hid=pages.length-shown.length;
+  if(!pages.length)return;
+  box.innerHTML=`<div class="box av-live"><div class="kicker">Just in from the ${esc(P[k].short)} site</div><p class="mute">Title results on new show pages that the World Report hasn't written up yet. The histories below catch up when it does.</p>
+    ${shown.map(g=>`<div class="av-lv"><a href="${avHash(k,g.id)}"><b>${g.date?fmt(g.date):''}</b> ${esc(g.t)}</a><ul>${g.out.map(o=>`<li>${o.won?'<span class="av-new">New champion</span> ':''}${esc(o.who)} ${o.won?'won':'retained'} the ${esc(o.title)}${o.res?`<span class="mute"> · ${esc(o.res)}</span>`:''}</li>`).join('')}</ul></div>`).join('')}
+    ${hid?`<p class="mute">${hid} later show${hid===1?'':'s'} with title results stay hidden until ${hid===1?'it happens':'they happen'} (Show booked finishes to see ${hid===1?'it':'them'}).</p>`:''}</div>`;}
 function viewPromo(k,tab){
   const p=P[k]; tab=tab||'overview';
   const ev=E.filter(e=>e.p===k).sort((a,b)=>a.d.localeCompare(b.d));
@@ -2124,13 +2325,15 @@ function viewPromo(k,tab){
         ${(()=>{const nx=ev.filter(e=>!pastE(e)).slice(0,5);return `<h2 class="sec" style="font-size:22px">Coming Up</h2>${nx.length?`<ul class="nextup">${nx.map(e=>{const ms=(e.m||[]).filter(m=>!/^(Promo|Interview|Segment|Angle|Closing)/i.test(m[0]));const main=ms.find(m=>/^Main/i.test(m[0]))||ms.find(m=>/Title|Triple Crown|IWGP|Championship/i.test(m[0]))||ms.slice(-1)[0];return `<li class="${e.big?'big':''}"><span class="d">${fmt(e.d)}${isToday(e.d)?' <small>Tonight</small>':''}</span><b>${esc(e.type)}</b><span class="mute">${esc([String(e.city||'').split(',')[0],e.venue].filter(Boolean).join(' · '))}</span>${main?`<span class="mm">${esc(main[0].replace(/^Main( event)?:\s*/i,''))}</span>`:''}</li>`}).join('')}</ul><a class="nextall" href="#${k}/schedule">Full schedule →</a>`:'<div class="empty">Nothing on the calendar yet.</div>'}`})()}
       </aside>
     </div>`;
+  } else if(tab==='page'){
+    body=viewArcPage(k,arcPage);
   } else if(tab==='titles'){
     body=viewPromoTitles(k);
   } else if(tab==='file'){
     body=viewPromoTalent(k);
   } else if(tab==='archive'){
     const S=SITES[k], n=S.arch.reduce((a,g)=>a+g[1].length,0);
-    body=`<div class="box" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div class="kicker">${p.short} Official Archive</div><b style="font-family:var(--head);font-weight:400;font-size:24px;text-transform:uppercase">${S.label}</b><div class="mute" style="font-family:var(--cond);font-size:14px">${n} show pages. Links open the ${p.short} site in a new tab.</div></div><a class="ext" href="${S.base}WELCOME.HTM" target="_blank" rel="noopener">Open the ${p.short} site ↗</a></div>
+    body=`<div class="box" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div class="kicker">${p.short} Official Archive</div><b style="font-family:var(--head);font-weight:400;font-size:24px;text-transform:uppercase">${S.label}</b><div class="mute" style="font-family:var(--cond);font-size:14px">${n} show pages. They open here, read live from the ${p.short} site.</div></div><a class="ext" href="#${k}/page/WELCOME">Open the ${p.short} site</a></div><div id="av-new"></div>
     ${S.arch.map(([g,items])=>{const ic=showIcon(k,g);return `<details class="arch-dd"><summary><h2 class="sec">${ic?`<span class="aicon-h"><img class="aicon" src="${ic}" alt="">${g}</span>`:`<span>${g}</span>`}<small>${items.length} show${items.length===1?'':'s'}</small><span class="arch-tog"></span></h2></summary>${!items.length?'<div class="empty">Nothing archived here yet.</div>':(S.byCity||[]).includes(g)?archCities(k,items,ic):archList(k,items,ic)}</details>`;}).join('')}`;
   } else if(tab==='contracts'){
     body=viewContracts(k);
@@ -2157,9 +2360,9 @@ function viewPromo(k,tab){
   }
   return `<section style="--c:${p.c}">
     ${(BANNER_SVG[k]||BANNER_OF[k])?`<div style="margin-top:6px;border:2px solid var(--ink);line-height:0">${BANNER_SVG[k]?BANNER_SVG[k]:`<img src="${BANNER_OF[k][0]}" alt="${BANNER_OF[k][1]}" style="display:block;width:100%;height:auto">`}</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" style="margin-top:0" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'} ↗</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right"><b style="font-family:var(--head);font-weight:400;font-size:30px;line-height:1">${esc(p.stat[0])}</b> ${esc(p.stat[1])}</div></div>`:`
-    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'} ↗</a>`:''}</div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>`}
-    <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab?'on':''}">${l}</button>`).join('')}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" style="margin-top:0" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right"><b style="font-family:var(--head);font-weight:400;font-size:30px;line-height:1">${esc(p.stat[0])}</b> ${esc(p.stat[1])}</div></div>`:`
+    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:''}</div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>`}
+    <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab||(tab==='page'&&t==='archive')?'on':''}">${l}</button>`).join('')}</div>
     ${body}
   </section>`;
 }
@@ -2178,7 +2381,7 @@ function viewCalendar(){
 function showRow(e,withDate,withIcon){
   const best=e=>(e.m||[]).filter(x=>x[2]).map(x=>[x,starVal(x[2])]).filter(x=>x[1]!==null).sort((a,b)=>b[1]-a[1])[0];
   return (()=>{const b=best(e);return `<div class="ev ${e.big?'big':''}">${withDate?`<span class="lwd">${fmt(e.d)}</span>`:''}${chip(e.p)}${withIcon&&showIcon(e.p,e.type)?`<img class="evicon" src="${showIcon(e.p,e.type)}" alt="">`:''}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${e.rate?` <span class="num arate">${esc(e.rate)}</span>`:''}
-    <div class="adet">${e.gate?`<span>${esc(e.gate)}</span>`:''}${tvLabel(e)?`<span>${tvLabel(e)}</span>`:''}${b?`<span>Best: ${esc(b[0][0])} ${esc(b[0][2])}</span>`:''}${(e.reads||[]).filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])}</a>`).join('')}${e.link&&SITES[e.p]?siteLink(e.p,e.link,'Full show ↗'):''}</div></div>`})();
+    <div class="adet">${e.gate?`<span>${esc(e.gate)}</span>`:''}${tvLabel(e)?`<span>${tvLabel(e)}</span>`:''}${b?`<span>Best: ${esc(b[0][0])} ${esc(b[0][2])}</span>`:''}${(e.reads||[]).filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])}</a>`).join('')}${e.link&&SITES[e.p]?siteLink(e.p,e.link,'Full show →'):''}</div></div>`})();
 }
 /* Shows grouped by month, then by day, newest first (the Show Archive format). */
 function archiveMonths(shows){
@@ -2294,12 +2497,13 @@ function route(){
   // Cards & Results became each promotion's Talent File tab: old links land there
   if(P[h]&&t==='shows'){t='file';history.replaceState(null,'','#'+h+'/file');}
   thFocus=P[h]&&t==='titles'&&f!=null&&f!==''?f:null;
-  if(ARTICLES[h]){renderNav(h==='world-who-gets-paid'?h:ARTICLES[h].p);$('#view').innerHTML=viewArticle(h);return;}
+  arcPage=P[h]&&SITES[h]&&t==='page'?(f||'WELCOME'):null;
+  if(ARTICLES[h]){renderNav(h==='world-who-gets-paid'?h:ARTICLES[h].p);$('#view').innerHTML=viewArticle(h);avLinks($('#view'));avLinks(document.querySelector('nav.main'));return;}
   const key = NAV.some(n=>n[0]===h)?h:'home';
   if(P[key]&&t&&promoTabs(key).includes(t)) curTab[key]=t;
-  renderNav(key,curTab[key]);
+  renderNav(key,arcPage&&P[key]?'page':curTab[key]);
   let html;
-  if(P[key]) html=viewPromo(key,curTab[key]);
+  if(P[key]) html=viewPromo(key,arcPage?'page':curTab[key]);
   else if(key==='calendar') html=viewCalendar();
   else if(key==='showarchive') html=viewShowArchive();
   else if(key==='ratings') html=viewWorldRatings(t);
@@ -2316,6 +2520,7 @@ function route(){
   bind(key);
 }
 function bind(key){
+  const tab=P[key]?(arcPage?'page':curTab[key]||'overview'):null;
   document.querySelectorAll('.sub button').forEach(b=>b.onclick=()=>{keepScroll=true;location.hash=key+'/'+b.dataset.tab;});
   document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;calFilter.has(f)?calFilter.delete(f):calFilter.add(f);if(!calFilter.size)ORDER.forEach(k=>calFilter.add(k));route();});
   const cs=$('#csearch'); if(cs) cs.oninput=()=>{const q=cs.value.toLowerCase();document.querySelectorAll('#ctbl tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
@@ -2323,12 +2528,16 @@ function bind(key){
   if(key==='earnings') bindEarnings();
   if(key==='ratings') bindWorldRatings();
   if(key==='storyarchive') bindStoryArchive();
-  if(P[key]&&curTab[key]==='stories') bindKindBar(key+'/stories');
+  if(P[key]&&tab==='stories') bindKindBar(key+'/stories');
   if(key==='file') bindTalentFile();
-  if(P[key]&&curTab[key]==='file') bindPromoTalent(key);
-  if(P[key]&&(curTab[key]||'overview')==='overview') bindMiniTalent(key);
-  if(P[key]&&curTab[key]==='ratings') drawRatings(key);
-  if(P[key]&&curTab[key]==='titles'&&thFocus!=null){const el=document.getElementById('th-'+thFocus);if(el)setTimeout(()=>el.scrollIntoView({block:'start'}),0);}
+  if(P[key]&&tab==='file') bindPromoTalent(key);
+  if(P[key]&&tab==='overview') bindMiniTalent(key);
+  if(P[key]&&tab==='ratings') drawRatings(key);
+  if(P[key]&&tab==='titles'&&thFocus!=null){const el=document.getElementById('th-'+thFocus);if(el)setTimeout(()=>el.scrollIntoView({block:'start'}),0);}
+  if(P[key]&&arcPage) loadArcPage(key,arcPage);
+  else if(P[key]&&SITES[key]&&tab==='archive') loadArcNew(key);
+  else if(P[key]&&SITES[key]&&tab==='titles') loadTitleLive(key);
+  avLinks($('#view'));avLinks(document.querySelector('nav.main'));
   const as=$('#asearch'); if(as) as.oninput=()=>{const q=as.value.toLowerCase();document.querySelectorAll('#atbl tbody tr,#acareer tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('.rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
 }
