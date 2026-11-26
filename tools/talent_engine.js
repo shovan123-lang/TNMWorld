@@ -130,7 +130,7 @@ function extras(P,CONTRACTS,EXTRA,order){
   const ORDER=order||Object.keys(P), out=[], seen=new Set(), onRoster=new Set();
   for(const k of ORDER)for(const [n] of ((P[k]||{}).roster||[]))onRoster.add(norm(n));
   const add=(n,k,note)=>{const key=norm(n)+'|'+k;if(seen.has(key))return;seen.add(key);out.push([n,k,note]);};
-  for(const k of ORDER)for(const [n,note] of ((P[k]||{}).departures||[]))add(n,k,'Left: '+(note||''));
+  for(const k of ORDER)for(const [n,note] of ((P[k]||{}).departures||[])){const t=String(note||'').replace(/\.\s*$/,'');add(n,k,/^left\b/i.test(t)?t:'Left: '+t);}
   for(const k of ORDER)for(const r of (((CONTRACTS||{})[k]||{}).rows||[])){
     if(r[0]==='O')continue;const n=String(r[1]);
     if(onRoster.has(norm(n))||onRoster.has(norm(n.replace(/\s+(19|20)\d\d$/,''))))continue;   // "Sting 1992" is Sting
