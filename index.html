@@ -478,6 +478,7 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 .res{display:inline-block;min-width:20px;text-align:center;font-family:var(--cond);font-weight:700;font-size:12px;padding:1px 4px;color:#fff;background:var(--mute)}
 .res-w{background:#2f6b3a}.res-l{background:var(--red)}.res-d{background:#8a7d63}
 .tfsort{font-family:var(--cond);font-size:14px;padding:4px 6px;border:2px solid var(--ink);background:var(--paper)}
+.tfdir{cursor:pointer;font-weight:700;color:var(--ink);white-space:nowrap}.tfdir:hover{background:var(--ink);color:var(--paper)}
 .mtf .search,.mtf select{width:100%;max-width:none;box-sizing:border-box}
 .mtf select{margin-top:8px}
 .mtf ul{list-style:none;margin:6px 0 0;padding:0;font-family:var(--cond);font-size:15px}
@@ -866,7 +867,10 @@ const tfEarn=f=>{if(typeof EARNINGS==='undefined')return null;const n=tfNorm(TF_
 const tfMoney=v=>'$'+Math.round(v||0).toLocaleString();
 const tfBest=f=>f.run.filter(r=>starVal(r.m[2])!==null).sort((a,b)=>starVal(b.m[2])-starVal(a.m[2]))[0];
 // Star Rating sort: the wrestler's best rated match, highest first; no rated match sorts last
-const tfStars=f=>{const b=tfBest(f);return b?starVal(b.m[2]):-100;};
+const tfStars=f=>{const b=tfBest(f);return b?starVal(b.m[2]):null;};
+// Sort direction for the Talent File lists: 1 runs high to low (A to Z for names), -1 low to high. Wrestlers with no value for the sort stay at the bottom either way.
+const tfDirLabel=(s,d)=>s==='name'?(d>0?'A to Z':'Z to A'):(d>0?'↓ High to low':'↑ Low to high');
+const tfCmp=(val,dir,byName)=>(a,b)=>{const va=val(a),vb=val(b);if(va==null||vb==null){if(va!=null)return -1;if(vb!=null)return 1;}else if(vb!==va)return (vb-va)*dir;return (byName?dir:1)*a.name.localeCompare(b.name);};
 function tfTitles(f){const n=tfNorm(f.name),teams=Object.entries(typeof TEAMS!=='undefined'?TEAMS:{}).filter(([t,m])=>m.includes(f.name)).map(([t])=>tfNorm(t));
   const out=[];ORDER.forEach(k=>(P[k].titles||[]).forEach(t=>{const h=tfNorm(t[1]);if(h&&(h.includes(n)||teams.some(x=>x.length>3&&h.includes(x))))out.push([k,t[0]])}));return out;}
 /* Ages. Birth dates live in data/births.js; the age is worked out against the World Clock
@@ -938,7 +942,7 @@ function tfSpots(){
   _TFS={day,list:out};return out;
 }
 const tfIsSpot=f=>tfSpots().includes(f);
-let tfFilter=new Set(), tfSort='matches', tfTag='';
+let tfFilter=new Set(), tfSort='matches', tfTag='', tfDir=1;
 function viewTalentFileIndex(){
   const T=tfAll(), hasE=typeof EARNINGS!=='undefined';
   const spots=tfSpots();
@@ -950,7 +954,7 @@ function viewTalentFileIndex(){
   <div class="tf-grid">${spots.map(card).join('')}</div>
   <h3 class="amonth" style="font-size:22px">Every wrestler <small>${T.list.length}</small></h3>
   <div class="efilters tffilters">${ORDER.map(k=>`<button data-f="${k}" class="${!tfFilter.size||tfFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['stars','Star Rating'],['earn','Career $'],['bonus','Bonuses'],['titles','Title reigns'],['trophies','Mask & hair'],['age','Age'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select></span>${ptagShow('tftag',T.list.map(f=>f.name),tfTag)}</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['stars','Star Rating'],['earn','Career $'],['bonus','Bonuses'],['titles','Title reigns'],['trophies','Mask & hair'],['age','Age'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select> <button type="button" id="tfdir" class="tfsort tfdir" title="Flip the sort">${tfDirLabel(tfSort,tfDir)}</button></span>${ptagShow('tftag',T.list.map(f=>f.name),tfTag)}</div>
   ${ptagLegend(T.list.map(f=>f.name))}
   <div class="tbl-wrap"><table id="tftbl"><thead><tr><th>Wrestler</th><th>Promotions</th><th class="num">Age</th><th class="num">Record</th><th class="num">Matches</th><th class="num">Star Rating</th><th class="num" id="tfmoneyh">${tfSort==='bonus'?'Bonuses':'Career $'}</th></tr></thead><tbody>${tfRows()}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Every name on every roster, plus wrestlers who have left, anyone else on a pay scale, and named enhancement talent. Records are worked out from the results on the cards (tag matches count for every member); "undecided" results don't count either way. Ages are worked out from each wrestler's date of birth and the World Clock, so they move as the clock does; "—" means no date of birth on record. Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances. Bonuses are champions' pool shares (3% of each card's gate, split among that promotion's champions on the card) plus main-event bonuses.</p>`;
@@ -959,9 +963,9 @@ const tfBonus=x=>x?(x.lifeBonus!=null?x.lifeBonus:x.bonus)||0:0;
 const tfCash=(x,srt)=>srt==='bonus'?(tfBonus(x)?tfMoney(tfBonus(x)):'—'):x?tfMoney(x.life):'—';
 function tfRows(){
   const T=tfAll(), q=(($('#tfsearch')||{}).value||'').toLowerCase();
-  const val=f=>tfSort==='name'?0:tfSort==='age'?((tfAge(f)||{sort:-1}).sort):tfSort==='wins'?f.w:tfSort==='stars'?tfStars(f):tfSort==='earn'?((tfEarn(f)||{}).life||0):tfSort==='bonus'?tfBonus(tfEarn(f)):tfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
+  const val=f=>tfSort==='name'?0:tfSort==='age'?((tfAge(f)||{}).sort??null):tfSort==='wins'?f.w:tfSort==='stars'?tfStars(f):tfSort==='earn'?((tfEarn(f)||{}).life??null):tfSort==='bonus'?tfBonus(tfEarn(f)):tfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
   return T.list.filter(f=>(!tfFilter.size||f.promos.some(k=>tfFilter.has(k)))&&(!tfTag||ptags(f.name).includes(tfTag))&&f.name.toLowerCase().includes(q))
-    .sort((a,b)=>val(b)-val(a)||a.name.localeCompare(b.name))
+    .sort(tfCmp(val,tfDir,tfSort==='name'))
     .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${ptagIcons(f.name)} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,tfSort)}</td></tr>`}).join('')
     || '<tr><td colspan="7" class="mute">No one matches.</td></tr>';
 }
@@ -969,7 +973,8 @@ function bindTalentFile(){
   const redraw=()=>{const b=$('#tftbl tbody');if(b)b.innerHTML=tfRows();const h=$('#tfmoneyh');if(h)h.textContent=tfSort==='bonus'?'Bonuses':'Career $';};
   document.querySelectorAll('.tffilters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;if(!tfFilter.size)tfFilter=new Set([f]);else if(tfFilter.has(f))tfFilter.delete(f);else tfFilter.add(f);
     document.querySelectorAll('.tffilters button').forEach(x=>x.classList.toggle('off',!!tfFilter.size&&!tfFilter.has(x.dataset.f)));redraw();});
-  const s=$('#tfsearch');if(s)s.oninput=redraw; const o=$('#tfsort');if(o)o.onchange=()=>{tfSort=o.value;redraw();};
+  const s=$('#tfsearch');if(s)s.oninput=redraw; const o=$('#tfsort');if(o)o.onchange=()=>{tfSort=o.value;const d=$('#tfdir');if(d)d.textContent=tfDirLabel(tfSort,tfDir);redraw();};
+  const dr=$('#tfdir');if(dr)dr.onclick=()=>{tfDir=-tfDir;dr.textContent=tfDirLabel(tfSort,tfDir);redraw();};
   const g=$('#tftag');if(g)g.onchange=()=>{tfTag=g.value;redraw();};
 }
 function tfEarnBlock(f){
@@ -2046,7 +2051,7 @@ function viewApuestas(k){
 }
 /* Talent File tab on a promotion page: the Talent File directory, cut to that promotion's roster.
    Ages show once the Talent File has them (tfAge). */
-let ptfSort='matches', ptfTag='';
+let ptfSort='matches', ptfTag='', ptfDir=1;
 const ptfList=k=>{const T=tfAll();return (P[k].roster||[]).map(r=>T.byName.get(r[0])).filter(Boolean);};
 function viewPromoTalent(k){
   const p=P[k], list=ptfList(k), hasAge=typeof tfAge==='function';
@@ -2054,22 +2059,23 @@ function viewPromoTalent(k){
   if(!ptagShowOK(ptfTag,list.map(f=>f.name))) ptfTag='';
   const opts=[['matches','Matches'],['wins','Wins'],['stars','Star Rating'],['earn','Career $'],['bonus','Bonuses'],['titles','Title reigns'],['trophies','Mask & hair'],...(hasAge?[['age','Age']]:[]),['name','Name']];
   return `<h2 class="sec">Talent File <small>${list.length} on the ${esc(p.short)} roster</small></h2>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 6px"><input class="search" id="ptfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="ptfsort" class="tfsort">${opts.map(([v,l])=>`<option value="${v}"${ptfSort===v?' selected':''}>${l}</option>`).join('')}</select></span>${ptagShow('ptftag',list.map(f=>f.name),ptfTag)}</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 6px"><input class="search" id="ptfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="ptfsort" class="tfsort">${opts.map(([v,l])=>`<option value="${v}"${ptfSort===v?' selected':''}>${l}</option>`).join('')}</select> <button type="button" id="ptfdir" class="tfsort tfdir" title="Flip the sort">${tfDirLabel(ptfSort,ptfDir)}</button></span>${ptagShow('ptftag',list.map(f=>f.name),ptfTag)}</div>
   ${ptagLegend(list.map(f=>f.name))}
   <div class="tbl-wrap"><table id="ptftbl"><thead><tr><th>Wrestler</th><th>Promotions</th>${hasAge?'<th class="num">Age</th>':''}<th class="num">Record</th><th class="num">Matches</th><th class="num">Star Rating</th><th class="num" id="ptfmoneyh">${ptfSort==='bonus'?'Bonuses':'Career $'}</th></tr></thead><tbody>${ptfRows(k)}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Everyone on the ${esc(p.short)} roster. Records and matches count every match on the cards, in any promotion (tag matches count for every member). <a href="#file">All Talent Files →</a></p>`;
 }
 function ptfRows(k){
   const q=(($('#ptfsearch')||{}).value||'').toLowerCase(), hasAge=typeof tfAge==='function';
-  const val=f=>ptfSort==='name'?0:ptfSort==='age'&&hasAge?((tfAge(f)||{sort:-1}).sort):ptfSort==='wins'?f.w:ptfSort==='stars'?tfStars(f):ptfSort==='earn'?((tfEarn(f)||{}).life||0):ptfSort==='bonus'?tfBonus(tfEarn(f)):ptfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:ptfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
+  const val=f=>ptfSort==='name'?0:ptfSort==='age'&&hasAge?((tfAge(f)||{}).sort??null):ptfSort==='wins'?f.w:ptfSort==='stars'?tfStars(f):ptfSort==='earn'?((tfEarn(f)||{}).life??null):ptfSort==='bonus'?tfBonus(tfEarn(f)):ptfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:ptfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
   return ptfList(k).filter(f=>(!ptfTag||ptags(f.name).includes(ptfTag))&&f.name.toLowerCase().includes(q))
-    .sort((a,b)=>val(b)-val(a)||a.name.localeCompare(b.name))
+    .sort(tfCmp(val,ptfDir,ptfSort==='name'))
     .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${ptagIcons(f.name)} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td>${hasAge?`<td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td>`:''}<td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,ptfSort)}</td></tr>`}).join('')
     || `<tr><td colspan="${hasAge?7:6}" class="mute">No one matches.</td></tr>`;
 }
 function bindPromoTalent(k){
   const redraw=()=>{const b=$('#ptftbl tbody');if(b)b.innerHTML=ptfRows(k);const h=$('#ptfmoneyh');if(h)h.textContent=ptfSort==='bonus'?'Bonuses':'Career $';};
-  const s=$('#ptfsearch');if(s)s.oninput=redraw; const o=$('#ptfsort');if(o)o.onchange=()=>{ptfSort=o.value;redraw();};
+  const s=$('#ptfsearch');if(s)s.oninput=redraw; const o=$('#ptfsort');if(o)o.onchange=()=>{ptfSort=o.value;const d=$('#ptfdir');if(d)d.textContent=tfDirLabel(ptfSort,ptfDir);redraw();};
+  const dr=$('#ptfdir');if(dr)dr.onclick=()=>{ptfDir=-ptfDir;dr.textContent=tfDirLabel(ptfSort,ptfDir);redraw();};
   const g=$('#ptftag');if(g)g.onchange=()=>{ptfTag=g.value;redraw();};
 }
 /* Mini Talent File on a promotion's Overview (in place of Departures): search the roster or pick from the list */
