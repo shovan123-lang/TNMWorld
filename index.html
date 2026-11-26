@@ -218,6 +218,7 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 .arch a:hover{color:var(--c);text-decoration:underline}
 .aicon-h{display:inline-flex;align-items:center;gap:12px}h2.sec .aicon{display:block;height:44px;width:auto}
 .arch a .sicon{height:24px;width:auto;vertical-align:middle;margin:-2px 8px 0 0}
+.ev .evicon{height:24px;width:auto;vertical-align:middle;margin:-3px 8px 0 2px}
 .ext{display:inline-block;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--c);padding:6px 12px;text-decoration:none;margin-top:8px}
 .ext:hover{background:var(--ink)}
 .photo-r{float:right;width:40%;max-width:320px;margin:4px 0 10px 18px;border:2px solid var(--ink);background:var(--paper2);padding:0}
@@ -443,7 +444,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/world.js?v=d84ebcc1"></script>
 <script src="tools/talent_engine.js?v=ab2c23d3"></script>
 <script src="data/wcw.js?v=62b8019d"></script>
-<script src="data/wwf.js?v=dd5bb16e"></script>
+<script src="data/wwf.js?v=fa81ecd4"></script>
 <script src="data/uswa.js?v=a9eee91b"></script>
 <script src="data/pp.js?v=ee741c23"></script>
 <script src="data/ajpw.js?v=8c942e41"></script>
@@ -459,6 +460,8 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const siteLink=(k,f,t)=>`<a href="${SITES[k].base}${f}.HTM" target="_blank" rel="noopener">${t}</a>`;
+/* TV show logos (SITES.<key>.icons, keyed by show name): the logo for a section, archive label or event whose name starts with that show's name. Tapings get none. */
+const showIcon=(k,name)=>{const S=SITES[k];if(!S||!S.icons||!name||/taping/i.test(name))return '';const n=String(name),key=Object.keys(S.icons).find(x=>n===x||(n.startsWith(x)&&/^[\s,(\u00b7]/.test(n.slice(x.length))));return key?S.base+S.icons[key]:''};
 const uswaLink=(f,t)=>siteLink('uswa',f,t);
 const AJPW_BANNER='img/ajpw-banner.webp';
 const BANNERS={};
@@ -1400,7 +1403,7 @@ function viewPromo(k,tab){
   } else if(tab==='archive'){
     const S=SITES[k], n=S.arch.reduce((a,g)=>a+g[1].length,0);
     body=`<div class="box" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div class="kicker">${p.short} Official Archive</div><b style="font-family:var(--head);font-weight:400;font-size:24px;text-transform:uppercase">${S.label}</b><div class="mute" style="font-family:var(--cond);font-size:14px">${n} show pages. Links open the ${p.short} site in a new tab.</div></div><a class="ext" href="${S.base}WELCOME.HTM" target="_blank" rel="noopener">Open the ${p.short} site ↗</a></div>
-    ${S.arch.map(([g,items])=>{const ic=S.icons&&S.icons[g]?S.base+S.icons[g]:'';return `<h2 class="sec">${ic?`<span class="aicon-h"><img class="aicon" src="${ic}" alt="">${g}</span>`:g} <small>${items.length} shows</small></h2>${items.length?`<div class="arch">${items.map(([t,f])=>siteLink(k,f,(ic?`<img class="sicon" src="${ic}" alt="">`:'')+esc(t))).join('')}</div>`:'<div class="empty">Nothing archived here yet.</div>'}`;}).join('')}`;
+    ${S.arch.map(([g,items])=>{const ic=showIcon(k,g);return `<h2 class="sec">${ic?`<span class="aicon-h"><img class="aicon" src="${ic}" alt="">${g}</span>`:g} <small>${items.length} shows</small></h2>${items.length?`<div class="arch">${items.map(([t,f])=>{const li=ic||showIcon(k,t);return siteLink(k,f,(li?`<img class="sicon" src="${li}" alt="">`:'')+esc(t))}).join('')}</div>`:'<div class="empty">Nothing archived here yet.</div>'}`;}).join('')}`;
   } else if(tab==='contracts'){
     body=viewContracts(k);
   } else if(tab==='finance'){
@@ -1444,9 +1447,9 @@ function viewCalendar(){
   ${keys.map(d=>`<div class="cal-day ${isToday(d)?'today':''}"><div class="d">${MON[dt(d).getUTCMonth()]} ${dt(d).getUTCDate()}<small>${DOW[dt(d).getUTCDay()]}${isToday(d)?' · today':''}</small></div><div>${days[d].map(e=>`<div class="ev ${e.big?'big':''}">${chip(e.p)}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${isPast(e.d)?' <span class="flag" style="color:var(--red)">overdue</span>':pastE(e)?' <span class="flag" style="color:var(--mute)">ran</span>':''}${e.m&&e.m[0]&&e.m[0][0]!=='Card not set'?`<br><span style="padding-left:58px;display:inline-block;font-size:13px" class="mute">${esc(e.m[0][0])}</span>`:''}</div>`).join('')}</div></div>`).join('')}`;
 }
 
-function showRow(e,withDate){
+function showRow(e,withDate,withIcon){
   const best=e=>(e.m||[]).filter(x=>x[2]).map(x=>[x,starVal(x[2])]).filter(x=>x[1]!==null).sort((a,b)=>b[1]-a[1])[0];
-  return (()=>{const b=best(e);return `<div class="ev ${e.big?'big':''}">${withDate?`<span class="lwd">${fmt(e.d)}</span>`:''}${chip(e.p)}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${e.rate?` <span class="num arate">${esc(e.rate)}</span>`:''}
+  return (()=>{const b=best(e);return `<div class="ev ${e.big?'big':''}">${withDate?`<span class="lwd">${fmt(e.d)}</span>`:''}${chip(e.p)}${withIcon&&showIcon(e.p,e.type)?`<img class="evicon" src="${showIcon(e.p,e.type)}" alt="">`:''}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${e.rate?` <span class="num arate">${esc(e.rate)}</span>`:''}
     <div class="adet">${e.gate?`<span>${esc(e.gate)}</span>`:''}${b?`<span>Best: ${esc(b[0][0])} ${esc(b[0][2])}</span>`:''}${(e.reads||[]).filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])}</a>`).join('')}${e.link&&SITES[e.p]?siteLink(e.p,e.link,'Full show ↗'):''}</div></div>`})();
 }
 /* Shows grouped by month, then by day, newest first (the Show Archive format). */
@@ -1454,7 +1457,7 @@ function archiveMonths(shows){
   const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
   const months={};shows.forEach(e=>{const m=e.d.slice(0,7);(months[m]=months[m]||[]).push(e)});
   return Object.entries(months).map(([m,list])=>{const [y,mo]=m.split('-');const days={};list.forEach(e=>(days[e.d]=days[e.d]||[]).push(e));
-    return `<h3 class="amonth">${MONTHS[+mo-1]} ${y} <small>${list.length} show${list.length>1?'s':''}</small></h3>${Object.entries(days).map(([d,evs])=>`<div class="cal-day"><div class="d">${MON[dt(d).getUTCMonth()]} ${dt(d).getUTCDate()}<small>${DOW[dt(d).getUTCDay()]}</small></div><div>${evs.map(e=>showRow(e)).join('')}</div></div>`).join('')}`}).join('');
+    return `<h3 class="amonth">${MONTHS[+mo-1]} ${y} <small>${list.length} show${list.length>1?'s':''}</small></h3>${Object.entries(days).map(([d,evs])=>`<div class="cal-day"><div class="d">${MON[dt(d).getUTCMonth()]} ${dt(d).getUTCDate()}<small>${DOW[dt(d).getUTCDay()]}</small></div><div>${evs.map(e=>showRow(e,0,1)).join('')}</div></div>`).join('')}`}).join('');
 }
 function viewShowArchive(){
   const shows=E.filter(e=>calFilter.has(e.p)&&isPast(e.d)&&pastE(e)).sort((a,b)=>b.d.localeCompare(a.d)||a.p.localeCompare(b.p));
