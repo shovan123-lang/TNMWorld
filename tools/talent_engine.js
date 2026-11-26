@@ -1,7 +1,11 @@
 /* Talent File engine: builds a file for every rostered wrestler from the cards.
    Used by index.html (browser) and by tools/talent_check.js (node).
    For each match it works out who was in it (full names, surnames like "Liger",
-   and team names from TEAMS) and who won (from the result text). */
+   and team names from TEAMS) and who won (from the result text).
+   Roster names that differ only in case or accents ("Abdullah the Butcher" /
+   "Abdullah The Butcher") are one person with one file. A lone surname only
+   matches someone on that promotion's roster or named in full on its cards;
+   "D. Gilbert" uses the initial. */
 (function(root){
 const STOP=new Set(['the','el','la','los','las','jr','sr','mr','de','del','big','ii','iii','dr','sgt','king','kid','super','great','dos','mil','el','san','von','van']);
 const norm=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9&' ]+/g,' ').replace(/\s+/g,' ').trim();
@@ -18,22 +22,34 @@ function build(P,E,opts){
   const people=new Map();           // name -> {name,promos:Set,notes:{k:note}}
   const byPromoTok={};              // k -> token -> Set(names)
   const allTok={};                  // token -> Set(names)
+  const canon=new Map();             // norm(name) -> the first spelling seen
   for(const k of ORDER){const p=P[k];if(!p||!p.roster)continue;byPromoTok[k]={};
-    for(const [n,note] of p.roster){
+    for(const [n0,note] of p.roster){
+      const n=canon.get(norm(n0))||n0;canon.set(norm(n0),n);
       if(!people.has(n))people.set(n,{name:n,promos:new Set(),notes:{}});
       const x=people.get(n);x.promos.add(k);x.notes[k]=note||'';
       for(const t of toks(n)){(byPromoTok[k][t]=byPromoTok[k][t]||new Set()).add(n);(allTok[t]=allTok[t]||new Set()).add(n);}
     }}
   const exact=new Map([...people.keys()].map(n=>[norm(n),n]));
-  const teamIdx=new Map(Object.entries(TEAMS).map(([t,m])=>[norm(t),m]));
-  function resolveOne(str,k){
+  const teamIdx=new Map(Object.entries(TEAMS).map(([t,m])=>[norm(t),m.map(n=>canon.get(norm(n))||n)]));
+  // Who appears by full name on each promotion's cards: a lone surname can also mean one of them
+  // (Kevin Sullivan left WCW's roster, but "Sullivan" on a WCW card is still him).
+  const seen={},seenTokC={};
+  for(const e of E)for(const m of (e.m||[])){if(!m||!m[0])continue;const t=' '+norm(m[0])+' ';
+    for(const [nn,n] of exact)if(t.includes(' '+nn+' '))(seen[e.p]=seen[e.p]||new Set()).add(n);}
+  function seenTok(k){if(seenTokC[k])return seenTokC[k];const o={};for(const n of (seen[k]||[]))for(const t of toks(n))(o[t]=o[t]||new Set()).add(n);return seenTokC[k]=o;}
+  function resolveOne(str,k,wholeOnly){
     const s=norm(str.replace(/\(.*?\)/g,''));if(!s)return [];
     if(exact.has(s))return [exact.get(s)];
-    if(teamIdx.has(s))return teamIdx.get(s).filter(n=>people.has(n));
+    const st=s.replace(/^the /,'');
+    if(teamIdx.has(s)||teamIdx.has(st))return (teamIdx.get(s)||teamIdx.get(st)).filter(n=>people.has(n));
+    if(wholeOnly)return [];                  // "A & B" as a whole: only a team name, never a token match
     const ts=toks(str);if(!ts.length)return [];
-    const pools=[byPromoTok[k]||{},allTok];
+    const ini=(/^([a-z])\.?\s/i.exec(str.trim())||[])[1];   // "D. Gilbert"
+    const pools=[byPromoTok[k]||{},ts.length>1?allTok:seenTok(k)];
     for(const pool of pools){
       let cand=null;for(const t of ts){const c=pool[t];if(!c){cand=null;break}cand=cand?new Set([...cand].filter(x=>c.has(x))):new Set(c);}
+      if(cand&&cand.size>1&&ini)cand=new Set([...cand].filter(x=>norm(x)[0]===ini.toLowerCase()));
       if(cand&&cand.size===1)return [...cand];
       if(cand&&cand.size>1)return [];        // ambiguous
     }
@@ -50,7 +66,7 @@ function build(P,E,opts){
   function membersOf(side,k){
     const parens=[];const base=side.replace(/\(([^)]*)\)?/g,(_,x)=>{if(x&&!IGNORE_PAREN.test(x))parens.push(x);return ' ';}).replace(/\s+/g,' ').trim();
     let names=[];const raw=[base];
-    const whole=resolveOne(base,k);
+    const whole=resolveOne(base,k,/\s(?:&|and)\s|,/i.test(base));
     if(whole.length)names=whole;
     else base.split(/\s*(?:,|&|\band\b)\s*/i).filter(Boolean).forEach(b=>{raw.push(b);names=names.concat(resolveOne(b,k))});
     parens.forEach(x=>x.split(/\s*(?:,|&|\band\b)\s*/i).filter(Boolean).forEach(b=>{raw.push(b);names=names.concat(resolveOne(b,k))}));
