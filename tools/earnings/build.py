@@ -146,12 +146,14 @@ for c in _early:   # one card a night: an archive split over two pages (Gauntlet
   if q and q['p']==c['p'] and q['d']==c['d'] and q['city']==c['city'] and c['city'] and (c['type'].startswith(q['type']) or q['type'].startswith(c['type'])):
     q['people']=sorted(set(q['people'])|set(c['people'])); q['links'].append(c['link']); continue
   ecards.append(dict(c,links=[c['link']] if c['link'] else []))
-rateN={k:{_nk(n):n for n in v} for k,v in rate.items()}
+ER=getattr(S,'EARLY_RATES',{})   # wrestlers who only worked these earlier cards (not on CONTRACTS)
+rateE={k:dict(rate.get(k,{}),**{n:v[1] for n,v in ER.get(k,{}).items()}) for k in set(rate)|set(ER)}
+rateN={k:{_nk(n):n for n in v} for k,v in rateE.items()}
 early=[]; early_unrated={}; early_warn=[]
 for c in ecards:
   cls=S.EARLY_CLASS(c)
   if not cls: early_warn.append("{} {} {}: not a per-card promotion, not paid".format(c['p'],c['d'],c['type'])); continue
-  lab,mult,mp,sp=cls; k=c['p']; R=rate.get(k,{}); RB=getattr(S,'RATE_BEFORE',{}).get(k,{})
+  lab,mult,mp,sp=cls; k=c['p']; R=rateE.get(k,{}); RB=getattr(S,'RATE_BEFORE',{}).get(k,{})
   gate=S.EARLY_GATES.get((k,c['link'])) or POOLM._gate(c['gate']); est=None
   if not gate and mp:   # attendance but no gate on the page: estimated (shows.py EARLY_ATTENDANCE)
     est=S.EARLY_EST(k,c['link'],lab)
@@ -168,7 +170,7 @@ for c in ecards:
     n=rateN.get(k,{}).get(_nk(n0))
     if not n: early_unrated.setdefault(n0,set()).add(k); continue
     b=RB[n][1] if n in RB and c['d']<RB[n][0] else R[n]; amt=round(b*mult+cut.get(n0,0),2); tot+=amt
-    p=get(n,k,tier.get((k,n),"F")); p.setdefault("early",[]).append((len(early),amt)); paid.append(n)
+    p=get(n,k,tier.get((k,n)) or ER.get(k,{}).get(n,("F",))[0]); p.setdefault("early",[]).append((len(early),amt)); paid.append(n)
   early.append(dict(p=k,d=c['d'],show=show,links=c['links'],cls=lab,mult=mult,gate=gate,n=len(paid),total=round(tot,2),
     cut=round(sum(v for n,v in cut.items() if rateN.get(k,{}).get(_nk(n))),2),**(dict(est=[est[1],est[2]]) if est else {})))
 closed={m:v for m,v in LIFE["months"].items() if m!=S.MONTH}

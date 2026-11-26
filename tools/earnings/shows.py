@@ -152,6 +152,20 @@ RATE_BEFORE = {
  "uswa": {"Rob Zakowski": ("1991-07-22", 30)},   # re-signed 7/22/91 at $45 (was $30). Sean, 2026-11-26.
 }
 
+# ---- Rates for wrestlers who worked the cards before July 1991 but aren't on the roster's CONTRACTS list.
+# Used only for those earlier cards (career totals); they don't appear on the Finance tab's contracts table.
+# Sean approved this list on 2026-11-26. (tier, rate per appearance)
+EARLY_RATES = {
+ "uswa": {
+  "Davey Boy Smith": ("B", 175), "Rick Steiner": ("B", 150), "Greg Valentine": ("B", 150),
+  "Mitsuharu Misawa": ("B", 125), "Dick Murdoch": ("B", 125), "Bobby Eaton": ("B", 110), "Dustin Rhodes": ("B", 110),
+  "Jim Neidhart": ("C", 90), "Ax": ("C", 85), "Smash": ("C", 85), "Crush": ("C", 85),
+  "Bushwhacker Butch": ("C", 75), "Bushwhacker Luke": ("C", 75), "Action Jackson": ("C", 60),
+  "Billy Joe Travis": ("C", 60), "Jeff Gaylord": ("C", 60), "Art Barr": ("C", 60),
+  "Haruka Eigen": ("D", 40), "Duane Gill": ("E", 25), "Jan Vang": ("E", 25), "Lino Ingram": ("E", 25)},
+ "pp": {"Glenn Gilbertti": ("C", 20), "Mike Quackenbush": ("C", 20), "Tony DeVito": ("C", 20)},
+}
+
 # ---- Cards that ran before the tracker's first month (lifetime.json "first", July 1991). Sean, 2026-11-26: a wrestler's
 # earnings count every show they were on since the promotion's first card on its official site. build.py pays these
 # cards into career totals only (this month's pay and the Finance tabs don't change). Who wrestled on each card comes
