@@ -546,8 +546,8 @@ let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e
 const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
-const TAB_LABEL={overview:'Overview',stories:'Stories',shows:'Cards & Results',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas'};
-function promoTabs(k){const t=['overview','shows','roster','schedule','stories'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');if(typeof APUESTAS!=='undefined'&&APUESTAS[k])t.push('apuestas');Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)t.push(sr)});return t;}
+const TAB_LABEL={overview:'Overview',stories:'Stories',file:'Talent File',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas'};
+function promoTabs(k){const t=['overview','file','roster','schedule','stories'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');if(typeof APUESTAS!=='undefined'&&APUESTAS[k])t.push('apuestas');Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)t.push(sr)});return t;}
 function latestArticle(k){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||''))[0];}
 function renderNav(cur,curT){
   const promo=k=>{const p=P[k],la=latestArticle(k);
@@ -1389,10 +1389,35 @@ function viewApuestas(k){
   <p class="mute" style="margin:6px 0 10px;font-family:var(--cond);font-size:13px">Trophy Case counts every career match (${A.career.length} on record). This list shows only the ones where everyone involved is on a TNM roster.</p>
   <div class="tbl-wrap"><table id="acareer"><thead><tr><th>Date</th><th>Winner</th><th>Loser</th><th>Where</th></tr></thead><tbody>${apuRows(book,roster)}</tbody></table></div>`;
 }
+/* Talent File tab on a promotion page: the Talent File directory, cut to that promotion's roster.
+   Ages show once the Talent File has them (tfAge). */
+let ptfSort='matches';
+const ptfList=k=>{const T=tfAll();return (P[k].roster||[]).map(r=>T.byName.get(r[0])).filter(Boolean);};
+function viewPromoTalent(k){
+  const p=P[k], list=ptfList(k), hasAge=typeof tfAge==='function';
+  if(!list.length) return `<div class="empty" style="margin-top:20px">No roster on file yet, so no Talent Files. ${esc(p.short)} is a blank slate.</div>`;
+  const opts=[['matches','Matches'],['wins','Wins'],['earn','Career $'],['titles','Title reigns'],['trophies','Mask & hair'],...(hasAge?[['age','Age']]:[]),['name','Name']];
+  return `<h2 class="sec">Talent File <small>${list.length} on the ${esc(p.short)} roster</small></h2>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 6px"><input class="search" id="ptfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="ptfsort" class="tfsort">${opts.map(([v,l])=>`<option value="${v}"${ptfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
+  <div class="tbl-wrap"><table id="ptftbl"><thead><tr><th>Wrestler</th><th>Promotions</th>${hasAge?'<th class="num">Age</th>':''}<th class="num">Record</th><th class="num">Matches</th><th class="num">Best</th><th class="num">Career $</th></tr></thead><tbody>${ptfRows(k)}</tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Everyone on the ${esc(p.short)} roster. Records and matches count every match on the cards, in any promotion (tag matches count for every member). <a href="#file">All Talent Files →</a></p>`;
+}
+function ptfRows(k){
+  const q=(($('#ptfsearch')||{}).value||'').toLowerCase(), hasAge=typeof tfAge==='function';
+  const val=f=>ptfSort==='name'?0:ptfSort==='age'&&hasAge?((tfAge(f)||{sort:-1}).sort):ptfSort==='wins'?f.w:ptfSort==='earn'?((tfEarn(f)||{}).life||0):ptfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:ptfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
+  return ptfList(k).filter(f=>f.name.toLowerCase().includes(q))
+    .sort((a,b)=>val(b)-val(a)||a.name.localeCompare(b.name))
+    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a> ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${f.spot?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td>${hasAge?`<td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td>`:''}<td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${x?tfMoney(x.life):'—'}</td></tr>`}).join('')
+    || `<tr><td colspan="${hasAge?7:6}" class="mute">No one matches.</td></tr>`;
+}
+function bindPromoTalent(k){
+  const redraw=()=>{const b=$('#ptftbl tbody');if(b)b.innerHTML=ptfRows(k);};
+  const s=$('#ptfsearch');if(s)s.oninput=redraw; const o=$('#ptfsort');if(o)o.onchange=()=>{ptfSort=o.value;redraw();};
+}
 function viewPromo(k,tab){
   const p=P[k]; tab=tab||'overview';
   const ev=E.filter(e=>e.p===k).sort((a,b)=>a.d.localeCompare(b.d));
-  const tabs=[['overview','Overview'],['shows','Cards & Results'],['roster','Roster'],['schedule','Schedule'],['stories','Stories']];
+  const tabs=[['overview','Overview'],['file','Talent File'],['roster','Roster'],['schedule','Schedule'],['stories','Stories']];
   if(SITES[k]) tabs.push(['archive',k==='uswa'?'TV Archive':'Show Archive']);
   if(CONTRACTS[k]) tabs.push(['contracts','Contracts']);
   if(FINANCE[k]) tabs.push(['finance','Finance']);
@@ -1416,10 +1441,8 @@ function viewPromo(k,tab){
         ${p.departures.length?`<h2 class="sec" style="font-size:22px">Departures</h2><ul style="padding-left:18px;margin:0;font-size:15px">${p.departures.map(d=>`<li><b>${esc(d[0])}</b>: ${esc(d[1])}</li>`).join('')}</ul>`:''}
       </aside>
     </div>`;
-  } else if(tab==='shows'){
-    const withCards=ev.filter(e=>e.m||e.n);
-    const past=withCards.filter(pastE).reverse(), up=withCards.filter(e=>!pastE(e));
-    body = withCards.length? `<div class="grid g2 col-rule"><div><h2 class="sec">Upcoming <small>${up.length} cards</small></h2>${up.map(e=>showCard(e)).join('')||'<div class="empty">Nothing booked yet.</div>'}</div><div><h2 class="sec">Results <small>Newest first</small></h2>${past.map(e=>showCard(e)).join('')||'<div class="empty">No results yet.</div>'}</div></div>` : `<div class="empty" style="margin-top:20px">No cards on file yet. ${esc(p.short)} is a blank slate.</div>`;
+  } else if(tab==='file'){
+    body=viewPromoTalent(k);
   } else if(tab==='archive'){
     const S=SITES[k], n=S.arch.reduce((a,g)=>a+g[1].length,0);
     body=`<div class="box" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div class="kicker">${p.short} Official Archive</div><b style="font-family:var(--head);font-weight:400;font-size:24px;text-transform:uppercase">${S.label}</b><div class="mute" style="font-family:var(--cond);font-size:14px">${n} show pages. Links open the ${p.short} site in a new tab.</div></div><a class="ext" href="${S.base}WELCOME.HTM" target="_blank" rel="noopener">Open the ${p.short} site ↗</a></div>
@@ -1578,6 +1601,8 @@ function route(){
   document.querySelector('nav.main')&&document.querySelector('nav.main').classList.remove('open');
   let h=(location.hash||'#home').slice(1), t=null;
   if(h.includes('/')){[h,t]=h.split('/');}
+  // Cards & Results became each promotion's Talent File tab: old links land there
+  if(P[h]&&t==='shows'){t='file';history.replaceState(null,'','#'+h+'/file');}
   if(ARTICLES[h]){renderNav(h==='world-who-gets-paid'?h:ARTICLES[h].p);$('#view').innerHTML=viewArticle(h);return;}
   const key = NAV.some(n=>n[0]===h)?h:'home';
   if(P[key]&&t&&promoTabs(key).includes(t)) curTab[key]=t;
@@ -1605,6 +1630,7 @@ function bind(key){
   if(key==='earnings') bindEarnings();
   if(key==='storyarchive') bindStoryArchive();
   if(key==='file') bindTalentFile();
+  if(P[key]&&curTab[key]==='file') bindPromoTalent(key);
   const as=$('#asearch'); if(as) as.oninput=()=>{const q=as.value.toLowerCase();document.querySelectorAll('#atbl tbody tr,#acareer tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('.rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
 }
