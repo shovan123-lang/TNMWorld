@@ -40,3 +40,36 @@ badge('img/wwfppv-logo.png', 'img/wwf-logo.webp', ['PAY-PER-VIEW'], GOLD, WWFBLU
 WCWGOLD, WCWPURPLE = (214, 166, 46), (60, 55, 150)
 badge('img/wcwppv-logo.png', 'img/wcw-logo.png', ['PAY-PER-VIEW'], WCWGOLD, WCWPURPLE)
 badge('img/wwfchall-logo.png', 'img/wwf-logo.webp', ['WRESTLING', 'CHALLENGE'], GOLD, WWFBLUE, 100)
+
+def star(d, cx, cy, r, fill, outline=None):
+    import math
+    pts = [(cx + (r if i % 2 == 0 else r * .42) * math.cos(math.radians(-90 + 36 * i)),
+            cy + (r if i % 2 == 0 else r * .42) * math.sin(math.radians(-90 + 36 * i))) for i in range(10)]
+    d.polygon(pts, fill=fill, outline=outline)
+
+def starwars(out):
+    """USWA Star Wars 1991 show logo: original design (USWA logo, red, white and blue
+    lettering, stars). Transparent, for use next to the show in the archive."""
+    W2, H2 = 300, 270
+    im = Image.new('RGBA', (W2, H2), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    NAVY = (24, 40, 110, 255)
+    d.rounded_rectangle((4, 4, W2 - 4, H2 - 4), 22, fill=NAVY, outline=(200, 30, 40, 255), width=6)
+    d.rounded_rectangle((14, 14, W2 - 14, H2 - 14), 16, outline=(245, 245, 245, 255), width=2)
+    lg = Image.open('img/uswa-logo.png').convert('RGBA'); s = 52 / lg.height
+    lg = lg.resize((round(lg.width * s), 52), Image.LANCZOS); im.alpha_composite(lg, ((W2 - lg.width) // 2, 26))
+    def text(t, y, size, fill, shadow, maxw=W2 - 40):
+        while True:
+            f = ImageFont.truetype(ANTON, size); bb = d.textbbox((0, 0), t, font=f)
+            if bb[2] - bb[0] <= maxw: break
+            size -= 2
+        x = (W2 - (bb[2] - bb[0])) // 2 - bb[0]
+        d.text((x + 4, y + 4 - bb[1]), t, font=f, fill=shadow)
+        d.text((x, y - bb[1]), t, font=f, fill=fill, stroke_width=0)
+        return bb[3] - bb[1]
+    h = text('STAR WARS', 92, 78, (245, 245, 245, 255), (200, 30, 40, 255))
+    text('1991', 92 + h + 14, 52, (230, 40, 50, 255), (0, 0, 0, 160), maxw=120)
+    for cx in (62, W2 - 62): star(d, cx, 92 + h + 40, 17, (245, 245, 245, 255))
+    star(d, 34, 50, 10, (200, 30, 40, 255)); star(d, W2 - 34, 50, 10, (200, 30, 40, 255))
+    im.save(out, optimize=True)
+
+starwars('img/uswastarwars-logo.png')
