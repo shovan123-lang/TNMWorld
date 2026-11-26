@@ -463,10 +463,10 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/titles.js?v=bf7b267d"></script>
 <script src="data/world.js?v=1a985fad"></script>
 <script src="data/births.js?v=6c59314b"></script>
-<script src="tools/talent_engine.js?v=e3397909"></script>
-<script src="data/wcw.js?v=18f6604e"></script>
+<script src="tools/talent_engine.js?v=9ccfd69c"></script>
+<script src="data/wcw.js?v=fe94a295"></script>
 <script src="data/wwf.js?v=5e0edec2"></script>
-<script src="data/uswa.js?v=f59d52b0"></script>
+<script src="data/uswa.js?v=ca4abc8b"></script>
 <script src="data/pp.js?v=ee741c23"></script>
 <script src="data/ajpw.js?v=9c0918b2"></script>
 <script src="data/njpw.js?v=bab91ae0"></script>
@@ -474,6 +474,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/asw.js?v=dc7d3906"></script>
 <script src="data/twa.js?v=a82b244a"></script>
 <script src="data/fmw.js?v=d5c8dbe0"></script>
+<script src="data/history.js?v=220f177e"></script>
 <script src="data/earnings.js?v=526b9369"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
 <script>
@@ -641,7 +642,7 @@ let _TF=null;
 function tfAll(){
   if(_TF) return _TF;
   const extra=TalentEngine.extras(P,typeof CONTRACTS!=='undefined'?CONTRACTS:{},typeof TALENT_EXTRA!=='undefined'?TALENT_EXTRA:[],ORDER);
-  const built=TalentEngine.build(P,E,{order:ORDER,past:pastE,world:WORLD_DATE,teams:typeof TEAMS!=='undefined'?TEAMS:{},extra});
+  const built=TalentEngine.build(P,(typeof HIST!=='undefined'?HIST:[]).concat(E),{order:ORDER,past:pastE,world:WORLD_DATE,teams:typeof TEAMS!=='undefined'?TEAMS:{},extra});
   const byName=new Map(), list=[];
   for(const x of built.values()){
     const cur=TFILES.find(f=>f.name===x.name);
@@ -690,7 +691,8 @@ function tfBlurb(f){
   const hasAge=!!tfAge(f), tidy=(k,n)=>k==='ajpw'&&hasAge?n.replace(/^(INJ:)?\d{2}(?: · |$)/,(m,inj)=>inj?'INJ: ':'').trim():n;
   const notes=f.promos.map(k=>f.notes&&f.notes[k]&&tidy(k,f.notes[k])?`${P[k].short}: ${tidy(k,f.notes[k])}`:'').filter(Boolean);
   if(titles.length) bits.push('Holds the '+titles.map(([k,t])=>`${esc(P[k].short)} ${esc(t)}`).join(' and the ')+' title.');
-  if(f.run.length) bits.push(`${f.run.length} match${f.run.length===1?'':'es'} on the cards so far (${esc(f.record)}${f.u?`, ${f.u} undecided`:''}).`);
+  const nh=f.run.filter(r=>r.e.hist).length;
+  if(f.run.length) bits.push(`${f.run.length} match${f.run.length===1?'':'es'} on record (${esc(f.record)}${f.u?`, ${f.u} undecided`:''})${nh?`, ${nh===f.run.length?'all':nh} of them from the show archives`:''}.`);
   else bits.push('Hasn\'t worked a match on the cards yet.');
   if(last) bits.push(`Last time out, ${fmt(last.e.d)}: ${esc(last.m[1])}.`);
   if(next) bits.push(`Next booked: ${fmt(next.e.d)}, ${esc(next.e.city||P[next.e.p].short)}.`);
@@ -992,7 +994,10 @@ function viewTalentFile(slug){
   const f=slug?T.bySlug.get(slug):null;
   if(!f) return viewTalentFileIndex();
   const res=r=>`<span class="res res-${r.toLowerCase()}">${r==='?'?'–':r}</span>`;
-  const row=(x,fut)=>`<tr class="${fut?'':'past'}"><td style="white-space:nowrap">${fmt(x.e.d)}</td><td>${pchip(x.e.p)}</td><td><b>${esc(x.m[0])}</b><br><span class="mute" style="font-size:13px">${esc([x.e.city,x.e.type].filter(Boolean).join(' · '))}</span></td><td>${fut?'':res(x.res)}</td><td>${fut?(x.m[1]?`<span class="spoil">${esc(x.m[1])}</span>`:'<span class="mute">TBA</span>'):esc(x.m[1])}</td><td class="num">${fut?'':esc(x.m[2]||'')}</td></tr>`;
+  const where=x=>{const t=esc([x.e.city,x.e.type].filter(Boolean).join(' · '));return x.e.hist&&x.e.link&&SITES[x.e.p]?siteLink(x.e.p,x.e.link,t||'Show page'):t;};
+  const row=(x,fut)=>`<tr class="${fut?'':'past'}"><td style="white-space:nowrap">${fmt(x.e.d)}</td><td>${pchip(x.e.p)}</td><td><b>${esc(x.m[4]||x.m[0])}</b><br><span class="mute" style="font-size:13px">${where(x)}</span></td><td>${fut?'':res(x.res)}</td><td>${fut?(x.m[1]?`<span class="spoil">${esc(x.m[1])}</span>`:'<span class="mute">TBA</span>'):esc(x.m[1])}</td><td class="num">${fut?'':esc(x.m[2]||'')}</td></tr>`;
+  const runE=f.run.filter(x=>!x.e.hist), runH=f.run.filter(x=>x.e.hist);
+  const tbl=rs=>`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th></th><th>Result</th><th>Rating</th></tr></thead><tbody>${rs.slice().reverse().map(x=>row(x,0)).join('')}</tbody></table></div>`;
   const L=f.spot?TFILES.map(s=>T.byName.get(s.name)).filter(Boolean):T.list, i=L.indexOf(f), prev=L[(i-1+L.length)%L.length], next=L[(i+1)%L.length];
   return `<p class="tf-back"><a href="#file">← Talent File home</a></p>
   <h2 class="sec">Talent File <small><a href="#file" class="tf-allbtn">All ${T.list.length} files</a>${f.spot?' · spotlight':''}</small></h2>
@@ -1006,11 +1011,12 @@ function viewTalentFile(slug){
   ${tfChampionships(f)}
   ${tfTrophyCase(f)}
   ${tfEarnBlock(f)}
-  <h3 class="amonth" style="font-size:22px">Results <small>${f.run.length}</small></h3>
-  ${f.run.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th></th><th>Result</th><th>Rating</th></tr></thead><tbody>${f.run.slice().reverse().map(x=>row(x,0)).join('')}</tbody></table></div>`:'<div class="empty">No matches on the cards yet.</div>'}
+  <h3 class="amonth" style="font-size:22px">Results <small>${runE.length}</small></h3>
+  ${runE.length?tbl(runE):`<div class="empty">No matches on the cards yet${runH.length?'. The show archives have the ones below':''}.</div>`}
+  ${runH.length?`<h3 class="amonth" style="font-size:22px">From the show archives <small>${runH.length} · shows not on the cards</small></h3>${tbl(runH)}`:''}
   ${f.booked.length?`<h3 class="amonth" style="font-size:22px">Booked <small>plan · finishes hidden until they happen</small></h3><div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th></th><th>Finish</th><th></th></tr></thead><tbody>${f.booked.map(x=>row(x,1)).join('')}</tbody></table></div>`:''}
   <div class="tf-pager"><a href="#file/${prev.slug}">← ${esc(prev.name)}</a><a href="#file" class="tf-home">Talent File home</a><a href="#file/${next.slug}">${esc(next.name)} →</a></div>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Built from every card on the site; tag matches count for every member. Matches before this world began are To establish.</p>`;
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Built from every card on the site and from show archive pages the cards don't carry (USWA back to September 1990); tag matches count for every member. Older matches elsewhere are To establish.</p>`;
 }
 function worldNumbers(){
   const mo=WORLD_DATE.slice(0,7);

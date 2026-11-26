@@ -9,7 +9,9 @@
    Files are also built for people who aren't on a roster (opts.extra, see extras()):
    anyone on a promotion's departures list or pay scale, and the enhancement talent
    named in TALENT_EXTRA. On that promotion's cards their surname is tried after the
-   roster's, so a departed wrestler never takes a match from a rostered one. */
+   roster's, so a departed wrestler never takes a match from a rostered one.
+   Results that only the show archives have (data/history.js, HIST) come in with E from
+   index.html; each of those matches carries its outcome. */
 (function(root){
 const STOP=new Set(['the','el','la','los','las','jr','sr','mr','de','del','big','ii','iii','dr','sgt','king','kid','super','great','dos','mil','el','san','von','van']);
 const norm=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9&' ]+/g,' ').replace(/\s+/g,' ').trim();
@@ -77,12 +79,24 @@ function build(P,E,opts){
     return parts.map(p=>p.trim());
   }
   function membersOf(side,k){
-    const parens=[];const base=side.replace(/\(([^)]*)\)?/g,(_,x)=>{if(x&&!IGNORE_PAREN.test(x))parens.push(x);return ' ';}).replace(/\s+/g,' ').trim();
+    // A team's members in parentheses are who actually wrestled: "Los Brazos (Brazo De Oro & Brazo De Plata)" is those two,
+    // not every member TEAMS lists. A team name only counts its TEAMS members when no members are named.
+    const splitN=x=>x.split(/\s*(?:,|&|\band\b)\s*/i).filter(Boolean);
+    const strip=x=>{const ps=[];const b=x.replace(/\(([^)]*)\)?/g,(_,y)=>{if(y&&!IGNORE_PAREN.test(y))ps.push(y);return ' ';}).replace(/\s+/g,' ').trim();return {b,ps};};
+    const segs=[];{let depth=0,cur='';for(let i=0;i<side.length;i++){const c=side[i];if(c==='(')depth++;else if(c===')')depth=Math.max(0,depth-1);
+      if(depth===0){const m=/^(\s*,\s*|\s+&\s+|\s+and\s+)/i.exec(side.slice(i));if(m){segs.push(cur);cur='';i+=m[0].length-1;continue;}}cur+=c;}segs.push(cur);}
+    const all=strip(side), base=all.b;
     let names=[];const raw=[base];
+    const inParens=ps=>{const o=[];ps.forEach(x=>splitN(x).forEach(b=>{raw.push(b);o.push(...resolveOne(b,k))}));return o;};
     const whole=resolveOne(base,k,/\s(?:&|and)\s|,/i.test(base));
-    if(whole.length)names=whole;
-    else base.split(/\s*(?:,|&|\band\b)\s*/i).filter(Boolean).forEach(b=>{raw.push(b);const r=resolveOne(b,k);if(!r.length&&opts.piece)opts.piece(b,k);names=names.concat(r)});
-    parens.forEach(x=>x.split(/\s*(?:,|&|\band\b)\s*/i).filter(Boolean).forEach(b=>{raw.push(b);names=names.concat(resolveOne(b,k))}));
+    if(whole.length){const pn=inParens(all.ps);names=pn.length?pn:whole;}
+    else for(const sg of segs.map(strip)){
+      const pn=inParens(sg.ps);
+      if(sg.b){raw.push(sg.b);const r=resolveOne(sg.b,k);
+        if(!pn.length){if(!r.length&&opts.piece)opts.piece(sg.b,k);names=names.concat(r);}
+        else if(exact.has(norm(sg.b)))names=names.concat(r);}   // "Person (real name)" keeps the person
+      names=names.concat(pn);
+    }
     return {names:[...new Set(names)],raw};
   }
   function outcome(sides,res){
@@ -111,7 +125,8 @@ function build(P,E,opts){
     if(opts.unres)sides.forEach((s,i)=>{if(!s.names.length)opts.unres[sd[i]]=(opts.unres[sd[i]]||0)+1});
     if(!sides.some(s=>s.names.length))continue;
     const isPast=past(e)&&m[1]&&!airLater(m,e);
-    const oc=isPast?outcome(sides,m[1]):null;
+    // Archive history (data/history.js) carries its outcome: m[3] is the winning side's index, or 'd' for a draw
+    const oc=!isPast?null:(m[3]==='d'?{draw:true}:typeof m[3]==='number'?{win:m[3]}:outcome(sides,m[1]));
     sides.forEach((s,i)=>s.names.forEach(n=>{
       const f=files.get(n);if(!f)return;f.promos.add(e.p);
       const row={e,m,side:i};
