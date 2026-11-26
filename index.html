@@ -461,7 +461,7 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={};
 </script>
 <script src="data/titles.js?v=bf7b267d"></script>
-<script src="data/world.js?v=1169adf0"></script>
+<script src="data/world.js?v=1a985fad"></script>
 <script src="data/births.js?v=6c59314b"></script>
 <script src="tools/talent_engine.js?v=e3397909"></script>
 <script src="data/wcw.js?v=18f6604e"></script>
@@ -474,7 +474,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/asw.js?v=dc7d3906"></script>
 <script src="data/twa.js?v=a82b244a"></script>
 <script src="data/fmw.js?v=d5c8dbe0"></script>
-<script src="data/earnings.js?v=067ab408"></script>
+<script src="data/earnings.js?v=526b9369"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
 <script>
 /* =========================== DATA =========================== */
@@ -1162,16 +1162,17 @@ function finSum(k){
   (FINANCE._recurring||[]).filter(x=>x.p===k&&x.amt).forEach(x=>{other=[...other,{d:WORLD_DATE,stream:x.stream,daily:1,amt:x.amt*tvDays/dimTV,note:`${x.note}: $${x.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}]});
   const oth=other.reduce((a,o)=>a+(o.amt||0),0), rev=gate+merch+oth;
   const ledgerPay=rows.filter(r=>r.gate!=null).reduce((a,r)=>a+(r.payroll||0),0);
-  let paid=null,due=0;
+  let paid=null,due=0,pool=0;
   if(hasE){const L=EARNINGS.people.flatMap(x=>x.lines.filter(l=>l.p===k));
-    if(L.length){paid=L.filter(l=>l.kind!=='due').reduce((a,l)=>a+l.amt,0);due=L.filter(l=>l.kind==='due').reduce((a,l)=>a+l.amt,0);}}
+    if(L.length){paid=L.filter(l=>l.kind!=='due').reduce((a,l)=>a+l.amt,0);due=L.filter(l=>l.kind==='due').reduce((a,l)=>a+l.amt,0);
+      pool=L.filter(l=>l.kind==='pool').reduce((a,l)=>a+l.amt,0);}}
   const pre=rows.filter(r=>r.gate!=null&&!String(r.d).startsWith(mo)).reduce((a,r)=>a+(r.payroll||0),0);
   let pay,payLabel,src;
   if(paid==null){pay=f.fixed?f.fixed[1]:ledgerPay;payLabel=f.fixed?f.fixed[0]:'Talent payroll, shows logged';src='ledger';}
   else if(f.fixed){pay=paid;payLabel=f.period==='Per tour'?'Talent earned to '+fmt(WORLD_DATE)+' (tour fees day by day)':'Talent paid to '+fmt(WORLD_DATE)+' (salaries day by day, plus bonuses)';src='tracker';}
   else {pay=paid+pre;payLabel='Talent payroll, shows run'+(pre?' (June from the ledger)':'');src='tracker';}
   // Costs
-  const C=(FINANCE._costs||{})[k]||{}, cost={talent:pay,staff:0,rent:0,tax:0,event:0,ring:0,ads:0,travel:0,tv:0,ppv:0,cogs:0,office:0};
+  const C=(FINANCE._costs||{})[k]||{}, cost={talent:pay-pool,pool,staff:0,rent:0,tax:0,event:0,ring:0,ads:0,travel:0,tv:0,ppv:0,cogs:0,office:0};
   const per=rows.map(r=>showCosts(k,r));
   per.forEach(o=>{if(o)Object.keys(o).forEach(x=>cost[x]=(cost[x]||0)+o[x])});
   const day=+WORLD_DATE.slice(8,10), dim=new Date(Date.UTC(+mo.slice(0,4),+mo.slice(5,7),0)).getUTCDate();
@@ -1187,7 +1188,10 @@ function finSum(k){
     cost.staff=T?O*Math.max(0,Math.min(1,(dt(WORLD_DATE)-dt(T[0]))/864e5+1)/((dt(T[1])-dt(T[0]))/864e5+1)):O;}
   else cost.staff=O*rows.filter(r=>r.gate!=null).length;
   const costTot=Object.values(cost).reduce((a,v)=>a+v,0), profit=rev-costTot;
-  return {f,rows,other,gate,merch,oth,rev,pay,payLabel,due,paid,net:rev-pay,src,cost,costTot,profit,per,
+  // The champions' pool (3% of each gate, split among the champions on the card) is part of talent pay (pay)
+  // but shows as its own cost line; poolCards gives each show's pool for the Shows table.
+  const poolCards=hasE&&EARNINGS.pool?EARNINGS.pool.cards.filter(c=>c.p===k):[];
+  return {f,rows,other,gate,merch,oth,rev,pay,payLabel,due,paid,pool,poolCards,net:rev-pay,src,cost,costTot,profit,per,
     margin:rev?Math.round(profit/rev*100):null,
     share:rev?Math.round(pay/rev*100):null, gshare:gate?Math.round(pay/gate*100):null};
 }
@@ -1201,7 +1205,7 @@ function finDaily(k,S){
   const rows=S.rows.filter(r=>String(r.d).startsWith(mo)&&r.gate!=null);
   const first=rows.map(r=>+r.d.slice(8,10)).sort((a,b)=>a-b)[0]||1;
   const days=[];let cum=0,rev=0,cost=0;
-  const talentDaily=S.f.fixed?S.pay/last:0, officeDaily=(C.office||0)/dim, tvDaily=(C.tvMonthly||0)/dim;
+  const talentDaily=S.f.fixed?(S.pay-(S.pool||0))/last:0, officeDaily=(C.office||0)/dim, tvDaily=(C.tvMonthly||0)/dim;
   const staffTotal=S.cost.staff||0, staffDaily=S.f.period==='Per show'?0:staffTotal/last;
   const O=CONTRACTS[k]?CONTRACTS[k].rows.filter(r=>r[0]==='O').reduce((a,r)=>a+r[2],0):0;
   // Per-show talent: the tracker's pay lines, by date (same source as the P&L).
@@ -1212,6 +1216,7 @@ function finDaily(k,S){
     rows.filter(x=>x.d===ds).forEach(x=>{r+=x.gate+(x.merch||0);const o=showCosts(k,x);if(o)c+=Object.values(o).reduce((a,v)=>a+v,0);
       if(!S.f.fixed){c+=TL?0:(x.payroll||0);if(S.f.period==='Per show')c+=O;}});
     if(!S.f.fixed&&TL)c+=TL.filter(l=>l.d===ds).reduce((a,l)=>a+l.amt,0);
+    else if(S.f.fixed&&TL)c+=TL.filter(l=>l.d===ds&&l.kind==='pool').reduce((a,l)=>a+l.amt,0);
     S.other.forEach(o=>{if(o.daily)r+=o.amt/last;else if(o.d===ds)r+=o.amt;});
     rev+=r;cost+=c;cum+=r-c;days.push({d:ds,r,c,cum,rev,cost});
   }
@@ -1276,7 +1281,8 @@ function viewFinance(k){
   const S=finSum(k); if(!S) return `<div class="empty" style="margin-top:20px">No finance records yet.</div>`;
   const f=S.f, rows=S.rows;
   const money=v=>v==null?'—':(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
-  const hasM=S.merch>0;
+  const hasM=S.merch>0, hasPool=S.poolCards.length>0;
+  const poolOf=r=>{const c=S.poolCards.filter(c=>c.d===r.d);return c.length>1?c.find(c=>c.show===r.show):c[0];};
   const tiles=[['Total revenue',money(S.rev)],['Total costs',money(S.costTot)],['Operating profit',money(S.profit)],['Profit margin',S.margin==null?'—':S.margin+'%'],['Talent share of revenue',S.share==null?'—':S.share+'%']];
   const L=FINANCE._costLabels||{};
   const pl=`<h2 class="sec">Profit and loss <small>to ${fmt(WORLD_DATE)}</small></h2><div class="tbl-wrap"><table><tbody>
@@ -1302,15 +1308,15 @@ function viewFinance(k){
   ${pl}
   ${f.fixed&&S.src==='tracker'?`<p class="mute" style="font-family:var(--cond);font-size:13px">Full ${esc(f.fixed[0].charAt(0).toLowerCase()+f.fixed[0].slice(1))}: ${money(f.fixed[1])}. Talent counts only the days through the world date, the same way the Talent Earnings tracker does.</p>`:''}
   <h2 class="sec">Shows <small>${rows.length} logged</small></h2>
-  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th>${f.fixed?'':'<th>Class</th>'}<th>Gate</th>${hasM?'<th>Merch</th>':''}${f.fixed?'':'<th>Payroll</th><th>Net</th><th>%</th>'}<th>Show costs</th><th>Notes</th></tr></thead><tbody>
-  ${rows.map((r,i)=>`<tr><td style="white-space:nowrap">${fmt(r.d)}</td><td>${esc(r.show)}</td>${f.fixed?'':`<td>${esc(r.cls||'')}</td>`}<td class="num">${money(r.gate)}</td>${hasM?`<td class="num">${r.merch?money(r.merch):'—'}</td>`:''}${f.fixed?'':`<td class="num">${money(r.payroll)}</td><td class="num">${r.gate!=null&&r.payroll!=null?money(r.gate+(r.merch||0)-r.payroll):'—'}</td><td class="num">${r.gate&&r.payroll!=null?Math.round(r.payroll/r.gate*100)+'%':'—'}</td>`}<td class="num">${S.per[i]?money(Object.values(S.per[i]).reduce((a,v)=>a+v,0)):'—'}${r.costs?' <span class="mute">logged</span>':''}</td><td>${esc(r.note||'')}</td></tr>`).join('')}
+  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th>${f.fixed?'':'<th>Class</th>'}<th>Gate</th>${hasM?'<th>Merch</th>':''}${f.fixed?'':'<th>Payroll</th><th>Net</th><th>%</th>'}<th>Show costs</th>${hasPool?'<th>Champions\' pool</th>':''}<th>Notes</th></tr></thead><tbody>
+  ${rows.map((r,i)=>`<tr><td style="white-space:nowrap">${fmt(r.d)}</td><td>${esc(r.show)}</td>${f.fixed?'':`<td>${esc(r.cls||'')}</td>`}<td class="num">${money(r.gate)}</td>${hasM?`<td class="num">${r.merch?money(r.merch):'—'}</td>`:''}${f.fixed?'':`<td class="num">${money(r.payroll)}</td><td class="num">${r.gate!=null&&r.payroll!=null?money(r.gate+(r.merch||0)-r.payroll):'—'}</td><td class="num">${r.gate&&r.payroll!=null?Math.round(r.payroll/r.gate*100)+'%':'—'}</td>`}<td class="num">${S.per[i]?money(Object.values(S.per[i]).reduce((a,v)=>a+v,0)):'—'}${r.costs?' <span class="mute">logged</span>':''}</td>${hasPool?(()=>{const c=poolOf(r);return c?`<td class="num" data-tip="${esc(c.champs.map(x=>x[0]).join(', '))}: ${kMoney(c.each)} each">${money(c.pool)} <span class="mute">÷ ${c.champs.length}</span></td>`:'<td class="mute">—</td>';})():''}<td>${esc(r.note||'')}</td></tr>`).join('')}
   </tbody></table></div>
   ${earningsBox(k,10)}
   <h2 class="sec">Other revenue <small>${S.oth?money(S.oth)+' logged':'Coming later'}</small></h2>
   <div class="tbl-wrap"><table><thead><tr><th>Stream</th><th>Amount</th><th>Notes</th></tr></thead><tbody>${streams.map(s=>{const L=byStream[s];
     if(s==='Merchandise')return `<tr><td>${esc(s)}</td>${hasM?`<td class="num"><b>${money(S.merch)}</b></td><td class="mute">Counted show by show above</td>`:'<td class="mute">Not tracked yet</td><td></td>'}</tr>`;
     return L?`<tr><td>${esc(s)}</td><td class="num"><b>${money(L.reduce((a,o)=>a+o.amt,0))}</b></td><td>${L.map(o=>`${o.daily?'To '+fmt(o.d):fmt(o.d)}: ${esc(o.note||'')}`).join('<br>')}</td></tr>`:`<tr><td>${esc(s)}</td><td class="mute">Not tracked yet</td><td></td></tr>`;}).join('')}</tbody></table></div>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Payroll uses the rates on the Contracts tab. "Show costs" is the building, tax, crew, advertising, travel, TV, pay-per-view and merchandise costs for that night, not talent.</p>`;
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Payroll uses the rates on the Contracts tab.${hasPool?` "Champions' pool" is ${Math.round(EARNINGS.pool.pct*100)}% of the gate, split evenly among the champions who worked the card (each tag team member counts as one), paid on top of their other pay.`:''} "Show costs" is the building, tax, crew, advertising, travel, TV, pay-per-view and merchandise costs for that night, not talent.</p>`;
 }
 
 function viewMoney(){
@@ -1350,7 +1356,7 @@ function viewEarnings(){
   const tiles=[['World date',fmtLong(X.world)],['Paid out so far',eMoney(tot)],['Japan tour fees still to earn',eMoney(due)],['July projected',eMoney(tot+due)],['People paid',all.filter(x=>x.earned>0).length]];
   return `<h2 class="sec">Talent Earnings <small>${esc(X.month)}: every promotion, every paycheck</small></h2>
   <div class="box" style="margin:16px 0"><div class="kicker">Running tracker · updated every time the world clock moves</div>
-  <p style="margin:6px 0 0">WWF and WCW salaries count day by day through the world date. USWA, CMLL, ASW, Tri-State and Power Pro pay per appearance (base rate × the show's multiplier, plus main-event and semi-main gate cuts), counted for every show that has run. AJPW and NJPW tour fees are earned day by day from the first night to the last; the part not yet earned shows as <b>due</b>. Bonuses (like WrestleFest's main-event cut) are added on the night. Announcers aren't included. Click a name for the full breakdown.</p></div>
+  <p style="margin:6px 0 0">WWF and WCW salaries count day by day through the world date. USWA, CMLL, ASW, Tri-State and Power Pro pay per appearance (base rate × the show's multiplier, plus main-event and semi-main gate cuts), counted for every show that has run. AJPW and NJPW tour fees are earned day by day from the first night to the last; the part not yet earned shows as <b>due</b>. Bonuses (like WrestleFest's main-event cut) are added on the night${X.pool?`, and so is the champions' pool: ${Math.round(X.pool.pct*100)}% of every card's gate, split evenly among the champions on the card`:''}. Announcers aren't included. Click a name for the full breakdown.</p></div>
   <div class="tbl-wrap"><table><tbody>${tiles.map(([l,v])=>`<tr><td>${esc(l)}</td><td class="num"><b style="font-size:18px">${v}</b></td></tr>`).join('')}</tbody></table></div>
   <h2 class="sec">By promotion <small>Paid so far</small></h2>
   ${(()=>{const mx=Math.max(...byP.map(r=>r[1]),1);return byP.filter(r=>r[1]>0).sort((a,b)=>b[1]-a[1]).map(([k,v,n])=>`<div class="barrow" style="--c:${P[k].c}"><span>${chip(k)}</span><div class="bar" style="width:${(v/mx*100).toFixed(1)}%"></div><span class="num">${eMoney(v)} <span class="mute">· ${n} paid</span></span></div>`).join('')})()}
@@ -1361,9 +1367,24 @@ function viewEarnings(){
    <label>Sort by <select id="esort" style="font:inherit;padding:4px">${[['earned','Paid so far'],['proj','July projected'],['due','Tour fees due'],['shows','Show pay'],['apps','Appearances']].map(([v,l])=>`<option value="${v}" ${eSort===v?'selected':''}>${l}</option>`).join('')}</select></label>
   </div>
   <div class="tbl-wrap"><table id="etbl"><thead><tr><th>#</th><th>Name</th><th>Promotions</th><th>Salary to date</th><th>Show pay</th><th>Bonuses</th><th>Paid so far</th><th>Tour fees due</th><th>July projected</th></tr></thead><tbody id="ebody"></tbody></table></div>
+  ${poolSection(X)}
   <h2 class="sec">How each show was counted</h2>
   <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Promotion</th><th>Show</th><th>Paid</th><th>Itemized</th><th>Ledger payroll</th></tr></thead><tbody>${X.shows.map(s=>`<tr><td style="white-space:nowrap">${fmt(s.d)}</td><td>${chip(s.p)}</td><td>${esc(s.show)}</td><td class="num">${s.n}</td><td class="num">${eMoney(s.total)}</td><td class="num">${eMoney(s.logged)}</td></tr>`).join('')}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Where the itemized total is under the ledger's payroll, the ledger figure also counted announcers or staff who aren't in this tracker. ${X.notes.map(esc).join('. ')}. Last rebuilt ${esc(X.updated)}.</p>`;
+}
+/* Champions' pool: each card puts a share of its gate (X.pool.pct) into a pool split evenly among the champions
+   who worked it. tools/earnings/pool.py builds X.pool.cards (paid cards) and X.pool.nogate (cards with champions but no gate). */
+function poolSection(X){
+  const Q=X.pool; if(!Q||!Q.cards.length) return '';
+  const pct=Math.round(Q.pct*100), tot=Q.cards.reduce((a,c)=>a+c.pool,0);
+  const byP=ORDER.map(k=>{const C=Q.cards.filter(c=>c.p===k);if(!C.length)return null;const who={};
+    C.forEach(c=>c.champs.forEach(([n])=>who[n]=(who[n]||0)+c.each));
+    return [k,C.length,C.reduce((a,c)=>a+c.pool,0),Object.entries(who).sort((a,b)=>b[1]-a[1])];}).filter(Boolean).sort((a,b)=>b[2]-a[2]);
+  return `<h2 class="sec">Champions' pool <small>${pct}% of the gate, ${Q.cards.length} cards, ${eMoney(tot)}</small></h2>
+  <p style="font-family:var(--cond);font-size:14px;margin:0 0 8px">Every card puts ${pct}% of its gate into a pool that's split evenly among the champions who worked it, with each member of a tag team counting as one. It's paid on top of salaries and show pay, in every promotion. A champion is paid from the first card after winning the title, and still paid on the card where they lose it.</p>
+  <div class="tbl-wrap"><table><thead><tr><th>Promotion</th><th>Cards</th><th>Pool</th><th>Champions paid</th></tr></thead><tbody>${byP.map(([k,n,v,w])=>`<tr><td>${chip(k)}</td><td class="num">${n}</td><td class="num"><b>${eMoney(v)}</b></td><td>${w.map(([nm,a])=>`${esc(nm)} <span class="mute">${eMoney(a)}</span>`).join(' · ')}</td></tr>`).join('')}</tbody></table></div>
+  <details class="bk" style="margin-top:8px"><summary>Card by card (${Q.cards.length})</summary><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Promotion</th><th>Show</th><th>Gate</th><th>Pool</th><th>Champions on the card</th><th>Each</th></tr></thead><tbody>${Q.cards.map(c=>`<tr><td style="white-space:nowrap">${fmt(c.d)}</td><td>${chip(c.p)}</td><td>${esc(c.show)}</td><td class="num">${eMoney(c.gate)}</td><td class="num">${'$'+c.pool.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td><td>${c.champs.map(([n,t])=>`<span title="${esc(t)}">${esc(n)}</span>`).join(', ')}</td><td class="num">${'$'+c.each.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td></tr>`).join('')}</tbody></table></div></details>
+  ${Q.nogate&&Q.nogate.length?`<p class="mute" style="font-family:var(--cond);font-size:13px">No gate logged, so nothing paid yet: ${Q.nogate.map(c=>`${esc(P[c.p].short)} ${fmt(c.d)} ${esc(c.show)} (${c.champs.map(esc).join(', ')})`).join('; ')}.</p>`:''}`;
 }
 function renderEarningsRows(){
   const b=$('#ebody'); if(!b) return; const q=eQ.toLowerCase();

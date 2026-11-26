@@ -184,3 +184,36 @@ PER_NIGHT = {
      ("1991-07-15","Okayama · Night 8")]),
  },
 }
+
+# ---- Champions' pool (Sean, 2026-11-26): 3% of every card's gate is split evenly among the champions on that card
+# (each member of a tag team counts as one). On top of all other pay, in every promotion. pool.py does the work;
+# who held what comes from data/titles.js, who worked the card from SHOWS above or the card's results.
+POOL = dict(pct=0.03, guests=False)   # guests=True would also pay other promotions' champions who work the card
+POOL_TEAMS = {   # title-history team name -> the members the tracker pays
+ "The Steiner Brothers": ["Scott Steiner", "Rick Steiner"], "Scott Steiner & Tully Blanchard": ["Scott Steiner", "Tully Blanchard"],
+ "The Nasty Boys": ["Brian Knobbs", "Jerry Sags"], "The Legion of Doom": ["Road Warrior Hawk", "Road Warrior Animal"],
+ "The Fabulous Freebirds": ["Michael Hayes", "Jimmy Garvin"],
+ "Misawa & Kawada": ["Mitsuharu Misawa", "Toshiaki Kawada"], "Miracle Violence Connection": ["Steve Williams", "Terry Gordy"],
+ "The Can-Am Express": ["Doug Furnas", "Dan Kroffat"],
+ "Hase & Sasaki": ["Hiroshi Hase", "Kensuke Sasaki"], "Hirata & Hashimoto": ["Junji Hirata", "Shinya Hashimoto"],
+ "Volador & El Hijo del Santo": ["Volador", "El Hijo del Santo"],
+}
+POOL_NAMES = {"Riki Choshu": "Riki Chōshu"}   # title-history spelling -> tracker spelling
+# How a champion is named in a card's match and segment lines (promotions with no SHOWS list). Default: the full name.
+# Text in brackets, like "(w/ Dan Kroffat)", doesn't count: seconds at ringside aren't working the card.
+POOL_SEEN = {
+ "Hulk Hogan": ["Hogan"], "Mr. Perfect": ["Perfect"],
+ "Brian Knobbs": ["Nasty Boys", "Nastys", "Knobbs"], "Jerry Sags": ["Nasty Boys", "Nastys", "Sags"],
+ "Road Warrior Hawk": ["Legion of Doom", "LOD", "Hawk"], "Road Warrior Animal": ["Legion of Doom", "LOD", "Animal"],
+ "Sting": ["Sting"], "Lex Luger": ["Luger"], "Nikita Koloff": ["Koloff"], "Rick Rude": ["Rude"],
+ "Michael Hayes": ["Freebirds", "Hayes"], "Jimmy Garvin": ["Freebirds", "Garvin"],
+ "Jumbo Tsuruta": ["Jumbo", "Tsuruta"], "Mitsuharu Misawa": ["Misawa", "Super Generation"],
+ "Toshiaki Kawada": ["Kawada", "Super Generation"], "Steve Williams": ["Miracle Violence", "Williams"],
+ "Terry Gordy": ["Miracle Violence", "Gordy"], "Doug Furnas": ["Can-Am", "Furnas"], "Dan Kroffat": ["Can-Am", "Kroffat"],
+ "Riki Chōshu": ["Chōshu", "Choshu"], "Hiroshi Hase": ["Hase"], "Kensuke Sasaki": ["Sasaki"],
+ "Junji Hirata": ["Hirata"], "Shinya Hashimoto": ["Hashimoto"], "Jushin Liger": ["Liger"],
+}
+# Corrections to who was on a card: (promo, date): {"out": {name: why}, "in": {name: why}}
+POOL_FIX = {
+ ("wcw", "1991-07-20"): {"out": {"Rick Rude": "on tape only; he was on his way to All Japan's Sapporo card"}},
+}

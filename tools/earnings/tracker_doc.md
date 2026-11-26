@@ -3,7 +3,7 @@
 Running record of what every wrestler and manager has been paid this month, across all nine promotions. Started 2026-11-11 (Sean). **Rebuilt every time the world clock moves** and after every show is logged. The same tracker is on the website: World → Talent Earnings (shovan123-lang.github.io/TNMWorld/#earnings), with a top-10 on each promotion's Finance tab and a top-5 on the front page.
 
 **Month:** July 1991 · **World date:** 1991-07-22 · **Last rebuilt:** 2026-11-26
-**Paid out so far:** $1,906,152 · **Japan tour fees still due:** $182,000 · **July projected:** $2,088,152 · **People:** 345
+**Paid out so far:** $2,105,582 · **Japan tour fees still due:** $182,000 · **July projected:** $2,287,582 · **People:** 345
 
 
 ## How it's counted
@@ -46,252 +46,321 @@ Itemized totals match the ledger's payroll for 10 of 15 shows. Where the itemize
 | 1991-07-19 | FMW | Sagamihara · Summer tour, Night 1 | 28 | $9,950 | $9,950 |
 | 1991-07-20 | FMW | Konan · Summer tour, Night 2 | 16 | $6,580 | $0 |
 
+CHAMPIONS' POOL
+| Date | Promotion | Card | Gate | Pool (3%) | Champions on the card | Each |
+|---|---|---|---|---|---|---|
+| 1991-07-01 | AJPW | Tokyo · Summer Action Series, Night 1 | $51,992 | $1,559.76 | Dan Kroffat (AJPW All Asia Tag Team), Doug Furnas (AJPW All Asia Tag Team), Jumbo Tsuruta (AJPW Triple Crown Heavyweight), Mitsuharu Misawa (AJPW World Tag Team), Toshiaki Kawada (AJPW World Tag Team) | $311.95 |
+| 1991-07-03 | AJPW | Chiba · Night 2 | $71,765 | $2,152.95 | Dan Kroffat (AJPW All Asia Tag Team), Doug Furnas (AJPW All Asia Tag Team), Jumbo Tsuruta (AJPW Triple Crown Heavyweight), Toshiaki Kawada (AJPW World Tag Team) | $538.24 |
+| 1991-07-05 | AJPW | Sendai · Night 3 | $87,500 | $2,625.00 | Dan Kroffat (AJPW All Asia Tag Team), Doug Furnas (AJPW All Asia Tag Team), Mitsuharu Misawa (AJPW World Tag Team) | $875.00 |
+| 1991-07-07 | AJPW | Niigata · Night 4 | $67,500 | $2,025.00 | Dan Kroffat (AJPW All Asia Tag Team), Doug Furnas (AJPW All Asia Tag Team), Mitsuharu Misawa (AJPW World Tag Team), Toshiaki Kawada (AJPW World Tag Team) | $506.25 |
+| 1991-07-09 | AJPW | Kanazawa · Night 5 (Nippon TV) | $87,500 | $2,625.00 | Dan Kroffat (AJPW All Asia Tag Team), Doug Furnas (AJPW All Asia Tag Team), Mitsuharu Misawa (AJPW World Tag Team), Toshiaki Kawada (AJPW World Tag Team) | $656.25 |
+| 1991-07-11 | AJPW | Nagoya · Night 6 | $192,000 | $5,760.00 | Dan Kroffat (AJPW All Asia Tag Team), Doug Furnas (AJPW All Asia Tag Team), Jumbo Tsuruta (AJPW Triple Crown Heavyweight), Mitsuharu Misawa (AJPW World Tag Team), Toshiaki Kawada (AJPW World Tag Team) | $1,152.00 |
+| 1991-07-13 | AJPW | Hiroshima · Night 7 | $95,000 | $2,850.00 | Jumbo Tsuruta (AJPW Triple Crown Heavyweight), Mitsuharu Misawa (AJPW World Tag Team), Toshiaki Kawada (AJPW World Tag Team) | $950.00 |
+| 1991-07-15 | AJPW | Okayama · Night 8 | $42,000 | $1,260.00 | Dan Kroffat (AJPW All Asia Tag Team), Doug Furnas (AJPW All Asia Tag Team), Jumbo Tsuruta (AJPW Triple Crown Heavyweight), Mitsuharu Misawa (AJPW World Tag Team), Toshiaki Kawada (AJPW World Tag Team) | $252.00 |
+| 1991-07-17 | AJPW | Kumamoto · Night 9 | $50,000 | $1,500.00 | Dan Kroffat (AJPW All Asia Tag Team), Doug Furnas (AJPW All Asia Tag Team), Jumbo Tsuruta (AJPW Triple Crown Heavyweight), Steve Williams (AJPW World Tag Team), Terry Gordy (AJPW World Tag Team) | $300.00 |
+| 1991-07-19 | AJPW | Fukuoka · Night 10 | $128,250 | $3,847.50 | Dan Kroffat (AJPW All Asia Tag Team), Doug Furnas (AJPW All Asia Tag Team), Jumbo Tsuruta (AJPW Triple Crown Heavyweight), Steve Williams (AJPW World Tag Team), Terry Gordy (AJPW World Tag Team) | $769.50 |
+| 1991-07-21 | AJPW | Sapporo · Night 11 | $120,000 | $3,600.00 | Doug Furnas (AJPW All Asia Tag Team), Jumbo Tsuruta (AJPW Triple Crown Heavyweight), Steve Williams (AJPW World Tag Team), Terry Gordy (AJPW World Tag Team) | $900.00 |
+| 1991-07-03 | ASW | Southport · Holiday camp tour, Show 1 | $5,000 | $150.00 | Giant Haystacks (ASW British Heavyweight) | $150.00 |
+| 1991-07-06 | ASW | Bognor Regis · Holiday camp tour, Show 2 | $5,000 | $150.00 | Giant Haystacks (ASW British Heavyweight) | $150.00 |
+| 1991-07-10 | ASW | Camber Sands · Holiday camp tour, Show 3 | $5,000 | $150.00 | Giant Haystacks (ASW British Heavyweight) | $150.00 |
+| 1991-07-17 | ASW | Skegness · Holiday camp tour, Show 4 | $5,000 | $150.00 | Giant Haystacks (ASW British Heavyweight) | $150.00 |
+| 1991-07-05 | CMLL | Mexico City · Viernes Espectacular | $189,000 | $5,670.00 | Konnan (CMLL Mexican National Heavyweight) | $5,670.00 |
+| 1991-07-06 | CMLL | Mexico City · Sábado de Lucha Libre | $41,040 | $1,231.20 | El Dandy (CMLL Mexican National Light Heavyweight), Konnan (CMLL Mexican National Heavyweight) | $615.60 |
+| 1991-07-08 | CMLL | Puebla · Monday in Puebla | $7,515 | $225.45 | El Dandy (CMLL Mexican National Light Heavyweight), Konnan (CMLL Mexican National Heavyweight), Volador (CMLL Mexican National Tag Team) | $75.15 |
+| 1991-07-10 | CMLL | Naucalpan · Lucha Libre en Naucalpan | $64,800 | $1,944.00 | El Hijo del Santo (CMLL Mexican National Tag Team), Konnan (CMLL Mexican National Heavyweight), Volador (CMLL Mexican National Tag Team) | $648.00 |
+| 1991-07-12 | CMLL | Mexico City · Viernes Espectacular | $135,000 | $4,050.00 | El Dandy (CMLL Mexican National Light Heavyweight), El Hijo del Santo (CMLL Mexican National Tag Team), Konnan (CMLL Mexican National Heavyweight), Volador (CMLL Mexican National Tag Team) | $1,012.50 |
+| 1991-07-13 | CMLL | Mexico City · Sábado de Lucha Libre | $43,200 | $1,296.00 | El Hijo del Santo (CMLL Mexican National Tag Team), Volador (CMLL Mexican National Tag Team) | $648.00 |
+| 1991-07-14 | CMLL | Guadalajara · Lucha Libre en Domingo | $77,220 | $2,316.60 | Konnan (CMLL Mexican National Heavyweight) | $2,316.60 |
+| 1991-07-17 | CMLL | Acapulco · Miércoles de Lucha Libre (Coliseo Acapulco debut) | $27,000 | $810.00 | Konnan (CMLL Mexican National Heavyweight) | $810.00 |
+| 1991-07-19 | CMLL | Mexico City · Viernes Espectacular (Tercias semifinals) | $209,250 | $6,277.50 | El Hijo del Santo (CMLL Mexican National Tag Team), Konnan (CMLL Mexican National Heavyweight), Volador (CMLL Mexican National Tag Team) | $2,092.50 |
+| 1991-07-21 | CMLL | Puebla · Domingo de Coliseo (Arena Puebla) | $27,216 | $816.48 | El Dandy (CMLL Mexican National Light Heavyweight) | $816.48 |
+| 1991-07-04 | NJPW | Tokyo · Summer Crush '91, Night 1 (TV Asahi) | $56,000 | $1,680.00 | Hiroshi Hase (NJPW IWGP Tag Team), Jushin Liger (NJPW IWGP Junior Heavyweight), Kensuke Sasaki (NJPW IWGP Tag Team), Riki Chōshu (NJPW IWGP Heavyweight) | $420.00 |
+| 1991-07-05 | NJPW | Niigata · Night 2 | $61,600 | $1,848.00 | Hiroshi Hase (NJPW IWGP Tag Team), Jushin Liger (NJPW IWGP Junior Heavyweight), Kensuke Sasaki (NJPW IWGP Tag Team), Riki Chōshu (NJPW IWGP Heavyweight) | $462.00 |
+| 1991-07-06 | NJPW | Osaka · Night 3, World Pro Wrestling TV | $125,000 | $3,750.00 | Jushin Liger (NJPW IWGP Junior Heavyweight), Riki Chōshu (NJPW IWGP Heavyweight), Shinya Hashimoto (NJPW IWGP Tag Team) | $1,250.00 |
+| 1991-07-10 | NJPW | Nagoya · Night 4 | $100,000 | $3,000.00 | Jushin Liger (NJPW IWGP Junior Heavyweight), Riki Chōshu (NJPW IWGP Heavyweight), Shinya Hashimoto (NJPW IWGP Tag Team) | $1,000.00 |
+| 1991-07-13 | NJPW | Abashiri · Night 5 | $26,000 | $780.00 | Junji Hirata (NJPW IWGP Tag Team), Riki Chōshu (NJPW IWGP Heavyweight), Shinya Hashimoto (NJPW IWGP Tag Team) | $260.00 |
+| 1991-07-14 | NJPW | Hiroshima · Night 6 | $50,000 | $1,500.00 | Junji Hirata (NJPW IWGP Tag Team), Riki Chōshu (NJPW IWGP Heavyweight) | $750.00 |
+| 1991-07-18 | NJPW | Fukuoka · Night 7 | $50,000 | $1,500.00 | Riki Chōshu (NJPW IWGP Heavyweight) | $1,500.00 |
+| 1991-07-19 | NJPW | Sapporo · Night 8 (TV taping) | $125,000 | $3,750.00 | Junji Hirata (NJPW IWGP Tag Team), Riki Chōshu (NJPW IWGP Heavyweight), Shinya Hashimoto (NJPW IWGP Tag Team) | $1,250.00 |
+| 1991-07-02 | Power Pro | Nashville, TN · Power Hour | $1,000 | $30.00 | Chris Jericho (Power Pro Heavyweight) | $30.00 |
+| 1991-07-01 | USWA | Memphis · USWA Star Wars 1991 (PPV) | $121,020 | $3,630.60 | Bill Dundee (USWA Television), Bret Hart (USWA Unified World Heavyweight), Scott Steiner (USWA World Tag Team), Steve Austin (USWA Southern Heavyweight) | $907.65 |
+| 1991-07-03 | USWA | Jonesboro · Worldwide (S1 E11) | $3,000 | $90.00 | Bill Dundee (USWA Television) | $90.00 |
+| 1991-07-06 | USWA | Memphis · Championship Wrestling (Live TV) | $54,000 | $1,620.00 | Scott Steiner (USWA World Tag Team), Steve Austin (USWA Southern Heavyweight) | $810.00 |
+| 1991-07-10 | USWA | Evansville · Worldwide (S1 E12) | $16,000 | $480.00 | Bill Dundee (USWA Television), Bret Hart (USWA Unified World Heavyweight), Steve Austin (USWA Southern Heavyweight) | $160.00 |
+| 1991-07-13 | USWA | Louisville · House show (Louisville Gardens) | $67,500 | $2,025.00 | Bret Hart (USWA Unified World Heavyweight), Scott Steiner (USWA World Tag Team), Steve Austin (USWA Southern Heavyweight), Tully Blanchard (USWA World Tag Team) | $506.25 |
+| 1991-07-17 | USWA | Jonesboro · Worldwide (S1 E13) | $3,500 | $105.00 | Bill Dundee (USWA Television) | $105.00 |
+| 1991-07-20 | USWA | Dallas · Championship TV Special (Sportatorium) | $49,500 | $1,485.00 | Bret Hart (USWA Unified World Heavyweight), Scott Steiner (USWA World Tag Team), Tully Blanchard (USWA World Tag Team) | $495.00 |
+| 1991-07-05 | WCW | Philadelphia, PA · Premium house show | $200,000 | $6,000.00 | Sting (WCW United States Heavyweight) | $6,000.00 |
+| 1991-07-07 | WCW | Richmond, VA · House show | $72,000 | $2,160.00 | Sting (WCW United States Heavyweight) | $2,160.00 |
+| 1991-07-08 | WCW | Columbus, GA · House show | $67,500 | $2,025.00 | Sting (WCW United States Heavyweight) | $2,025.00 |
+| 1991-07-11 | WCW | Columbia, SC · House show | $62,400 | $1,872.00 | Sting (WCW United States Heavyweight) | $1,872.00 |
+| 1991-07-12 | WCW | Charleston, SC · House show | $38,400 | $1,152.00 | Sting (WCW United States Heavyweight) | $1,152.00 |
+| 1991-07-14 | WCW | Baltimore, MD · The Great American Bash '91 (PPV) | $126,000 | $3,780.00 | Sting (WCW United States Heavyweight) | $3,780.00 |
+| 1991-07-15 | WCW | Salisbury, MD · House show | $28,000 | $840.00 | Sting (WCW United States Heavyweight) | $840.00 |
+| 1991-07-16 | WCW | Farmland, IN · House show (spot show) | $6,000 | $180.00 | Sting (WCW United States Heavyweight) | $180.00 |
+| 1991-07-17 | WCW | Dayton, OH · WCW Pro TV taping (run live) | $63,000 | $1,890.00 | Lex Luger (WCW World Heavyweight) | $1,890.00 |
+| 1991-07-18 | WCW | Cleveland, OH · House show | $52,000 | $1,560.00 | Lex Luger (WCW World Heavyweight), Sting (WCW United States Heavyweight) | $780.00 |
+| 1991-07-19 | WCW | Charleston, WV · House show | $107,250 | $3,217.50 | Nikita Koloff (WCW World Heavyweight), Sting (WCW United States Heavyweight) | $1,608.75 |
+| 1991-07-20 | WCW | Johnson City, TN · WCW Saturday Night (tag titles crowned) | $74,400 | $2,232.00 | Nikita Koloff (WCW World Heavyweight) | $2,232.00 |
+| 1991-07-21 | WCW | Knoxville, TN · House show | $33,000 | $990.00 | Jimmy Garvin (WCW World Tag Team), Michael Hayes (WCW World Tag Team) | $495.00 |
+| 1991-07-01 | WWF | New York, NY · House show, taped for Prime Time | $543,200 | $16,296.00 | Brian Knobbs (WWF World Tag Team), Jerry Sags (WWF World Tag Team) | $8,148.00 |
+| 1991-07-05 | WWF | Des Moines, IA · House show | $90,000 | $2,700.00 | Mr. Perfect (WWF Intercontinental Heavyweight) | $2,700.00 |
+| 1991-07-08 | WWF | Calgary, AB · House show | $260,000 | $7,800.00 | Hulk Hogan (WWF World Heavyweight), Mr. Perfect (WWF Intercontinental Heavyweight) | $3,900.00 |
+| 1991-07-09 | WWF | Edmonton, AB · House show | $201,000 | $6,030.00 | Mr. Perfect (WWF Intercontinental Heavyweight) | $6,030.00 |
+| 1991-07-10 | WWF | Saskatoon, SK · House show | $110,500 | $3,315.00 | Brian Knobbs (WWF World Tag Team), Hulk Hogan (WWF World Heavyweight), Jerry Sags (WWF World Tag Team) | $1,105.00 |
+| 1991-07-12 | WWF | Winnipeg, MB · House show | $202,000 | $6,060.00 | Hulk Hogan (WWF World Heavyweight), Mr. Perfect (WWF Intercontinental Heavyweight) | $3,030.00 |
+| 1991-07-14 | WWF | St. Louis, MO · WrestleFest '91 (PPV) | $1,027,140 | $30,814.20 | Brian Knobbs (WWF World Tag Team), Hulk Hogan (WWF World Heavyweight), Jerry Sags (WWF World Tag Team), Mr. Perfect (WWF Intercontinental Heavyweight) | $7,703.55 |
+| 1991-07-20 | WWF | Philadelphia, PA · Broadcast house show (Spectrum) | $284,400 | $8,532.00 | Brian Knobbs (WWF World Tag Team), Hulk Hogan (WWF World Heavyweight), Jerry Sags (WWF World Tag Team), Mr. Perfect (WWF Intercontinental Heavyweight) | $2,133.00 |
+| 1991-07-21 | WWF | Toronto, ON · Broadcast show (Maple Leaf Gardens) | $255,600 | $7,668.00 | Hulk Hogan (WWF World Heavyweight), Mr. Perfect (WWF Intercontinental Heavyweight), Road Warrior Animal (WWF World Tag Team), Road Warrior Hawk (WWF World Tag Team) | $1,917.00 |
+| 1991-07-22 | WCW | Nashville · House show | no gate logged | — | Jimmy Garvin, Michael Hayes, Nikita Koloff | — |
+| 1991-07-07 | WWF | Vancouver · Superstars taping (4 episodes) | no gate logged | — | Hulk Hogan, Mr. Perfect | — |
+
 ## Leaderboard (ranked by paid so far)
 
 | # | Name | Promotions | Salary to date | Show pay | Bonuses | **Earned** | Tour fees due | July projected |
 |---|---|---|---|---|---|---|---|---|
-| 1 | Hulk Hogan | WWF | $88,710 | — | $25,678 | **$114,388** | — | $114,388 |
+| 1 | Hulk Hogan | WWF | $88,710 | — | $45,467 | **$134,177** | — | $134,177 |
 | 2 | The Ultimate Warrior | WWF | $63,871 | — | — | **$63,871** | — | $63,871 |
 | 3 | Sgt. Slaughter | WWF | $28,387 | — | $25,678 | **$54,066** | — | $54,066 |
-| 4 | Roddy Piper | WWF | $28,387 | — | — | **$28,387** | — | $28,387 |
-| 5 | Sid Justice | WWF | $28,387 | — | — | **$28,387** | — | $28,387 |
-| 6 | The Undertaker | WWF | $28,387 | — | — | **$28,387** | — | $28,387 |
-| 7 | Sting | WCW, NJPW | $15,323 | $10,556 | — | **$25,878** | $3,889 | $29,767 |
-| 8 | Stan Hansen | USWA, AJPW | — | $25,794 (3 app.) | — | **$25,794** | $5,556 | $31,350 |
-| 9 | Davey Boy Smith | WWF, AJPW | $12,774 | $12,222 | — | **$24,996** | $2,778 | $27,774 |
-| 10 | Randy Savage | WWF | $24,839 | — | — | **$24,839** | — | $24,839 |
-| 11 | Rick Rude | WCW, AJPW | $9,935 | $14,667 | — | **$24,602** | $3,333 | $27,935 |
-| 12 | Giant Baba | AJPW | — | $24,444 | — | **$24,444** | $5,556 | $30,000 |
-| 13 | Jumbo Tsuruta | AJPW | — | $24,444 | — | **$24,444** | $5,556 | $30,000 |
-| 14 | Big Van Vader | WCW, NJPW | $8,516 | $14,074 | — | **$22,590** | $5,926 | $28,516 |
-| 15 | Mr. Perfect | WWF | $21,290 | — | — | **$21,290** | — | $21,290 |
-| 16 | Ted DiBiase | WWF | $21,290 | — | — | **$21,290** | — | $21,290 |
-| 17 | Lex Luger | WCW | $17,742 | — | $3,150 | **$20,892** | — | $20,892 |
-| 18 | Jake Roberts | WWF | $19,871 | — | — | **$19,871** | — | $19,871 |
-| 19 | Riki Chōshu | NJPW | — | $19,704 | — | **$19,704** | $8,296 | $28,000 |
-| 20 | Mitsuharu Misawa | AJPW | — | $17,926 | — | **$17,926** | $4,074 | $22,000 |
-| 21 | Steve Williams | AJPW | — | $17,926 | — | **$17,926** | $4,074 | $22,000 |
-| 22 | Terry Gordy | AJPW | — | $17,926 | — | **$17,926** | $4,074 | $22,000 |
-| 23 | Konnan | CMLL | — | $17,910 (8 app.) | — | **$17,910** | — | $17,910 |
-| 24 | Genichiro Tenryu | WWF | $17,742 | — | — | **$17,742** | — | $17,742 |
-| 25 | Jushin Liger | WCW, NJPW, CMLL | $4,968 | $12,069 (1 app.) | — | **$17,037** | $4,741 | $21,778 |
-| 26 | Road Warrior Animal | WWF | $15,613 | — | — | **$15,613** | — | $15,613 |
-| 27 | Road Warrior Hawk | WWF | $15,613 | — | — | **$15,613** | — | $15,613 |
-| 28 | Tatsumi Fujinami | NJPW | — | $15,481 | — | **$15,481** | $6,519 | $22,000 |
-| 29 | Kerry Von Erich | USWA | — | $15,224 (6 app.) | — | **$15,224** | — | $15,224 |
-| 30 | Barry Windham | WCW | $11,355 | — | $3,150 | **$14,505** | — | $14,505 |
-| 31 | Blue Panther | CMLL | — | $14,220 (8 app.) | — | **$14,220** | — | $14,220 |
-| 32 | Big Boss Man | WWF | $14,194 | — | — | **$14,194** | — | $14,194 |
-| 33 | Earthquake | WWF | $14,194 | — | — | **$14,194** | — | $14,194 |
-| 34 | Jim Duggan | WWF | $14,194 | — | — | **$14,194** | — | $14,194 |
-| 35 | Abdullah the Butcher | WCW, AJPW | $4,258 | $9,778 | — | **$14,036** | $2,222 | $16,258 |
-| 36 | Irwin R. Schyster | WWF, NJPW, CMLL | $8,516 | $5,032 (1 app.) | — | **$13,548** | $1,778 | $15,326 |
-| 37 | Vampiro Canadiense | CMLL | — | $13,210 (5 app.) | — | **$13,210** | — | $13,210 |
-| 38 | Kamala | CMLL | — | $12,870 (5 app.) | — | **$12,870** | — | $12,870 |
-| 39 | Ricky Steamboat | WWF | $12,774 | — | — | **$12,774** | — | $12,774 |
-| 40 | Bam Bam Bigelow | NJPW | — | $12,667 | — | **$12,667** | $5,333 | $18,000 |
-| 41 | Keiji Mutoh | NJPW | — | $12,667 | — | **$12,667** | $5,333 | $18,000 |
-| 42 | Bret Hart | USWA | — | $11,949 (4 app.) | — | **$11,949** | — | $11,949 |
-| 43 | Brian Knobbs | WWF | $11,355 | — | — | **$11,355** | — | $11,355 |
-| 44 | Jerry Sags | WWF | $11,355 | — | — | **$11,355** | — | $11,355 |
-| 45 | Brian Pillman | WCW, NJPW | $5,677 | $5,630 | — | **$11,307** | $2,370 | $13,677 |
-| 46 | Masahiro Chono | NJPW | — | $11,259 | — | **$11,259** | $4,741 | $16,000 |
-| 47 | Shinya Hashimoto | NJPW | — | $11,259 | — | **$11,259** | $4,741 | $16,000 |
-| 48 | Dan Spivey | USWA, AJPW | — | $10,978 (4 app.) | — | **$10,978** | $2,222 | $13,200 |
-| 49 | Owen Hart | WWF, NJPW, CMLL | $5,677 | $5,032 (1 app.) | — | **$10,710** | $1,778 | $12,487 |
-| 50 | Bobby Heenan (manager) | WWF | $10,645 | — | — | **$10,645** | — | $10,645 |
-| 51 | Greg Valentine | WWF | $10,645 | — | — | **$10,645** | — | $10,645 |
-| 52 | Marty Jannetty | WWF | $10,645 | — | — | **$10,645** | — | $10,645 |
-| 53 | Shawn Michaels | WWF | $10,645 | — | — | **$10,645** | — | $10,645 |
-| 54 | El Gigante | WCW, NJPW | $4,968 | $5,630 | — | **$10,597** | $2,370 | $12,968 |
-| 55 | Rayo de Jalisco Jr. | CMLL | — | $10,520 (7 app.) | — | **$10,520** | — | $10,520 |
-| 56 | Dory Funk Jr. | AJPW, ASW | — | $9,953 (1 app.) | — | **$9,953** | $2,222 | $12,175 |
-| 57 | Akira Taue | AJPW | — | $9,778 | — | **$9,778** | $2,222 | $12,000 |
-| 58 | Dynamite Kid | AJPW | — | $9,778 | — | **$9,778** | $2,222 | $12,000 |
-| 59 | Kenta Kobashi | AJPW | — | $9,778 | — | **$9,778** | $2,222 | $12,000 |
-| 60 | Atlantis | CMLL | — | $9,520 (7 app.) | — | **$9,520** | — | $9,520 |
-| 61 | Arn Anderson | WCW | $8,516 | — | — | **$8,516** | — | $8,516 |
-| 62 | Dino Bravo | WWF | $8,516 | — | — | **$8,516** | — | $8,516 |
-| 63 | Koji Kitao | WWF | $8,516 | — | — | **$8,516** | — | $8,516 |
-| 64 | Rick Steiner | WCW | $8,516 | — | — | **$8,516** | — | $8,516 |
-| 65 | Negro Casas | CMLL | — | $8,390 (6 app.) | — | **$8,390** | — | $8,390 |
-| 66 | Dan Kroffat | AJPW | — | $8,148 | — | **$8,148** | $1,852 | $10,000 |
-| 67 | Doug Furnas | AJPW | — | $8,148 | — | **$8,148** | $1,852 | $10,000 |
-| 68 | Ric Flair | USWA | — | $8,100 (4 app.) | — | **$8,100** | — | $8,100 |
-| 69 | Eddie Guerrero | USWA, CMLL | — | $7,320 (9 app.) | — | **$7,320** | — | $7,320 |
-| 70 | Andre the Giant | USWA | — | $7,188 (3 app.) | — | **$7,188** | — | $7,188 |
-| 71 | Brutus Beefcake | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
-| 72 | Jimmy Hart (manager) | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
-| 73 | Nikita Koloff | WCW | $7,097 | — | — | **$7,097** | — | $7,097 |
-| 74 | Paul Orndorff | WCW | $7,097 | — | — | **$7,097** | — | $7,097 |
-| 75 | Rick Martel | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
-| 76 | The Mountie | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
-| 77 | Tito Santana | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
-| 78 | Typhoon | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
-| 79 | Hiroshi Hase | NJPW | — | $7,037 | — | **$7,037** | $2,963 | $10,000 |
-| 80 | Mil Mascaras | NJPW | — | $7,037 | — | **$7,037** | $2,963 | $10,000 |
-| 81 | Pegasus Kid | NJPW | — | $7,037 | — | **$7,037** | $2,963 | $10,000 |
-| 82 | Scott Norton | NJPW | — | $7,037 | — | **$7,037** | $2,963 | $10,000 |
-| 83 | Tiger Jeet Singh | NJPW | — | $7,037 | — | **$7,037** | $2,963 | $10,000 |
-| 84 | Cien Caras | CMLL | — | $6,720 (5 app.) | — | **$6,720** | — | $6,720 |
-| 85 | Bobby Fulton | AJPW | — | $6,519 | — | **$6,519** | $1,481 | $8,000 |
-| 86 | Masanobu Fuchi | AJPW | — | $6,519 | — | **$6,519** | $1,481 | $8,000 |
-| 87 | Tommy Rogers | AJPW | — | $6,519 | — | **$6,519** | $1,481 | $8,000 |
-| 88 | Terry Funk | USWA | — | $6,490 (4 app.) | — | **$6,490** | — | $6,490 |
-| 89 | Toshiaki Kawada | AJPW | — | $6,000 (6 app.) | — | **$6,000** | — | $6,000 |
-| 90 | Dean Malenko | AJPW | — | $5,704 | — | **$5,704** | $1,296 | $7,000 |
-| 91 | Joe Malenko | AJPW | — | $5,704 | — | **$5,704** | $1,296 | $7,000 |
-| 92 | Brazo de Plata | CMLL | — | $5,700 (7 app.) | — | **$5,700** | — | $5,700 |
-| 93 | Cactus Jack | WCW | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 94 | Haku | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 95 | Jimmy Snuka | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 96 | Larry Zbyszko | WCW | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 97 | Miss Elizabeth (manager) | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 98 | Ron Simmons | WCW | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 99 | The Barbarian | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 100 | The Berzerker | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 101 | Virgil | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 102 | Warlord | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
-| 103 | Junji Hirata | NJPW | — | $5,630 | — | **$5,630** | $2,370 | $8,000 |
-| 104 | Kensuke Sasaki | NJPW | — | $5,630 | — | **$5,630** | $2,370 | $8,000 |
-| 105 | Kim Duk | NJPW | — | $5,630 | — | **$5,630** | $2,370 | $8,000 |
-| 106 | Shiro Koshinaka | NJPW | — | $5,630 | — | **$5,630** | $2,370 | $8,000 |
-| 107 | Ax | WWF | $4,968 | — | — | **$4,968** | — | $4,968 |
-| 108 | Bobby Eaton | WCW | $4,968 | — | — | **$4,968** | — | $4,968 |
-| 109 | Crush | WWF | $4,968 | — | — | **$4,968** | — | $4,968 |
-| 110 | Dustin Rhodes | WCW | $4,968 | — | — | **$4,968** | — | $4,968 |
-| 111 | Great Muta | WCW | $4,968 | — | — | **$4,968** | — | $4,968 |
-| 112 | Michael Hayes | WCW | $4,968 | — | — | **$4,968** | — | $4,968 |
-| 113 | Smash | WWF | $4,968 | — | — | **$4,968** | — | $4,968 |
-| 114 | Jim Neidhart | NJPW | — | $4,926 | — | **$4,926** | $2,074 | $7,000 |
-| 115 | Johnny Ace | AJPW | — | $4,889 | — | **$4,889** | $1,111 | $6,000 |
-| 116 | Rusher Kimura | AJPW | — | $4,889 | — | **$4,889** | $1,111 | $6,000 |
-| 117 | El Hijo del Santo | USWA, CMLL | — | $4,820 (8 app.) | — | **$4,820** | — | $4,820 |
-| 118 | Satánico | CMLL | — | $4,800 (6 app.) | — | **$4,800** | — | $4,800 |
-| 119 | Universo 2000 | CMLL | — | $4,720 (3 app.) | — | **$4,720** | — | $4,720 |
-| 120 | MS-1 | CMLL | — | $4,500 (7 app.) | — | **$4,500** | — | $4,500 |
-| 121 | Ultimo Dragón | CMLL | — | $4,500 (6 app.) | — | **$4,500** | — | $4,500 |
-| 122 | Gran Hamada | NJPW, ASW | — | $4,347 (1 app.) | — | **$4,347** | $1,778 | $6,125 |
-| 123 | Paul Bearer (manager) | WWF, Power Pro | $4,258 | $40 (1 app.) | — | **$4,298** | — | $4,298 |
-| 124 | Black Magic | CMLL | — | $4,290 (5 app.) | — | **$4,290** | — | $4,290 |
-| 125 | Bushwhacker Butch | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
-| 126 | Bushwhacker Luke | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
-| 127 | Harley Race (manager) | WCW | $4,258 | — | — | **$4,258** | — | $4,258 |
-| 128 | Hercules | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
-| 129 | Jimmy Garvin | WCW | $4,258 | — | — | **$4,258** | — | $4,258 |
-| 130 | Mr. Fuji (manager) | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
-| 131 | One Man Gang | WCW | $4,258 | — | — | **$4,258** | — | $4,258 |
-| 132 | Paul E. Dangerously (manager) | WCW | $4,258 | — | — | **$4,258** | — | $4,258 |
-| 133 | Paul Roma | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
-| 134 | Dos Caras | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
-| 135 | El Samurai | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
-| 136 | Hiro Saito | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
-| 137 | Kengo Kimura | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
-| 138 | Osamu Kido | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
-| 139 | Tarzan Goto | NJPW, FMW | — | $4,219 (1 app.) | — | **$4,219** | $1,481 | $5,700 |
-| 140 | Felino | CMLL | — | $4,192 (5 app.) | — | **$4,192** | — | $4,192 |
-| 141 | Diamond Studd | USWA | — | $4,162 (4 app.) | — | **$4,162** | — | $4,162 |
-| 142 | Giant Kimala II | AJPW | — | $4,074 | — | **$4,074** | $926 | $5,000 |
-| 143 | Haruka Eigen | AJPW | — | $4,074 | — | **$4,074** | $926 | $5,000 |
-| 144 | Too Cold Scorpio | AJPW | — | $4,074 | — | **$4,074** | $926 | $5,000 |
-| 145 | Tsuyoshi Kikuchi | AJPW | — | $4,074 | — | **$4,074** | $926 | $5,000 |
-| 146 | Volador | CMLL | — | $4,050 (6 app.) | — | **$4,050** | — | $4,050 |
-| 147 | Kevin Von Erich | USWA | — | $4,015 (4 app.) | — | **$4,015** | — | $4,015 |
-| 148 | Octagón | CMLL | — | $3,900 (4 app.) | — | **$3,900** | — | $3,900 |
-| 149 | Silver King | CMLL | — | $3,592 (4 app.) | — | **$3,592** | — | $3,592 |
-| 150 | Beau Beverly | WWF | $3,548 | — | — | **$3,548** | — | $3,548 |
-| 151 | Blake Beverly | WWF | $3,548 | — | — | **$3,548** | — | $3,548 |
-| 152 | Butch Reed | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
-| 153 | Dick Murdoch | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
-| 154 | Junk Yard Dog | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
-| 155 | Kato | WWF | $3,548 | — | — | **$3,548** | — | $3,548 |
-| 156 | Richard Morton | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
-| 157 | Tanaka | WWF | $3,548 | — | — | **$3,548** | — | $3,548 |
-| 158 | Terry Taylor | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
-| 159 | Akira Nogami | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
-| 160 | Ken Patera | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
-| 161 | Kokina | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
-| 162 | Kuniaki Kobayashi | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
-| 163 | Masashi Aoyagi | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
-| 164 | Norio Honaga | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
-| 165 | Samu | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
-| 166 | Tony Halme | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
-| 167 | Apolo Dantes | CMLL | — | $3,342 (4 app.) | — | **$3,342** | — | $3,342 |
-| 168 | Billy Joe Travis | AJPW | — | $3,259 | — | **$3,259** | $741 | $4,000 |
-| 169 | Yoshinari Ogawa | AJPW | — | $3,259 | — | **$3,259** | $741 | $4,000 |
-| 170 | El Dandy | CMLL | — | $3,250 (4 app.) | — | **$3,250** | — | $3,250 |
-| 171 | Eddie Gilbert | USWA | — | $3,215 (4 app.) | — | **$3,215** | — | $3,215 |
-| 172 | Pierroth Jr. | CMLL | — | $3,150 (6 app.) | — | **$3,150** | — | $3,150 |
-| 173 | Sangre Chicana | CMLL | — | $3,142 (2 app.) | — | **$3,142** | — | $3,142 |
-| 174 | Don Harris | WCW, TWA | $2,839 | $175 (1 app.) | — | **$3,014** | — | $3,014 |
-| 175 | Ron Harris | WCW, TWA | $2,839 | $175 (1 app.) | — | **$3,014** | — | $3,014 |
-| 176 | Chavo Guerrero | CMLL | — | $3,000 (7 app.) | — | **$3,000** | — | $3,000 |
-| 177 | Steve Austin | USWA | — | $2,888 (4 app.) | — | **$2,888** | — | $2,888 |
-| 178 | B. Brian Blair | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 179 | Coach (manager) | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 180 | Gen. Adnan (manager) | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 181 | Harvey Wippleman (manager) | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 182 | Jim Brunzell | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 183 | Koko B. Ware | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 184 | Mr. Hughes | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 185 | PN News | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 186 | Robert Gibson | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 187 | SATO | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 188 | Shane Douglas | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 189 | Skinner | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 190 | Tommy Rich | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
-| 191 | Corporal Kirchner | NJPW | — | $2,815 | — | **$2,815** | $1,185 | $4,000 |
-| 192 | Keith Hart | NJPW | — | $2,815 | — | **$2,815** | $1,185 | $4,000 |
-| 193 | Mando Guerrero | NJPW | — | $2,815 | — | **$2,815** | $1,185 | $4,000 |
-| 194 | Tom Zenk | WCW | $2,710 | — | — | **$2,710** | — | $2,710 |
-| 195 | Fuerza Guerrera | CMLL | — | $2,700 (4 app.) | — | **$2,700** | — | $2,700 |
-| 196 | Jeff Jarrett | USWA | — | $2,565 (2 app.) | — | **$2,565** | — | $2,565 |
-| 197 | Alexandra York (manager) | WCW | $2,484 | — | — | **$2,484** | — | $2,484 |
-| 198 | Steve Armstrong | WCW | $2,484 | — | — | **$2,484** | — | $2,484 |
-| 199 | Tracy Smothers | WCW | $2,484 | — | — | **$2,484** | — | $2,484 |
-| 200 | Masao Inoue | AJPW | — | $2,444 | — | **$2,444** | $556 | $3,000 |
-| 201 | Richard Slinger | AJPW | — | $2,444 | — | **$2,444** | $556 | $3,000 |
-| 202 | Art Barr | CMLL | — | $2,400 (5 app.) | — | **$2,400** | — | $2,400 |
-| 203 | Atsushi Onita | FMW | — | $2,400 (2 app.) | — | **$2,400** | — | $2,400 |
-| 204 | Brazo de Oro | CMLL | — | $2,400 (6 app.) | — | **$2,400** | — | $2,400 |
-| 205 | Toshiyo Yamada | CMLL | — | $2,400 (5 app.) | — | **$2,400** | — | $2,400 |
-| 206 | Sam Houston | USWA | — | $2,228 (6 app.) | — | **$2,228** | — | $2,228 |
-| 207 | Jamie Dundee | USWA | — | $2,138 (4 app.) | — | **$2,138** | — | $2,138 |
-| 208 | Big Josh | WCW | $2,129 | — | — | **$2,129** | — | $2,129 |
-| 209 | Bill Irwin | WCW | $2,129 | — | — | **$2,129** | — | $2,129 |
-| 210 | Black Bart | WCW | $2,129 | — | — | **$2,129** | — | $2,129 |
-| 211 | Diamond Dallas Page | WCW | $2,129 | — | — | **$2,129** | — | $2,129 |
-| 212 | Hiroyoshi Tenzan | NJPW | — | $2,111 | — | **$2,111** | $889 | $3,000 |
-| 213 | Jeff Gaylord | NJPW | — | $2,111 | — | **$2,111** | $889 | $3,000 |
-| 214 | Savio Vega | NJPW | — | $2,111 | — | **$2,111** | $889 | $3,000 |
-| 215 | El Brazo | CMLL | — | $2,100 (5 app.) | — | **$2,100** | — | $2,100 |
-| 216 | Dennis Condrey | USWA | — | $2,030 (4 app.) | — | **$2,030** | — | $2,030 |
-| 217 | The Sheik | FMW | — | $2,000 (2 app.) | — | **$2,000** | — | $2,000 |
-| 218 | Ángel Azteca | CMLL | — | $2,000 (6 app.) | — | **$2,000** | — | $2,000 |
-| 219 | Scotty Flamingo | USWA | — | $1,838 (5 app.) | — | **$1,838** | — | $1,838 |
-| 220 | Jerry Estrada | CMLL | — | $1,800 (5 app.) | — | **$1,800** | — | $1,800 |
-| 221 | Brooklyn Brawler | WWF | $1,774 | — | — | **$1,774** | — | $1,774 |
-| 222 | Ozz | WCW | $1,774 | — | — | **$1,774** | — | $1,774 |
-| 223 | Kevin Sullivan | WCW, FMW | $1,290 | $450 (1 app.) | — | **$1,740** | — | $1,740 |
-| 224 | Máscara Año 2000 | CMLL | — | $1,650 (3 app.) | — | **$1,650** | — | $1,650 |
-| 225 | Masakre | CMLL | — | $1,600 (5 app.) | — | **$1,600** | — | $1,600 |
-| 226 | The Lightning Kid | Power Pro, CMLL | — | $1,535 (5 app.) | — | **$1,535** | — | $1,535 |
-| 227 | Giant Haystacks | ASW | — | $1,400 (4 app.) | — | **$1,400** | — | $1,400 |
-| 228 | Lola González | CMLL | — | $1,400 (6 app.) | — | **$1,400** | — | $1,400 |
-| 229 | Mr. Pogo | FMW | — | $1,400 (2 app.) | — | **$1,400** | — | $1,400 |
-| 230 | Missy Hyatt (manager) | USWA | — | $1,375 (6 app.) | — | **$1,375** | — | $1,375 |
-| 231 | Paul Ellering (manager) | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
-| 232 | Scott Steiner | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
-| 233 | Tully Blanchard | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
-| 234 | Grigory Verichev | FMW | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
-| 235 | Jaque Mate | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
-| 236 | Javier Cruz | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
-| 237 | Jerry Lawler | USWA | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
-| 238 | La Diabólica | CMLL | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
-| 239 | Robert Fuller | USWA | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
-| 240 | Bob Backlund | ASW | — | $900 (3 app.) | — | **$900** | — | $900 |
-| 241 | Sabu | FMW | — | $900 (2 app.) | — | **$900** | — | $900 |
-| 242 | Bill Dundee | USWA | — | $750 (4 app.) | — | **$750** | — | $750 |
+| 4 | Mr. Perfect | WWF | $21,290 | — | $27,414 | **$48,704** | — | $48,704 |
+| 5 | Sting | WCW, NJPW | $15,323 | $10,556 | $20,398 | **$46,276** | $3,889 | $50,165 |
+| 6 | Konnan | CMLL | — | $17,910 (8 app.) | $13,240 | **$31,150** | — | $31,150 |
+| 7 | Brian Knobbs | WWF | $11,355 | — | $19,090 | **$30,444** | — | $30,444 |
+| 8 | Jerry Sags | WWF | $11,355 | — | $19,090 | **$30,444** | — | $30,444 |
+| 9 | Jumbo Tsuruta | AJPW | — | $24,444 | $5,174 | **$29,618** | $5,556 | $35,174 |
+| 10 | Roddy Piper | WWF | $28,387 | — | — | **$28,387** | — | $28,387 |
+| 11 | Sid Justice | WWF | $28,387 | — | — | **$28,387** | — | $28,387 |
+| 12 | The Undertaker | WWF | $28,387 | — | — | **$28,387** | — | $28,387 |
+| 13 | Riki Chōshu | NJPW | — | $19,704 | $6,892 | **$26,596** | $8,296 | $34,892 |
+| 14 | Stan Hansen | USWA, AJPW | — | $25,794 (3 app.) | — | **$25,794** | $5,556 | $31,350 |
+| 15 | Davey Boy Smith | WWF, AJPW | $12,774 | $12,222 | — | **$24,996** | $2,778 | $27,774 |
+| 16 | Randy Savage | WWF | $24,839 | — | — | **$24,839** | — | $24,839 |
+| 17 | Rick Rude | WCW, AJPW | $9,935 | $14,667 | — | **$24,602** | $3,333 | $27,935 |
+| 18 | Giant Baba | AJPW | — | $24,444 | — | **$24,444** | $5,556 | $30,000 |
+| 19 | Lex Luger | WCW | $17,742 | — | $5,820 | **$23,562** | — | $23,562 |
+| 20 | Mitsuharu Misawa | AJPW | — | $17,926 | $4,703 | **$22,629** | $4,074 | $26,703 |
+| 21 | Big Van Vader | WCW, NJPW | $8,516 | $14,074 | — | **$22,590** | $5,926 | $28,516 |
+| 22 | Ted DiBiase | WWF | $21,290 | — | — | **$21,290** | — | $21,290 |
+| 23 | Jushin Liger | WCW, NJPW, CMLL | $4,968 | $12,069 (1 app.) | $3,132 | **$20,169** | $4,741 | $24,910 |
+| 24 | Steve Williams | AJPW | — | $17,926 | $1,970 | **$19,895** | $4,074 | $23,970 |
+| 25 | Terry Gordy | AJPW | — | $17,926 | $1,970 | **$19,895** | $4,074 | $23,970 |
+| 26 | Jake Roberts | WWF | $19,871 | — | — | **$19,871** | — | $19,871 |
+| 27 | Genichiro Tenryu | WWF | $17,742 | — | — | **$17,742** | — | $17,742 |
+| 28 | Road Warrior Animal | WWF | $15,613 | — | $1,917 | **$17,530** | — | $17,530 |
+| 29 | Road Warrior Hawk | WWF | $15,613 | — | $1,917 | **$17,530** | — | $17,530 |
+| 30 | Tatsumi Fujinami | NJPW | — | $15,481 | — | **$15,481** | $6,519 | $22,000 |
+| 31 | Kerry Von Erich | USWA | — | $15,224 (6 app.) | — | **$15,224** | — | $15,224 |
+| 32 | Shinya Hashimoto | NJPW | — | $11,259 | $3,760 | **$15,019** | $4,741 | $19,760 |
+| 33 | Barry Windham | WCW | $11,355 | — | $3,150 | **$14,505** | — | $14,505 |
+| 34 | Doug Furnas | AJPW | — | $8,148 | $6,261 | **$14,409** | $1,852 | $16,261 |
+| 35 | Blue Panther | CMLL | — | $14,220 (8 app.) | — | **$14,220** | — | $14,220 |
+| 36 | Big Boss Man | WWF | $14,194 | — | — | **$14,194** | — | $14,194 |
+| 37 | Earthquake | WWF | $14,194 | — | — | **$14,194** | — | $14,194 |
+| 38 | Jim Duggan | WWF | $14,194 | — | — | **$14,194** | — | $14,194 |
+| 39 | Abdullah the Butcher | WCW, AJPW | $4,258 | $9,778 | — | **$14,036** | $2,222 | $16,258 |
+| 40 | Bret Hart | USWA | — | $11,949 (4 app.) | $2,069 | **$14,018** | — | $14,018 |
+| 41 | Irwin R. Schyster | WWF, NJPW, CMLL | $8,516 | $5,032 (1 app.) | — | **$13,548** | $1,778 | $15,326 |
+| 42 | Dan Kroffat | AJPW | — | $8,148 | $5,361 | **$13,509** | $1,852 | $15,361 |
+| 43 | Vampiro Canadiense | CMLL | — | $13,210 (5 app.) | — | **$13,210** | — | $13,210 |
+| 44 | Kamala | CMLL | — | $12,870 (5 app.) | — | **$12,870** | — | $12,870 |
+| 45 | Ricky Steamboat | WWF | $12,774 | — | — | **$12,774** | — | $12,774 |
+| 46 | Bam Bam Bigelow | NJPW | — | $12,667 | — | **$12,667** | $5,333 | $18,000 |
+| 47 | Keiji Mutoh | NJPW | — | $12,667 | — | **$12,667** | $5,333 | $18,000 |
+| 48 | Brian Pillman | WCW, NJPW | $5,677 | $5,630 | — | **$11,307** | $2,370 | $13,677 |
+| 49 | Masahiro Chono | NJPW | — | $11,259 | — | **$11,259** | $4,741 | $16,000 |
+| 50 | Dan Spivey | USWA, AJPW | — | $10,978 (4 app.) | — | **$10,978** | $2,222 | $13,200 |
+| 51 | Nikita Koloff | WCW | $7,097 | — | $3,841 | **$10,938** | — | $10,938 |
+| 52 | Owen Hart | WWF, NJPW, CMLL | $5,677 | $5,032 (1 app.) | — | **$10,710** | $1,778 | $12,487 |
+| 53 | Bobby Heenan (manager) | WWF | $10,645 | — | — | **$10,645** | — | $10,645 |
+| 54 | Greg Valentine | WWF | $10,645 | — | — | **$10,645** | — | $10,645 |
+| 55 | Marty Jannetty | WWF | $10,645 | — | — | **$10,645** | — | $10,645 |
+| 56 | Shawn Michaels | WWF | $10,645 | — | — | **$10,645** | — | $10,645 |
+| 57 | El Gigante | WCW, NJPW | $4,968 | $5,630 | — | **$10,597** | $2,370 | $12,968 |
+| 58 | Rayo de Jalisco Jr. | CMLL | — | $10,520 (7 app.) | — | **$10,520** | — | $10,520 |
+| 59 | Toshiaki Kawada | AJPW | — | $6,000 (6 app.) | $4,367 | **$10,367** | — | $10,367 |
+| 60 | Dory Funk Jr. | AJPW, ASW | — | $9,953 (1 app.) | — | **$9,953** | $2,222 | $12,175 |
+| 61 | Akira Taue | AJPW | — | $9,778 | — | **$9,778** | $2,222 | $12,000 |
+| 62 | Dynamite Kid | AJPW | — | $9,778 | — | **$9,778** | $2,222 | $12,000 |
+| 63 | Kenta Kobashi | AJPW | — | $9,778 | — | **$9,778** | $2,222 | $12,000 |
+| 64 | Atlantis | CMLL | — | $9,520 (7 app.) | — | **$9,520** | — | $9,520 |
+| 65 | El Hijo del Santo | USWA, CMLL | — | $4,820 (8 app.) | $4,401 | **$9,221** | — | $9,221 |
+| 66 | Volador | CMLL | — | $4,050 (6 app.) | $4,476 | **$8,526** | — | $8,526 |
+| 67 | Arn Anderson | WCW | $8,516 | — | — | **$8,516** | — | $8,516 |
+| 68 | Dino Bravo | WWF | $8,516 | — | — | **$8,516** | — | $8,516 |
+| 69 | Koji Kitao | WWF | $8,516 | — | — | **$8,516** | — | $8,516 |
+| 70 | Rick Steiner | WCW | $8,516 | — | — | **$8,516** | — | $8,516 |
+| 71 | Negro Casas | CMLL | — | $8,390 (6 app.) | — | **$8,390** | — | $8,390 |
+| 72 | Ric Flair | USWA | — | $8,100 (4 app.) | — | **$8,100** | — | $8,100 |
+| 73 | Hiroshi Hase | NJPW | — | $7,037 | $882 | **$7,919** | $2,963 | $10,882 |
+| 74 | Junji Hirata | NJPW | — | $5,630 | $2,260 | **$7,890** | $2,370 | $10,260 |
+| 75 | Eddie Guerrero | USWA, CMLL | — | $7,320 (9 app.) | — | **$7,320** | — | $7,320 |
+| 76 | Andre the Giant | USWA | — | $7,188 (3 app.) | — | **$7,188** | — | $7,188 |
+| 77 | Brutus Beefcake | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
+| 78 | Jimmy Hart (manager) | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
+| 79 | Paul Orndorff | WCW | $7,097 | — | — | **$7,097** | — | $7,097 |
+| 80 | Rick Martel | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
+| 81 | The Mountie | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
+| 82 | Tito Santana | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
+| 83 | Typhoon | WWF | $7,097 | — | — | **$7,097** | — | $7,097 |
+| 84 | Mil Mascaras | NJPW | — | $7,037 | — | **$7,037** | $2,963 | $10,000 |
+| 85 | Pegasus Kid | NJPW | — | $7,037 | — | **$7,037** | $2,963 | $10,000 |
+| 86 | Scott Norton | NJPW | — | $7,037 | — | **$7,037** | $2,963 | $10,000 |
+| 87 | Tiger Jeet Singh | NJPW | — | $7,037 | — | **$7,037** | $2,963 | $10,000 |
+| 88 | Cien Caras | CMLL | — | $6,720 (5 app.) | — | **$6,720** | — | $6,720 |
+| 89 | Bobby Fulton | AJPW | — | $6,519 | — | **$6,519** | $1,481 | $8,000 |
+| 90 | Masanobu Fuchi | AJPW | — | $6,519 | — | **$6,519** | $1,481 | $8,000 |
+| 91 | Tommy Rogers | AJPW | — | $6,519 | — | **$6,519** | $1,481 | $8,000 |
+| 92 | Kensuke Sasaki | NJPW | — | $5,630 | $882 | **$6,512** | $2,370 | $8,882 |
+| 93 | Terry Funk | USWA | — | $6,490 (4 app.) | — | **$6,490** | — | $6,490 |
+| 94 | El Dandy | CMLL | — | $3,250 (4 app.) | $2,520 | **$5,770** | — | $5,770 |
+| 95 | Dean Malenko | AJPW | — | $5,704 | — | **$5,704** | $1,296 | $7,000 |
+| 96 | Joe Malenko | AJPW | — | $5,704 | — | **$5,704** | $1,296 | $7,000 |
+| 97 | Brazo de Plata | CMLL | — | $5,700 (7 app.) | — | **$5,700** | — | $5,700 |
+| 98 | Cactus Jack | WCW | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 99 | Haku | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 100 | Jimmy Snuka | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 101 | Larry Zbyszko | WCW | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 102 | Miss Elizabeth (manager) | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 103 | Ron Simmons | WCW | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 104 | The Barbarian | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 105 | The Berzerker | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 106 | Virgil | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 107 | Warlord | WWF | $5,677 | — | — | **$5,677** | — | $5,677 |
+| 108 | Kim Duk | NJPW | — | $5,630 | — | **$5,630** | $2,370 | $8,000 |
+| 109 | Shiro Koshinaka | NJPW | — | $5,630 | — | **$5,630** | $2,370 | $8,000 |
+| 110 | Michael Hayes | WCW | $4,968 | — | $495 | **$5,463** | — | $5,463 |
+| 111 | Steve Austin | USWA | — | $2,888 (4 app.) | $2,384 | **$5,271** | — | $5,271 |
+| 112 | Ax | WWF | $4,968 | — | — | **$4,968** | — | $4,968 |
+| 113 | Bobby Eaton | WCW | $4,968 | — | — | **$4,968** | — | $4,968 |
+| 114 | Crush | WWF | $4,968 | — | — | **$4,968** | — | $4,968 |
+| 115 | Dustin Rhodes | WCW | $4,968 | — | — | **$4,968** | — | $4,968 |
+| 116 | Great Muta | WCW | $4,968 | — | — | **$4,968** | — | $4,968 |
+| 117 | Smash | WWF | $4,968 | — | — | **$4,968** | — | $4,968 |
+| 118 | Jim Neidhart | NJPW | — | $4,926 | — | **$4,926** | $2,074 | $7,000 |
+| 119 | Johnny Ace | AJPW | — | $4,889 | — | **$4,889** | $1,111 | $6,000 |
+| 120 | Rusher Kimura | AJPW | — | $4,889 | — | **$4,889** | $1,111 | $6,000 |
+| 121 | Satánico | CMLL | — | $4,800 (6 app.) | — | **$4,800** | — | $4,800 |
+| 122 | Jimmy Garvin | WCW | $4,258 | — | $495 | **$4,753** | — | $4,753 |
+| 123 | Universo 2000 | CMLL | — | $4,720 (3 app.) | — | **$4,720** | — | $4,720 |
+| 124 | MS-1 | CMLL | — | $4,500 (7 app.) | — | **$4,500** | — | $4,500 |
+| 125 | Ultimo Dragón | CMLL | — | $4,500 (6 app.) | — | **$4,500** | — | $4,500 |
+| 126 | Gran Hamada | NJPW, ASW | — | $4,347 (1 app.) | — | **$4,347** | $1,778 | $6,125 |
+| 127 | Paul Bearer (manager) | WWF, Power Pro | $4,258 | $40 (1 app.) | — | **$4,298** | — | $4,298 |
+| 128 | Black Magic | CMLL | — | $4,290 (5 app.) | — | **$4,290** | — | $4,290 |
+| 129 | Bushwhacker Butch | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
+| 130 | Bushwhacker Luke | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
+| 131 | Harley Race (manager) | WCW | $4,258 | — | — | **$4,258** | — | $4,258 |
+| 132 | Hercules | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
+| 133 | Mr. Fuji (manager) | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
+| 134 | One Man Gang | WCW | $4,258 | — | — | **$4,258** | — | $4,258 |
+| 135 | Paul E. Dangerously (manager) | WCW | $4,258 | — | — | **$4,258** | — | $4,258 |
+| 136 | Paul Roma | WWF | $4,258 | — | — | **$4,258** | — | $4,258 |
+| 137 | Dos Caras | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
+| 138 | El Samurai | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
+| 139 | Hiro Saito | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
+| 140 | Kengo Kimura | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
+| 141 | Osamu Kido | NJPW | — | $4,222 | — | **$4,222** | $1,778 | $6,000 |
+| 142 | Tarzan Goto | NJPW, FMW | — | $4,219 (1 app.) | — | **$4,219** | $1,481 | $5,700 |
+| 143 | Felino | CMLL | — | $4,192 (5 app.) | — | **$4,192** | — | $4,192 |
+| 144 | Diamond Studd | USWA | — | $4,162 (4 app.) | — | **$4,162** | — | $4,162 |
+| 145 | Giant Kimala II | AJPW | — | $4,074 | — | **$4,074** | $926 | $5,000 |
+| 146 | Haruka Eigen | AJPW | — | $4,074 | — | **$4,074** | $926 | $5,000 |
+| 147 | Too Cold Scorpio | AJPW | — | $4,074 | — | **$4,074** | $926 | $5,000 |
+| 148 | Tsuyoshi Kikuchi | AJPW | — | $4,074 | — | **$4,074** | $926 | $5,000 |
+| 149 | Scott Steiner | USWA | — | $1,350 (4 app.) | $2,719 | **$4,069** | — | $4,069 |
+| 150 | Kevin Von Erich | USWA | — | $4,015 (4 app.) | — | **$4,015** | — | $4,015 |
+| 151 | Octagón | CMLL | — | $3,900 (4 app.) | — | **$3,900** | — | $3,900 |
+| 152 | Silver King | CMLL | — | $3,592 (4 app.) | — | **$3,592** | — | $3,592 |
+| 153 | Beau Beverly | WWF | $3,548 | — | — | **$3,548** | — | $3,548 |
+| 154 | Blake Beverly | WWF | $3,548 | — | — | **$3,548** | — | $3,548 |
+| 155 | Butch Reed | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
+| 156 | Dick Murdoch | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
+| 157 | Junk Yard Dog | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
+| 158 | Kato | WWF | $3,548 | — | — | **$3,548** | — | $3,548 |
+| 159 | Richard Morton | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
+| 160 | Tanaka | WWF | $3,548 | — | — | **$3,548** | — | $3,548 |
+| 161 | Terry Taylor | WCW | $3,548 | — | — | **$3,548** | — | $3,548 |
+| 162 | Akira Nogami | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
+| 163 | Ken Patera | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
+| 164 | Kokina | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
+| 165 | Kuniaki Kobayashi | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
+| 166 | Masashi Aoyagi | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
+| 167 | Norio Honaga | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
+| 168 | Samu | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
+| 169 | Tony Halme | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
+| 170 | Apolo Dantes | CMLL | — | $3,342 (4 app.) | — | **$3,342** | — | $3,342 |
+| 171 | Billy Joe Travis | AJPW | — | $3,259 | — | **$3,259** | $741 | $4,000 |
+| 172 | Yoshinari Ogawa | AJPW | — | $3,259 | — | **$3,259** | $741 | $4,000 |
+| 173 | Eddie Gilbert | USWA | — | $3,215 (4 app.) | — | **$3,215** | — | $3,215 |
+| 174 | Pierroth Jr. | CMLL | — | $3,150 (6 app.) | — | **$3,150** | — | $3,150 |
+| 175 | Sangre Chicana | CMLL | — | $3,142 (2 app.) | — | **$3,142** | — | $3,142 |
+| 176 | Don Harris | WCW, TWA | $2,839 | $175 (1 app.) | — | **$3,014** | — | $3,014 |
+| 177 | Ron Harris | WCW, TWA | $2,839 | $175 (1 app.) | — | **$3,014** | — | $3,014 |
+| 178 | Chavo Guerrero | CMLL | — | $3,000 (7 app.) | — | **$3,000** | — | $3,000 |
+| 179 | B. Brian Blair | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 180 | Coach (manager) | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 181 | Gen. Adnan (manager) | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 182 | Harvey Wippleman (manager) | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 183 | Jim Brunzell | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 184 | Koko B. Ware | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 185 | Mr. Hughes | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 186 | PN News | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 187 | Robert Gibson | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 188 | SATO | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 189 | Shane Douglas | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 190 | Skinner | WWF | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 191 | Tommy Rich | WCW | $2,839 | — | — | **$2,839** | — | $2,839 |
+| 192 | Corporal Kirchner | NJPW | — | $2,815 | — | **$2,815** | $1,185 | $4,000 |
+| 193 | Keith Hart | NJPW | — | $2,815 | — | **$2,815** | $1,185 | $4,000 |
+| 194 | Mando Guerrero | NJPW | — | $2,815 | — | **$2,815** | $1,185 | $4,000 |
+| 195 | Tom Zenk | WCW | $2,710 | — | — | **$2,710** | — | $2,710 |
+| 196 | Fuerza Guerrera | CMLL | — | $2,700 (4 app.) | — | **$2,700** | — | $2,700 |
+| 197 | Jeff Jarrett | USWA | — | $2,565 (2 app.) | — | **$2,565** | — | $2,565 |
+| 198 | Alexandra York (manager) | WCW | $2,484 | — | — | **$2,484** | — | $2,484 |
+| 199 | Steve Armstrong | WCW | $2,484 | — | — | **$2,484** | — | $2,484 |
+| 200 | Tracy Smothers | WCW | $2,484 | — | — | **$2,484** | — | $2,484 |
+| 201 | Masao Inoue | AJPW | — | $2,444 | — | **$2,444** | $556 | $3,000 |
+| 202 | Richard Slinger | AJPW | — | $2,444 | — | **$2,444** | $556 | $3,000 |
+| 203 | Art Barr | CMLL | — | $2,400 (5 app.) | — | **$2,400** | — | $2,400 |
+| 204 | Atsushi Onita | FMW | — | $2,400 (2 app.) | — | **$2,400** | — | $2,400 |
+| 205 | Brazo de Oro | CMLL | — | $2,400 (6 app.) | — | **$2,400** | — | $2,400 |
+| 206 | Toshiyo Yamada | CMLL | — | $2,400 (5 app.) | — | **$2,400** | — | $2,400 |
+| 207 | Tully Blanchard | USWA | — | $1,350 (4 app.) | $1,001 | **$2,351** | — | $2,351 |
+| 208 | Sam Houston | USWA | — | $2,228 (6 app.) | — | **$2,228** | — | $2,228 |
+| 209 | Jamie Dundee | USWA | — | $2,138 (4 app.) | — | **$2,138** | — | $2,138 |
+| 210 | Big Josh | WCW | $2,129 | — | — | **$2,129** | — | $2,129 |
+| 211 | Bill Irwin | WCW | $2,129 | — | — | **$2,129** | — | $2,129 |
+| 212 | Black Bart | WCW | $2,129 | — | — | **$2,129** | — | $2,129 |
+| 213 | Diamond Dallas Page | WCW | $2,129 | — | — | **$2,129** | — | $2,129 |
+| 214 | Hiroyoshi Tenzan | NJPW | — | $2,111 | — | **$2,111** | $889 | $3,000 |
+| 215 | Jeff Gaylord | NJPW | — | $2,111 | — | **$2,111** | $889 | $3,000 |
+| 216 | Savio Vega | NJPW | — | $2,111 | — | **$2,111** | $889 | $3,000 |
+| 217 | El Brazo | CMLL | — | $2,100 (5 app.) | — | **$2,100** | — | $2,100 |
+| 218 | Dennis Condrey | USWA | — | $2,030 (4 app.) | — | **$2,030** | — | $2,030 |
+| 219 | Bill Dundee | USWA | — | $750 (4 app.) | $1,263 | **$2,013** | — | $2,013 |
+| 220 | Giant Haystacks | ASW | — | $1,400 (4 app.) | $600 | **$2,000** | — | $2,000 |
+| 221 | The Sheik | FMW | — | $2,000 (2 app.) | — | **$2,000** | — | $2,000 |
+| 222 | Ángel Azteca | CMLL | — | $2,000 (6 app.) | — | **$2,000** | — | $2,000 |
+| 223 | Scotty Flamingo | USWA | — | $1,838 (5 app.) | — | **$1,838** | — | $1,838 |
+| 224 | Jerry Estrada | CMLL | — | $1,800 (5 app.) | — | **$1,800** | — | $1,800 |
+| 225 | Brooklyn Brawler | WWF | $1,774 | — | — | **$1,774** | — | $1,774 |
+| 226 | Ozz | WCW | $1,774 | — | — | **$1,774** | — | $1,774 |
+| 227 | Kevin Sullivan | WCW, FMW | $1,290 | $450 (1 app.) | — | **$1,740** | — | $1,740 |
+| 228 | Máscara Año 2000 | CMLL | — | $1,650 (3 app.) | — | **$1,650** | — | $1,650 |
+| 229 | Masakre | CMLL | — | $1,600 (5 app.) | — | **$1,600** | — | $1,600 |
+| 230 | The Lightning Kid | Power Pro, CMLL | — | $1,535 (5 app.) | — | **$1,535** | — | $1,535 |
+| 231 | Lola González | CMLL | — | $1,400 (6 app.) | — | **$1,400** | — | $1,400 |
+| 232 | Mr. Pogo | FMW | — | $1,400 (2 app.) | — | **$1,400** | — | $1,400 |
+| 233 | Missy Hyatt (manager) | USWA | — | $1,375 (6 app.) | — | **$1,375** | — | $1,375 |
+| 234 | Paul Ellering (manager) | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
+| 235 | Grigory Verichev | FMW | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
+| 236 | Jaque Mate | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
+| 237 | Javier Cruz | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
+| 238 | Jerry Lawler | USWA | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
+| 239 | La Diabólica | CMLL | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
+| 240 | Robert Fuller | USWA | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
+| 241 | Bob Backlund | ASW | — | $900 (3 app.) | — | **$900** | — | $900 |
+| 242 | Sabu | FMW | — | $900 (2 app.) | — | **$900** | — | $900 |
 | 243 | Vulcano | CMLL | — | $750 (4 app.) | — | **$750** | — | $750 |
 | 244 | Big Daddy | ASW | — | $700 (2 app.) | — | **$700** | — | $700 |
 | 245 | Big Titan | FMW | — | $700 (2 app.) | — | **$700** | — | $700 |
@@ -370,8 +439,8 @@ Itemized totals match the ledger's payroll for 10 of 15 shows. Where the itemize
 | 318 | Keiko Iwami | FMW | — | $120 (1 app.) | — | **$120** | — | $120 |
 | 319 | The Spellbinder | USWA | — | $120 (2 app.) | — | **$120** | — | $120 |
 | 320 | Bill Watts (staff) | Power Pro | — | $100 (1 app.) | — | **$100** | — | $100 |
-| 321 | Rocky Johnson (staff) | Power Pro | — | $75 (1 app.) | — | **$75** | — | $75 |
-| 322 | Chris Jericho | Power Pro | — | $60 (1 app.) | — | **$60** | — | $60 |
+| 321 | Chris Jericho | Power Pro | — | $60 (1 app.) | $30 | **$90** | — | $90 |
+| 322 | Rocky Johnson (staff) | Power Pro | — | $75 (1 app.) | — | **$75** | — | $75 |
 | 323 | Chris Benoit | Power Pro | — | $45 (1 app.) | — | **$45** | — | $45 |
 | 324 | Johnny Rich | USWA | — | $45 (2 app.) | — | **$45** | — | $45 |
 | 325 | Mike Awesome | Power Pro | — | $45 (1 app.) | — | **$45** | — | $45 |

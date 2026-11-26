@@ -119,7 +119,7 @@ FINANCE._streams = ["Merchandise", "TV rights", "Pay-per-view share", "Home vide
    ppvPrice/ppvShare: PPV buy price and the promotion's share of PPV revenue (WWF: $30, 50%, from SummerSlam 91 on). Announcers and office staff
    come from the Contracts tab (tier O). homeRent/home: rent share at the promotion's own building.
    To log a real figure for one show, add costs:{rent:12000,...} to that row in FINANCE.<key>.rows. */
-FINANCE._costLabels = {talent:"Talent payroll",staff:"Announcers & office staff",rent:"Building rent",tax:"Admission & entertainment tax",event:"Ushers, security & box office",ring:"Ring crew & ring truck",ads:"Advertising & promotion",travel:"Travel & hotels",tv:"TV production",ppv:"Pay-per-view production",cogs:"Merchandise (cost of goods)",office:"Office & overhead",loan:"Talent loan fees (to the home promotion)"};
+FINANCE._costLabels = {talent:"Talent payroll",pool:"Champions' pool (3% of each gate, split among the champions on the card)",staff:"Announcers & office staff",rent:"Building rent",tax:"Admission & entertainment tax",event:"Ushers, security & box office",ring:"Ring crew & ring truck",ads:"Advertising & promotion",travel:"Travel & hotels",tv:"TV production",ppv:"Pay-per-view production",cogs:"Merchandise (cost of goods)",office:"Office & overhead",loan:"Talent loan fees (to the home promotion)"};
 FINANCE._costs = {
  wwf:{rent:[0.15,4000],tax:0.05,event:5000,ring:3000,ads:[0.06,3000],travel:6000,tv:0,tvMonthly:300000,ppv:500000,ppvPrice:30,ppvShare:0.5,cogs:0.40,office:1200000},
  wcw:{rent:[0.15,3000],tax:0.05,event:3500,ring:2500,ads:[0.06,2000],travel:8000,tv:40000,ppv:350000,cogs:0.40,office:700000},

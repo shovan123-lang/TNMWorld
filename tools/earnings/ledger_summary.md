@@ -1,19 +1,19 @@
-**July 1991, world date 7/22 (rebuilt 2026-11-26):** paid out so far $1,906,152 · Japan tour fees still due $182,000 · July projected $2,088,152 · 345 people.
+**July 1991, world date 7/22 (rebuilt 2026-11-26):** paid out so far $2,105,582 · Japan tour fees still due $182,000 · July projected $2,287,582 · 345 people.
 
 | # | Name | Promotions | Paid so far | Tour fees due | July projected |
 |---|---|---|---|---|---|
-| 1 | Hulk Hogan | WWF | $114,388 (incl. $25,678 bonus) | — | $114,388 |
+| 1 | Hulk Hogan | WWF | $134,177 (incl. $45,467 bonus) | — | $134,177 |
 | 2 | The Ultimate Warrior | WWF | $63,871 | — | $63,871 |
 | 3 | Sgt. Slaughter | WWF | $54,066 (incl. $25,678 bonus) | — | $54,066 |
-| 4 | Roddy Piper | WWF | $28,387 | — | $28,387 |
-| 5 | Sid Justice | WWF | $28,387 | — | $28,387 |
-| 6 | The Undertaker | WWF | $28,387 | — | $28,387 |
-| 7 | Sting | WCW, NJPW | $25,878 | $3,889 | $29,767 |
-| 8 | Stan Hansen | USWA, AJPW | $25,794 | $5,556 | $31,350 |
-| 9 | Davey Boy Smith | WWF, AJPW | $24,996 | $2,778 | $27,774 |
-| 10 | Randy Savage | WWF | $24,839 | — | $24,839 |
-| 11 | Rick Rude | WCW, AJPW | $24,602 | $3,333 | $27,935 |
-| 12 | Giant Baba | AJPW | $24,444 | $5,556 | $30,000 |
-| 13 | Jumbo Tsuruta | AJPW | $24,444 | $5,556 | $30,000 |
-| 14 | Big Van Vader | WCW, NJPW | $22,590 | $5,926 | $28,516 |
-| 15 | Mr. Perfect | WWF | $21,290 | — | $21,290 |
+| 4 | Mr. Perfect | WWF | $48,704 (incl. $27,414 bonus) | — | $48,704 |
+| 5 | Sting | WCW, NJPW | $46,276 (incl. $20,398 bonus) | $3,889 | $50,165 |
+| 6 | Konnan | CMLL | $31,150 (incl. $13,240 bonus) | — | $31,150 |
+| 7 | Brian Knobbs | WWF | $30,444 (incl. $19,090 bonus) | — | $30,444 |
+| 8 | Jerry Sags | WWF | $30,444 (incl. $19,090 bonus) | — | $30,444 |
+| 9 | Jumbo Tsuruta | AJPW | $29,618 (incl. $5,174 bonus) | $5,556 | $35,174 |
+| 10 | Roddy Piper | WWF | $28,387 | — | $28,387 |
+| 11 | Sid Justice | WWF | $28,387 | — | $28,387 |
+| 12 | The Undertaker | WWF | $28,387 | — | $28,387 |
+| 13 | Riki Chōshu | NJPW | $26,596 (incl. $6,892 bonus) | $8,296 | $34,892 |
+| 14 | Stan Hansen | USWA, AJPW | $25,794 | $5,556 | $31,350 |
+| 15 | Davey Boy Smith | WWF, AJPW | $24,996 | $2,778 | $27,774 |
