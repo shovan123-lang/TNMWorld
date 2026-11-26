@@ -1694,7 +1694,11 @@ function viewRatings(k){
   const T=tvr(), shows=tvShows(k), eps=T.eps.filter(x=>x.show.p===k), un=T.unrated.filter(x=>x.show.p===k), ppv=T.ppvs.filter(x=>x.p===k);
   const U=shows.length?tvUnit(shows[0]):null;
   const legend=shows.map(s=>{const l=T.byShow[s.id].slice(-1)[0];return `<li style="--k:${tvColor(s)}"><i></i>${esc(s.name)} ${l?`<b>${tvNum(s,l.v)}</b> <span class="mute">${esc(fmt(l.d))}</span>`:'<span class="mute">not rated yet</span>'}</li>`}).join('');
-  const rows=eps.slice().reverse().map(x=>{const ch=x.prev==null?'':(x.v-x.prev);return `<tr><td style="white-space:nowrap">${fmt(x.d)}</td><td><span style="display:inline-block;width:12px;border-top:3px solid ${tvColor(x.show)};border-radius:2px;vertical-align:4px;margin-right:6px"></span>${esc(x.show.name)}${x.e.link&&SITES[k]?` <span class="rwhy">${siteLink(k,x.e.link,'show ↗')}</span>`:''}</td><td class="num"><b>${tvNum(x.show,x.v)}</b></td><td class="num">${ch===''?'<span class="mute">first</span>':ch===0?'<span class="mute">same</span>':(ch>0?'+':'−')+Math.abs(ch).toFixed(1)}</td><td class="rwhy">${esc(tvWhy(x))}</td></tr>`}).join('');
+  /* One table per show (e.g. USWA Worldwide and Championship TV), newest episode first. */
+  const epRow=x=>{const ch=x.prev==null?'':(x.v-x.prev);return `<tr><td style="white-space:nowrap">${fmt(x.d)}${x.e.link&&SITES[k]?` <span class="rwhy">${siteLink(k,x.e.link,'show ↗')}</span>`:''}</td><td class="num"><b>${tvNum(x.show,x.v)}</b></td><td class="num">${ch===''?'<span class="mute">first</span>':ch===0?'<span class="mute">same</span>':(ch>0?'+':'−')+Math.abs(ch).toFixed(1)}</td><td class="rwhy">${esc(tvWhy(x))}</td></tr>`};
+  const showTables=shows.map(s=>{const se=eps.filter(x=>x.show===s).reverse();
+    return `<h3 class="amonth"><span style="display:inline-block;width:14px;border-top:3px solid ${tvColor(s)};border-radius:2px;vertical-align:5px;margin-right:8px"></span>${esc(s.name)} <small>${se.length} rated${s.outlet?' · '+esc(s.outlet):''}</small></h3>
+  ${se.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th class="num">Rating</th><th class="num">Change</th><th>What moved it</th></tr></thead><tbody>${se.map(epRow).join('')}</tbody></table></div>`:'<div class="empty">No episodes rated yet.</div>'}`}).join('');
   const money=v=>'$'+Math.round(v).toLocaleString('en-US');
   const W=RATINGS.weights, pc=v=>Math.round(v*100)+'%';
   return `${shows.length?`<h2 class="sec">TV Ratings <small>Week by week · ${esc(U.label)}</small></h2>
@@ -1703,8 +1707,7 @@ function viewRatings(k){
     <div id="rchart-svg"></div><div class="rtip" id="rtip"></div>
   </figure>
   <p class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 0">${esc(U.long)}. Worked out from each show's card (card rating, headliners, title matches, go-home hype and the crowd), with part of last week's number carried over. <a href="#rhow" onclick="document.getElementById('rhow').open=true">How the ratings work ↓</a> · <a href="#ratings">Every show in the TNM World →</a></p>
-  <h3 class="amonth">Every episode <small>${eps.length} rated</small></h3>
-  ${eps.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th><th class="num">Rating</th><th class="num">Change</th><th>What moved it</th></tr></thead><tbody>${rows}</tbody></table></div>`:'<div class="empty">No episodes rated yet.</div>'}
+  ${showTables}
   ${un.length?`<h3 class="amonth">Not rated yet <small>${un.length}</small></h3><ul class="tf-last">${un.map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${esc(x.show.name)} <span class="mute">· ${x.e.d===WORLD_DATE?'airs today; rated once its results are logged':'aired, but no results are logged yet'}</span></li>`).join('')}</ul>`:''}`:''}
   <h2 class="sec">PPV Buys <small>From the Finance tab</small></h2>
   ${ppv.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Event</th><th class="num">Buys</th><th class="num">To ${esc(P[k].short)}</th></tr></thead><tbody>${ppv.map(x=>`<tr><td style="white-space:nowrap">${fmt(x.d)}</td><td>${esc(x.name)}</td><td class="num">${x.buys!=null?`<b>${x.buys.toLocaleString('en-US')}</b>`:'<span class="mute">Not yet reported</span>'}</td><td class="num">${x.take!=null?money(x.take):'—'}</td></tr>`).join('')}</tbody></table></div>
