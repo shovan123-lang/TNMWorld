@@ -209,8 +209,8 @@ def esc(s):
 
 
 FRONT = 'https://shovan123-lang.github.io/TNMWorld/'
-COLORS = {'uswa': '#a8650f', 'wcw': '#1d3f8f', 'wwf': '#c8102e', 'ajpw': '#136f63', 'njpw': '#d4481a',
-          'cmll': '#6b2fa0', 'asw': '#4a5d23', 'twa': '#a3162b', 'pp': '#b5179e'}
+COLORS = {'uswa': '#1e3a6e', 'wcw': '#33318f', 'wwf': '#13679e', 'ajpw': '#c8151b', 'njpw': '#9d1419', 'cmll': '#1c3d8f', 'asw': '#1b1a17', 'twa': '#a81e2a', 'pp': '#b3261b'}
+ACCENTS = {'uswa': '#c8283a', 'wcw': '#d4a62a', 'wwf': '#e3b21c', 'ajpw': '#ef5a5f', 'njpw': '#f0a800', 'cmll': '#e2a80b', 'asw': '#e0202f', 'twa': '#8d939a', 'pp': '#f28c28'}
 FONTS = ('<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Condensed:wght@400;600;700'
          '&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">')
 # Same newsprint look as the World Report front page (index.html in TNMWorld).
@@ -256,6 +256,7 @@ details ul{margin:4px 0 10px 16px;padding:0}details li{margin:3px 0;font-size:14
 details li a{color:var(--c);font-family:var(--cond);font-weight:700;text-decoration:none}
 footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font-family:var(--cond);font-size:13px;color:var(--mute);text-align:center}
 footer a{font-weight:700;color:var(--ink);text-decoration:none;margin:0 8px}footer a:hover{color:var(--red)}
+nav.main a.on{border-bottom-color:var(--c2,var(--c))}nav.main a:hover{box-shadow:inset 0 -4px 0 var(--c2,var(--c))}h2.sec{border-image:linear-gradient(90deg,var(--c) 0 72px,var(--c2,var(--c)) 72px 120px,var(--ink) 120px) 1}h2.sec::before{background:linear-gradient(var(--c) 0 60%,var(--c2,var(--c)) 60%)}td a,details li a{text-decoration:underline;text-decoration-color:transparent;text-decoration-thickness:2px;text-underline-offset:3px;transition:text-decoration-color .15s}td a:hover,details li a:hover{text-decoration-color:var(--c2,var(--c))}.toc a:hover{background:var(--c);border-color:var(--c);color:#fff}
 @media(max-width:640px){nav.main .opt{display:none}nav.main a{padding:11px 9px}.mast .top span:not(:first-child){display:none}.mast .top{justify-content:center}.phead .stat{text-align:left}}"""
 
 
@@ -267,7 +268,7 @@ def render_html(r):
            '<meta name="viewport" content="width=device-width, initial-scale=1">',
            f'<title>{esc(r["name"])} Title Histories · The TNM World Wrestling Report</title>',
            '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-           FONTS, f'<style>{CSS}</style></head><body style="--c:{c}">',
+           FONTS, f'<style>{CSS}</style></head><body style="--c:{c};--c2:{ACCENTS.get(key, c)}">',
            f'<nav class="main"><div class="wrap"><a href="{FRONT}">&larr; Front Page</a>'
            f'<a href="WELCOME.HTM">{esc(r["name"])} Card List</a><a class="on" href="#">Title Histories</a>'
            f'<span class="sp"></span><a class="opt" href="{FRONT}#calendar">World Calendar</a></div></nav>',
