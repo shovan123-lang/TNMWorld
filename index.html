@@ -1250,9 +1250,17 @@ function tlChamp(r,k){
   return esc(r.c)+(r.m?` <span class="th-mem">(${esc(r.m)})</span>`:'');
 }
 /* the story for the card a title changed hands (or was defended) on, when the site has one */
-function tlStory(k,date){const d=tlDate(date);if(d.length<10||/-00/.test(d))return null;
-  const e=E.find(x=>x.p===k&&x.d===d&&(x.reads||[]).some(r=>ARTICLES[r[1]]&&!ARTICLES[r[1]].series&&aired(r[1])));
-  return e?e.reads.find(r=>ARTICLES[r[1]]&&!ARTICLES[r[1]].series&&aired(r[1]))[1]:null;}
+function tlStory(k,date,hint){const d=tlDate(date);if(d.length<10||/-00/.test(d))return null;
+  const ok=r=>ARTICLES[r[1]]&&!ARTICLES[r[1]].series&&aired(r[1]);
+  const cs=E.filter(x=>x.p===k&&x.d===d&&(x.reads||[]).some(ok));
+  if(!cs.length) return null;
+  // Two cards on one date (a TV taping and a house show): take the one whose town the event or result names
+  const h=String(hint||'').toLowerCase(), town=x=>String(x.city||'').split(',')[0].trim().toLowerCase();
+  let e=cs.find(x=>town(x)&&h.includes(town(x)));
+  if(!e&&cs.length>1){const w=h.match(/[a-z][a-z'.-]{4,}/g)||[], sc=x=>{const m=JSON.stringify(x.m||'').toLowerCase();return w.filter(t=>m.includes(t)).length;};
+    e=cs.reduce((a,b)=>sc(b)>sc(a)?b:a);}
+  e=e||cs[0];
+  return e.reads.find(ok)[1];}
 let thFocus=null;
 function viewPromoTitles(k){
   const p=P[k], led=tlFor(k);
@@ -1270,14 +1278,14 @@ function viewPromoTitles(k){
     const reigns=rows.filter(r=>!r.v).length, defs=rows.reduce((a,r)=>a+(r.def?r.def.length:0),0), changes=rows.filter(r=>r.w&&!r.v).length;
     let n=0; const items=rows.map(r=>{
       if(r.v) return `<li class="th-r vac"><span class="th-n">–</span><div><div class="th-who">Vacant</div><div class="th-when">${tlNice(r.w)}${r.e?' · '+esc(r.e):''}</div>${r.h?`<div class="th-how">${esc(r.h)}</div>`:''}</div></li>`;
-      n++; const sid=r.w&&tlStory(k,r.w), dl=r.def||[];
+      n++; const sid=r.w&&tlStory(k,r.w,(r.e||'')+' '+(r.h||'')), dl=r.def||[];
       const days=r.d!=null?(r.cur?`${r.d} day${r.d===1?'':'s'} and counting`:`${r.d} day${r.d===1?'':'s'}`):(r.x||'');
       return `<li class="th-r${r.cur?' cur':''}"><span class="th-n">${n}</span><div>
         <div class="th-who">${tlChamp(r,k)}${r.cur?' <span class="cur">Current</span>':''}</div>
         <div class="th-when">${r.w?`Won ${tlNice(r.w)}${r.e?' · '+(sid?`<a href="#${sid}">${esc(r.e)}</a>`:esc(r.e)):''}`:'Champion when records begin'}${r.r?` · <span class="th-rt">${esc(r.r)}</span>`:''}</div>
         ${r.h?`<div class="th-how">${esc(r.h)}</div>`:''}
         <div class="th-meta">${days?`<span>${esc(days)}</span>`:''}<span>${dl.length} defense${dl.length===1?'':'s'}</span></div>
-        ${dl.length?`<details class="th-def"><summary>Title defenses</summary><ol>${dl.slice().reverse().map(d=>{const ds=tlStory(k,d[0]);return `<li><span class="d">${ds?`<a href="#${ds}">${tlNice(d[0])}</a>`:tlNice(d[0])}</span><span class="x">${esc(d[1])}</span>${d[2]?`<span class="th-rt">${esc(d[2])}</span>`:''}</li>`}).join('')}</ol></details>`:''}
+        ${dl.length?`<details class="th-def"><summary>Title defenses</summary><ol>${dl.slice().reverse().map(d=>{const ds=tlStory(k,d[0],d[1]);return `<li><span class="d">${ds?`<a href="#${ds}">${tlNice(d[0])}</a>`:tlNice(d[0])}</span><span class="x">${esc(d[1])}</span>${d[2]?`<span class="th-rt">${esc(d[2])}</span>`:''}</li>`}).join('')}</ol></details>`:''}
       </div></li>`;}).reverse().join('');
     const since=cur?(cur.w?`Since ${tlNice(cur.w)}${cur.d!=null?` · ${cur.d} day${cur.d===1?'':'s'}`:''}`:'Champion when records begin'):(last&&last.v?`Vacant since ${tlNice(last.w)}`:'');
     return `<section class="th-card" id="th-${i}" style="--c:${p.c}">${head(cur?tlChamp(cur,k):`<span class="mute">Vacant</span>`,`<div class="th-since">${since}</div><div class="th-counts"><span><b>${reigns}</b> reign${reigns===1?'':'s'}</span><span><b>${defs}</b> defense${defs===1?'':'s'}</span><span><b>${changes}</b> title change${changes===1?'':'s'}</span></div>`)}
