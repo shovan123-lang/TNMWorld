@@ -458,6 +458,13 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 
 .trophy-mini{display:inline-flex;align-items:center;gap:2px;font-family:var(--cond);font-weight:700;font-size:13px;margin-left:6px;vertical-align:middle;line-height:1}
 .trophy-mini svg{width:16px;height:16px}
+.ptag{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;color:#fff;margin-left:4px;vertical-align:middle;line-height:1;flex:none}
+.ptag svg{width:12px;height:12px}
+.ptag.mgr{background:#4b4234}.ptag.w{background:var(--women)}.ptag.mini{background:var(--minis)}
+.tf-name .ptag{width:26px;height:26px;vertical-align:6px}.tf-name .ptag svg{width:18px;height:18px}
+.ptag-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--cond);font-size:13px;color:var(--mute);margin:4px 0 8px}
+.ptag-legend>span{display:inline-flex;align-items:center;gap:5px}.ptag-legend .ptag{margin-left:0}
+.roster .ptag{margin-left:5px;vertical-align:1px}
 .tf-name .trophy-mini{font-size:20px;vertical-align:6px}.tf-name .trophy-mini svg{width:24px;height:24px}
 .trophy-mini.mask,.trophy.mask .ti{color:#b8862b}.trophy-mini.hair,.trophy.hair .ti{color:#6b4a2e}
 .tcase{border:2px solid var(--ink);background:var(--paper);padding:12px 14px;box-shadow:4px 4px 0 #b8862b}
@@ -522,7 +529,7 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={};
 </script>
 <script src="data/titles.js?v=bf7b267d"></script>
-<script src="data/world.js?v=1a985fad"></script>
+<script src="data/world.js?v=16403ce8"></script>
 <script src="data/births.js?v=6c59314b"></script>
 <script src="tools/talent_engine.js?v=9ccfd69c"></script>
 <script src="data/wcw.js?v=a878cee9"></script>
@@ -779,7 +786,7 @@ function talentFileBox(){
   const last=f.run.slice(-3).reverse();
   return `<h2 class="sec">Talent File <small>In the spotlight today</small></h2>
   <div class="tfile">
-    <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')}</div>
+    <div class="tf-name">${esc(f.name)}${ptagIcons(f.name)} ${f.promos.map(pchip).join('')}</div>
     ${tfAgeLine(f)}
     ${tfStats(f)}
     <p class="tf-blurb">${tfBlurb(f)}</p>
@@ -810,7 +817,7 @@ let tfFilter=new Set(), tfSort='matches';
 function viewTalentFileIndex(){
   const T=tfAll(), hasE=typeof EARNINGS!=='undefined';
   const spots=tfSpots();
-  const card=f=>{const x=tfEarn(f),best=tfBest(f),last=f.run[f.run.length-1];return `<a class="tf-card" href="#file/${f.slug}"><div class="tf-name">${esc(f.name)}</div><div class="tf-chips">${f.promos.map(pchip).join('')}</div>
+  const card=f=>{const x=tfEarn(f),best=tfBest(f),last=f.run[f.run.length-1];return `<a class="tf-card" href="#file/${f.slug}"><div class="tf-name">${esc(f.name)}${ptagIcons(f.name)}</div><div class="tf-chips">${f.promos.map(pchip).join('')}</div>
       <div class="tf-mini"><div><b>${esc(f.spot&&f.spot.record||f.record)}</b><span>Record</span></div><div><b>${f.run.length}</b><span>Matches</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div><div class="tf-cash"><b>${x?tfMoney(x.life):'—'}</b><span>Career $</span></div></div>
       ${last?`<div class="tf-lastline"><span class="mute">Last:</span> ${fmt(last.e.d)} · ${esc(last.m[1])}</div>`:''}</a>`};
   return `<h2 class="sec">Talent File <small>${T.list.length} wrestlers${hasE?` · career earnings through ${fmt(EARNINGS.world)}`:''}</small></h2>
@@ -819,6 +826,7 @@ function viewTalentFileIndex(){
   <h3 class="amonth" style="font-size:22px">Every wrestler <small>${T.list.length}</small></h3>
   <div class="efilters tffilters">${ORDER.map(k=>`<button data-f="${k}" class="${!tfFilter.size||tfFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['earn','Career $'],['bonus','Bonuses'],['titles','Title reigns'],['trophies','Mask & hair'],['age','Age'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
+  ${ptagLegend(T.list.map(f=>f.name))}
   <div class="tbl-wrap"><table id="tftbl"><thead><tr><th>Wrestler</th><th>Promotions</th><th class="num">Age</th><th class="num">Record</th><th class="num">Matches</th><th class="num">Best</th><th class="num" id="tfmoneyh">${tfSort==='bonus'?'Bonuses':'Career $'}</th></tr></thead><tbody>${tfRows()}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Every name on every roster, plus wrestlers who have left, anyone else on a pay scale, and named enhancement talent. Records are worked out from the results on the cards (tag matches count for every member); "undecided" results don't count either way. Ages are worked out from each wrestler's date of birth and the World Clock, so they move as the clock does; "—" means no date of birth on record. Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances. Bonuses are champions' pool shares (3% of each card's gate, split among that promotion's champions on the card) plus main-event bonuses.</p>`;
 }
@@ -829,7 +837,7 @@ function tfRows(){
   const val=f=>tfSort==='name'?0:tfSort==='age'?((tfAge(f)||{sort:-1}).sort):tfSort==='wins'?f.w:tfSort==='earn'?((tfEarn(f)||{}).life||0):tfSort==='bonus'?tfBonus(tfEarn(f)):tfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
   return T.list.filter(f=>(!tfFilter.size||f.promos.some(k=>tfFilter.has(k)))&&f.name.toLowerCase().includes(q))
     .sort((a,b)=>val(b)-val(a)||a.name.localeCompare(b.name))
-    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a> ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,tfSort)}</td></tr>`}).join('')
+    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${ptagIcons(f.name)} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,tfSort)}</td></tr>`}).join('')
     || '<tr><td colspan="7" class="mute">No one matches.</td></tr>';
 }
 function bindTalentFile(){
@@ -871,6 +879,27 @@ function tfTrophyIndex(){
 const tfTroph=f=>tfTrophyIndex().get(tfNorm(f.name))||null;
 function tfTrophyBadges(f){const t=tfTroph(f);if(!t)return '';const m=t.masks.length,h=t.hair.length;
   return (m?`<span class="trophy-mini mask" title="${m} mask${m>1?'s':''} won">${ICON_MASK}${m}</span>`:'')+(h?`<span class="trophy-mini hair" title="${h} hair match${h>1?'es':''} won">${ICON_HAIR}${h}</span>`:'');}
+/* Who's a manager, in the women's division or a mini: icons beside the name wherever wrestlers are listed.
+   Women come from WOMEN (data/world.js). Managers: tier M on a pay scale, or a roster note that calls them a manager.
+   Minis: a roster or pay-scale note that starts "Mini". */
+const ICON_MGR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6V4.5C9 3.7 9.7 3 10.5 3h3c.8 0 1.5.7 1.5 1.5V6h4.5c.8 0 1.5.7 1.5 1.5V18c0 .8-.7 1.5-1.5 1.5h-15C3.7 19.5 3 18.8 3 18V7.5C3 6.7 3.7 6 4.5 6H9zm1.5 0h3V4.5h-3V6zM3 11.5h18v1.6H3z" fill="currentColor"/></svg>';
+const ICON_FEM='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5.2" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M12 14.2V22M8 18.5h8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
+const ICON_MINI='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="11" r="2.6" fill="currentColor"/><path d="M8.6 21v-4.2c0-1.6 1.2-2.8 2.8-2.8h1.2c1.6 0 2.8 1.2 2.8 2.8V21z" fill="currentColor"/><path d="M4 3.5h16M12 3.5v3.2M9.8 5.2 12 7l2.2-1.8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const PTAG={mgr:['Manager',ICON_MGR],w:["Women's division",ICON_FEM],mini:['Minis',ICON_MINI]};
+let _PTAGS=null;
+function ptagIndex(){
+  if(_PTAGS) return _PTAGS; const T=new Map(), add=(n,t)=>{const k=tfNorm(n);if(!T.has(k))T.set(k,new Set());T.get(k).add(t);};
+  const isMgr=note=>{const first=String(note||'').split(/[.·;(]/)[0];return /\bmanager\b/i.test(first)&&!/\b(fired|former|ex-|left|lost|new|his|her|their|without)\b/i.test(first);};
+  const isMini=note=>/^Mini\b/i.test(String(note||'').trim());
+  if(typeof WOMEN!=='undefined') WOMEN.forEach(n=>add(n,'w'));
+  ORDER.forEach(k=>{(P[k].roster||[]).forEach(([n,note])=>{if(isMgr(note))add(n,'mgr');if(isMini(note))add(n,'mini');});
+    const c=typeof CONTRACTS!=='undefined'&&CONTRACTS[k]; if(c) c.rows.forEach(r=>{if(r[0]==='M')add(r[1],'mgr');if(isMini(r[3]))add(r[1],'mini');});});
+  return _PTAGS=T;
+}
+const ptags=name=>[...(ptagIndex().get(tfNorm(name))||[])].sort((a,b)=>['mgr','w','mini'].indexOf(a)-['mgr','w','mini'].indexOf(b));
+const ptagIcons=name=>ptags(name).map(t=>`<span class="ptag ${t}" title="${PTAG[t][0]}" aria-label="${PTAG[t][0]}">${PTAG[t][1]}</span>`).join('');
+const ptagWords=name=>ptags(name).map(t=>t==='w'?'Women':PTAG[t][0].replace(/s$/,'')).join(', ');
+const ptagLegend=names=>{const has=new Set(names.flatMap(ptags));return has.size?`<div class="ptag-legend">${['mgr','w','mini'].filter(t=>has.has(t)).map(t=>`<span><span class="ptag ${t}">${PTAG[t][1]}</span>${PTAG[t][0]}</span>`).join('')}</div>`:''};
 function tfTrophyCase(f){
   const t=tfTroph(f); if(!t||!(t.masks.length||t.hair.length||t.lostM.length||t.lostH.length||t.status||t.booked.length)) return '';
   const item=(x,kind)=>`<li class="trophy ${kind}"><span class="ti">${kind==='mask'?ICON_MASK:ICON_HAIR}</span><span class="tt"><b>${esc(x.opp)}</b><span>${apuDate(x.d)}${x.at?' · '+esc(x.at):''}${x.era?' · <em>in this world</em>':''}</span></span></li>`;
@@ -1097,7 +1126,7 @@ function viewTalentFile(slug){
   return `<p class="tf-back"><a href="#file">← Talent File home</a></p>
   <h2 class="sec">Talent File <small><a href="#file" class="tf-allbtn">All ${T.list.length} files</a>${tfIsSpot(f)?' · spotlight':''}</small></h2>
   <div class="tfile big">
-    <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}</div>
+    <div class="tf-name">${esc(f.name)}${ptagIcons(f.name)} ${f.promos.map(pchip).join('')} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}</div>
     ${tfAgeLine(f)}
     ${tfStats(f)}
     <p class="tf-blurb">${tfBlurb(f)}</p>
@@ -1178,7 +1207,7 @@ function viewHome(){
       <div class="kicker" style="--c:var(--${F.lead.p})">${esc(F.lead.kicker)}</div>
       <h4><a href="#${F.lead.id}" style="text-decoration:none">${esc(F.lead.title)}</a></h4>
       <p class="dek">${esc(F.lead.dek)}</p>
-      ${F.lead.paras.map((x,n)=>`<p${n?'':' class="drop"'}>${esc(x)}</p>`).join('')}
+      ${LOGO[F.lead.p]?`<img class="lead-logo" src="${LOGO[F.lead.p]}" alt="${esc((P[F.lead.p]||{}).short||F.lead.p.toUpperCase())}">`:''}${F.lead.paras.map((x,n)=>`<p${n?'':' class="drop"'}>${esc(x)}</p>`).join('')}
       <p style="font-family:var(--cond);font-weight:700"><a href="#${F.lead.id}">Read the full story →</a></p>
       <h3 style="clear:both;padding-top:4px">The rest of the world</h3>
       <div class="grid g2">${F.rest.map(fst).join('')}</div>
@@ -1825,6 +1854,7 @@ function viewPromoTalent(k){
   const opts=[['matches','Matches'],['wins','Wins'],['earn','Career $'],['bonus','Bonuses'],['titles','Title reigns'],['trophies','Mask & hair'],...(hasAge?[['age','Age']]:[]),['name','Name']];
   return `<h2 class="sec">Talent File <small>${list.length} on the ${esc(p.short)} roster</small></h2>
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 6px"><input class="search" id="ptfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="ptfsort" class="tfsort">${opts.map(([v,l])=>`<option value="${v}"${ptfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
+  ${ptagLegend(list.map(f=>f.name))}
   <div class="tbl-wrap"><table id="ptftbl"><thead><tr><th>Wrestler</th><th>Promotions</th>${hasAge?'<th class="num">Age</th>':''}<th class="num">Record</th><th class="num">Matches</th><th class="num">Best</th><th class="num" id="ptfmoneyh">${ptfSort==='bonus'?'Bonuses':'Career $'}</th></tr></thead><tbody>${ptfRows(k)}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Everyone on the ${esc(p.short)} roster. Records and matches count every match on the cards, in any promotion (tag matches count for every member). <a href="#file">All Talent Files →</a></p>`;
 }
@@ -1833,7 +1863,7 @@ function ptfRows(k){
   const val=f=>ptfSort==='name'?0:ptfSort==='age'&&hasAge?((tfAge(f)||{sort:-1}).sort):ptfSort==='wins'?f.w:ptfSort==='earn'?((tfEarn(f)||{}).life||0):ptfSort==='bonus'?tfBonus(tfEarn(f)):ptfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:ptfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
   return ptfList(k).filter(f=>f.name.toLowerCase().includes(q))
     .sort((a,b)=>val(b)-val(a)||a.name.localeCompare(b.name))
-    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a> ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td>${hasAge?`<td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td>`:''}<td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,ptfSort)}</td></tr>`}).join('')
+    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${ptagIcons(f.name)} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td>${hasAge?`<td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td>`:''}<td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,ptfSort)}</td></tr>`}).join('')
     || `<tr><td colspan="${hasAge?7:6}" class="mute">No one matches.</td></tr>`;
 }
 function bindPromoTalent(k){
@@ -1846,7 +1876,7 @@ function miniTalent(k){
   return `<h2 class="sec" style="font-size:22px">Talent File</h2>
   <div class="mtf">${list.length?`<input class="search" id="mtfsearch" placeholder="Find a ${esc(p.short)} wrestler…" autocomplete="off">
   <ul id="mtfres"></ul>
-  <select id="mtfsel" class="tfsort" aria-label="Open a Talent File"><option value="">Pick from the roster (${list.length})</option>${list.map(f=>`<option value="${f.slug}">${esc(f.name)}</option>`).join('')}</select>`
+  <select id="mtfsel" class="tfsort" aria-label="Open a Talent File"><option value="">Pick from the roster (${list.length})</option>${list.map(f=>`<option value="${f.slug}">${esc(f.name)}${(w=>w?' · '+esc(w):'')(ptagWords(f.name))}</option>`).join('')}</select>${ptagLegend(list.map(f=>f.name))}`
   :`<div class="empty">No roster on file yet.</div>`}
   <p class="more"><a href="#${k}/file">Full ${esc(p.short)} Talent File →</a></p></div>`;
 }
@@ -1856,7 +1886,7 @@ function bindMiniTalent(k){
   if(!s||!r) return;
   const hits=()=>{const q=s.value.trim().toLowerCase();return q?ptfList(k).filter(f=>f.name.toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name)):[];};
   s.oninput=()=>{const q=s.value.trim(), h=hits();
-    r.innerHTML=!q?'':h.length?h.slice(0,8).map(f=>`<li><a href="#file/${f.slug}">${esc(f.name)}</a></li>`).join('')+(h.length>8?`<li class="mute">${h.length-8} more on the <a href="#${k}/file">Talent File tab</a></li>`:''):`<li class="mute">No one on the roster matches.</li>`;};
+    r.innerHTML=!q?'':h.length?h.slice(0,8).map(f=>`<li><a href="#file/${f.slug}">${esc(f.name)}</a>${ptagIcons(f.name)}</li>`).join('')+(h.length>8?`<li class="mute">${h.length-8} more on the <a href="#${k}/file">Talent File tab</a></li>`:''):`<li class="mute">No one on the roster matches.</li>`;};
   s.onkeydown=e=>{if(e.key==='Enter'){const h=hits();if(h.length) location.hash='file/'+h[0].slug;}};
 }
 function viewPromo(k,tab){
@@ -1906,7 +1936,7 @@ function viewPromo(k,tab){
   } else if(SERIES[tab]){
     body=viewSeries(k,tab);
   } else if(tab==='roster'){
-    body = p.roster.length? `<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0;gap:10px;flex-wrap:wrap"><input class="search" id="rsearch" placeholder="Search ${p.roster.length} names…"><span class="mute" style="font-family:var(--cond);font-size:13px">${k==='ajpw'?'Number = age as of July 1991':''}</span></div>${(()=>{const card=([n,note],cls)=>{const inj=note.startsWith('INJ:');return `<div data-n="${esc(n.toLowerCase())}"${cls?` class="${cls}"`:''}><b>${esc(n)}</b>${inj?'<span class="flag inj">INJ</span>':''}<span>${esc(inj?note.slice(4):note)||'&nbsp;'}</span></div>`};
+    body = p.roster.length? `<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0;gap:10px;flex-wrap:wrap"><input class="search" id="rsearch" placeholder="Search ${p.roster.length} names…"><span class="mute" style="font-family:var(--cond);font-size:13px">${k==='ajpw'?'Number = age as of July 1991':''}</span></div>${ptagLegend(p.roster.map(r=>r[0]))}${(()=>{const card=([n,note],cls)=>{const inj=note.startsWith('INJ:');return `<div data-n="${esc(n.toLowerCase())}"${cls?` class="${cls}"`:''}><b>${esc(n)}</b>${ptagIcons(n)}${inj?'<span class="flag inj">INJ</span>':''}<span>${esc(inj?note.slice(4):note)||'&nbsp;'}</span></div>`};
       const isW=r=>typeof WOMEN!=='undefined'&&WOMEN.has(r[0]), isMini=r=>/^Mini\b/i.test(r[1]||'');
       const groups=[["Men's division",'',p.roster.filter(r=>!isW(r)&&!isMini(r))],["Women's division",'w',p.roster.filter(isW)],["Mini's division",'mini',p.roster.filter(r=>!isW(r)&&isMini(r))]].filter(g=>g[2].length);
       return groups.length>1?groups.map(([t,c,list])=>`<h3 class="rhead ${c}">${t} <small>${list.length}</small></h3><div class="roster rgrid ${c}">${list.map(r=>card(r,c)).join('')}</div>`).join(''):`<div class="roster rgrid">${p.roster.map(r=>card(r,'')).join('')}</div>`})()}`
