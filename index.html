@@ -387,6 +387,12 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 .res{display:inline-block;min-width:20px;text-align:center;font-family:var(--cond);font-weight:700;font-size:12px;padding:1px 4px;color:#fff;background:var(--mute)}
 .res-w{background:#2f6b3a}.res-l{background:var(--red)}.res-d{background:#8a7d63}
 .tfsort{font-family:var(--cond);font-size:14px;padding:4px 6px;border:2px solid var(--ink);background:var(--paper)}
+.mtf .search,.mtf select{width:100%;max-width:none;box-sizing:border-box}
+.mtf select{margin-top:8px}
+.mtf ul{list-style:none;margin:6px 0 0;padding:0;font-family:var(--cond);font-size:15px}
+.mtf li{padding:5px 0;border-bottom:1px dotted var(--soft)}
+.mtf li a{font-weight:700}
+.mtf .more{font-family:var(--cond);font-size:13px;margin:8px 0 0}
 #tftbl td .pc{margin-right:2px}
 
 /* Talent File: back link + trophies */
@@ -1472,6 +1478,25 @@ function bindPromoTalent(k){
   const redraw=()=>{const b=$('#ptftbl tbody');if(b)b.innerHTML=ptfRows(k);};
   const s=$('#ptfsearch');if(s)s.oninput=redraw; const o=$('#ptfsort');if(o)o.onchange=()=>{ptfSort=o.value;redraw();};
 }
+/* Mini Talent File on a promotion's Overview (in place of Departures): search the roster or pick from the list */
+function miniTalent(k){
+  const p=P[k], list=ptfList(k).slice().sort((a,b)=>a.name.localeCompare(b.name));
+  return `<h2 class="sec" style="font-size:22px">Talent File</h2>
+  <div class="mtf">${list.length?`<input class="search" id="mtfsearch" placeholder="Find a ${esc(p.short)} wrestler…" autocomplete="off">
+  <ul id="mtfres"></ul>
+  <select id="mtfsel" class="tfsort" aria-label="Open a Talent File"><option value="">Pick from the roster (${list.length})</option>${list.map(f=>`<option value="${f.slug}">${esc(f.name)}</option>`).join('')}</select>`
+  :`<div class="empty">No roster on file yet.</div>`}
+  <p class="more"><a href="#${k}/file">Full ${esc(p.short)} Talent File →</a></p></div>`;
+}
+function bindMiniTalent(k){
+  const s=$('#mtfsearch'), r=$('#mtfres'), o=$('#mtfsel');
+  if(o) o.onchange=()=>{if(o.value) location.hash='file/'+o.value;};
+  if(!s||!r) return;
+  const hits=()=>{const q=s.value.trim().toLowerCase();return q?ptfList(k).filter(f=>f.name.toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name)):[];};
+  s.oninput=()=>{const q=s.value.trim(), h=hits();
+    r.innerHTML=!q?'':h.length?h.slice(0,8).map(f=>`<li><a href="#file/${f.slug}">${esc(f.name)}</a></li>`).join('')+(h.length>8?`<li class="mute">${h.length-8} more on the <a href="#${k}/file">Talent File tab</a></li>`:''):`<li class="mute">No one on the roster matches.</li>`;};
+  s.onkeydown=e=>{if(e.key==='Enter'){const h=hits();if(h.length) location.hash='file/'+h[0].slug;}};
+}
 function viewPromo(k,tab){
   const p=P[k]; tab=tab||'overview';
   const ev=E.filter(e=>e.p===k).sort((a,b)=>a.d.localeCompare(b.d));
@@ -1496,7 +1521,7 @@ function viewPromo(k,tab){
         <h2 class="sec" style="font-size:22px">Champions</h2>
         <div class="grid" style="gap:10px">${p.titles.map(t=>belt(k,t)).join('')}</div>
         ${(()=>{const nx=ev.filter(e=>!pastE(e)).slice(0,5);return `<h2 class="sec" style="font-size:22px">Coming Up</h2>${nx.length?`<ul class="nextup">${nx.map(e=>{const ms=(e.m||[]).filter(m=>!/^(Promo|Interview|Segment|Angle|Closing)/i.test(m[0]));const main=ms.find(m=>/^Main/i.test(m[0]))||ms.find(m=>/Title|Triple Crown|IWGP|Championship/i.test(m[0]))||ms.slice(-1)[0];return `<li class="${e.big?'big':''}"><span class="d">${fmt(e.d)}${isToday(e.d)?' <small>Tonight</small>':''}</span><b>${esc(e.type)}</b><span class="mute">${esc([String(e.city||'').split(',')[0],e.venue].filter(Boolean).join(' · '))}</span>${main?`<span class="mm">${esc(main[0].replace(/^Main( event)?:\s*/i,''))}</span>`:''}</li>`}).join('')}</ul><a class="nextall" href="#${k}/schedule">Full schedule →</a>`:'<div class="empty">Nothing on the calendar yet.</div>'}`})()}
-        ${p.departures.length?`<h2 class="sec" style="font-size:22px">Departures</h2><ul style="padding-left:18px;margin:0;font-size:15px">${p.departures.map(d=>`<li><b>${esc(d[0])}</b>: ${esc(d[1])}</li>`).join('')}</ul>`:''}
+        ${miniTalent(k)}
       </aside>
     </div>`;
   } else if(tab==='file'){
@@ -1689,6 +1714,7 @@ function bind(key){
   if(key==='storyarchive') bindStoryArchive();
   if(key==='file') bindTalentFile();
   if(P[key]&&curTab[key]==='file') bindPromoTalent(key);
+  if(P[key]&&(curTab[key]||'overview')==='overview') bindMiniTalent(key);
   const as=$('#asearch'); if(as) as.oninput=()=>{const q=as.value.toLowerCase();document.querySelectorAll('#atbl tbody tr,#acareer tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('.rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
 }
