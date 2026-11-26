@@ -219,6 +219,16 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 .aicon-h{display:inline-flex;align-items:center;gap:12px}h2.sec .aicon{display:block;height:44px;width:auto}
 .arch a .sicon{height:24px;width:auto;vertical-align:middle;margin:-2px 8px 0 0}
 .ev .evicon{height:24px;width:auto;vertical-align:middle;margin:-3px 8px 0 2px}
+/* Show Archive tab: each show list is a drop-down (closed by default), one show per line */
+.arch-dd>summary{list-style:none;cursor:pointer}
+.arch-dd>summary::-webkit-details-marker{display:none}
+.arch-dd>summary h2.sec{align-items:center}
+.arch-dd>summary h2.sec small{flex:1;text-align:right}
+.arch-tog{font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--ink);padding:2px 10px;background:var(--paper);white-space:nowrap}
+.arch-tog::before{content:'▸ Show'}
+.arch-dd[open] .arch-tog::before{content:'▾ Hide'}
+.arch-dd>summary:hover .arch-tog{background:var(--ink);color:var(--paper)}
+.arch-dd .arch{columns:auto;max-width:620px;margin-bottom:8px}
 .ext{display:inline-block;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--c);padding:6px 12px;text-decoration:none;margin-top:8px}
 .ext:hover{background:var(--ink)}
 .photo-r{float:right;width:40%;max-width:320px;margin:4px 0 10px 18px;border:2px solid var(--ink);background:var(--paper2);padding:0}
@@ -1403,7 +1413,7 @@ function viewPromo(k,tab){
   } else if(tab==='archive'){
     const S=SITES[k], n=S.arch.reduce((a,g)=>a+g[1].length,0);
     body=`<div class="box" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div class="kicker">${p.short} Official Archive</div><b style="font-family:var(--head);font-weight:400;font-size:24px;text-transform:uppercase">${S.label}</b><div class="mute" style="font-family:var(--cond);font-size:14px">${n} show pages. Links open the ${p.short} site in a new tab.</div></div><a class="ext" href="${S.base}WELCOME.HTM" target="_blank" rel="noopener">Open the ${p.short} site ↗</a></div>
-    ${S.arch.map(([g,items])=>{const ic=showIcon(k,g);return `<h2 class="sec">${ic?`<span class="aicon-h"><img class="aicon" src="${ic}" alt="">${g}</span>`:g} <small>${items.length} shows</small></h2>${items.length?`<div class="arch">${items.map(([t,f])=>{const li=ic||showIcon(k,t);return siteLink(k,f,(li?`<img class="sicon" src="${li}" alt="">`:'')+esc(t))}).join('')}</div>`:'<div class="empty">Nothing archived here yet.</div>'}`;}).join('')}`;
+    ${S.arch.map(([g,items])=>{const ic=showIcon(k,g);return `<details class="arch-dd"><summary><h2 class="sec">${ic?`<span class="aicon-h"><img class="aicon" src="${ic}" alt="">${g}</span>`:`<span>${g}</span>`}<small>${items.length} show${items.length===1?'':'s'}</small><span class="arch-tog"></span></h2></summary>${items.length?`<div class="arch">${items.map(([t,f])=>{const li=ic||showIcon(k,t);return siteLink(k,f,(li?`<img class="sicon" src="${li}" alt="">`:'')+esc(t))}).join('')}</div>`:'<div class="empty">Nothing archived here yet.</div>'}</details>`;}).join('')}`;
   } else if(tab==='contracts'){
     body=viewContracts(k);
   } else if(tab==='finance'){
