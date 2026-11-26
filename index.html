@@ -494,6 +494,12 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 
 .trophy-mini{display:inline-flex;align-items:center;gap:2px;font-family:var(--cond);font-weight:700;font-size:13px;margin-left:6px;vertical-align:middle;line-height:1}
 .trophy-mini svg{width:16px;height:16px}
+.kfilters{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.kfilters button{display:inline-flex;align-items:center;gap:6px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+.kfilters button small{font-size:11px;font-weight:400;color:var(--mute);letter-spacing:0}
+.kfilters button.on{background:var(--ink);color:var(--paper)}.kfilters button.on small{color:#cfc6b3}
+.kfilters button:disabled{opacity:.4;cursor:default}
+@media(max-width:520px){.kfilters{display:grid;grid-template-columns:1fr 1fr}.kfilters button{justify-content:space-between}}
 .ptag{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;color:#fff;margin-left:4px;vertical-align:middle;line-height:1;flex:none}
 .ptag svg{width:12px;height:12px}
 .ptag.mgr{background:#4b4234}.ptag.w{background:var(--women)}.ptag.mini{background:var(--minis)}
@@ -616,14 +622,34 @@ const monthEnd=m=>{const x=new Date(Date.UTC(+m.slice(0,4),+m.slice(5,7),0));ret
 const storyId=(k,st)=>(st[2]&&ARTICLES[st[2]])?st[2]:Object.keys(ARTICLES).find(id=>ARTICLES[id].p===k&&ARTICLES[id].title===st[0]);
 const kindOf=a=>a.series&&SERIES[a.series]?(a.series==='observer'?'Observer':'Diary'):'Story';
 function pubArticles(k){return Object.keys(ARTICLES).filter(id=>{const a=ARTICLES[id];return P[a.p]&&(!k||a.p===k)&&a.date&&a.date<=WORLD_DATE&&aired(id)}).sort((x,y)=>ARTICLES[y].date.localeCompare(ARTICLES[x].date)||y.localeCompare(x));}
-function storyRow(id,withPromo){const a=ARTICLES[id];return `<li class="srow" data-p="${a.p}" data-t="${esc((a.title+' '+(a.dek||'')+' '+(a.kicker||'')).toLowerCase())}"><span class="d">${fmt(a.date)}</span>${withPromo?pchip(a.p):''}<span class="kind k-${kindOf(a).toLowerCase()}">${kindOf(a)}</span><a href="#${id}"><b>${esc(a.title)}</b></a>${a.dek?`<span class="dek">${esc(a.dek)}</span>`:''}</li>`;}
+function storyRow(id,withPromo){const a=ARTICLES[id];return `<li class="srow" data-p="${a.p}" data-k="${kindOf(a).toLowerCase()}" data-t="${esc((a.title+' '+(a.dek||'')+' '+(a.kicker||'')).toLowerCase())}"><span class="d">${fmt(a.date)}</span>${withPromo?pchip(a.p):''}<span class="kind k-${kindOf(a).toLowerCase()}">${kindOf(a)}</span><a href="#${id}"><b>${esc(a.title)}</b></a>${a.dek?`<span class="dek">${esc(a.dek)}</span>`:''}</li>`;}
 function byWeek(ids,withPromo){const g={};ids.forEach(id=>{(g[weekStart(ARTICLES[id].date)]=g[weekStart(ARTICLES[id].date)]||[]).push(id)});
   return Object.keys(g).sort().reverse().map(w=>`<h3 class="amonth wk-h" data-w="${w}">${fmtWeek(w)}${w===CUR_WEEK?' <small>this week</small>':w===LAST_WEEK?' <small>last week</small>':''}</h3><ul class="slist">${g[w].map(id=>storyRow(id,withPromo)).join('')}</ul>`).join('');}
+/* Stories, Observer reports and From the Road diaries share one list; buttons at the top show one kind.
+   The kind is kept in the address: #wcw/stories/observer, #storyarchive/diary. */
+const KINDS=[['','All'],['story','Stories'],['observer','Observer'],['diary','From the Road']];
+let storyKind='';
+const kindOK=k=>KINDS.some(x=>x[0]===k)?k:'';
+function kindBar(ids){const n=k=>k?ids.filter(id=>kindOf(ARTICLES[id]).toLowerCase()===k).length:ids.length;
+  return `<div class="kfilters" role="group" aria-label="Show">${KINDS.map(([k,l])=>`<button type="button" data-kf="${k}" class="kf-${k||'all'}${storyKind===k?' on':''}" aria-pressed="${storyKind===k}"${k&&!n(k)?' disabled':''}>${l}<small>${n(k)}</small></button>`).join('')}</div>`;}
+function applyStories(){
+  const q=(($('#sasearch')||{}).value||'').toLowerCase(), arch=!!$('.safilters');
+  document.querySelectorAll('.srow').forEach(r=>{r.style.display=((!arch||!saFilter.size||saFilter.has(r.dataset.p))&&(!storyKind||r.dataset.k===storyKind)&&r.dataset.t.includes(q))?'':'none'});
+  document.querySelectorAll('.slist').forEach(u=>{const h=u.previousElementSibling,vis=[...u.children].some(li=>li.style.display!=='none');u.style.display=vis?'':'none';if(h)h.style.display=vis?'':'none'});
+  document.querySelectorAll('.sa-month').forEach(m=>{m.style.display=[...m.querySelectorAll('.srow')].some(li=>li.style.display!=='none')?'':'none'});
+  const none=$('#snone'); if(none) none.style.display=[...document.querySelectorAll('.srow')].some(li=>li.style.display!=='none')?'none':'';
+}
+function bindKindBar(base){
+  document.querySelectorAll('.kfilters button').forEach(b=>b.onclick=()=>{storyKind=b.dataset.kf;
+    document.querySelectorAll('.kfilters button').forEach(x=>{const on=x.dataset.kf===storyKind;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});
+    history.replaceState(null,'','#'+base+(storyKind?'/'+storyKind:''));applyStories();});
+  applyStories();
+}
 function viewStories(k){
   const ids=pubArticles(k).filter(id=>ARTICLES[id].date.slice(0,7)===CUR_MONTH);
   return `<h2 class="sec">Stories <small>${monthLabel(CUR_MONTH)} · ${ids.length}</small></h2>
   <p class="mute" style="font-family:var(--cond);font-size:14px;margin:0 0 6px">Every ${esc(P[k].short)} story, Observer report and diary this month, newest first. Top Storylines on the Overview keep this week and last week. When the month ends, everything here moves to the <a href="#storyarchive">World Story Archive</a>.</p>
-  ${ids.length?byWeek(ids,false):'<div class="empty">No stories yet this month.</div>'}`;
+  ${ids.length?kindBar(ids)+byWeek(ids,false)+'<div class="empty" id="snone" style="display:none">Nothing of that kind this month.</div>':'<div class="empty">No stories yet this month.</div>'}`;
 }
 let saFilter=new Set();
 function viewStoryArchive(){
@@ -632,16 +658,16 @@ function viewStoryArchive(){
   return `<h2 class="sec">Story Archive <small>${ids.length} stories · ${closed.length} closed month${closed.length===1?'':'s'}</small></h2>
   <p style="max-width:780px;margin:0 0 8px">Every story, Observer report and diary from every promotion, by month and week. A month closes on its last day and moves here from the promotion pages; the month still running is at the top.</p>
   <div class="efilters safilters">${ORDER.map(k=>`<button data-f="${k}" class="${!saFilter.size||saFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
+  ${kindBar(ids)}
   <input class="search" id="sasearch" placeholder="Search titles and names…" style="margin:0 0 6px">
+  <div class="empty" id="snone" style="display:none">Nothing matches.</div>
   ${months.map(m=>`<section class="sa-month" data-m="${m}"><h2 class="sec" style="font-size:24px">${monthLabel(m)} <small>${m<CUR_MONTH?'Closed':'In progress · closes '+fmt(monthEnd(m))} · ${g[m].length}</small></h2>${byWeek(g[m],true)}</section>`).join('')||'<div class="empty">Nothing archived yet.</div>'}`;
 }
 function bindStoryArchive(){
-  const apply=()=>{const q=($('#sasearch')||{value:''}).value.toLowerCase();
-    document.querySelectorAll('.srow').forEach(r=>{r.style.display=((!saFilter.size||saFilter.has(r.dataset.p))&&r.dataset.t.includes(q))?'':'none'});
-    document.querySelectorAll('.slist').forEach(u=>{const h=u.previousElementSibling,vis=[...u.children].some(li=>li.style.display!=='none');u.style.display=vis?'':'none';if(h)h.style.display=vis?'':'none'});};
+  const apply=applyStories;
   document.querySelectorAll('.safilters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;if(!saFilter.size){saFilter=new Set([f])}else if(saFilter.has(f)){saFilter.delete(f)}else saFilter.add(f);
     document.querySelectorAll('.safilters button').forEach(x=>x.classList.toggle('off',!!saFilter.size&&!saFilter.has(x.dataset.f)));apply();});
-  const q=$('#sasearch');if(q)q.oninput=apply;apply();
+  const q=$('#sasearch');if(q)q.oninput=apply;bindKindBar('storyarchive');
 }
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
 const aired = id=>{const a=ARTICLES[id];return !(a&&a.airs&&dt(a.airs)>W)||spoilers};
@@ -657,7 +683,7 @@ const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['cal
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
 const TAB_LABEL={overview:'Overview',stories:'Stories',file:'Talent File',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas',ratings:'Ratings'};
-function promoTabs(k){const t=['overview','file','roster','schedule','stories'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(hasRatings(k))t.push('ratings');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');if(typeof APUESTAS!=='undefined'&&APUESTAS[k])t.push('apuestas');Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)t.push(sr)});return t;}
+function promoTabs(k){const t=['overview','file','roster','schedule','stories'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(hasRatings(k))t.push('ratings');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');if(typeof APUESTAS!=='undefined'&&APUESTAS[k])t.push('apuestas');return t;}
 function latestArticle(k){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||''))[0];}
 function renderNav(cur,curT){
   // One list of links per menu, shared by the desktop dropdowns and the phone menu
@@ -1333,12 +1359,6 @@ function viewContracts(k){
   <p class="mute" style="font-family:var(--cond);font-size:13px">Proposed pay scale, November 2026 draft. The booker signs and re-signs every deal; these are the rates to use when he does.</p>`;
 }
 
-function viewSeries(k,sr){
-  const S=SERIES[sr], ids=seriesOf(k,sr), p=P[k];
-  if(!ids.length) return `<div class="empty" style="margin-top:20px">${sr==='observer'?`No Observer reports filed for ${esc(p.short)} yet.`:'Nothing filed yet.'}</div>`;
-  return `<div class="box" style="margin:16px 0"><div class="kicker">${esc(p.short)} · ${esc(S.kicker)}</div><b style="font-family:var(--head);font-weight:400;font-size:28px;text-transform:uppercase">${esc(S.label)}</b><p style="margin:8px 0 0">${esc(S.blurb)} <span class="mute">${ids.length} filed.</span></p></div>
-  ${ids.map(id=>{const a=ARTICLES[id];return `<div class="story sm" style="border-bottom:1px solid var(--soft);padding:10px 0 12px;margin:0"><div class="kicker">${esc(a.kicker)} · ${fmt(a.date)}</div><h4 style="font-size:24px;margin:4px 0;color:${p.c}"><a href="#${id}" style="text-decoration:none">${esc(a.title)}</a></h4><p style="margin:0">${esc(a.dek)} <a href="#${id}" style="font-family:var(--cond);font-weight:700;font-size:14px">Read it →</a></p></div>`}).join('')}`;
-}
 /* One money summary per promotion, shared by the Finance tab and the Money page.
    Talent cost comes from the Talent Earnings tracker when it covers the promotion,
    so the pages always agree: salaries and tour fees day by day to the world date,
@@ -1955,7 +1975,6 @@ function viewPromo(k,tab){
   if(hasRatings(k)) tabs.push(['ratings','Ratings']);
   if(FINANCE[k]) tabs.push(['finance','Finance']);
   if(typeof APUESTAS!=='undefined'&&APUESTAS[k]) tabs.push(['apuestas','Apuestas']);
-  Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)tabs.push([sr,SERIES[sr].label])});
   let body='';
   if(tab==='overview'){
     body=`
@@ -1990,8 +2009,6 @@ function viewPromo(k,tab){
     body=viewApuestas(k);
   } else if(tab==='stories'){
     body=viewStories(k);
-  } else if(SERIES[tab]){
-    body=viewSeries(k,tab);
   } else if(tab==='roster'){
     body = p.roster.length? `<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0;gap:10px;flex-wrap:wrap"><input class="search" id="rsearch" placeholder="Search ${p.roster.length} names…"><span class="mute" style="font-family:var(--cond);font-size:13px">${k==='ajpw'?'Number = age as of July 1991':''}</span></div>${ptagLegend(p.roster.map(r=>r[0]))}${(()=>{const card=([n,note],cls)=>{const inj=note.startsWith('INJ:');return `<div data-n="${esc(n.toLowerCase())}"${cls?` class="${cls}"`:''}><b>${esc(n)}</b>${ptagIcons(n)}${inj?'<span class="flag inj">INJ</span>':''}<span>${esc(inj?note.slice(4):note)||'&nbsp;'}</span></div>`};
       const isW=r=>typeof WOMEN!=='undefined'&&WOMEN.has(r[0]), isMini=r=>/^Mini\b/i.test(r[1]||'');
@@ -2117,7 +2134,7 @@ function viewDepartures(){
 function viewArticle(id){
   const a=ARTICLES[id], p=P[a.p];
   return `<article style="--c:${p.c};max-width:760px;margin:0 auto">
-    <p style="font-family:var(--cond);font-size:13px;margin:14px 0 0"><a href="#${a.p}">← Back to ${p.short}</a>${a.series&&SERIES[a.series]?` · <a href="#${a.p}/${a.series}">All ${esc(SERIES[a.series].label)}</a>`:''}</p>
+    <p style="font-family:var(--cond);font-size:13px;margin:14px 0 0"><a href="#${a.p}">← Back to ${p.short}</a>${a.series&&SERIES[a.series]?` · <a href="#${a.p}/stories/${a.series}">All ${esc(SERIES[a.series].label)}</a>`:''}</p>
     ${a.series==='diary'?`<div style="margin-top:10px;border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);padding:8px 2px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-family:var(--head);font-size:28px;letter-spacing:.04em;text-transform:uppercase">From the Road</span><span style="font-family:var(--cond);font-size:13px;letter-spacing:.08em;text-transform:uppercase">${esc(a.place||'')}</span></div>`:''}
     ${(a.p==='ajpw'||a.p==='twa'||a.news)?`<div style="margin-top:10px;border:3px double var(--ink);padding:8px 12px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:'Courier Prime',monospace"><span style="font-weight:700;font-size:22px;letter-spacing:.02em">THE TNM WRESTLING NEWSLETTER</span><span style="font-size:13px">${a.region||(a.p==='twa'?'Northeast Report':'Japan Report')} · ${fmtWeek(a.date)}</span></div>`:''}
     ${(a.p==='wcw'&&!a.news)?`<div style="margin-top:10px;background:var(--wcw);color:#fff;display:flex;justify-content:space-between;align-items:baseline;padding:6px 12px"><span style="font-family:var(--head);font-size:26px;letter-spacing:.04em">WCW MAGAZINE</span><span style="font-family:var(--cond);font-size:12px;letter-spacing:.1em;text-transform:uppercase">Summer 1991 · The official magazine of WCW</span></div>`:''}
@@ -2127,15 +2144,18 @@ function viewArticle(id){
     <div style="font-family:var(--cond);font-size:13px;text-transform:uppercase;letter-spacing:.08em;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px 0;margin-bottom:18px">${esc(a.by)} · ${fmtLong(a.date)}</div>
     <div class="box" style="float:right;width:260px;margin:0 0 14px 20px;font-family:var(--cond);font-size:14px" id="factbox"><div class="kicker">${esc(a.factTitle||'Tale of the Tape')}</div>${a.facts.map(f=>`<div style="border-bottom:1px dotted var(--soft);padding:4px 0"><span class="mute" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em">${esc(f[0])}</span><br><b>${esc(f[1])}</b></div>`).join('')}</div>
     <div class="story" style="font-size:18px;line-height:1.6;${(a.p==='ajpw'||a.p==='twa'||a.news)?"font-family:'Courier Prime',monospace;font-size:16.5px":''}${a.series==='diary'?';font-style:italic':''}">${a.img?`<figure class="abadge photo"><img src="${esc(a.img[0])}" alt="${esc(a.img[1]||a.title)}"><figcaption>${esc(a.img[1]||'')}</figcaption></figure>`:`<figure class="abadge" style="--c:${p.c}">${LOGO[a.p]?`<img src="${LOGO[a.p]}" alt="${esc(p.short)}">`:`<b>${esc(p.short)}</b>`}<figcaption>${esc(p.short)}<br>${fmt(a.date)}</figcaption></figure>`}${a.body.map((b,i)=>b[0]==='h'?`<h3 style="font-size:18px;color:${p.c};margin-top:22px;clear:none">${esc(b[1])}</h3>`:`<p class="${i===0?'drop':''}">${esc(b[1])}</p>`).join('')}</div>
-    <div style="clear:both;border-top:4px double var(--ink);margin-top:24px;padding-top:10px;font-family:var(--cond);font-size:14px">${a.series&&SERIES[a.series]?`<a href="#${a.p}/${a.series}">More ${esc(SERIES[a.series].label)} →</a> · `:''}${a.series==='diary'?(()=>{const f=tfAll().list.find(x=>tfNorm(x.name)===tfNorm(a.by));return f?`<a href="#file/${f.slug}">${esc(f.name)}'s Talent File →</a> · `:''})():''}<a href="#${a.p}">More from ${p.short} →</a> · <a href="#calendar">World Calendar →</a></div>
+    <div style="clear:both;border-top:4px double var(--ink);margin-top:24px;padding-top:10px;font-family:var(--cond);font-size:14px">${a.series&&SERIES[a.series]?`<a href="#${a.p}/stories/${a.series}">More ${esc(SERIES[a.series].label)} →</a> · `:''}${a.series==='diary'?(()=>{const f=tfAll().list.find(x=>tfNorm(x.name)===tfNorm(a.by));return f?`<a href="#file/${f.slug}">${esc(f.name)}'s Talent File →</a> · `:''})():''}<a href="#${a.p}">More from ${p.short} →</a> · <a href="#calendar">World Calendar →</a></div>
   </article>`;
 }
 /* =========================== ROUTER =========================== */
 let curTab={};
 function route(){
   document.querySelector('nav.main')&&document.querySelector('nav.main').classList.remove('open');document.body.classList.remove('mnav-open');
-  let h=(location.hash||'#home').slice(1), t=null;
-  if(h.includes('/')){[h,t]=h.split('/');}
+  let h=(location.hash||'#home').slice(1), t=null, f=null;
+  if(h.includes('/')){[h,t,f]=h.split('/');}
+  // Observer Reports and From the Road are now kinds on the Stories tab: old links land there
+  if(P[h]&&SERIES[t]){f=t;t='stories';history.replaceState(null,'','#'+h+'/stories/'+f);}
+  storyKind=kindOK(P[h]&&t==='stories'?f||'':h==='storyarchive'?t||'':'');
   // Cards & Results became each promotion's Talent File tab: old links land there
   if(P[h]&&t==='shows'){t='file';history.replaceState(null,'','#'+h+'/file');}
   if(ARTICLES[h]){renderNav(h==='world-who-gets-paid'?h:ARTICLES[h].p);$('#view').innerHTML=viewArticle(h);return;}
@@ -2167,6 +2187,7 @@ function bind(key){
   if(key==='earnings') bindEarnings();
   if(key==='ratings') bindWorldRatings();
   if(key==='storyarchive') bindStoryArchive();
+  if(P[key]&&curTab[key]==='stories') bindKindBar(key+'/stories');
   if(key==='file') bindTalentFile();
   if(P[key]&&curTab[key]==='file') bindPromoTalent(key);
   if(P[key]&&(curTab[key]||'overview')==='overview') bindMiniTalent(key);
