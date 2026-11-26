@@ -77,7 +77,7 @@ function tvRatings(D) {
   const STOP = new Set(["the", "mr", "jr", "sr", "big", "el", "la", "de", "del", "von", "van", "dr", "sgt", "ii", "iii"]);
   const star = r => {const s = String(r || "").replace(/\s+/g, "").toUpperCase(); if (!s) return null; if (s === "DUD") return 0;
     const m = s.match(/^(-?)(\**)(?:(\d)\/(\d))?\**$/); if (!m || (!m[2] && !m[3])) return null; const v = m[2].length + (m[3] ? m[3] / m[4] : 0); return m[1] ? -v : v;};
-  const ran = e => e.d < W && (e.ran ? true : (D.P[e.p] && D.P[e.p].asOf ? e.d <= D.P[e.p].asOf : e.d < W));
+  const ran = e => e.ran ? e.d <= W : e.d < W && (D.P[e.p] && D.P[e.p].asOf ? e.d <= D.P[e.p].asOf : true);   // a card marked ran counts on the world date too, as in the Show Archive
   const starText = v => {const r = Math.round(v * 4) / 4, w = Math.floor(r), f = Math.round((r - w) * 4); return r <= 0 ? "DUD" : "*".repeat(w) + (f ? (f === 2 ? "1/2" : f + "/4") : "");};
   const realM = m => (m || []).filter(x => x && x[0] && x[0] !== "Card not set");
   const crowdOf = g => {const s = String(g || ""); if (/^\$/.test(s)) return null; const a = s.match(/^~?([\d,]+)/); return a ? +a[1].replace(/,/g, "") : null;};
