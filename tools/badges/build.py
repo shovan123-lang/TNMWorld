@@ -6,8 +6,8 @@ from PIL import Image, ImageDraw, ImageFont
 ANTON = '/usr/share/fonts/truetype/google-fonts/ofl/anton/Anton-Regular.ttf'
 W, H = 400, 234
 
-def badge(out, logo, lines, fill, shadow, logo_h=110):
-    im = Image.new('RGB', (W, H), (0, 0, 0))
+def badge(out, logo, lines, fill, shadow, logo_h=110, bg=(0, 0, 0)):
+    im = Image.new('RGB', (W, H), bg)
     lg = Image.open(logo).convert('RGBA')
     s = logo_h / lg.height; lg = lg.resize((round(lg.width * s), logo_h), Image.LANCZOS)
     if lg.width > W - 30:
@@ -73,3 +73,15 @@ def starwars(out):
     im.save(out, optimize=True)
 
 starwars('img/uswastarwars-logo.png')
+
+# AJPW (red logo, so a white card) and NJPW (the lion logo is drawn from its SVG first:
+# rsvg-convert -h 400 img/njpw-logo.svg -o /tmp/njpw-raster.png)
+AJRED, INK, WHITE2 = (200, 20, 30), (20, 20, 20), (250, 248, 242)
+badge('img/ajpwtv-logo.png', 'img/ajpw-logo.png', ['NIPPON TV'], AJRED, INK, 104, WHITE2)
+badge('img/ajpwhouse-logo.png', 'img/ajpw-logo.png', ['HOUSE SHOW'], AJRED, INK, 104, WHITE2)
+import os, subprocess
+if not os.path.exists('/tmp/njpw-raster.png'):
+    subprocess.run(['rsvg-convert', '-h', '400', 'img/njpw-logo.svg', '-o', '/tmp/njpw-raster.png'], check=True)
+NJYEL, NJRED = (250, 200, 0), (220, 30, 20)
+badge('img/njpwtv-logo.png', '/tmp/njpw-raster.png', ['WORLD PRO', 'WRESTLING'], NJYEL, NJRED, 104)
+badge('img/njpwhouse-logo.png', '/tmp/njpw-raster.png', ['HOUSE SHOW'], NJYEL, NJRED, 118)
