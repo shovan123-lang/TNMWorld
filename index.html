@@ -307,6 +307,7 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 .arch a .sicon{height:24px;width:auto;vertical-align:middle;margin:-2px 8px 0 0}
 .arch a .sicon.own{height:44px;max-width:150px;object-fit:contain;margin:-4px 10px 0 0}
 .av-logo{text-align:center;margin:14px 0 6px}.av-logo img{max-height:150px;max-width:min(100%,520px);height:auto;width:auto}
+.av-logo.sec img{max-height:96px;max-width:min(100%,340px)}
 .ev .evicon{height:24px;width:auto;vertical-align:middle;margin:-3px 8px 0 2px}
 .show header .evicon{height:26px;width:auto;vertical-align:middle;margin:-4px 8px 0 0}
 /* Show Archive tab: each show list is a drop-down (closed by default), one show per line */
@@ -1175,6 +1176,7 @@ const BELT_IMG=[
   {k:'ajpw',match:/^world tag team$/i,src:'img/belts/ajpw-world-tag.webp'},
   {k:'uswa',match:/^unified world( heavyweight)?$/i,src:'img/belts/uswa-unified-world.webp'},
   {k:'uswa',match:/^(world )?tag team$/i,src:'img/belts/uswa-tag-team.webp'},
+  {k:'uswa',match:/^southern( heavyweight)?$/i,src:'img/belts/uswa-southern-heavyweight.webp'},
   {k:'twa',match:/^(twa )?heavyweight$/i,src:'img/belts/twa-heavyweight.webp'},
   {k:'cmll',match:/^mexican national heavyweight$/i,src:'img/belts/cmll-heavyweight.webp'},
   {k:'cmll',match:/^(cmll )?world trios$/i,src:'img/belts/cmll-world-trios.webp'},
@@ -2328,12 +2330,13 @@ async function loadArcPage(k,id){
   if(styled) avFrame(box,d); else box.innerHTML=avText(d,pbp);
   avShowLogo(box,k,id);}
 /* A show with its own logo (the Bash, WrestleFest, Star Wars) gets it above the page's headline */
+/* ...and every other show gets its section's badge (Worldwide, Championship TV, Supercards & Specials, House Shows...) */
 function avPageLogo(k,id){
-  for(const g of SITES[k].arch||[]) for(const [t,f] of g[1]||[]) if(f===id){const ic=showIcon(k,t);if(ic)return ic;}
-  return '';}
+  for(const g of SITES[k].arch||[]) for(const [t,f] of g[1]||[]) if(f===id){const own=showIcon(k,t);if(own)return [own,false];const sec=showIcon(k,g[0]);if(sec)return [sec,true];}
+  return null;}
 function avShowLogo(box,k,id){
-  const src=avPageLogo(k,id);if(!src)return;
-  const fig=document.createElement('div');fig.className='av-logo';fig.innerHTML=`<img src="${src}" alt="">`;
+  const lg=avPageLogo(k,id);if(!lg)return;const [src,sec]=lg;
+  const fig=document.createElement('div');fig.className='av-logo'+(sec?' sec':'');fig.innerHTML=`<img src="${src}" alt="">`;
   const h=box.querySelector('.av-doc h2.av-h');
   if(h) h.parentNode.insertBefore(fig,h); else box.insertBefore(fig,box.firstChild);}
 /* Show Archive tab: pages on the official site the World Report doesn't list yet */
