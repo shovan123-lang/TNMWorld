@@ -384,6 +384,9 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 .trophy.mask{border-left:4px solid #b8862b}.trophy.hair{border-left:4px solid #6b4a2e}
 .trophy .tt{display:flex;flex-direction:column;font-family:var(--cond);line-height:1.25}.trophy .tt b{font-size:15.5px}.trophy .tt span{font-size:12.5px;color:var(--mute)}
 .tlost{font-family:var(--cond);font-size:14px;margin:8px 0 0}
+
+.trophy-mini.tbelt{color:#b8862b}.trophy-mini.tbelt svg{width:26px;height:15px}.tf-name .trophy-mini.tbelt svg{width:40px;height:22px}
+table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 </style>
 </head>
 <body>
@@ -404,7 +407,8 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 /* Data containers. Each promotion's file in data/ fills these in. */
 const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={};
 </script>
-<script src="data/world.js?v=8f131e78"></script>
+<script src="data/titles.js?v=bf7b267d"></script>
+<script src="data/world.js?v=d84ebcc1"></script>
 <script src="tools/talent_engine.js?v=ab2c23d3"></script>
 <script src="data/wcw.js?v=62b8019d"></script>
 <script src="data/wwf.js?v=dd5bb16e"></script>
@@ -634,16 +638,16 @@ function viewTalentFileIndex(){
   <div class="tf-grid">${spots.map(card).join('')}</div>
   <h3 class="amonth" style="font-size:22px">Every wrestler <small>${T.list.length}</small></h3>
   <div class="efilters tffilters">${ORDER.map(k=>`<button data-f="${k}" class="${!tfFilter.size||tfFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['earn','Career $'],['trophies','Trophies'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['earn','Career $'],['titles','Title reigns'],['trophies','Mask & hair'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
   <div class="tbl-wrap"><table id="tftbl"><thead><tr><th>Wrestler</th><th>Promotions</th><th class="num">Record</th><th class="num">Matches</th><th class="num">Best</th><th class="num">Career $</th></tr></thead><tbody>${tfRows()}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Every name on every roster. Records are worked out from the results on the cards (tag matches count for every member); "undecided" results don't count either way. Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances.</p>`;
 }
 function tfRows(){
   const T=tfAll(), q=(($('#tfsearch')||{}).value||'').toLowerCase();
-  const val=f=>tfSort==='name'?0:tfSort==='wins'?f.w:tfSort==='earn'?((tfEarn(f)||{}).life||0):tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
+  const val=f=>tfSort==='name'?0:tfSort==='wins'?f.w:tfSort==='earn'?((tfEarn(f)||{}).life||0):tfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
   return T.list.filter(f=>(!tfFilter.size||f.promos.some(k=>tfFilter.has(k)))&&f.name.toLowerCase().includes(q))
     .sort((a,b)=>val(b)-val(a)||a.name.localeCompare(b.name))
-    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a> ${tfTrophyBadges(f)}${f.spot?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${x?tfMoney(x.life):'—'}</td></tr>`}).join('')
+    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a> ${tfBeltBadge(f)}${tfTrophyBadges(f)}${f.spot?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${x?tfMoney(x.life):'—'}</td></tr>`}).join('')
     || '<tr><td colspan="6" class="mute">No one matches.</td></tr>';
 }
 function bindTalentFile(){
@@ -699,6 +703,53 @@ function tfTrophyCase(f){
     <p class="mute" style="font-family:var(--cond);font-size:12.5px;margin:6px 0 0">Career wagers before July 1991 come from the record books; anything marked "in this world" was won here. Full records on the <a href="#cmll/apuestas">CMLL Apuestas</a> page.</p>
   </div>`;
 }
+
+/* Championships from the title lineages (data/titles.js, shared with the Championship Ledger) */
+const ICON_BELT='<svg viewBox="0 0 44 24" aria-hidden="true"><rect x="0" y="7" width="44" height="10" rx="2" fill="currentColor" opacity=".55"/><ellipse cx="22" cy="12" rx="10" ry="9" fill="currentColor"/><ellipse cx="22" cy="12" rx="6" ry="5" fill="#fff" opacity=".55"/></svg>';
+const LEDGER_KEY={powerpro:'pp'};
+const tlDate=s=>{s=String(s||'');let m=/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s);if(m)return `${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+  m=/^([A-Z][a-z]{2})[a-z]*\.?\s+(\d{4})$/.exec(s);if(m){const i=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(m[1]);return `${m[2]}-${String(i+1).padStart(2,'0')}-00`;}
+  m=/(\d{4})/.exec(s);return m?m[1]+'-00-00':'0000';};
+let _BELTS=null;
+function tfBeltIndex(){
+  if(_BELTS) return _BELTS; const B=new Map();
+  if(typeof TITLE_LEDGER==='undefined') return _BELTS=B;
+  const teams=Object.entries(typeof TEAMS!=='undefined'?TEAMS:{}).map(([t,m])=>[tfNorm(t).replace(/^the /,''),m]);
+  const resolve=(champ,k)=>{
+    const whole=tfNorm(champ).replace(/^the /,''), tm=teams.find(([t])=>t===whole); if(tm) return tm[1];
+    const roster=((P[k]&&P[k].roster)||[]).map(r=>r[0]), out=[];
+    champ.split(/\s*(?:&|\band\b|,)\s*/).forEach(piece=>{
+      const n=tfNorm(piece).replace(/^the /,''); if(!n) return;
+      const ex=roster.find(r=>tfNorm(r)===n)||tfAll().list.find(f=>tfNorm(f.name)===n);
+      if(ex){out.push(ex.name||ex);return;}
+      const tm2=teams.find(([t])=>t===n); if(tm2){out.push(...tm2[1]);return;}
+      const toks=n.split(' ').filter(x=>x.length>=3), hits=roster.filter(r=>{const rt=tfNorm(r).split(' ');return toks.length&&toks.every(t=>rt.includes(t))});
+      if(hits.length===1) out.push(hits[0]);
+    });
+    return out;
+  };
+  TITLE_LEDGER.forEach(pr=>{const k=LEDGER_KEY[pr.id]||pr.id;
+    (pr.titles||[]).forEach(t=>(t.L||[]).forEach(r=>{ if(!r.c) return;
+      const defs=(r.def||[]).filter(d=>tlDate(d[0])<=WORLD_DATE);
+      const rec={k,title:t.t,champ:r.c,won:r.w,wonD:tlDate(r.w),event:r.e||'',how:r.h||'',days:r.d,cur:!!r.cur,defs:defs.length,url:pr.url};
+      if(rec.wonD>WORLD_DATE) return;
+      resolve(r.c,k).forEach(n=>{const key=tfNorm(n);if(!B.has(key))B.set(key,[]);B.get(key).push(rec);});
+    }));
+  });
+  for(const v of B.values()) v.sort((a,b)=>b.wonD.localeCompare(a.wonD));
+  return _BELTS=B;
+}
+const tfBelts=f=>tfBeltIndex().get(tfNorm(f.name))||[];
+function tfBeltBadge(f){const b=tfBelts(f);return b.length?`<span class="trophy-mini tbelt" title="${b.length} title reign${b.length>1?'s':''}">${ICON_BELT}${b.length}</span>`:'';}
+function tfChampionships(f){
+  const b=tfBelts(f); if(!b.length) return '';
+  const cur=b.filter(x=>x.cur).length;
+  return `<h3 class="amonth" style="font-size:22px">Championships <small>${b.length} reign${b.length===1?'':'s'}${cur?` · ${cur} current`:''}</small></h3>
+  <div class="tbl-wrap"><table class="tf-reigns"><thead><tr><th></th><th>Title</th><th>Won</th><th class="num">Days</th><th class="num">Defenses</th></tr></thead><tbody>
+  ${b.map(x=>`<tr${x.cur?' class="now"':''}><td style="width:1%">${pchip(x.k)}</td><td><b>${esc(P[x.k]?P[x.k].short:'')} ${esc(x.title)}</b>${x.cur?' <span class="cur">Current</span>':''}${tfNorm(x.champ)!==tfNorm(f.name)?`<br><span class="mute" style="font-size:13px">as ${esc(x.champ)}</span>`:''}<div class="mute" style="font-size:13px">${esc(x.how)}</div></td><td style="white-space:nowrap">${esc(x.won)}<br><span class="mute" style="font-size:13px">${esc(x.event)}</span></td><td class="num">${x.days!=null?x.days+(x.cur?'+':''):'—'}</td><td class="num">${x.defs}</td></tr>`).join('')}
+  </tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:12.5px;margin:4px 0 0">Title reigns from the TNM game's own records (each promotion's title lineage, as shown in the <a href="titles.html">Championship Ledger</a>). Nothing from outside the game is counted.</p>`;
+}
 function viewTalentFile(slug){
   const T=tfAll(); if(!T.list.length) return `<div class="empty">No Talent File set.</div>`;
   const f=slug?T.bySlug.get(slug):null;
@@ -709,10 +760,11 @@ function viewTalentFile(slug){
   return `<p class="tf-back"><a href="#file">← Talent File home</a></p>
   <h2 class="sec">Talent File <small><a href="#file" class="tf-allbtn">All ${T.list.length} files</a>${f.spot?' · spotlight':''}</small></h2>
   <div class="tfile big">
-    <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')} ${tfTrophyBadges(f)}</div>
+    <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')} ${tfBeltBadge(f)}${tfTrophyBadges(f)}</div>
     ${tfStats(f)}
     <p class="tf-blurb">${tfBlurb(f)}</p>
   </div>
+  ${tfChampionships(f)}
   ${tfTrophyCase(f)}
   ${tfEarnBlock(f)}
   <h3 class="amonth" style="font-size:22px">Results <small>${f.run.length}</small></h3>
