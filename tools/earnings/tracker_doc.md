@@ -2,7 +2,7 @@
 
 Running record of what every wrestler and manager has been paid this month, across all nine promotions. Started 2026-11-11 (Sean). **Rebuilt every time the world clock moves** and after every show is logged. The same tracker is on the website: World → Talent Earnings (shovan123-lang.github.io/TNMWorld/#earnings), with a top-10 on each promotion's Finance tab and a top-5 on the front page.
 
-**Month:** July 1991 · **World date:** 1991-07-22 · **Last rebuilt:** 2026-11-25
+**Month:** July 1991 · **World date:** 1991-07-22 · **Last rebuilt:** 2026-11-26
 **Paid out so far:** $1,907,281 · **Japan tour fees still due:** $182,556 · **July projected:** $2,089,837 · **People:** 345
 
 

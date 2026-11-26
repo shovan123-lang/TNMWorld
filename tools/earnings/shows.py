@@ -128,7 +128,21 @@ SHOWS+=[
 # ---- Salaried promotions (WWF, WCW): salary accrues day by day through the world date.
 MONTH = "1991-07"; DAYS_IN_MONTH = 31
 SALARY_START = {"Tom Zenk": 11}   # day of the month a salary starts (signed mid-month)
-NOT_ON_SCALE = ["Kevin Sullivan (WCW): worked 7/5, 7/6 and 7/8 but quit 7/8 and isn't on the pay scale, so he isn't paid here"]
+NOT_ON_SCALE = ["Kevin Sullivan (WCW): worked 7/5, 7/6 and 7/8 but quit 7/8 and isn't on the pay scale, so he isn't paid here",
+ "Rob Zakowski (USWA): re-signed 7/22 at $45 an appearance (was $30) with $300 a week guaranteed for 40 cards; a week his USWA pay comes in under $300 is topped up once the week is over"]
+
+# ---- Rate changes: shows before the date pay the old base rate (CONTRACTS has the new one).
+RATE_BEFORE = {
+ "uswa": {"Rob Zakowski": ("1991-07-22", 30)},   # re-signed 7/22/91 at $45 (was $30). Sean, 2026-11-26.
+}
+
+# ---- Weekly guarantees: the promotion tops a wrestler's pay up to `week` for every pay week (Monday to Sunday)
+# from `start`, until `cards` appearances are used. A week counts once the world date is past its Sunday,
+# and is paid in the month its Sunday falls in. `carry`: {"YYYY-MM-DD" (that Sunday): $} for show pay that
+# week already earned in the month before (fill it in when a new month's SHOWS list starts).
+GUARANTEES = {
+ "uswa": {"Rob Zakowski": dict(week=300, start="1991-07-22", cards=40, carry={})},   # Sean, 2026-11-26
+}
 
 # ---- One-off bonuses: (promo, date, label, {name: amount})
 BONUSES = [

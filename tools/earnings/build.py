@@ -51,7 +51,9 @@ for k,who in S.PER_NIGHT.items():
       p["lines"].append(dict(p=k,d=d,what=lab+" · per appearance (${:,} a night, in place of the tour fee)".format(r),amt=r,kind="show"))
 showlist=[]
 for s in S.SHOWS:
-  R=rate[s['p']]; pay={n:R[n]*s['mult'] for n in s['people']}; pay.update(s.get('extra',{}))
+  R=rate[s['p']]; RB=getattr(S,'RATE_BEFORE',{}).get(s['p'],{})
+  base=lambda n:RB[n][1] if n in RB and s['d']<RB[n][0] else R[n]
+  pay={n:base(n)*s['mult'] for n in s['people']}; pay.update(s.get('extra',{}))
   cut={}
   for pct,names in s.get('main',[])+s.get('semi',[]):
     for n in names: cut[n]=cut.get(n,0)+s['gate']*pct/len(names)
@@ -59,9 +61,26 @@ for s in S.SHOWS:
   for n,v in pay.items():
     c=cut.get(n,0); amt=v+c; tot+=amt
     p=get(n,s['p'],tier.get((s['p'],n),"F")); p["shows"]+=amt; p["apps"]+=1
-    lab=("{}× base (${:,})".format(s['mult'],R[n]) if n in R else s.get("extra_label","enhancement fee"))+(" + ${:,.2f} gate cut".format(c) if c else "")
+    lab=("{}× base (${:,})".format(s['mult'],base(n)) if n in R else s.get("extra_label","enhancement fee"))+(" + ${:,.2f} gate cut".format(c) if c else "")
     p["lines"].append(dict(p=s['p'],d=s['d'],what=s['show']+" · "+lab,amt=round(amt,2),kind="show"))
   showlist.append(dict(p=s['p'],d=s['d'],show=s['show'],n=len(pay),total=round(tot,2),logged=s['logged']))
+# ---- Weekly guarantees (S.GUARANTEES): top a week's pay up to the floor once the week is over ----
+from datetime import timedelta as _TD
+for k,who in getattr(S,'GUARANTEES',{}).items():
+  for n,g in who.items():
+    p=get(ALIAS.get(n,n),k,tier.get((k,n),"A")); mon=_dd(g['start'])-_TD(days=_dd(g['start']).weekday())
+    while True:
+      sun=mon+_TD(days=6); a,b=mon.isoformat(),sun.isoformat()
+      if b>=WORLD: break                                   # this week isn't over yet
+      if b[:7]==S.MONTH and b>=g['start']:
+        before=sum(1 for s in S.SHOWS if s['p']==k and g['start']<=s['d']<a and n in s['people'])
+        if before>=g['cards']: break                       # the guaranteed cards are used up
+        wk=sum(l['amt'] for l in p['lines'] if l['p']==k and l['kind']=='show' and a<=l['d']<=b)+g.get('carry',{}).get(b,0)
+        top=round(max(0,g['week']-wk),2)
+        if top:
+          p["shows"]+=top
+          p["lines"].append(dict(p=k,d=b,what="Weekly guarantee, week of {}/{}–{}/{}: ${:,.0f} in show pay, topped up to ${:,}".format(mon.month,mon.day,sun.month,sun.day,wk,g['week']),amt=top,kind="guarantee"))
+      mon+=_TD(days=7)
 # ---- Lifetime (career) earnings ----
 # tools/earnings/lifetime.json keeps each finished month's final totals per person and promotion.
 # A month is closed automatically the first time this runs with a world date past the end of it
