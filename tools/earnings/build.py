@@ -170,7 +170,10 @@ for c in ecards:
     n=rateN.get(k,{}).get(_nk(n0))
     if not n: early_unrated.setdefault(n0,set()).add(k); continue
     b=RB[n][1] if n in RB and c['d']<RB[n][0] else R[n]; amt=round(b*mult+cut.get(n0,0),2); tot+=amt
-    p=get(n,k,tier.get((k,n)) or ER.get(k,{}).get(n,("F",))[0]); p.setdefault("early",[]).append((len(early),amt)); paid.append(n)
+    _q=people.get(ALIAS.get(n,n)); _keep=_q is not None and k not in _q["promos"] and n not in rate.get(k,{})
+    p=get(n,k,tier.get((k,n)) or ER.get(k,{}).get(n,("F",))[0])
+    if _keep: p["promos"].discard(k)   # an EARLY_RATES rate pays career totals only, not a July leaderboard chip
+    p.setdefault("early",[]).append((len(early),amt)); paid.append(n)
   early.append(dict(p=k,d=c['d'],show=show,links=c['links'],cls=lab,mult=mult,gate=gate,n=len(paid),total=round(tot,2),
     cut=round(sum(v for n,v in cut.items() if rateN.get(k,{}).get(_nk(n))),2),**(dict(est=[est[1],est[2]]) if est else {})))
 closed={m:v for m,v in LIFE["months"].items() if m!=S.MONTH}
