@@ -306,6 +306,7 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 .aicon-h{display:inline-flex;align-items:center;gap:12px}h2.sec .aicon{display:block;height:44px;width:auto}
 .arch a .sicon{height:24px;width:auto;vertical-align:middle;margin:-2px 8px 0 0}
 .arch a .sicon.own{height:44px;max-width:150px;object-fit:contain;margin:-4px 10px 0 0}
+.av-logo{text-align:center;margin:14px 0 6px}.av-logo img{max-height:150px;max-width:min(100%,520px);height:auto;width:auto}
 .ev .evicon{height:24px;width:auto;vertical-align:middle;margin:-3px 8px 0 2px}
 .show header .evicon{height:26px;width:auto;vertical-align:middle;margin:-4px 8px 0 0}
 /* Show Archive tab: each show list is a drop-down (closed by default), one show per line */
@@ -2324,7 +2325,17 @@ async function loadArcPage(k,id){
   const cr=$('#av-crumb');if(cr)cr.textContent=ttl.replace(/\s+/g,' ').trim();
   // a match's highlights page (no heading of its own): one sentence per line
   const pbp=!styled&&!h&&!!pre&&(avKindGet(k,id)==='m'||(!avKindGet(k,id)&&avReadsLikeMatch(pre.textContent)));
-  if(styled) avFrame(box,d); else box.innerHTML=avText(d,pbp);}
+  if(styled) avFrame(box,d); else box.innerHTML=avText(d,pbp);
+  avShowLogo(box,k,id);}
+/* A show with its own logo (the Bash, WrestleFest, Star Wars) gets it above the page's headline */
+function avPageLogo(k,id){
+  for(const g of SITES[k].arch||[]) for(const [t,f] of g[1]||[]) if(f===id){const ic=showIcon(k,t);if(ic)return ic;}
+  return '';}
+function avShowLogo(box,k,id){
+  const src=avPageLogo(k,id);if(!src)return;
+  const fig=document.createElement('div');fig.className='av-logo';fig.innerHTML=`<img src="${src}" alt="">`;
+  const h=box.querySelector('.av-doc h2.av-h');
+  if(h) h.parentNode.insertBefore(fig,h); else box.insertBefore(fig,box.firstChild);}
 /* Show Archive tab: pages on the official site the World Report doesn't list yet */
 async function loadArcNew(k){const box=$('#av-new');if(!box)return;const want=location.hash;
   let nw;try{nw=await avNew(k);}catch(e){return;}
