@@ -786,7 +786,11 @@ function beltLabel(k,t){const x=String(t).toLowerCase();
   if(/triple crown/.test(x))return 'TRIPLE'; if(/iwgp/.test(x))return 'IWGP'; if(/british/.test(x))return 'BRITISH'; if(/unified/.test(x))return 'UNIFIED';
   return k==='pp'?'POWER':k==='twa'?'TRI-STATE':'WORLD';}
 /* Supplied belt photos: these replace the drawn belt for that title everywhere (gallery, champion boxes, Talent Files). */
-const BELT_IMG=[{k:'wcw',match:/^(wcw )?world heavyweight$/i,src:'img/belts/wcw-world-heavyweight.png'}];
+const BELT_IMG=[
+  {k:'wcw',match:/^(wcw )?world heavyweight$/i,src:'img/belts/wcw-world-heavyweight.webp'},
+  {k:'wwf',match:/^(wwf championship|world heavyweight)$/i,src:'img/belts/wwf-world-heavyweight.webp'},
+  {k:'wwf',match:/^intercontinental( heavyweight)?$/i,src:'img/belts/wwf-intercontinental.webp'}
+];
 let BELT_UID=0;
 function beltRibbonText(k,t){
   let x=String(t).replace(new RegExp('^('+(P[k]?P[k].short:'')+'|'+(P[k]&&P[k].nav||'')+')\\s+','i'),'').replace(/\bchampionship\b/i,'').trim();
