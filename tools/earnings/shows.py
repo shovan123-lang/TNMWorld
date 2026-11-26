@@ -128,7 +128,11 @@ SHOWS+=[
 # ---- Salaried promotions (WWF, WCW): salary accrues day by day through the world date.
 MONTH = "1991-07"; DAYS_IN_MONTH = 31
 SALARY_START = {"Tom Zenk": 11}   # day of the month a salary starts (signed mid-month)
-NOT_ON_SCALE = ["Kevin Sullivan (WCW): worked 7/5, 7/6 and 7/8 but quit 7/8 and isn't on the pay scale, so he isn't paid here",
+# Salaries that ended mid-month (quit or released): no longer on the pay scale, paid day by day to the last day.
+SALARY_ENDED = {
+ "wcw": {"Kevin Sullivan": dict(rate=5000, tier="C", last="1991-07-08", why="quit after Columbus")},   # Sean, 2026-11-26
+}
+NOT_ON_SCALE = ["Kevin Sullivan (WCW): paid his $5,000 a month salary for 7/1 to 7/8, the day he quit",
  "Rob Zakowski (USWA): re-signed 7/22 at $45 an appearance (was $30) with $300 a week guaranteed for 40 cards; a week his USWA pay comes in under $300 is topped up once the week is over"]
 
 # ---- Rate changes: shows before the date pay the old base rate (CONTRACTS has the new one).

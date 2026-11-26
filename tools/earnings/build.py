@@ -27,6 +27,13 @@ for k in ("wwf","wcw"):
     d=max(0,day-S.SALARY_START.get(n,1)+1); amt=r*d/S.DAYS_IN_MONTH
     p=get(n,k,t); p["salary"]+=amt
     p["lines"].append(dict(p=k,d=WORLD,what="Salary to date: ${:,} a month × {} of {} days".format(r,d,S.DAYS_IN_MONTH),amt=round(amt,2),kind="salary"))
+for k,who in getattr(S,'SALARY_ENDED',{}).items():   # left mid-month: paid to the last day, not past it
+  for n,g in who.items():
+    last=g['last']; dd=int(last[8:10]) if last[:7]==S.MONTH else 0
+    d=max(0,min(day,dd)-S.SALARY_START.get(n,1)+1); amt=g['rate']*d/S.DAYS_IN_MONTH
+    if not d: continue
+    p=get(n,k,g.get('tier','C')); p["salary"]+=amt
+    p["lines"].append(dict(p=k,d=min(WORLD,last),what="Salary: ${:,} a month × {} of {} days, to {}/{} ({})".format(g['rate'],d,S.DAYS_IN_MONTH,int(last[5:7]),dd,g['why']),amt=round(amt,2),kind="salary"))
 for k,d,lab,m in S.BONUSES:
   for n,v in m.items():
     p=get(n,k,tier.get((k,n),"A")); p["bonus"]+=v; p["lines"].append(dict(p=k,d=d,what=lab,amt=v,kind="bonus"))

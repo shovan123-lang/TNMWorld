@@ -222,45 +222,45 @@
 | 220 | Jerry Estrada | CMLL | — | $1,800 (5 app.) | — | **$1,800** | — | $1,800 |
 | 221 | Brooklyn Brawler | WWF | $1,774 | — | — | **$1,774** | — | $1,774 |
 | 222 | Ozz | WCW | $1,774 | — | — | **$1,774** | — | $1,774 |
-| 223 | Máscara Año 2000 | CMLL | — | $1,650 (3 app.) | — | **$1,650** | — | $1,650 |
-| 224 | Masakre | CMLL | — | $1,600 (5 app.) | — | **$1,600** | — | $1,600 |
-| 225 | The Lightning Kid | Power Pro, CMLL | — | $1,535 (5 app.) | — | **$1,535** | — | $1,535 |
-| 226 | Giant Haystacks | ASW | — | $1,400 (4 app.) | — | **$1,400** | — | $1,400 |
-| 227 | Lola González | CMLL | — | $1,400 (6 app.) | — | **$1,400** | — | $1,400 |
-| 228 | Mr. Pogo | FMW | — | $1,400 (2 app.) | — | **$1,400** | — | $1,400 |
-| 229 | Missy Hyatt (manager) | USWA | — | $1,375 (6 app.) | — | **$1,375** | — | $1,375 |
-| 230 | Paul Ellering (manager) | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
-| 231 | Scott Steiner | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
-| 232 | Tully Blanchard | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
-| 233 | Grigory Verichev | FMW | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
-| 234 | Jaque Mate | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
-| 235 | Javier Cruz | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
-| 236 | Jerry Lawler | USWA | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
-| 237 | La Diabólica | CMLL | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
-| 238 | Robert Fuller | USWA | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
-| 239 | Bob Backlund | ASW | — | $900 (3 app.) | — | **$900** | — | $900 |
-| 240 | Sabu | FMW | — | $900 (2 app.) | — | **$900** | — | $900 |
-| 241 | Bill Dundee | USWA | — | $750 (4 app.) | — | **$750** | — | $750 |
-| 242 | Vulcano | CMLL | — | $750 (4 app.) | — | **$750** | — | $750 |
-| 243 | Big Daddy | ASW | — | $700 (2 app.) | — | **$700** | — | $700 |
-| 244 | Big Titan | FMW | — | $700 (2 app.) | — | **$700** | — | $700 |
-| 245 | Doug Gilbert | USWA | — | $680 (4 app.) | — | **$680** | — | $680 |
-| 246 | Horace Boulder | FMW | — | $600 (2 app.) | — | **$600** | — | $600 |
-| 247 | Leon Spinks | FMW | — | $600 (1 app.) | — | **$600** | — | $600 |
-| 248 | Pantera Sureña | CMLL | — | $600 (2 app.) | — | **$600** | — | $600 |
-| 249 | Ricky Fuji | FMW | — | $600 (2 app.) | — | **$600** | — | $600 |
-| 250 | Robbie Brookside | ASW | — | $600 (4 app.) | — | **$600** | — | $600 |
-| 251 | Chris Adams | USWA | — | $595 (4 app.) | — | **$595** | — | $595 |
-| 252 | Dirty White Boy | USWA | — | $540 (5 app.) | — | **$540** | — | $540 |
-| 253 | Jimmy Valiant | USWA | — | $540 (5 app.) | — | **$540** | — | $540 |
-| 254 | Honky Tonk Man | USWA | — | $510 (4 app.) | — | **$510** | — | $510 |
-| 255 | Sambo Asako | FMW | — | $500 (2 app.) | — | **$500** | — | $500 |
-| 256 | Steve Regal | ASW | — | $500 (4 app.) | — | **$500** | — | $500 |
-| 257 | Eric Embry | USWA | — | $480 (4 app.) | — | **$480** | — | $480 |
-| 258 | Tom Prichard | USWA | — | $480 (4 app.) | — | **$480** | — | $480 |
-| 259 | Brickhouse Brown | USWA | — | $450 (3 app.) | — | **$450** | — | $450 |
-| 260 | Fit Finlay | ASW | — | $450 (3 app.) | — | **$450** | — | $450 |
-| 261 | Kevin Sullivan | FMW | — | $450 (1 app.) | — | **$450** | — | $450 |
+| 223 | Kevin Sullivan | WCW, FMW | $1,290 | $450 (1 app.) | — | **$1,740** | — | $1,740 |
+| 224 | Máscara Año 2000 | CMLL | — | $1,650 (3 app.) | — | **$1,650** | — | $1,650 |
+| 225 | Masakre | CMLL | — | $1,600 (5 app.) | — | **$1,600** | — | $1,600 |
+| 226 | The Lightning Kid | Power Pro, CMLL | — | $1,535 (5 app.) | — | **$1,535** | — | $1,535 |
+| 227 | Giant Haystacks | ASW | — | $1,400 (4 app.) | — | **$1,400** | — | $1,400 |
+| 228 | Lola González | CMLL | — | $1,400 (6 app.) | — | **$1,400** | — | $1,400 |
+| 229 | Mr. Pogo | FMW | — | $1,400 (2 app.) | — | **$1,400** | — | $1,400 |
+| 230 | Missy Hyatt (manager) | USWA | — | $1,375 (6 app.) | — | **$1,375** | — | $1,375 |
+| 231 | Paul Ellering (manager) | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
+| 232 | Scott Steiner | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
+| 233 | Tully Blanchard | USWA | — | $1,350 (4 app.) | — | **$1,350** | — | $1,350 |
+| 234 | Grigory Verichev | FMW | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
+| 235 | Jaque Mate | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
+| 236 | Javier Cruz | CMLL | — | $1,000 (3 app.) | — | **$1,000** | — | $1,000 |
+| 237 | Jerry Lawler | USWA | — | $1,000 (2 app.) | — | **$1,000** | — | $1,000 |
+| 238 | La Diabólica | CMLL | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
+| 239 | Robert Fuller | USWA | — | $1,000 (4 app.) | — | **$1,000** | — | $1,000 |
+| 240 | Bob Backlund | ASW | — | $900 (3 app.) | — | **$900** | — | $900 |
+| 241 | Sabu | FMW | — | $900 (2 app.) | — | **$900** | — | $900 |
+| 242 | Bill Dundee | USWA | — | $750 (4 app.) | — | **$750** | — | $750 |
+| 243 | Vulcano | CMLL | — | $750 (4 app.) | — | **$750** | — | $750 |
+| 244 | Big Daddy | ASW | — | $700 (2 app.) | — | **$700** | — | $700 |
+| 245 | Big Titan | FMW | — | $700 (2 app.) | — | **$700** | — | $700 |
+| 246 | Doug Gilbert | USWA | — | $680 (4 app.) | — | **$680** | — | $680 |
+| 247 | Horace Boulder | FMW | — | $600 (2 app.) | — | **$600** | — | $600 |
+| 248 | Leon Spinks | FMW | — | $600 (1 app.) | — | **$600** | — | $600 |
+| 249 | Pantera Sureña | CMLL | — | $600 (2 app.) | — | **$600** | — | $600 |
+| 250 | Ricky Fuji | FMW | — | $600 (2 app.) | — | **$600** | — | $600 |
+| 251 | Robbie Brookside | ASW | — | $600 (4 app.) | — | **$600** | — | $600 |
+| 252 | Chris Adams | USWA | — | $595 (4 app.) | — | **$595** | — | $595 |
+| 253 | Dirty White Boy | USWA | — | $540 (5 app.) | — | **$540** | — | $540 |
+| 254 | Jimmy Valiant | USWA | — | $540 (5 app.) | — | **$540** | — | $540 |
+| 255 | Honky Tonk Man | USWA | — | $510 (4 app.) | — | **$510** | — | $510 |
+| 256 | Sambo Asako | FMW | — | $500 (2 app.) | — | **$500** | — | $500 |
+| 257 | Steve Regal | ASW | — | $500 (4 app.) | — | **$500** | — | $500 |
+| 258 | Eric Embry | USWA | — | $480 (4 app.) | — | **$480** | — | $480 |
+| 259 | Tom Prichard | USWA | — | $480 (4 app.) | — | **$480** | — | $480 |
+| 260 | Brickhouse Brown | USWA | — | $450 (3 app.) | — | **$450** | — | $450 |
+| 261 | Fit Finlay | ASW | — | $450 (3 app.) | — | **$450** | — | $450 |
 | 262 | Tony Arce | CMLL | — | $450 (3 app.) | — | **$450** | — | $450 |
 | 263 | Rex King | USWA | — | $405 (5 app.) | — | **$405** | — | $405 |
 | 264 | Austin Idol | TWA | — | $400 (1 app.) | — | **$400** | — | $400 |
