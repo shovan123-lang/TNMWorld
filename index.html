@@ -287,6 +287,9 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 .tf-last li{padding:5px 0;border-bottom:1px dotted var(--soft)}
 .tf-last .d{display:inline-block;min-width:78px;font-weight:700;text-transform:uppercase;font-size:12px}
 .tfile.big .tf-name{font-size:44px}
+.tf-age{font-family:var(--cond);font-size:15px;letter-spacing:.02em;margin:4px 0 0;color:var(--mute)}
+.tf-age b{color:var(--ink);font-size:17px}
+.tfile.big .tf-age{font-size:17px}.tfile.big .tf-age b{font-size:20px}
 .lwd{position:absolute;left:0;top:11px;font-family:var(--cond);font-weight:700;font-size:12px;text-transform:uppercase}
 .lw .adet{padding-left:0}
 .lw .ev{position:relative;padding-left:84px!important;padding:8px 0;border-bottom:1px dotted var(--soft)}
@@ -459,6 +462,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 </script>
 <script src="data/titles.js?v=bf7b267d"></script>
 <script src="data/world.js?v=d84ebcc1"></script>
+<script src="data/births.js?v=1e97c7c1"></script>
 <script src="tools/talent_engine.js?v=ab2c23d3"></script>
 <script src="data/wcw.js?v=18f6604e"></script>
 <script src="data/wwf.js?v=5e0edec2"></script>
@@ -653,6 +657,24 @@ const tfMoney=v=>'$'+Math.round(v||0).toLocaleString();
 const tfBest=f=>f.run.filter(r=>starVal(r.m[2])!==null).sort((a,b)=>starVal(b.m[2])-starVal(a.m[2]))[0];
 function tfTitles(f){const n=tfNorm(f.name),teams=Object.entries(typeof TEAMS!=='undefined'?TEAMS:{}).filter(([t,m])=>m.includes(f.name)).map(([t])=>tfNorm(t));
   const out=[];ORDER.forEach(k=>(P[k].titles||[]).forEach(t=>{const h=tfNorm(t[1]);if(h&&(h.includes(n)||teams.some(x=>x.length>3&&h.includes(x))))out.push([k,t[0]])}));return out;}
+/* Ages. Birth dates live in data/births.js; the age is worked out against the World Clock
+   (WORLD_DATE), so it moves on its own when the clock advances. A wrestler who has died
+   in this world (DEATHS / DEATHS_NEXT, once the clock passes the date) keeps the age they died at. */
+const tfBorn=f=>(typeof BIRTHS!=='undefined'&&BIRTHS[f.name])||null;
+const tfDeathISO=s=>{const [m,d,y]=s.split('/').map(Number);return `${y<50?2000+y:1900+y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`};
+function tfDied(f){const n=tfNorm(f.name),all=[...(typeof DEATHS!=='undefined'?DEATHS:[]),...(typeof DEATHS_NEXT!=='undefined'?DEATHS_NEXT:[])];
+  const x=all.find(r=>tfNorm(r[1])===n); if(!x) return null; const d=tfDeathISO(x[0]); return d<=WORLD_DATE?d:null;}
+function tfAge(f){
+  const b=tfBorn(f); if(!b) return null;
+  const died=tfDied(f), on=died||WORLD_DATE, y=+on.slice(0,4)-+b.slice(0,4);
+  if(b.length===4) return {born:b,died,sort:y-.5,txt:`${y-1} or ${y}`};
+  const n=on.slice(5)>=b.slice(5)?y:y-1; return {born:b,died,sort:n,txt:String(n)};
+}
+const tfDay=s=>s.length===4?s:`${MONTH_L[+s.slice(5,7)-1]} ${+s.slice(8,10)}, ${s.slice(0,4)}`;
+function tfAgeLine(f){
+  const a=tfAge(f); if(!a) return '';
+  return `<div class="tf-age">${a.died?`Died at <b>${a.txt}</b> · born ${tfDay(a.born)}, died ${tfDay(a.died)}`:`Age <b>${a.txt}</b> · born ${tfDay(a.born)}`}</div>`;
+}
 function tfStats(f){
   const x=tfEarn(f),best=tfBest(f),rec=f.spot&&f.spot.record?f.spot.record:f.record;
   return `<div class="tf-stats five"><div><b>${f.run.length}</b><span>Matches</span></div><div><b>${esc(rec)}</b><span>Record</span></div><div><b>${f.promos.length}</b><span>Promotions</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div><div class="tf-cash"><b>${x?tfMoney(x.life):'—'}</b><span>Career earnings</span></div></div>`;
@@ -660,7 +682,8 @@ function tfStats(f){
 function tfBlurb(f){
   if(f.spot&&f.spot.blurb) return esc(f.spot.blurb);
   const bits=[], last=f.run[f.run.length-1], next=f.booked[0], titles=tfTitles(f);
-  const notes=f.promos.map(k=>f.notes&&f.notes[k]?`${P[k].short}: ${f.notes[k]}`:'').filter(Boolean);
+  const hasAge=!!tfAge(f), tidy=(k,n)=>k==='ajpw'&&hasAge?n.replace(/^(INJ:)?\d{2}(?: · |$)/,(m,inj)=>inj?'INJ: ':'').trim():n;
+  const notes=f.promos.map(k=>f.notes&&f.notes[k]&&tidy(k,f.notes[k])?`${P[k].short}: ${tidy(k,f.notes[k])}`:'').filter(Boolean);
   if(titles.length) bits.push('Holds the '+titles.map(([k,t])=>`${esc(P[k].short)} ${esc(t)}`).join(' and the ')+' title.');
   if(f.run.length) bits.push(`${f.run.length} match${f.run.length===1?'':'es'} on the cards so far (${esc(f.record)}${f.u?`, ${f.u} undecided`:''}).`);
   else bits.push('Hasn\'t worked a match on the cards yet.');
@@ -676,6 +699,7 @@ function talentFileBox(){
   return `<h2 class="sec">Talent File <small>In the spotlight</small></h2>
   <div class="tfile">
     <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')}</div>
+    ${tfAgeLine(f)}
     ${tfStats(f)}
     <p class="tf-blurb">${tfBlurb(f)}</p>
     <ul class="tf-last">${last.map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${pchip(x.e.p)} ${esc(x.m[0])} <span class="mute">· ${esc(x.m[1])}</span> <b class="num">${esc(x.m[2]||'')}</b></li>`).join('')}</ul>
@@ -694,17 +718,17 @@ function viewTalentFileIndex(){
   <div class="tf-grid">${spots.map(card).join('')}</div>
   <h3 class="amonth" style="font-size:22px">Every wrestler <small>${T.list.length}</small></h3>
   <div class="efilters tffilters">${ORDER.map(k=>`<button data-f="${k}" class="${!tfFilter.size||tfFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['earn','Career $'],['titles','Title reigns'],['trophies','Mask & hair'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
-  <div class="tbl-wrap"><table id="tftbl"><thead><tr><th>Wrestler</th><th>Promotions</th><th class="num">Record</th><th class="num">Matches</th><th class="num">Best</th><th class="num">Career $</th></tr></thead><tbody>${tfRows()}</tbody></table></div>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Every name on every roster. Records are worked out from the results on the cards (tag matches count for every member); "undecided" results don't count either way. Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances.</p>`;
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['earn','Career $'],['titles','Title reigns'],['trophies','Mask & hair'],['age','Age'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
+  <div class="tbl-wrap"><table id="tftbl"><thead><tr><th>Wrestler</th><th>Promotions</th><th class="num">Age</th><th class="num">Record</th><th class="num">Matches</th><th class="num">Best</th><th class="num">Career $</th></tr></thead><tbody>${tfRows()}</tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Every name on every roster. Records are worked out from the results on the cards (tag matches count for every member); "undecided" results don't count either way. Ages are worked out from each wrestler's date of birth and the World Clock, so they move as the clock does; "—" means no date of birth on record. Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances.</p>`;
 }
 function tfRows(){
   const T=tfAll(), q=(($('#tfsearch')||{}).value||'').toLowerCase();
-  const val=f=>tfSort==='name'?0:tfSort==='wins'?f.w:tfSort==='earn'?((tfEarn(f)||{}).life||0):tfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
+  const val=f=>tfSort==='name'?0:tfSort==='age'?((tfAge(f)||{sort:-1}).sort):tfSort==='wins'?f.w:tfSort==='earn'?((tfEarn(f)||{}).life||0):tfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
   return T.list.filter(f=>(!tfFilter.size||f.promos.some(k=>tfFilter.has(k)))&&f.name.toLowerCase().includes(q))
     .sort((a,b)=>val(b)-val(a)||a.name.localeCompare(b.name))
-    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a> ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${f.spot?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${x?tfMoney(x.life):'—'}</td></tr>`}).join('')
-    || '<tr><td colspan="6" class="mute">No one matches.</td></tr>';
+    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a> ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${f.spot?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${x?tfMoney(x.life):'—'}</td></tr>`}).join('')
+    || '<tr><td colspan="7" class="mute">No one matches.</td></tr>';
 }
 function bindTalentFile(){
   const redraw=()=>{const b=$('#tftbl tbody');if(b)b.innerHTML=tfRows();};
@@ -968,6 +992,7 @@ function viewTalentFile(slug){
   <h2 class="sec">Talent File <small><a href="#file" class="tf-allbtn">All ${T.list.length} files</a>${f.spot?' · spotlight':''}</small></h2>
   <div class="tfile big">
     <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}</div>
+    ${tfAgeLine(f)}
     ${tfStats(f)}
     <p class="tf-blurb">${tfBlurb(f)}</p>
   </div>
