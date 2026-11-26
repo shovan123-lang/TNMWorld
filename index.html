@@ -1518,10 +1518,10 @@ function viewPromo(k,tab){
         ${p.factions.length?`<h2 class="sec">Factions</h2>${p.factions.map(f=>`<div class="fac" style="--c:${p.c}"><b>${esc(f[0])}</b><p>${esc(f[1])}</p></div>`).join('')}`:''}
       </div>
       <aside>
+        ${miniTalent(k)}
         <h2 class="sec" style="font-size:22px">Champions</h2>
         <div class="grid" style="gap:10px">${p.titles.map(t=>belt(k,t)).join('')}</div>
         ${(()=>{const nx=ev.filter(e=>!pastE(e)).slice(0,5);return `<h2 class="sec" style="font-size:22px">Coming Up</h2>${nx.length?`<ul class="nextup">${nx.map(e=>{const ms=(e.m||[]).filter(m=>!/^(Promo|Interview|Segment|Angle|Closing)/i.test(m[0]));const main=ms.find(m=>/^Main/i.test(m[0]))||ms.find(m=>/Title|Triple Crown|IWGP|Championship/i.test(m[0]))||ms.slice(-1)[0];return `<li class="${e.big?'big':''}"><span class="d">${fmt(e.d)}${isToday(e.d)?' <small>Tonight</small>':''}</span><b>${esc(e.type)}</b><span class="mute">${esc([String(e.city||'').split(',')[0],e.venue].filter(Boolean).join(' · '))}</span>${main?`<span class="mm">${esc(main[0].replace(/^Main( event)?:\s*/i,''))}</span>`:''}</li>`}).join('')}</ul><a class="nextall" href="#${k}/schedule">Full schedule →</a>`:'<div class="empty">Nothing on the calendar yet.</div>'}`})()}
-        ${miniTalent(k)}
       </aside>
     </div>`;
   } else if(tab==='file'){
