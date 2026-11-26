@@ -13,7 +13,9 @@
    has results: its own match list, or, for an episode with none, the lines of an earlier taping that start "Ep N".
    History: for the promotions in RATINGS.history, the archive-only cards in data/history.js (HIST) are rated too,
    with the same model, so USWA's chart runs from its first Championship TV in September 1990 (Sean, 2026-11-26).
-   Episodes whose archive pages only replay house-show matches have no results there and leave a gap in the line.
+   An episode that only replays matches from earlier cards (USWA Championship TV, March to May 1991) is rated on
+   those matches, with the results and ratings they got on the night (HIST's "aired" list; Sean, 2026-11-26). The
+   crowd doesn't count for a replay, since it wasn't that week's crowd.
 
    The model. Each show starts from its slot's usual number (`base`: outlet, time slot and promotion size in
    1991 terms) and moves from there:
@@ -36,10 +38,12 @@
    To set a number by hand (a "real" rating), add it to RATINGS.fixed as "<promo> <date> <show id>": 4.1.
    A fixed number carries over to the next week like any other.
 
-   PPV BUYS come from the Finance tab and are never estimated: the "Pay-per-view share" line in
+   PPV BUYS come from the Finance tab and are never worked out here: the "Pay-per-view share" line in
    FINANCE.<key>.other for that date (its `buys` field, or "N buys" in its note), else "N buys" in that day's
    Finance row note. A PPV that has run with nothing logged shows as "Not yet reported". A PPV is a card whose type
-   matches RATINGS.ppv (put "(PPV)" in the type of a new one). */
+   matches RATINGS.ppv (put "(PPV)" in the type of a new one). A line with est: 1 is a number made up to fit
+   (USWA Star Wars 1991: 15,000 buys, sized against the USWA's regional reach and the WWF's and WCW's July buys;
+   Sean, 2026-11-26), and the pages then don't say "nothing here is estimated". */
 
 const RATINGS = {
   units: {
@@ -105,7 +109,8 @@ function tvRatings(D) {
 
   const eps = [], unrated = [], last = {}, byCard = new Map();
   for (const [s, e] of airs) {
-    let m = realM(e.m), from = "";
+    let m = realM(e.m), from = "", rerun = null;
+    if (!m.length && e.aired && e.aired.length) {m = realM(e.aired); rerun = [...new Set(e.aired.map(x => x[3]))].sort();}
     if (!m.length) {
       const n = (String(e.type).match(/\bEp(?:isode)?s?\.?\s*(\d+)/i) || [])[1];
       const tp = n && ALL.find(t => t.p === e.p && t.d <= e.d && /taping/i.test(t.type || "") && s.match.test(t.type || "") && realM(t.m).some(x => new RegExp("^Ep\\s*" + n + "\\b").test(x[0])));
@@ -142,7 +147,7 @@ function tvRatings(D) {
     const key = e.p + " " + e.d + " " + s.id;
     const fixed = R.fixed[key] != null;
     if (fixed) v = R.fixed[key];
-    const ep = {show: s, e, d: e.d, week: weekOf(e.d), v, fixed, prev: prev ? prev.v : null, q, qFrom, qText, who: [...who.keys()], sp, titles, hype, crowd, lift};
+    const ep = {show: s, e, d: e.d, week: weekOf(e.d), v, fixed, prev: prev ? prev.v : null, q, qFrom, qText, who: [...who.keys()], sp, titles, hype, crowd, lift, rerun};
     eps.push(ep); last[s.id] = ep; byCard.set(e, ep);
   }
   const byShow = {}; R.shows.forEach(s => byShow[s.id] = eps.filter(x => x.show === s));
@@ -156,7 +161,7 @@ function tvRatings(D) {
     const row = (F.rows || []).find(r => r.d === e.d);
     const num = s => {const m = String(s || "").match(/([\d,]{4,})\s*buys/i); return m ? +m[1].replace(/,/g, "") : null;};
     const buys = line && line.buys != null ? line.buys : (num(line && line.note) ?? num(row && row.note));
-    const p = {p: e.p, d: e.d, e, name: String(e.type).replace(/\s*\(PPV\)/, ""), buys, take: line && typeof line.amt === "number" ? line.amt : null};
+    const p = {p: e.p, d: e.d, e, name: String(e.type).replace(/\s*\(PPV\)/, ""), buys, take: line && typeof line.amt === "number" ? line.amt : null, est: !!(line && line.est)};
     ppvs.push(p); byCard.set(e, p);
   }
   ppvs.sort((a, b) => b.d.localeCompare(a.d));

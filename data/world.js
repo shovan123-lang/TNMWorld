@@ -116,14 +116,14 @@ FINANCE._streams = ["Merchandise", "TV rights", "Pay-per-view share", "Home vide
    Rates are 1991 US dollars. Per show: rent and ads are a share of the gate with a floor,
    tax is a share of the gate, the rest are flat amounts per show. TV tapings add tv, PPVs add ppv.
    Monthly costs (office, tvMonthly) count day by day to the world date. tvMonthly replaces per-taping TV costs.
-   ppvPrice/ppvShare: PPV buy price and the promotion's share of PPV revenue (WWF: $30, 50%, from SummerSlam 91 on). Announcers and office staff
+   ppvPrice/ppvShare: PPV buy price and the promotion's share of PPV revenue (WWF: $30, 50%, from SummerSlam 91 on; USWA: $15, 50%, from Star Wars 1991). Announcers and office staff
    come from the Contracts tab (tier O). homeRent/home: rent share at the promotion's own building.
    To log a real figure for one show, add costs:{rent:12000,...} to that row in FINANCE.<key>.rows. */
 FINANCE._costLabels = {talent:"Talent payroll",pool:"Champions' pool (3% of each gate, split among the champions on the card)",staff:"Announcers & office staff",rent:"Building rent",tax:"Admission & entertainment tax",event:"Ushers, security & box office",ring:"Ring crew & ring truck",ads:"Advertising & promotion",travel:"Travel & hotels",tv:"TV production",ppv:"Pay-per-view production",cogs:"Merchandise (cost of goods)",office:"Office & overhead",loan:"Talent loan fees (to the home promotion)"};
 FINANCE._costs = {
  wwf:{rent:[0.15,4000],tax:0.05,event:5000,ring:3000,ads:[0.06,3000],travel:6000,tv:0,tvMonthly:300000,ppv:500000,ppvPrice:30,ppvShare:0.5,cogs:0.40,office:1200000},
  wcw:{rent:[0.15,3000],tax:0.05,event:3500,ring:2500,ads:[0.06,2000],travel:8000,tv:40000,ppv:350000,cogs:0.40,office:700000},
- uswa:{rent:[0.12,1500],tax:0.04,event:800,ring:400,ads:[0.05,500],travel:600,tv:3000,ppv:25000,cogs:0.40,office:40000},
+ uswa:{rent:[0.12,1500],tax:0.04,event:800,ring:400,ads:[0.05,500],travel:600,tv:3000,ppv:25000,ppvPrice:15,ppvShare:0.5,cogs:0.40,office:40000},
  pp:{rent:[0.10,150],tax:0.04,event:100,ring:100,ads:[0,100],travel:0,tv:1500,cogs:0.40,office:2000},
  ajpw:{rent:[0.15,5000],tax:0.10,event:3000,ring:2000,ads:[0.05,2000],travel:12000,tv:0,cogs:0.40,office:250000},
  njpw:{rent:[0.15,5000],tax:0.10,event:3000,ring:2000,ads:[0.05,2000],travel:12000,tv:0,cogs:0.40,office:300000},
