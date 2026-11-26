@@ -214,9 +214,11 @@ def head_meta(h):
         return city,b.strip('"') or 'House show'
     return '',(a+(' · '+b if b else '')).replace('Championshop','Championship')
 def label_meta(label):
-    """Archive index labels on the site: "Macon, GA · Macon Coliseum · 7.1" or "WCW Pro Wrestling TV Taping"."""
+    """Archive index labels on the site: "Macon, GA · Macon Coliseum · 7.1" or "WCW Pro taping · East Rutherford, NJ · Meadowlands · 7.3"."""
     parts=[x for x in label.split(' · ') if not re.fullmatch(r'\d{1,2}\.\d{1,2}(\.\d{4})?',x)]
     if parts and re.search(r',\s*[A-Z]{2}$',parts[0]): return parts[0],'House show'
+    # "WCW Pro taping · East Rutherford, NJ · Meadowlands · 7.3": the show, then its city
+    if len(parts)>1 and re.search(r',\s*[A-Z]{2}$',parts[1]): return parts[1],parts[0]
     return '',' · '.join(parts)
 def title_of(x):
     st=x['stip']
