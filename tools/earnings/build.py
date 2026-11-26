@@ -24,9 +24,13 @@ rate={k:{r[1]:r[2] for r in c['rows']} for k,c in C.items()}
 for k in ("wwf","wcw"):
   for t,n,r,note in C[k]['rows']:
     if t=="O": continue
-    d=max(0,day-S.SALARY_START.get(n,1)+1); amt=r*d/S.DAYS_IN_MONTH
+    end=getattr(S,'SALARY_END',{}).get(k,{}).get(n)   # (last day, why) when the salary stopped mid-month
+    last=(int(end[0][8:10]) if end[0][:7]==S.MONTH else (S.DAYS_IN_MONTH if end[0][:7]>S.MONTH else 0)) if end else day
+    d=max(0,min(day,last)-S.SALARY_START.get(n,1)+1); amt=r*d/S.DAYS_IN_MONTH
     p=get(n,k,t); p["salary"]+=amt
-    p["lines"].append(dict(p=k,d=WORLD,what="Salary to date: ${:,} a month × {} of {} days".format(r,d,S.DAYS_IN_MONTH),amt=round(amt,2),kind="salary"))
+    if end and last<day: what,dd="Salary: ${:,} a month × {} of {} days, to {}/{} ({})".format(r,d,S.DAYS_IN_MONTH,int(end[0][5:7]),last,end[1]),end[0]
+    else: what,dd="Salary to date: ${:,} a month × {} of {} days".format(r,d,S.DAYS_IN_MONTH),WORLD
+    p["lines"].append(dict(p=k,d=dd,what=what,amt=round(amt,2),kind="salary"))
 for k,who in getattr(S,'SALARY_ENDED',{}).items():   # left mid-month: paid to the last day, not past it
   for n,g in who.items():
     last=g['last']; dd=int(last[8:10]) if last[:7]==S.MONTH else 0

@@ -1,4 +1,4 @@
-**July 1991, world date 7/22 (rebuilt 2026-11-26):** paid out so far $1,908,571 · Japan tour fees still due $182,556 · July projected $2,091,127 · 345 people.
+**July 1991, world date 7/22 (rebuilt 2026-11-26):** paid out so far $1,906,152 · Japan tour fees still due $182,556 · July projected $2,088,707 · 345 people.
 
 | # | Name | Promotions | Paid so far | Tour fees due | July projected |
 |---|---|---|---|---|---|
@@ -8,7 +8,7 @@
 | 4 | Roddy Piper | WWF | $28,387 | — | $28,387 |
 | 5 | Sid Justice | WWF | $28,387 | — | $28,387 |
 | 6 | The Undertaker | WWF | $28,387 | — | $28,387 |
-| 7 | Sting | WCW, NJPW | $28,297 | $4,444 | $32,742 |
+| 7 | Sting | WCW, NJPW | $25,878 | $4,444 | $30,323 |
 | 8 | Stan Hansen | USWA, AJPW | $25,794 | $5,556 | $31,350 |
 | 9 | Davey Boy Smith | WWF, AJPW | $24,996 | $2,778 | $27,774 |
 | 10 | Randy Savage | WWF | $24,839 | — | $24,839 |

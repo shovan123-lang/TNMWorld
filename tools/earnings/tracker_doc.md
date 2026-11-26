@@ -3,7 +3,7 @@
 Running record of what every wrestler and manager has been paid this month, across all nine promotions. Started 2026-11-11 (Sean). **Rebuilt every time the world clock moves** and after every show is logged. The same tracker is on the website: World → Talent Earnings (shovan123-lang.github.io/TNMWorld/#earnings), with a top-10 on each promotion's Finance tab and a top-5 on the front page.
 
 **Month:** July 1991 · **World date:** 1991-07-22 · **Last rebuilt:** 2026-11-26
-**Paid out so far:** $1,908,571 · **Japan tour fees still due:** $182,556 · **July projected:** $2,091,127 · **People:** 345
+**Paid out so far:** $1,906,152 · **Japan tour fees still due:** $182,556 · **July projected:** $2,088,707 · **People:** 345
 
 
 ## How it's counted
@@ -56,7 +56,7 @@ Itemized totals match the ledger's payroll for 10 of 15 shows. Where the itemize
 | 4 | Roddy Piper | WWF | $28,387 | — | — | **$28,387** | — | $28,387 |
 | 5 | Sid Justice | WWF | $28,387 | — | — | **$28,387** | — | $28,387 |
 | 6 | The Undertaker | WWF | $28,387 | — | — | **$28,387** | — | $28,387 |
-| 7 | Sting | WCW, NJPW | $17,742 | $10,556 | — | **$28,297** | $4,444 | $32,742 |
+| 7 | Sting | WCW, NJPW | $15,323 | $10,556 | — | **$25,878** | $4,444 | $30,323 |
 | 8 | Stan Hansen | USWA, AJPW | — | $25,794 (3 app.) | — | **$25,794** | $5,556 | $31,350 |
 | 9 | Davey Boy Smith | WWF, AJPW | $12,774 | $12,222 | — | **$24,996** | $2,778 | $27,774 |
 | 10 | Randy Savage | WWF | $24,839 | — | — | **$24,839** | — | $24,839 |
