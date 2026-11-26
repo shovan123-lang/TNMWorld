@@ -2201,14 +2201,38 @@ function avClean(d,k,framed){
   d.querySelectorAll('link[href]').forEach(el=>{try{el.setAttribute('href',new URL(el.getAttribute('href'),base).href)}catch(e){el.remove()}});
   // Our own styled pages carry a copy of the World Report's masthead and menu: the site already shows its own
   d.querySelectorAll('nav.main,header.mast').forEach(x=>x.remove());}
-/* TNM text pages: blank lines split the <pre> into blocks; hard-wrapped lines are joined back into sentences */
-function avBlock(b){
+/* Match highlights (play-by-play) show one sentence per line; segment highlights (interviews, angles) stay paragraphs.
+   A show page tells us which of its highlights links belong to matches (avKindSet); a highlights page opened
+   on its own falls back to how it reads: nearly every line a finished sentence, with ring action in it. */
+const AV_KIND={};
+const avKindKey=(k,id)=>k+'/'+String(id).replace(/\.HTM$/i,'').toUpperCase();
+function avKindSet(k,id,v){AV_KIND[avKindKey(k,id)]=v;try{const o=JSON.parse(sessionStorage.getItem('avKind')||'{}');o[avKindKey(k,id)]=v;sessionStorage.setItem('avKind',JSON.stringify(o));}catch(e){}}
+function avKindGet(k,id){const x=AV_KIND[avKindKey(k,id)];if(x)return x;try{return JSON.parse(sessionStorage.getItem('avKind')||'{}')[avKindKey(k,id)]||null;}catch(e){return null;}}
+function avReadsLikeMatch(txt){
+  const L=txt.replace(/\r/g,'').split('\n').map(x=>x.trim()).filter(Boolean);if(L.length<3)return false;
+  const ends=L.filter(l=>/[.!?]["'\u201d\u2019)\]]?$/.test(l)).length/L.length;
+  const ring=L.filter(l=>/counts:? ?one|going for the pin|into the (ropes|turnbuckle)|tags (in|out)|bell rings|wins the match|suplex|dropkick|clothesline|elbow|headlock|bodyslam|(enters|leaves) the ring|referee/i.test(l)).length/L.length;
+  return ends>=0.8&&ring>=0.05;}
+// Sentence ends, but not after Mr., Dr., Jr., St., vs., initials like "S." or "J.J.", or inside a number like 1.5
+const AV_ABBR=/^[("'\u201c]*(mr|mrs|ms|dr|jr|sr|st|mt|ft|vs|lt|sgt|col|gen|capt|cpl|maj|prof|rev|hon|inc|ltd|co|bros|jan|feb|mar|apr|aug|sept|sep|oct|nov|dec|approx|ave|blvd|rd)\.$/i;
+function avSentences(x){
+  const out=[];let st=0,m;const re=/[.!?]+["'\u201d\u2019)\]]*(?=\s+["'\u201c\u2018(\[]?[A-Z0-9])/g;
+  while((m=re.exec(x))){const at=m.index;
+    if(x.lastIndexOf('<',at)>x.lastIndexOf('>',at)) continue;   // inside a tag
+    const tok=(/\S*$/.exec(x.slice(st,at+1).replace(/<[^>]+>/g,''))||[''])[0];
+    if(m[0]==='.'&&(AV_ABBR.test(tok)||/^[("'\u201c]*(?:[A-Z]\.)+$/.test(tok)||(/^No\.$/.test(tok)&&/^\s+\d/.test(x.slice(at+1))))) continue;
+    out.push(x.slice(st,at+m[0].length).trim());st=at+m[0].length;}
+  out.push(x.slice(st).trim());return out.filter(Boolean);}
+/* TNM text pages: blank lines split the <pre> into blocks; hard-wrapped lines are joined back into sentences.
+   pbp: a match's highlights page, shown one sentence per line */
+function avBlock(b,pbp){
   const plain=s=>s.replace(/<[^>]+>/g,'').trim();
   const L=[];
   b.split('\n').map(l=>l.replace(/\s+$/,'')).filter(l=>l.trim()).forEach(l=>{const prev=L[L.length-1],t=l.trim();
     const open=prev!=null&&/^[([]/.test(plain(prev))&&!/[)\]]$/.test(plain(prev));
     const pp=prev!=null?plain(prev):'';
-    if(prev!=null&&(pp.length>=60||open||/\b(the|a|an|with|and|of|to|in|on|by|for|from|at|his|her|their)$/.test(pp))&&!/\S {3,}\S/.test(pp+' | '+t)&&!/^(Rating:|Interview:|\(|\[|<a\s|<center|<h\d)/i.test(t)&&!/<h\d/i.test(prev)) L[L.length-1]=prev+' '+t; else L.push(t);});
+    // in a match's highlights a line that ends a sentence is never joined to the next; a short line (a count) stands alone
+    if(prev!=null&&(pbp?!/[.!?]["'\u201d\u2019)\]]?$/.test(pp)&&(pp.length>=60||/^[a-z]/.test(t)):pp.length>=60||open||/\b(the|a|an|with|and|of|to|in|on|by|for|from|at|his|her|their)$/.test(pp))&&!/\S {3,}\S/.test(pp+' | '+t)&&!/^(Rating:|Interview:|\(|\[|<a\s|<center|<h\d)/i.test(t)&&!/<h\d/i.test(prev)) L[L.length-1]=prev+' '+t; else L.push(t);});
   if(!L.length) return '';
   // standings and other tables lined up with spaces keep their columns
   if(L.filter(l=>/\S {3,}\S/.test(plain(l))).length>=2) return `<div class="av-blk"><pre class="av-tbl">${b.replace(/^\n+|\s+$/g,'')}</pre></div>`;
@@ -2222,9 +2246,13 @@ function avBlock(b){
     if(t.length<=80&&/[A-Z]{3}/.test(t)&&t===t.toUpperCase()) return 'head';
     return 'p';};
   let out='',para=[],match=false;
+  // On a show page, note whether this block's highlights link is a match's or a segment's (for the page it opens)
+  const bp=plain(b), seg=/^(Interview|In[- ]ring \w+|Segment|Angle|Promo|Video|Backstage|Vignette|Skit|Contract signing|Announcement|Ceremony|Speech|Presentation|Celebration|Confrontation|Face[- ]to[- ]face|Recap|Hype)[^:\n]{0,40}:/im.test(bp)&&!/^Rating:/im.test(bp);
+  const isM=!seg&&(/^Rating:/im.test(bp)||/\b(defeat\w*|pinned|pins|beat|beats|submit\w*|count-?out|disqualif\w*|draw|no contest|retain\w*|won the)\b/i.test(bp)||/\bvs\.?\s/i.test(bp));
   const flush=()=>{if(para.length)out+=`<p>${para.join('<br>')}</p>`;para=[];};
   L.forEach(s=>{const k=kind(s);if(k!=='p')flush();
-    if(k==='p') para.push(s);
+    if(k==='hl'){const h=/href="#(\w+)\/page\/([^"#?]+)"/.exec(s);if(h&&P[h[1]])avKindSet(h[1],h[2],isM?'m':'s');}
+    if(k==='p') pbp?para.push(...avSentences(s)):para.push(s);
     else if(k==='h') out+=`<h2 class="av-h">${s.replace(/<\/?(center|h\d)[^>]*>/gi,'')}</h2>`;
     else if(k==='rate'){const m=s.match(/^\s*([^:]+):\s*(.*)$/);if(/^Rating/i.test(m[1]))match=true;out+=`<div class="av-rate">${m[1]} <b>${m[2]}</b></div>`;}
     else if(k==='title') out+=`<div class="av-title">${s.replace(/^\(|\)$/g,'')}</div>`;
@@ -2235,12 +2263,12 @@ function avBlock(b){
   flush();
   if(/^<div class="kicker av-k">[^<]*<\/div>$/.test(out)) return `<div class="av-kblk">${out}</div>`;
   return /^<h2/.test(out)?out:`<div class="av-blk${match?' av-m':''}">${out}</div>`;}
-function avText(d){
+function avText(d,pbp){
   const body=d.body;if(!body) return '<div class="empty">This page is empty.</div>';
   let out='';const rest=document.createElement('div');
   [...body.childNodes].forEach(n=>{
     if(n.nodeType===1&&n.tagName==='PRE'){if(rest.childNodes.length){out+=avRest(rest);rest.innerHTML='';}
-      out+=n.innerHTML.replace(/\r/g,'').split(/\n[ \t]*\n+/).map(avBlock).join('');}
+      out+=n.innerHTML.replace(/\r/g,'').split(/\n[ \t]*\n+/).map(b=>avBlock(b,pbp)).join('');}
     else rest.appendChild(document.importNode(n,true));});
   if(rest.childNodes.length) out+=avRest(rest);
   return `<div class="av-doc">${out}</div>`;}
@@ -2288,7 +2316,9 @@ async function loadArcPage(k,id){
   const first=pre&&(pre.textContent.split('\n').map(x=>x.trim()).find(Boolean)||'');
   const ttl=(styled?(d.title||'').split(' · ')[0]:h?h.textContent:first&&first.length<=90?first:d.title)||id;
   const cr=$('#av-crumb');if(cr)cr.textContent=ttl.replace(/\s+/g,' ').trim();
-  if(styled) avFrame(box,d); else box.innerHTML=avText(d);}
+  // a match's highlights page (no heading of its own): one sentence per line
+  const pbp=!styled&&!h&&!!pre&&(avKindGet(k,id)==='m'||(!avKindGet(k,id)&&avReadsLikeMatch(pre.textContent)));
+  if(styled) avFrame(box,d); else box.innerHTML=avText(d,pbp);}
 /* Show Archive tab: pages on the official site the World Report doesn't list yet */
 async function loadArcNew(k){const box=$('#av-new');if(!box)return;const want=location.hash;
   let nw;try{nw=await avNew(k);}catch(e){return;}
