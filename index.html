@@ -716,6 +716,8 @@ const ORDER = ['wwf','wcw','uswa','njpw','ajpw','fmw','cmll','asw','pp','twa'];
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
 
 /* =========================== NAV =========================== */
+// Talent Exchange is retired for now (the Talent File covers it). Its page and data stay; set TX_ON=true to bring it back.
+const TX_ON=false;
 const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['ratings','TV Ratings'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
@@ -732,7 +734,7 @@ function renderNav(cur,curT){
     return `<div class="dd" style="--c:${p.c}"><a href="#${k}" class="top ${cur===k?'on':''}" aria-haspopup="true">${esc(p.nav||p.short)}<span class="caret">▾</span></a>
     <div class="menu" role="menu"><div class="mlinks${nLinks(L)>8?' cols':''}">${L}</div>
     ${promoLatest(k)}</div></div>`;};
-  const worldLinks=`<a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#ratings" class="${cur==='ratings'?'cur':''}">TV Ratings &amp; PPV Buys</a><a role="menuitem" href="#storyarchive" class="${cur==='storyarchive'?'cur':''}">Story Archive</a><a role="menuitem" href="#belts" class="${cur==='belts'?'cur':''}">Title Belts</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a><a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a><a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#departures" class="${cur==='departures'?'cur':''}">Departures</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a>`;
+  const worldLinks=`<a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#ratings" class="${cur==='ratings'?'cur':''}">TV Ratings &amp; PPV Buys</a><a role="menuitem" href="#storyarchive" class="${cur==='storyarchive'?'cur':''}">Story Archive</a><a role="menuitem" href="#belts" class="${cur==='belts'?'cur':''}">Title Belts</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a>${TX_ON?`<a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a>`:''}<a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#departures" class="${cur==='departures'?'cur':''}">Departures</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a>`;
   const worldLatest=`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a>`;
   const worldOn=['calendar','showarchive','ratings','storyarchive','belts','file','talent','arrivals','departures','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
   $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',showarchive:'Show Archive',ratings:'TV Ratings',file:'Talent File',talent:'Talent Exchange',arrivals:'Arrivals',departures:'Departures',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
@@ -2267,6 +2269,8 @@ function route(){
   // Observer Reports and From the Road are now kinds on the Stories tab: old links land there
   if(P[h]&&SERIES[t]){f=t;t='stories';history.replaceState(null,'','#'+h+'/stories/'+f);}
   storyKind=kindOK(P[h]&&t==='stories'?f||'':h==='storyarchive'?t||'':'');
+  // Talent Exchange is retired for now: old links land on the Talent File
+  if(!TX_ON&&h==='talent'){h='file';t=f=null;history.replaceState(null,'','#file');}
   // Cards & Results became each promotion's Talent File tab: old links land there
   if(P[h]&&t==='shows'){t='file';history.replaceState(null,'','#'+h+'/file');}
   thFocus=P[h]&&t==='titles'&&f!=null&&f!==''?f:null;
