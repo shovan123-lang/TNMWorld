@@ -43,17 +43,32 @@ for k,d,lab,m in S.BONUSES:
     p=get(n,k,tier.get((k,n),"A")); p["bonus"]+=v; p["lines"].append(dict(p=k,d=d,what=lab,amt=v,kind="bonus"))
 from datetime import date as _D
 _dd=lambda s:_D(int(s[:4]),int(s[5:7]),int(s[8:10]))
+from datetime import timedelta as _TD0
 for k,(st,d,lab) in S.TOURS.items():
   span=(_dd(d)-_dd(st)).days+1; done=max(0,min(span,(_dd(WORLD)-_dd(st)).days+1))
   for t,n,r,note in C[k]['rows']:
     if t=="O" or n in S.PER_NIGHT.get(k,{}): continue
-    p=get(n,k,t); earned=r*done/span; left=r-earned
+    md=getattr(S,'MONTHLY_DEALS',{}).get(k,{}).get(n); dn=done
+    if md:   # on a monthly deal from md['start']: the tour fee counts only up to the day before, and nothing more is owed
+      r=md['tour_rate']; dn=min(done,max(0,(_dd(md['start'])-_dd(st)).days))
+    p=get(n,k,t); earned=r*dn/span; left=0 if md else r-earned
     if earned:
       p["shows"]+=earned
-      p["lines"].append(dict(p=k,d=min(WORLD,d),what=lab+" earned to date: ${:,} × {} of {} tour days".format(r,done,span),amt=round(earned,2),kind="tour"))
+      lbl=lab+(" to {}/{}, before his monthly deal: ${:,} × {} of {} tour days".format(int(md['start'][5:7]),int(md['start'][8:10])-1,r,dn,span) if md else " earned to date: ${:,} × {} of {} tour days".format(r,dn,span))
+      p["lines"].append(dict(p=k,d=min(WORLD,d,(_dd(md['start'])-_TD0(days=1)).isoformat() if md else d),what=lbl,amt=round(earned,2),kind="tour"))
     if left>0.005:
       p["due"]+=left
-      p["lines"].append(dict(p=k,d=d,what=lab+" still to earn ({} tour days left)".format(span-done),amt=round(left,2),kind="due"))
+      p["lines"].append(dict(p=k,d=d,what=lab+" still to earn ({} tour days left)".format(span-dn),amt=round(left,2),kind="due"))
+for k,who in getattr(S,'MONTHLY_DEALS',{}).items():
+  for n,g in who.items():
+    a=_dd(g['start']); m0=_dd(S.MONTH+"-01")
+    if a<m0: a=m0
+    d=max(0,day-a.day+1) if g['start'][:7]<=S.MONTH else 0
+    if not d: continue
+    p=get(n,k,tier.get((k,n),"A"))
+    for amt,what in ((g['month']*d/S.DAYS_IN_MONTH,"Salary from {}/{}: ${:,} a month × {} of {} days ({})".format(a.month,a.day,g['month'],d,S.DAYS_IN_MONTH,g['why'])),
+                     (g['year_fee']/12*d/S.DAYS_IN_MONTH,"Talent fee from {}/{}: ${:,} a year (${:,.2f} a month) × {} of {} days".format(a.month,a.day,g['year_fee'],g['year_fee']/12,d,S.DAYS_IN_MONTH))):
+      p["salary"]+=amt; p["lines"].append(dict(p=k,d=WORLD,what=what,amt=round(amt,2),kind="salary"))
 for k,who in S.PER_NIGHT.items():
   for n,(r,nights) in who.items():
     p=get(n,k,tier.get((k,n),"A"))
