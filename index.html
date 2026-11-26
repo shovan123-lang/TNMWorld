@@ -360,6 +360,11 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 .abadge.photo{width:220px;padding:0}.abadge.photo img{max-height:none;width:100%}
 .abadge.photo figcaption{padding:4px 8px 6px;text-transform:none;letter-spacing:0;font-weight:400;font-style:italic}
 @media(max-width:640px){.abadge{width:96px;margin-right:12px}.abadge.photo{width:140px}}
+
+.res{display:inline-block;min-width:20px;text-align:center;font-family:var(--cond);font-weight:700;font-size:12px;padding:1px 4px;color:#fff;background:var(--mute)}
+.res-w{background:#2f6b3a}.res-l{background:var(--red)}.res-d{background:#8a7d63}
+.tfsort{font-family:var(--cond);font-size:14px;padding:4px 6px;border:2px solid var(--ink);background:var(--paper)}
+#tftbl td .pc{margin-right:2px}
 </style>
 </head>
 <body>
@@ -380,7 +385,8 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 /* Data containers. Each promotion's file in data/ fills these in. */
 const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={};
 </script>
-<script src="data/world.js?v=ad4cfa51"></script>
+<script src="data/world.js?v=8f131e78"></script>
+<script src="tools/talent_engine.js?v=ab2c23d3"></script>
 <script src="data/wcw.js?v=62b8019d"></script>
 <script src="data/wwf.js?v=dd5bb16e"></script>
 <script src="data/uswa.js?v=a9eee91b"></script>
@@ -544,47 +550,86 @@ function storylinesToWatch(){
   }).join('');
 }
 
-/* ---- Talent File (front page spotlight + #file pages) ---- */
+/* ---- Talent File: every rostered wrestler (tools/talent_engine.js), plus hand-written spotlights ---- */
 const TFILES=typeof TALENT_FILES!=='undefined'?TALENT_FILES:(typeof SPOTLIGHT!=='undefined'?[SPOTLIGHT]:[]);
-const tfSlug=f=>f.slug||f.name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
-function spotMatches(f){
-  f=f||SPOTLIGHT; if(!f) return [];
-  const re=new RegExp(f.match);const out=[];
-  E.forEach(e=>(e.m||[]).forEach(m=>{if(re.test(m[0])&&!/^(Segment|Angle|Promo|Interview|Closing)\b/i.test(m[0]))out.push({e,m,past:pastE(e)})}));
-  return out.sort((a,b)=>a.e.d.localeCompare(b.e.d));
+const tfSlug=f=>(f.slug||f.name).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+let _TF=null;
+function tfAll(){
+  if(_TF) return _TF;
+  const built=TalentEngine.build(P,E,{order:ORDER,past:pastE,world:WORLD_DATE,teams:typeof TEAMS!=='undefined'?TEAMS:{}});
+  const byName=new Map(), list=[];
+  for(const x of built.values()){
+    const cur=TFILES.find(f=>f.name===x.name);
+    const f={...x,slug:tfSlug(cur||x),spot:cur||null,earn:cur&&cur.earn||x.name,promos:ORDER.filter(k=>x.promos.has(k))};
+    list.push(f);byName.set(f.name,f);
+  }
+  list.sort((a,b)=>a.name.localeCompare(b.name));
+  _TF={list,byName,bySlug:new Map(list.map(f=>[f.slug,f]))};return _TF;
 }
-function spotStats(list){
-  const run=list.filter(x=>x.past&&x.m[1]);const promos=[...new Set(run.map(x=>x.e.p))];
-  const best=run.filter(x=>starVal(x.m[2])!==null).sort((a,b)=>starVal(b.m[2])-starVal(a.m[2]))[0];
-  return {run,promos,best};
-}
-const tfEarn=f=>typeof EARNINGS==='undefined'?null:EARNINGS.people.find(x=>x.name===(f.earn||f.name))||null;
+const tfNorm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+const tfEarn=f=>typeof EARNINGS==='undefined'?null:EARNINGS.people.find(x=>tfNorm(x.name)===tfNorm(f.earn||f.name))||null;
 const tfMoney=v=>'$'+Math.round(v||0).toLocaleString();
-function tfStats(f,run,promos,best){
-  const x=tfEarn(f);
-  return `<div class="tf-stats five"><div><b>${run.length}</b><span>Matches</span></div><div><b>${esc(f.record)}</b><span>Record</span></div><div><b>${promos.length}</b><span>Promotions</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div><div class="tf-cash"><b>${x?tfMoney(x.life):'—'}</b><span>Career earnings</span></div></div>`;
+const tfBest=f=>f.run.filter(r=>starVal(r.m[2])!==null).sort((a,b)=>starVal(b.m[2])-starVal(a.m[2]))[0];
+function tfTitles(f){const n=tfNorm(f.name),teams=Object.entries(typeof TEAMS!=='undefined'?TEAMS:{}).filter(([t,m])=>m.includes(f.name)).map(([t])=>tfNorm(t));
+  const out=[];ORDER.forEach(k=>(P[k].titles||[]).forEach(t=>{const h=tfNorm(t[1]);if(h&&(h.includes(n)||teams.some(x=>x.length>3&&h.includes(x))))out.push([k,t[0]])}));return out;}
+function tfStats(f){
+  const x=tfEarn(f),best=tfBest(f),rec=f.spot&&f.spot.record?f.spot.record:f.record;
+  return `<div class="tf-stats five"><div><b>${f.run.length}</b><span>Matches</span></div><div><b>${esc(rec)}</b><span>Record</span></div><div><b>${f.promos.length}</b><span>Promotions</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div><div class="tf-cash"><b>${x?tfMoney(x.life):'—'}</b><span>Career earnings</span></div></div>`;
+}
+function tfBlurb(f){
+  if(f.spot&&f.spot.blurb) return esc(f.spot.blurb);
+  const bits=[], last=f.run[f.run.length-1], next=f.booked[0], titles=tfTitles(f);
+  const notes=f.promos.map(k=>f.notes&&f.notes[k]?`${P[k].short}: ${f.notes[k]}`:'').filter(Boolean);
+  if(titles.length) bits.push('Holds the '+titles.map(([k,t])=>`${esc(P[k].short)} ${esc(t)}`).join(' and the ')+' title.');
+  if(f.run.length) bits.push(`${f.run.length} match${f.run.length===1?'':'es'} on the cards so far (${esc(f.record)}${f.u?`, ${f.u} undecided`:''}).`);
+  else bits.push('Hasn\'t worked a match on the cards yet.');
+  if(last) bits.push(`Last time out, ${fmt(last.e.d)}: ${esc(last.m[1])}.`);
+  if(next) bits.push(`Next booked: ${fmt(next.e.d)}, ${esc(next.e.city||P[next.e.p].short)}.`);
+  if(notes.length) bits.push('Roster notes: '+notes.map(esc).join('; ')+'.');
+  return bits.join(' ');
 }
 function talentFileBox(){
   if(!TFILES.length) return '';
-  const f=SPOTLIGHT, list=spotMatches(f), {run,promos,best}=spotStats(list);
-  const last=run.slice(-3).reverse();
+  const f=tfAll().byName.get(SPOTLIGHT.name); if(!f) return '';
+  const last=f.run.slice(-3).reverse();
   return `<h2 class="sec">Talent File <small>In the spotlight</small></h2>
   <div class="tfile">
-    <div class="tf-name">${esc(f.name)} ${promos.map(pchip).join('')}</div>
-    ${tfStats(f,run,promos,best)}
-    <p class="tf-blurb">${esc(f.blurb)}</p>
+    <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')}</div>
+    ${tfStats(f)}
+    <p class="tf-blurb">${tfBlurb(f)}</p>
     <ul class="tf-last">${last.map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${pchip(x.e.p)} ${esc(x.m[0])} <span class="mute">· ${esc(x.m[1])}</span> <b class="num">${esc(x.m[2]||'')}</b></li>`).join('')}</ul>
-    <p style="font-family:var(--cond);font-size:13px;margin:6px 0 0"><a href="#file/${tfSlug(f)}">Every match →</a>${TFILES.length>1?` · <a href="#file">All ${TFILES.length} Talent Files →</a>`:''}</p>
+    <p style="font-family:var(--cond);font-size:13px;margin:6px 0 0"><a href="#file/${f.slug}">Every match →</a> · <a href="#file">All ${tfAll().list.length} Talent Files →</a></p>
   </div>`;
 }
+let tfFilter=new Set(), tfSort='matches';
 function viewTalentFileIndex(){
-  const hasE=typeof EARNINGS!=='undefined';
-  return `<h2 class="sec">Talent File <small>${TFILES.length} wrestlers${hasE?` · career earnings through ${fmt(EARNINGS.world)}`:''}</small></h2>
-  <div class="tf-grid">${TFILES.map(f=>{const list=spotMatches(f),{run,promos,best}=spotStats(list),x=tfEarn(f),last=run[run.length-1];
-    return `<a class="tf-card" href="#file/${tfSlug(f)}"><div class="tf-name">${esc(f.name)}</div><div class="tf-chips">${promos.map(pchip).join('')}</div>
-      <div class="tf-mini"><div><b>${esc(f.record)}</b><span>Record</span></div><div><b>${run.length}</b><span>Matches</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div><div class="tf-cash"><b>${x?tfMoney(x.life):'—'}</b><span>Career $</span></div></div>
-      ${last?`<div class="tf-lastline"><span class="mute">Last:</span> ${fmt(last.e.d)} · ${esc(last.m[1])}</div>`:''}</a>`}).join('')}</div>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances. Earnings before that are To establish.</p>`;
+  const T=tfAll(), hasE=typeof EARNINGS!=='undefined';
+  const spots=TFILES.map(s=>T.byName.get(s.name)).filter(Boolean);
+  const card=f=>{const x=tfEarn(f),best=tfBest(f),last=f.run[f.run.length-1];return `<a class="tf-card" href="#file/${f.slug}"><div class="tf-name">${esc(f.name)}</div><div class="tf-chips">${f.promos.map(pchip).join('')}</div>
+      <div class="tf-mini"><div><b>${esc(f.spot&&f.spot.record||f.record)}</b><span>Record</span></div><div><b>${f.run.length}</b><span>Matches</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div><div class="tf-cash"><b>${x?tfMoney(x.life):'—'}</b><span>Career $</span></div></div>
+      ${last?`<div class="tf-lastline"><span class="mute">Last:</span> ${fmt(last.e.d)} · ${esc(last.m[1])}</div>`:''}</a>`};
+  return `<h2 class="sec">Talent File <small>${T.list.length} wrestlers${hasE?` · career earnings through ${fmt(EARNINGS.world)}`:''}</small></h2>
+  <h3 class="amonth" style="font-size:22px">In the spotlight</h3>
+  <div class="tf-grid">${spots.map(card).join('')}</div>
+  <h3 class="amonth" style="font-size:22px">Every wrestler <small>${T.list.length}</small></h3>
+  <div class="efilters tffilters">${ORDER.map(k=>`<button data-f="${k}" class="${!tfFilter.size||tfFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['earn','Career $'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
+  <div class="tbl-wrap"><table id="tftbl"><thead><tr><th>Wrestler</th><th>Promotions</th><th class="num">Record</th><th class="num">Matches</th><th class="num">Best</th><th class="num">Career $</th></tr></thead><tbody>${tfRows()}</tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Every name on every roster. Records are worked out from the results on the cards (tag matches count for every member); "undecided" results don't count either way. Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances.</p>`;
+}
+function tfRows(){
+  const T=tfAll(), q=(($('#tfsearch')||{}).value||'').toLowerCase();
+  const val=f=>tfSort==='name'?0:tfSort==='wins'?f.w:tfSort==='earn'?((tfEarn(f)||{}).life||0):f.run.length;
+  return T.list.filter(f=>(!tfFilter.size||f.promos.some(k=>tfFilter.has(k)))&&f.name.toLowerCase().includes(q))
+    .sort((a,b)=>val(b)-val(a)||a.name.localeCompare(b.name))
+    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${f.spot?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${x?tfMoney(x.life):'—'}</td></tr>`}).join('')
+    || '<tr><td colspan="6" class="mute">No one matches.</td></tr>';
+}
+function bindTalentFile(){
+  const redraw=()=>{const b=$('#tftbl tbody');if(b)b.innerHTML=tfRows();};
+  document.querySelectorAll('.tffilters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;if(!tfFilter.size)tfFilter=new Set([f]);else if(tfFilter.has(f))tfFilter.delete(f);else tfFilter.add(f);
+    document.querySelectorAll('.tffilters button').forEach(x=>x.classList.toggle('off',!!tfFilter.size&&!tfFilter.has(x.dataset.f)));redraw();});
+  const s=$('#tfsearch');if(s)s.oninput=redraw; const o=$('#tfsort');if(o)o.onchange=()=>{tfSort=o.value;redraw();};
 }
 function tfEarnBlock(f){
   const x=tfEarn(f); if(!x) return `<h3 class="amonth" style="font-size:22px">Earnings</h3><div class="empty">Not on a pay scale yet.</div>`;
@@ -598,25 +643,24 @@ function tfEarnBlock(f){
   ${lines.length?`<details class="bk" style="margin-top:8px"><summary>${esc(EARNINGS.month)} paydays (${lines.length})</summary><div class="tbl-wrap"><table><tbody>${lines.map(l=>`<tr><td style="white-space:nowrap">${l.kind==='salary'?'To '+fmt(l.d):fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}${dueL.map(l=>`<tr class="past"><td style="white-space:nowrap">${fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}</tbody></table></div></details>`:''}`;
 }
 function viewTalentFile(slug){
-  if(!TFILES.length) return `<div class="empty">No Talent File set.</div>`;
-  const f=slug?TFILES.find(x=>tfSlug(x)===slug):null;
+  const T=tfAll(); if(!T.list.length) return `<div class="empty">No Talent File set.</div>`;
+  const f=slug?T.bySlug.get(slug):null;
   if(!f) return viewTalentFileIndex();
-  const list=spotMatches(f), {run,promos,best}=spotStats(list);
-  const up=list.filter(x=>!x.past);
-  const row=(x,fut)=>`<tr class="${fut?'':'past'}"><td style="white-space:nowrap">${fmt(x.e.d)}</td><td>${pchip(x.e.p)}</td><td><b>${esc(x.m[0])}</b><br><span class="mute" style="font-size:13px">${esc([x.e.city,x.e.type].filter(Boolean).join(' · '))}</span></td><td>${fut?(x.m[1]?`<span class="spoil">${esc(x.m[1])}</span>`:'<span class="mute">TBA</span>'):esc(x.m[1])}</td><td class="num">${fut?'':esc(x.m[2]||'')}</td></tr>`;
-  const i=TFILES.indexOf(f), prev=TFILES[(i-1+TFILES.length)%TFILES.length], next=TFILES[(i+1)%TFILES.length];
-  return `<h2 class="sec">Talent File <small><a href="#file">All files</a> · ${i+1} of ${TFILES.length}</small></h2>
+  const res=r=>`<span class="res res-${r.toLowerCase()}">${r==='?'?'–':r}</span>`;
+  const row=(x,fut)=>`<tr class="${fut?'':'past'}"><td style="white-space:nowrap">${fmt(x.e.d)}</td><td>${pchip(x.e.p)}</td><td><b>${esc(x.m[0])}</b><br><span class="mute" style="font-size:13px">${esc([x.e.city,x.e.type].filter(Boolean).join(' · '))}</span></td><td>${fut?'':res(x.res)}</td><td>${fut?(x.m[1]?`<span class="spoil">${esc(x.m[1])}</span>`:'<span class="mute">TBA</span>'):esc(x.m[1])}</td><td class="num">${fut?'':esc(x.m[2]||'')}</td></tr>`;
+  const L=f.spot?TFILES.map(s=>T.byName.get(s.name)).filter(Boolean):T.list, i=L.indexOf(f), prev=L[(i-1+L.length)%L.length], next=L[(i+1)%L.length];
+  return `<h2 class="sec">Talent File <small><a href="#file">All files</a>${f.spot?' · spotlight':''}</small></h2>
   <div class="tfile big">
-    <div class="tf-name">${esc(f.name)} ${promos.map(pchip).join('')}</div>
-    ${tfStats(f,run,promos,best)}
-    <p class="tf-blurb">${esc(f.blurb)}</p>
+    <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')}</div>
+    ${tfStats(f)}
+    <p class="tf-blurb">${tfBlurb(f)}</p>
   </div>
   ${tfEarnBlock(f)}
-  <h3 class="amonth" style="font-size:22px">Results <small>${run.length}</small></h3>
-  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th>Result</th><th>Rating</th></tr></thead><tbody>${run.map(x=>row(x,0)).join('')}</tbody></table></div>
-  ${up.length?`<h3 class="amonth" style="font-size:22px">Booked <small>plan · finishes hidden until they happen</small></h3><div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th>Finish</th><th></th></tr></thead><tbody>${up.map(x=>row(x,1)).join('')}</tbody></table></div>`:''}
-  <div class="tf-pager">${TFILES.length>1?`<a href="#file/${tfSlug(prev)}">← ${esc(prev.name)}</a><a href="#file/${tfSlug(next)}">${esc(next.name)} →</a>`:''}</div>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Built from every card on the site. Matches before ${fmt(f.since)} are To establish.</p>`;
+  <h3 class="amonth" style="font-size:22px">Results <small>${f.run.length}</small></h3>
+  ${f.run.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th></th><th>Result</th><th>Rating</th></tr></thead><tbody>${f.run.slice().reverse().map(x=>row(x,0)).join('')}</tbody></table></div>`:'<div class="empty">No matches on the cards yet.</div>'}
+  ${f.booked.length?`<h3 class="amonth" style="font-size:22px">Booked <small>plan · finishes hidden until they happen</small></h3><div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th></th><th>Finish</th><th></th></tr></thead><tbody>${f.booked.map(x=>row(x,1)).join('')}</tbody></table></div>`:''}
+  <div class="tf-pager"><a href="#file/${prev.slug}">← ${esc(prev.name)}</a><a href="#file/${next.slug}">${esc(next.name)} →</a></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Built from every card on the site; tag matches count for every member. Matches before this world began are To establish.</p>`;
 }
 function worldNumbers(){
   const mo=WORLD_DATE.slice(0,7);
@@ -1240,6 +1284,7 @@ function bind(key){
   const cs=$('#csearch'); if(cs) cs.oninput=()=>{const q=cs.value.toLowerCase();document.querySelectorAll('#ctbl tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   if(key==='earnings') bindEarnings();
   if(key==='storyarchive') bindStoryArchive();
+  if(key==='file') bindTalentFile();
   const as=$('#asearch'); if(as) as.oninput=()=>{const q=as.value.toLowerCase();document.querySelectorAll('#atbl tbody tr,#acareer tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('.rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
 }
