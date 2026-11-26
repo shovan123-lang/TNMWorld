@@ -1696,7 +1696,9 @@ function viewRatings(k){
   const legend=shows.map(s=>{const l=T.byShow[s.id].slice(-1)[0];return `<li style="--k:${tvColor(s)}"><i></i>${esc(s.name)} ${l?`<b>${tvNum(s,l.v)}</b> <span class="mute">${esc(fmt(l.d))}</span>`:'<span class="mute">not rated yet</span>'}</li>`}).join('');
   /* One table per show (e.g. USWA Worldwide and Championship TV), newest episode first. */
   const epRow=x=>{const ch=x.prev==null?'':(x.v-x.prev);return `<tr><td style="white-space:nowrap">${fmt(x.d)}${x.e.link&&SITES[k]?` <span class="rwhy">${siteLink(k,x.e.link,'show ↗')}</span>`:''}</td><td class="num"><b>${tvNum(x.show,x.v)}</b></td><td class="num">${ch===''?'<span class="mute">first</span>':ch===0?'<span class="mute">same</span>':(ch>0?'+':'−')+Math.abs(ch).toFixed(1)}</td><td class="rwhy">${esc(tvWhy(x))}</td></tr>`};
-  const showTables=shows.map(s=>{const se=eps.filter(x=>x.show===s).reverse();
+  /* Sections run newest first too: the show with the most recent rated episode leads. */
+  const lastD=s=>{const se=eps.filter(x=>x.show===s);return se.length?se[se.length-1].d:''};
+  const showTables=shows.slice().sort((a,b)=>lastD(b).localeCompare(lastD(a))).map(s=>{const se=eps.filter(x=>x.show===s).reverse();
     return `<h3 class="amonth"><span style="display:inline-block;width:14px;border-top:3px solid ${tvColor(s)};border-radius:2px;vertical-align:5px;margin-right:8px"></span>${esc(s.name)} <small>${se.length} rated${s.outlet?' · '+esc(s.outlet):''}</small></h3>
   ${se.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th class="num">Rating</th><th class="num">Change</th><th>What moved it</th></tr></thead><tbody>${se.map(epRow).join('')}</tbody></table></div>`:'<div class="empty">No episodes rated yet.</div>'}`}).join('');
   const money=v=>'$'+Math.round(v).toLocaleString('en-US');
@@ -1708,7 +1710,7 @@ function viewRatings(k){
   </figure>
   <p class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 0">${esc(U.long)}. Worked out from each show's card (card rating, headliners, title matches, go-home hype and the crowd), with part of last week's number carried over. <a href="#rhow" onclick="document.getElementById('rhow').open=true">How the ratings work ↓</a> · <a href="#ratings">Every show in the TNM World →</a></p>
   ${showTables}
-  ${un.length?`<h3 class="amonth">Not rated yet <small>${un.length}</small></h3><ul class="tf-last">${un.map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${esc(x.show.name)} <span class="mute">· ${x.e.d===WORLD_DATE?'airs today; rated once its results are logged':'aired, but no results are logged yet'}</span></li>`).join('')}</ul>`:''}`:''}
+  ${un.length?`<h3 class="amonth">Not rated yet <small>${un.length}</small></h3><ul class="tf-last">${un.slice().sort((a,b)=>b.e.d.localeCompare(a.e.d)).map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${esc(x.show.name)} <span class="mute">· ${x.e.d===WORLD_DATE?'airs today; rated once its results are logged':'aired, but no results are logged yet'}</span></li>`).join('')}</ul>`:''}`:''}
   <h2 class="sec">PPV Buys <small>From the Finance tab</small></h2>
   ${ppv.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Event</th><th class="num">Buys</th><th class="num">To ${esc(P[k].short)}</th></tr></thead><tbody>${ppv.map(x=>`<tr><td style="white-space:nowrap">${fmt(x.d)}</td><td>${esc(x.name)}</td><td class="num">${x.buys!=null?`<b>${x.buys.toLocaleString('en-US')}</b>`:'<span class="mute">Not yet reported</span>'}</td><td class="num">${x.take!=null?money(x.take):'—'}</td></tr>`).join('')}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 0">Buys as logged on the <a href="#${k}/finance">Finance tab</a>${ppv.some(x=>x.est)?'':'; nothing here is estimated'}.</p>`:`<div class="empty">No ${esc(P[k].short)} pay-per-views have run yet.</div>`}
