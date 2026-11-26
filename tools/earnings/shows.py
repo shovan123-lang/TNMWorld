@@ -123,6 +123,10 @@ SHOWS+=[
  dict(p="fmw",d="1991-07-20",show="Konan · Summer tour, Night 2",mult=1,gate=26540,logged=0,  # no ledger payroll yet
   people=["Masashi Honda","Yukihide Ueno","Eriko Tsuchiya","Rie Nakamura","Keiko Iwami","Yukie Nabeno","The Sheik",
    "Horace Boulder","Sabu","Ricky Fuji","Big Titan","Sambo Asako","Atsushi Onita","Grigory Verichev","Tarzan Goto","Mr. Pogo"]),
+ dict(p="fmw",d="1991-07-22",show="Kochi · Summer tour, Night 3",mult=1,gate=22150,logged=0,  # no ledger payroll yet
+  people=["Eiji Ezaki","Akihito Ichihara","Kevin Sullivan","Yukihide Ueno","Megumi Kudo","Yoshika Maedomari",
+   "Katsuji Ueda","Koba Kurtanidze","Sabu","Mitsuhiro Matsunaga","Mr. Pogo","Big Titan","Horace Boulder",
+   "Atsushi Onita","Sambo Asako","Ricky Fuji"]),
 ]
 
 # ---- Salaried promotions (WWF, WCW): salary accrues day by day through the world date.
