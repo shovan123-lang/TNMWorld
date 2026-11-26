@@ -527,6 +527,43 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 
 .beltsvg.row{width:96px;height:auto}
 .beltgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:6px 0 16px}
+.th-intro{font-family:var(--cond);font-size:14px;margin:4px 0 10px}
+.th-jump{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px}
+.th-jump a{font-family:var(--cond);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;text-decoration:none;border:2px solid var(--ink);padding:5px 10px;background:var(--paper)}
+.th-jump a:hover{background:var(--ink);color:var(--paper)}
+.th-card{border:2px solid var(--ink);background:var(--paper);margin:0 0 22px;scroll-margin-top:60px}
+.th-plate{display:flex;gap:16px;align-items:center;padding:14px;border-bottom:2px solid var(--ink);background:linear-gradient(180deg,var(--paper) 0,var(--paper2) 100%);border-top:6px solid var(--c)}
+.beltsvg.th{width:170px;height:auto;flex:none}
+.th-pl{min-width:0}
+.th-tn{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px;color:var(--c)}
+.th-champ{font-family:var(--head);font-size:30px;line-height:1.05;text-transform:uppercase;margin:2px 0 4px}
+.th-champ a{text-decoration:none}.th-champ a:hover{text-decoration:underline}
+.th-champ .th-mem{font-family:var(--cond);font-size:15px;text-transform:none;color:var(--mute)}
+.th-since{font-family:var(--cond);font-size:14px;color:var(--mute)}
+.th-counts{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:6px;font-family:var(--cond);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.th-counts b{font-family:var(--head);font-weight:400;font-size:20px}
+.th-line{list-style:none;margin:0;padding:0}
+.th-r{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border-top:1px solid var(--soft)}
+.th-r:first-child{border-top:0}
+.th-r.cur{background:color-mix(in srgb,#b8862b 9%,transparent)}
+.th-r.vac{color:var(--mute)}
+.th-n{font-family:var(--head);font-size:24px;line-height:1;color:var(--c);text-align:center}
+.th-who{font-family:var(--cond);font-weight:700;font-size:18px}
+.th-who a{text-decoration:none}.th-who a:hover{text-decoration:underline}
+.th-who .cur{font-size:11px;text-transform:uppercase;letter-spacing:.06em;background:var(--ink);color:var(--paper);padding:1px 6px;vertical-align:2px}
+.th-mem{font-weight:400;color:var(--mute);font-size:14px}
+.th-when{font-family:var(--cond);font-size:14px;color:var(--mute)}
+.th-when a{color:var(--ink)}
+.th-rt{font-family:var(--cond);font-weight:700;color:var(--ink);white-space:nowrap}
+.th-how{font-size:15px;margin:4px 0}
+.th-meta{display:flex;gap:12px;font-family:var(--cond);font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
+.th-def{margin-top:6px}
+.th-def summary{cursor:pointer;font-family:var(--cond);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.th-def ol{list-style:none;margin:6px 0 0;padding:0}
+.th-def li{display:grid;grid-template-columns:110px 1fr auto;gap:8px;padding:5px 0;border-top:1px dotted var(--soft);font-size:14px}
+.th-def .d{font-family:var(--cond);color:var(--mute)}
+.cb-hist{display:inline-block;margin-top:8px;font-family:var(--cond);font-weight:700;font-size:14px}
+@media(max-width:620px){.th-plate{flex-direction:column;align-items:flex-start}.beltsvg.th{width:150px}.th-champ{font-size:26px}.th-def li{grid-template-columns:1fr auto}.th-def .d{grid-column:1/-1}}
 .beltcard{border:2px solid var(--ink);background:linear-gradient(180deg,var(--paper) 0,var(--paper2) 100%);padding:12px;transition:transform .12s,box-shadow .12s}
 .beltcard:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--c)}
 .beltsvg.big{width:100%;height:auto;margin-bottom:8px}
@@ -682,12 +719,12 @@ let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e
 const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['ratings','TV Ratings'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
-const TAB_LABEL={overview:'Overview',stories:'Stories',file:'Talent File',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas',ratings:'Ratings'};
-function promoTabs(k){const t=['overview','file','roster','schedule','stories'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(hasRatings(k))t.push('ratings');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');if(typeof APUESTAS!=='undefined'&&APUESTAS[k])t.push('apuestas');return t;}
+const TAB_LABEL={overview:'Overview',titles:'Title Histories',stories:'Stories',file:'Talent File',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas',ratings:'Ratings'};
+function promoTabs(k){const t=['overview',...(hasTitleHist(k)?['titles']:[]),'file','roster','schedule','stories'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(hasRatings(k))t.push('ratings');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');if(typeof APUESTAS!=='undefined'&&APUESTAS[k])t.push('apuestas');return t;}
 function latestArticle(k){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||''))[0];}
 function renderNav(cur,curT){
   // One list of links per menu, shared by the desktop dropdowns and the phone menu
-  const promoLinks=k=>{const p=P[k];return promoTabs(k).map(t=>`<a role="menuitem" href="#${k}/${t}" class="${cur===k&&(curT||'overview')===t?'cur':''}">${TAB_LABEL[t]}</a>`+(t==='overview'&&SITES[k]&&!SITES[k].noTitles?`<a role="menuitem" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')
+  const promoLinks=k=>{const p=P[k];return promoTabs(k).map(t=>`<a role="menuitem" href="#${k}/${t}" class="${cur===k&&(curT||'overview')===t?'cur':''}">${TAB_LABEL[t]}</a>`).join('')
     +(SITES[k]?`<a role="menuitem" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${esc(p.short)} site ↗</a>`:'');};
   const promoLatest=k=>{const la=latestArticle(k);return la?`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#${la}">${esc(ARTICLES[la].title)}</a>`:'';};
   const nLinks=h=>(h.match(/<a /g)||[]).length;
@@ -755,7 +792,8 @@ function bindChampBoard(){
     btns.forEach(x=>x.setAttribute('aria-expanded','false'));
     if(open){pan.hidden=true;pan.innerHTML='';return;}
     const t=P[k].titles[0];
-    pan.innerHTML=belt(k,[P[k].short+' · '+t[0],t[1],t[2]],beltPhoto(k,t[0])?t[0]:null);
+    const ti=hasTitleHist(k)?tlIndex(k,t[0]):-1;
+    pan.innerHTML=belt(k,[P[k].short+' · '+t[0],t[1],t[2]],beltPhoto(k,t[0])?t[0]:null)+(hasTitleHist(k)?`<a class="cb-hist" href="#${k}/titles${ti>=0?'/'+ti:''}">${esc(P[k].short)} title histories →</a>`:'');
     pan.style.setProperty('--c',P[k].c); pan.hidden=false; b.setAttribute('aria-expanded','true');
   });
 }
@@ -1010,12 +1048,9 @@ const LEDGER_KEY={powerpro:'pp'};
 const tlDate=s=>{s=String(s||'');let m=/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s);if(m)return `${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
   m=/^([A-Z][a-z]{2})[a-z]*\.?\s+(\d{4})$/.exec(s);if(m){const i=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(m[1]);return `${m[2]}-${String(i+1).padStart(2,'0')}-00`;}
   m=/(\d{4})/.exec(s);return m?m[1]+'-00-00':'0000';};
-let _BELTS=null;
-function tfBeltIndex(){
-  if(_BELTS) return _BELTS; const B=new Map();
-  if(typeof TITLE_LEDGER==='undefined') return _BELTS=B;
+/* Who a title-ledger champion line means: a team's members, or each name on the promotion's roster / in the Talent File */
+function tlResolve(champ,k){
   const teams=Object.entries(typeof TEAMS!=='undefined'?TEAMS:{}).map(([t,m])=>[tfNorm(t).replace(/^the /,''),m]);
-  const resolve=(champ,k)=>{
     const whole=tfNorm(champ).replace(/^the /,''), tm=teams.find(([t])=>t===whole); if(tm) return tm[1];
     const roster=((P[k]&&P[k].roster)||[]).map(r=>r[0]), out=[];
     champ.split(/\s*(?:&|\band\b|,)\s*/).forEach(piece=>{
@@ -1027,11 +1062,16 @@ function tfBeltIndex(){
       if(hits.length===1) out.push(hits[0]);
     });
     return out;
-  };
+}
+let _BELTS=null;
+function tfBeltIndex(){
+  if(_BELTS) return _BELTS; const B=new Map();
+  if(typeof TITLE_LEDGER==='undefined') return _BELTS=B;
+  const resolve=tlResolve;
   TITLE_LEDGER.forEach(pr=>{const k=LEDGER_KEY[pr.id]||pr.id;
-    (pr.titles||[]).forEach(t=>(t.L||[]).forEach(r=>{ if(!r.c) return;
+    (pr.titles||[]).forEach((t,ti)=>(t.L||[]).forEach(r=>{ if(!r.c) return;
       const defs=(r.def||[]).filter(d=>tlDate(d[0])<=WORLD_DATE);
-      const rec={k,title:t.t,champ:r.c,won:r.w,wonD:tlDate(r.w),event:r.e||'',how:r.h||'',days:r.d,cur:!!r.cur,defs:defs.length,url:pr.url};
+      const rec={k,ti,title:t.t,champ:r.c,won:r.w,wonD:tlDate(r.w),event:r.e||'',how:r.h||'',days:r.d,cur:!!r.cur,defs:defs.length,url:pr.url};
       if(rec.wonD>WORLD_DATE) return;
       resolve(r.c,k).forEach(n=>{const key=tfNorm(n);if(!B.has(key))B.set(key,[]);B.get(key).push(rec);});
     }));
@@ -1046,9 +1086,9 @@ function tfChampionships(f){
   const cur=b.filter(x=>x.cur).length;
   return `<h3 class="amonth" style="font-size:22px">Championships <small>${b.length} reign${b.length===1?'':'s'}${cur?` · ${cur} current`:''}</small></h3>
   <div class="tbl-wrap"><table class="tf-reigns"><thead><tr><th></th><th>Title</th><th>Won</th><th class="num">Days</th><th class="num">Defenses</th></tr></thead><tbody>
-  ${b.map(x=>`<tr${x.cur?' class="now"':''}><td style="width:1%">${beltSVG(x.k,x.title,'row')}</td><td><b>${esc(tName(x.k,x.title))}</b>${x.cur?' <span class="cur">Current</span>':''}${tfNorm(x.champ)!==tfNorm(f.name)?`<br><span class="mute" style="font-size:13px">as ${esc(x.champ)}</span>`:''}<div class="mute" style="font-size:13px">${esc(x.how)}</div></td><td style="white-space:nowrap">${esc(x.won)}<br><span class="mute" style="font-size:13px">${esc(x.event)}</span></td><td class="num">${x.days!=null?x.days+(x.cur?'+':''):'—'}</td><td class="num">${x.defs}</td></tr>`).join('')}
+  ${b.map(x=>`<tr${x.cur?' class="now"':''}><td style="width:1%">${beltSVG(x.k,x.title,'row')}</td><td><b>${hasTitleHist(x.k)?`<a href="#${x.k}/titles/${x.ti}">${esc(tName(x.k,x.title))}</a>`:esc(tName(x.k,x.title))}</b>${x.cur?' <span class="cur">Current</span>':''}${tfNorm(x.champ)!==tfNorm(f.name)?`<br><span class="mute" style="font-size:13px">as ${esc(x.champ)}</span>`:''}<div class="mute" style="font-size:13px">${esc(x.how)}</div></td><td style="white-space:nowrap">${esc(x.won)}<br><span class="mute" style="font-size:13px">${esc(x.event)}</span></td><td class="num">${x.days!=null?x.days+(x.cur?'+':''):'—'}</td><td class="num">${x.defs}</td></tr>`).join('')}
   </tbody></table></div>
-  <p class="mute" style="font-family:var(--cond);font-size:12.5px;margin:4px 0 0">Title reigns from the TNM game's own records (each promotion's title lineage, as shown in the <a href="titles.html">Championship Ledger</a>). Nothing from outside the game is counted.</p>`;
+  <p class="mute" style="font-family:var(--cond);font-size:12.5px;margin:4px 0 0">Title reigns from the TNM game's own records (each promotion's Title Histories tab, and all together in the <a href="titles.html">Championship Ledger</a>). Click a title for its full history. Nothing from outside the game is counted.</p>`;
 }
 
 /* =========================== TITLE BELTS ===========================
@@ -1185,12 +1225,73 @@ function holderLink(h){const T=tfAll(), f=T.byName.get(h)||T.list.find(x=>tfNorm
   if(team) return `${esc(h)} <span class="mute" style="font-size:13px">(${team[1].map(n=>{const g=T.byName.get(n);return g?`<a href="#file/${g.slug}">${esc(n)}</a>`:esc(n)}).join(' &amp; ')})</span>`;
   return esc(h);}
 const tName=(k,t)=>{const sh=P[k]?P[k].short:'';return new RegExp('^('+sh+'|'+(P[k]&&P[k].nav||sh)+')\\b','i').test(t)?t:(sh+' '+t)};
+/* Title Histories tab on a promotion page: every lineage in TITLE_LEDGER (the same records the archive
+   sites' TITLES.HTM pages are built from), newest reign first. Nothing dated after the World Clock shows. */
+const tlFor=k=>(typeof TITLE_LEDGER!=='undefined'?TITLE_LEDGER:[]).find(p=>(LEDGER_KEY[p.id]||p.id)===k);
+const hasTitleHist=k=>!(SITES[k]&&SITES[k].noTitles)&&!!(tlFor(k)&&tlFor(k).titles.length);
+const tlNice=s=>{const d=tlDate(s);if(/-00/.test(d)||d.length<10)return esc(s);const[y,m,dd]=d.split('-');return `${MON[+m-1]} ${+dd}, ${y}`;};
+const tlDays=(a,b)=>Math.round((Date.UTC(+b.slice(0,4),+b.slice(5,7)-1,+b.slice(8,10))-Date.UTC(+a.slice(0,4),+a.slice(5,7)-1,+a.slice(8,10)))/864e5);
+/* the ledger title that matches one of P[k].titles (the Championship Board and Overview use those names) */
+function tlIndex(k,name){const led=tlFor(k);if(!led)return -1;const norm=x=>tfNorm(x).replace(/ heavyweight$| championship$/,'');
+  const same=led.titles.map((x,i)=>[x,i]).filter(([x])=>beltKind(x.t)===beltKind(name));
+  const hit=same.find(([x])=>norm(x.t)===norm(name))||same.find(([x])=>norm(x.t).includes(norm(name))||norm(name).includes(norm(x.t)))||(same.length===1?same[0]:null);
+  return hit?hit[1]:-1;}
+function tlChamp(r,k){
+  const T=tfAll(), link=n=>{const f=T.byName.get(n)||T.list.find(x=>tfNorm(x.name)===tfNorm(n));return f?`<a href="#file/${f.slug}">${esc(n)}</a>`:esc(n)};
+  const names=tlResolve(r.c,k), bare=x=>tfNorm(x).replace(/^the /,'');
+  if(names.length===1&&bare(names[0])===bare(r.c)) return link(names[0]);
+  const pieces=r.c.split(/\s*(?:&|\band\b)\s*/).map(bare);
+  if(pieces.length===names.length&&names.every((n,i)=>bare(n)===pieces[i])) return names.map(link).join(' &amp; ');
+  const mem=r.m?r.m.split(/\s*(?:&|\band\b)\s*/):[];
+  if(mem.length>names.length) return `${esc(r.c)} <span class="th-mem">(${mem.map(link).join(' &amp; ')})</span>`;
+  if(names.length) return `${esc(r.c)} <span class="th-mem">(${names.map(link).join(' &amp; ')})</span>`;
+  return esc(r.c)+(r.m?` <span class="th-mem">(${esc(r.m)})</span>`:'');
+}
+/* the story for the card a title changed hands (or was defended) on, when the site has one */
+function tlStory(k,date){const d=tlDate(date);if(d.length<10||/-00/.test(d))return null;
+  const e=E.find(x=>x.p===k&&x.d===d&&(x.reads||[]).some(r=>ARTICLES[r[1]]&&!ARTICLES[r[1]].series&&aired(r[1])));
+  return e?e.reads.find(r=>ARTICLES[r[1]]&&!ARTICLES[r[1]].series&&aired(r[1]))[1]:null;}
+let thFocus=null;
+function viewPromoTitles(k){
+  const p=P[k], led=tlFor(k);
+  if(!hasTitleHist(k)) return `<div class="empty" style="margin-top:20px">${esc(p.short)} has no title histories yet.</div>`;
+  const W=WORLD_DATE, past=d=>{const x=tlDate(d);return x<=W;};
+  const cards=led.titles.map((t,i)=>{
+    const head=(champ,sub)=>`<div class="th-plate">${beltSVG(k,t.t,'th')}<div class="th-pl"><div class="th-tn">${esc(tName(k,t.t))}</div><div class="th-champ">${champ}</div>${sub}</div></div>`;
+    if(!t.L){const who=t.holder||'';return `<section class="th-card" id="th-${i}" style="--c:${p.c}">${head(who?tlChamp({c:who},k):`<span class="mute">${/^vacant/i.test(t.note||'')?'Vacant':'Not yet crowned'}</span>`,`<div class="th-since">${esc(t.note||'')}</div>`)}</section>`;}
+    const L=t.L.filter(r=>past(r.w||'0000')), hid=L.length<t.L.length;
+    const rows=L.map((r,j)=>{const x=Object.assign({},r);x.def=(r.def||[]).filter(d=>past(d[0]));
+      if(hid&&j===L.length-1&&!r.v){x.cur=1;}
+      if(x.cur&&!x.v){const d=tlDate(x.w);if(d.length===10&&!/-00/.test(d))x.d=tlDays(d,W);}
+      return x;});
+    const cur=rows.filter(r=>r.cur&&!r.v).pop(), last=rows[rows.length-1];
+    const reigns=rows.filter(r=>!r.v).length, defs=rows.reduce((a,r)=>a+(r.def?r.def.length:0),0), changes=rows.filter(r=>r.w&&!r.v).length;
+    let n=0; const items=rows.map(r=>{
+      if(r.v) return `<li class="th-r vac"><span class="th-n">–</span><div><div class="th-who">Vacant</div><div class="th-when">${tlNice(r.w)}${r.e?' · '+esc(r.e):''}</div>${r.h?`<div class="th-how">${esc(r.h)}</div>`:''}</div></li>`;
+      n++; const sid=r.w&&tlStory(k,r.w), dl=r.def||[];
+      const days=r.d!=null?(r.cur?`${r.d} day${r.d===1?'':'s'} and counting`:`${r.d} day${r.d===1?'':'s'}`):(r.x||'');
+      return `<li class="th-r${r.cur?' cur':''}"><span class="th-n">${n}</span><div>
+        <div class="th-who">${tlChamp(r,k)}${r.cur?' <span class="cur">Current</span>':''}</div>
+        <div class="th-when">${r.w?`Won ${tlNice(r.w)}${r.e?' · '+(sid?`<a href="#${sid}">${esc(r.e)}</a>`:esc(r.e)):''}`:'Champion when records begin'}${r.r?` · <span class="th-rt">${esc(r.r)}</span>`:''}</div>
+        ${r.h?`<div class="th-how">${esc(r.h)}</div>`:''}
+        <div class="th-meta">${days?`<span>${esc(days)}</span>`:''}<span>${dl.length} defense${dl.length===1?'':'s'}</span></div>
+        ${dl.length?`<details class="th-def"><summary>Title defenses</summary><ol>${dl.slice().reverse().map(d=>{const ds=tlStory(k,d[0]);return `<li><span class="d">${ds?`<a href="#${ds}">${tlNice(d[0])}</a>`:tlNice(d[0])}</span><span class="x">${esc(d[1])}</span>${d[2]?`<span class="th-rt">${esc(d[2])}</span>`:''}</li>`}).join('')}</ol></details>`:''}
+      </div></li>`;}).reverse().join('');
+    const since=cur?(cur.w?`Since ${tlNice(cur.w)}${cur.d!=null?` · ${cur.d} day${cur.d===1?'':'s'}`:''}`:'Champion when records begin'):(last&&last.v?`Vacant since ${tlNice(last.w)}`:'');
+    return `<section class="th-card" id="th-${i}" style="--c:${p.c}">${head(cur?tlChamp(cur,k):`<span class="mute">Vacant</span>`,`<div class="th-since">${since}</div><div class="th-counts"><span><b>${reigns}</b> reign${reigns===1?'':'s'}</span><span><b>${defs}</b> defense${defs===1?'':'s'}</span><span><b>${changes}</b> title change${changes===1?'':'s'}</span></div>`)}
+      <ol class="th-line">${items}</ol></section>`;
+  }).join('');
+  return `<h2 class="sec">Title Histories <small>${led.titles.length} title${led.titles.length===1?'':'s'} · records through ${tlNice(led.asof)}</small></h2>
+  <p class="mute th-intro">Every reign on record, newest first, from the TNM game's own results. Click a champion for their Talent File, or an event for its story.</p>
+  <div class="th-jump">${led.titles.map((t,i)=>`<a href="#${k}/titles/${i}">${esc(t.t)}</a>`).join('')}</div>
+  ${cards}`;
+}
 function viewBelts(){
   const B=allBelts();
   return `<h2 class="sec">Title Belts <small>${B.length} championships · ${ORDER.length} promotions</small></h2>
-  <p style="max-width:780px;margin:0 0 6px">Every championship in the world and who holds it. Click a champion for their Talent File, or a promotion for its title histories in the <a href="titles.html">Championship Ledger</a>.</p>
+  <p style="max-width:780px;margin:0 0 6px">Every championship in the world and who holds it. Click a champion for their Talent File, or a title's reigns for its full history. Every promotion's lineages are also together in the <a href="titles.html">Championship Ledger</a>.</p>
   ${ORDER.map(k=>{const bs=B.filter(b=>b.k===k);if(!bs.length)return '';return `<h3 class="amonth belts-h" style="--c:${P[k].c}">${pchip(k)} <span>${esc(P[k].name)}</span> <small>${bs.length}</small></h3>
-  <div class="beltgrid">${bs.map(b=>`<div class="beltcard" style="--c:${P[k].c}">${beltSVG(k,b.full,'big')}<div class="bt">${esc(tName(k,b.title))}</div><div class="bh">${/^(to establish|to confirm|to be crowned|vacant|unresolved)/i.test(b.holder)?`<span class="mute">${esc(b.holder)}</span>`:holderLink(b.holder)}</div>${b.reigns?`<div class="mute bn">${b.reigns} reign${b.reigns===1?'':'s'} in the lineage</div>`:''}</div>`).join('')}</div>`}).join('')}`;
+  <div class="beltgrid">${bs.map(b=>`<div class="beltcard" style="--c:${P[k].c}">${beltSVG(k,b.full,'big')}<div class="bt">${esc(tName(k,b.title))}</div><div class="bh">${/^(to establish|to confirm|to be crowned|vacant|unresolved)/i.test(b.holder)?`<span class="mute">${esc(b.holder)}</span>`:holderLink(b.holder)}</div>${b.reigns?`<div class="mute bn">${hasTitleHist(k)?`<a href="#${k}/titles${(i=>i>=0?'/'+i:'')(tlIndex(k,b.full))}">${b.reigns} reign${b.reigns===1?'':'s'} in the lineage →</a>`:`${b.reigns} reign${b.reigns===1?'':'s'} in the lineage`}</div>`:''}</div>`).join('')}</div>`}).join('')}`;
 }
 
 /* Road diaries written by the wrestler (From the Road series) */
@@ -1977,7 +2078,7 @@ function bindMiniTalent(k){
 function viewPromo(k,tab){
   const p=P[k]; tab=tab||'overview';
   const ev=E.filter(e=>e.p===k).sort((a,b)=>a.d.localeCompare(b.d));
-  const tabs=[['overview','Overview'],['file','Talent File'],['roster','Roster'],['schedule','Schedule'],['stories','Stories']];
+  const tabs=[['overview','Overview'],...(hasTitleHist(k)?[['titles','Title Histories']]:[]),['file','Talent File'],['roster','Roster'],['schedule','Schedule'],['stories','Stories']];
   if(SITES[k]) tabs.push(['archive',k==='uswa'?'TV Archive':'Show Archive']);
   if(CONTRACTS[k]) tabs.push(['contracts','Contracts']);
   if(hasRatings(k)) tabs.push(['ratings','Ratings']);
@@ -1996,11 +2097,13 @@ function viewPromo(k,tab){
       </div>
       <aside>
         ${miniTalent(k)}
-        <h2 class="sec" style="font-size:22px">Champions</h2>
+        <h2 class="sec" style="font-size:22px">Champions${hasTitleHist(k)?` <small><a href="#${k}/titles">Title histories →</a></small>`:''}</h2>
         <div class="grid" style="gap:10px">${p.titles.map(t=>belt(k,t)).join('')}</div>
         ${(()=>{const nx=ev.filter(e=>!pastE(e)).slice(0,5);return `<h2 class="sec" style="font-size:22px">Coming Up</h2>${nx.length?`<ul class="nextup">${nx.map(e=>{const ms=(e.m||[]).filter(m=>!/^(Promo|Interview|Segment|Angle|Closing)/i.test(m[0]));const main=ms.find(m=>/^Main/i.test(m[0]))||ms.find(m=>/Title|Triple Crown|IWGP|Championship/i.test(m[0]))||ms.slice(-1)[0];return `<li class="${e.big?'big':''}"><span class="d">${fmt(e.d)}${isToday(e.d)?' <small>Tonight</small>':''}</span><b>${esc(e.type)}</b><span class="mute">${esc([String(e.city||'').split(',')[0],e.venue].filter(Boolean).join(' · '))}</span>${main?`<span class="mm">${esc(main[0].replace(/^Main( event)?:\s*/i,''))}</span>`:''}</li>`}).join('')}</ul><a class="nextall" href="#${k}/schedule">Full schedule →</a>`:'<div class="empty">Nothing on the calendar yet.</div>'}`})()}
       </aside>
     </div>`;
+  } else if(tab==='titles'){
+    body=viewPromoTitles(k);
   } else if(tab==='file'){
     body=viewPromoTalent(k);
   } else if(tab==='archive'){
@@ -2034,7 +2137,7 @@ function viewPromo(k,tab){
     ${(BANNER_SVG[k]||BANNER_OF[k])?`<div style="margin-top:6px;border:2px solid var(--ink);line-height:0">${BANNER_SVG[k]?BANNER_SVG[k]:`<img src="${BANNER_OF[k][0]}" alt="${BANNER_OF[k][1]}" style="display:block;width:100%;height:auto">`}</div>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" style="margin-top:0" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'} ↗</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right"><b style="font-family:var(--head);font-weight:400;font-size:30px;line-height:1">${esc(p.stat[0])}</b> ${esc(p.stat[1])}</div></div>`:`
     <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'} ↗</a>`:''}</div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>`}
-    <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab?'on':''}">${l}</button>`+(t==='overview'&&SITES[k]&&!SITES[k].noTitles?`<a class="tabx" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')}</div>
+    <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab?'on':''}">${l}</button>`).join('')}</div>
     ${body}
   </section>`;
 }
@@ -2166,6 +2269,7 @@ function route(){
   storyKind=kindOK(P[h]&&t==='stories'?f||'':h==='storyarchive'?t||'':'');
   // Cards & Results became each promotion's Talent File tab: old links land there
   if(P[h]&&t==='shows'){t='file';history.replaceState(null,'','#'+h+'/file');}
+  thFocus=P[h]&&t==='titles'&&f!=null&&f!==''?f:null;
   if(ARTICLES[h]){renderNav(h==='world-who-gets-paid'?h:ARTICLES[h].p);$('#view').innerHTML=viewArticle(h);return;}
   const key = NAV.some(n=>n[0]===h)?h:'home';
   if(P[key]&&t&&promoTabs(key).includes(t)) curTab[key]=t;
@@ -2200,6 +2304,7 @@ function bind(key){
   if(P[key]&&curTab[key]==='file') bindPromoTalent(key);
   if(P[key]&&(curTab[key]||'overview')==='overview') bindMiniTalent(key);
   if(P[key]&&curTab[key]==='ratings') drawRatings(key);
+  if(P[key]&&curTab[key]==='titles'&&thFocus!=null){const el=document.getElementById('th-'+thFocus);if(el)setTimeout(()=>el.scrollIntoView({block:'start'}),0);}
   const as=$('#asearch'); if(as) as.oninput=()=>{const q=as.value.toLowerCase();document.querySelectorAll('#atbl tbody tr,#acareer tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('.rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
 }
