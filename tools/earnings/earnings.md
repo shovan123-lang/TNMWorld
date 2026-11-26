@@ -45,7 +45,7 @@
 | 43 | Vampiro Canadiense | CMLL | — | $13,210 (5 app.) | — | **$13,210** | — | $13,210 |
 | 44 | Kamala | CMLL | — | $12,870 (5 app.) | — | **$12,870** | — | $12,870 |
 | 45 | Ricky Steamboat | WWF | $12,774 | — | — | **$12,774** | — | $12,774 |
-| 46 | Bam Bam Bigelow | NJPW | — | $12,667 | — | **$12,667** | $5,333 | $18,000 |
+| 46 | Bam Bam Bigelow | NJPW, TWA | — | $12,667 | — | **$12,667** | $5,333 | $18,000 |
 | 47 | Keiji Mutoh | NJPW | — | $12,667 | — | **$12,667** | $5,333 | $18,000 |
 | 48 | Brian Pillman | WCW, NJPW | $5,677 | $5,630 | — | **$11,307** | $2,370 | $13,677 |
 | 49 | Masahiro Chono | NJPW | — | $11,259 | — | **$11,259** | $4,741 | $16,000 |
@@ -58,7 +58,7 @@
 | 56 | Shawn Michaels | WWF | $10,645 | — | — | **$10,645** | — | $10,645 |
 | 57 | El Gigante | WCW, NJPW | $4,968 | $5,630 | — | **$10,597** | $2,370 | $12,968 |
 | 58 | Rayo de Jalisco Jr. | CMLL | — | $10,520 (7 app.) | — | **$10,520** | — | $10,520 |
-| 59 | Toshiaki Kawada | AJPW | — | $6,000 (6 app.) | $4,367 | **$10,367** | — | $10,367 |
+| 59 | Toshiaki Kawada | USWA, AJPW | — | $6,000 (6 app.) | $4,367 | **$10,367** | — | $10,367 |
 | 60 | Dory Funk Jr. | AJPW, ASW | — | $9,953 (1 app.) | — | **$9,953** | $2,222 | $12,175 |
 | 61 | Akira Taue | AJPW | — | $9,778 | — | **$9,778** | $2,222 | $12,000 |
 | 62 | Dynamite Kid | AJPW | — | $9,778 | — | **$9,778** | $2,222 | $12,000 |
@@ -170,7 +170,7 @@
 | 168 | Samu | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
 | 169 | Tony Halme | NJPW | — | $3,519 | — | **$3,519** | $1,481 | $5,000 |
 | 170 | Apolo Dantes | CMLL | — | $3,342 (4 app.) | — | **$3,342** | — | $3,342 |
-| 171 | Billy Joe Travis | AJPW | — | $3,259 | — | **$3,259** | $741 | $4,000 |
+| 171 | Billy Joe Travis | AJPW, TWA | — | $3,259 | — | **$3,259** | $741 | $4,000 |
 | 172 | Yoshinari Ogawa | AJPW | — | $3,259 | — | **$3,259** | $741 | $4,000 |
 | 173 | Eddie Gilbert | USWA | — | $3,215 (4 app.) | — | **$3,215** | — | $3,215 |
 | 174 | Pierroth Jr. | CMLL | — | $3,150 (6 app.) | — | **$3,150** | — | $3,150 |
@@ -345,6 +345,14 @@
 | 343 | Les Thornton | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
 | 344 | Lino Ingram | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
 | 345 | Oliver Peters | USWA | — | $15 (1 app.) | — | **$15** | — | $15 |
+| 346 | Ace Steel | Power Pro | — | — | — | **$0** | — | $0 |
+| 347 | Alan Martin | USWA | — | — | — | **$0** | — | $0 |
+| 348 | Dick Slater | USWA | — | — | — | **$0** | — | $0 |
+| 349 | Michael Modest | Power Pro | — | — | — | **$0** | — | $0 |
+| 350 | Moondog Cujo | USWA | — | — | — | **$0** | — | $0 |
+| 351 | Red Tyler | USWA | — | — | — | **$0** | — | $0 |
+| 352 | Ron Bass (staff) | Power Pro | — | — | — | **$0** | — | $0 |
+| 353 | Simon Diamond | Power Pro | — | — | — | **$0** | — | $0 |
 
 SHOWS
 | Date | Promotion | Show | Paid | Itemized total | Ledger payroll |
@@ -444,3 +452,120 @@ CHAMPIONS' POOL
 | 1991-07-21 | WWF | Toronto, ON · Broadcast show (Maple Leaf Gardens) | $255,600 | $7,668.00 | Hulk Hogan (WWF World Heavyweight), Mr. Perfect (WWF Intercontinental Heavyweight), Road Warrior Animal (WWF World Tag Team), Road Warrior Hawk (WWF World Tag Team) | $1,917.00 |
 | 1991-07-22 | WCW | Nashville · House show | no gate logged | — | Jimmy Garvin, Michael Hayes, Nikita Koloff | — |
 | 1991-07-07 | WWF | Vancouver · Superstars taping (4 episodes) | no gate logged | — | Hulk Hogan, Mr. Perfect | — |
+
+CARDS BEFORE JULY 1991 (career totals only)
+| Date | Promotion | Card | Class | Gate | Paid | Total |
+|---|---|---|---|---|---|---|
+| 1990-09-01 | USWA | Championship TV · S1 E1 | TV taping / spot show (1×) | — | 5 | $280 |
+| 1990-09-03 | USWA | Memphis · House show | Arena show (2×) | — | 11 | $2,110 |
+| 1990-09-06 | USWA | Louisville · House show | Arena show (2×) | — | 12 | $2,380 |
+| 1990-09-08 | USWA | Championship TV · S1 E2 | TV taping / spot show (1×) | — | 7 | $755 |
+| 1990-09-10 | USWA | Memphis · House show | Arena show (2×) | — | 10 | $2,040 |
+| 1990-09-13 | USWA | Louisville · House show | Arena show (2×) | — | 11 | $2,150 |
+| 1990-09-15 | USWA | Championship TV · S1 E3 | TV taping / spot show (1×) | — | 5 | $535 |
+| 1990-09-17 | USWA | Memphis · House show | Arena show (2×) | — | 14 | $2,720 |
+| 1990-09-20 | USWA | Louisville · House show | Arena show (2×) | — | 15 | $3,330 |
+| 1990-09-22 | USWA | Championship TV · S1 E4 | TV taping / spot show (1×) | — | 8 | $760 |
+| 1990-09-24 | USWA | Memphis · House show | Arena show (2×) | — | 12 | $2,200 |
+| 1990-09-25 | USWA | Evansville · House show | TV taping / spot show (1×) | — | 9 | $945 |
+| 1990-09-27 | USWA | Louisville · House show | Arena show (2×) | — | 12 | $2,400 |
+| 1990-09-29 | USWA | Championship TV · S1 E5 | TV taping / spot show (1×) | — | 6 | $460 |
+| 1990-10-01 | USWA | Memphis · House show | Arena show (2×) | — | 12 | $2,490 |
+| 1990-10-02 | USWA | Evansville · House show | TV taping / spot show (1×) | — | 13 | $1,135 |
+| 1990-10-04 | USWA | Louisville · Tag Team Frenzy | Arena show (2×) | — | 15 | $2,800 |
+| 1990-10-06 | USWA | Championship TV · S1 E6 | TV taping / spot show (1×) | — | 7 | $1,040 |
+| 1990-10-08 | USWA | Memphis · Unified Title Tournament | Supershow (3×) | $66,573 | 5 | $14,788 |
+| 1990-10-09 | USWA | Evansville · House show | TV taping / spot show (1×) | — | 6 | $460 |
+| 1990-10-11 | USWA | Louisville · House show | Arena show (2×) | — | 12 | $3,070 |
+| 1990-10-13 | USWA | Championship TV · S1 E7 | TV taping / spot show (1×) | — | 5 | $660 |
+| 1990-10-15 | USWA | Memphis · House show | Arena show (2×) | — | 9 | $1,750 |
+| 1990-10-16 | USWA | Evansville · House show | TV taping / spot show (1×) | — | 12 | $1,440 |
+| 1990-10-18 | USWA | Louisville · House show | Arena show (2×) | — | 14 | $3,300 |
+| 1990-10-19 | USWA | Jonesboro · House show | TV taping / spot show (1×) | — | 13 | $1,540 |
+| 1990-10-20 | USWA | Championship TV · S1 E8 | TV taping / spot show (1×) | — | 5 | $885 |
+| 1990-10-22 | USWA | Memphis · House show | Arena show (2×) | — | 10 | $2,780 |
+| 1990-10-23 | USWA | Evansville · House show | TV taping / spot show (1×) | — | 11 | $950 |
+| 1990-10-26 | USWA | Louisville · House show | Arena show (2×) | — | 13 | $3,230 |
+| 1990-10-27 | USWA | Championship TV · S1 E9 | TV taping / spot show (1×) | — | 4 | $305 |
+| 1990-10-29 | USWA | Memphis · Grave Consequences | Supershow (3×) | — | 12 | $3,765 |
+| 1990-10-30 | USWA | Evansville · House show | TV taping / spot show (1×) | — | 8 | $645 |
+| 1990-11-01 | USWA | Louisville · House show | Arena show (2×) | — | 12 | $2,270 |
+| 1990-11-03 | USWA | Championship TV · S1 E10 | TV taping / spot show (1×) | — | 8 | $685 |
+| 1990-11-05 | USWA | Memphis · House show | Arena show (2×) | — | 13 | $2,600 |
+| 1990-11-06 | USWA | Evansville · House show | TV taping / spot show (1×) | — | 9 | $710 |
+| 1990-11-08 | USWA | Louisville · House show | Arena show (2×) | — | 9 | $1,930 |
+| 1990-11-10 | USWA | Championship TV · S1 E11 | TV taping / spot show (1×) | — | 6 | $285 |
+| 1990-11-12 | USWA | Memphis · House show | Arena show (2×) | — | 13 | $2,550 |
+| 1990-11-14 | USWA | Evansville · Top Prospect Tournament | TV taping / spot show (1×) | — | 5 | $325 |
+| 1990-11-15 | USWA | Louisville · House show | Arena show (2×) | — | 16 | $3,650 |
+| 1990-11-17 | USWA | Championship TV · S1 E12 | TV taping / spot show (1×) | — | 11 | $1,255 |
+| 1990-11-19 | USWA | Memphis · House show | Arena show (2×) | — | 10 | $1,760 |
+| 1990-11-22 | USWA | Memphis · Thanksgiving Thunder 1990 | Supershow (3×) | — | 15 | $5,160 |
+| 1990-11-24 | USWA | Championship TV · Tag League S1 E13 | TV taping / spot show (1×) | — | 13 | $1,340 |
+| 1990-12-01 | USWA | Championship TV · Tag League S1 E14 | TV taping / spot show (1×) | — | 8 | $565 |
+| 1990-12-03 | USWA | Memphis · Tag League | Arena show (2×) | — | 13 | $4,090 |
+| 1990-12-08 | USWA | Championship TV · Tag League S1 E15 | TV taping / spot show (1×) | — | 12 | $1,080 |
+| 1990-12-14 | USWA | Louisville · Tag League | Arena show (2×) | — | 13 | $3,050 |
+| 1990-12-15 | USWA | Championship TV · Tag League S1 E16 | TV taping / spot show (1×) | — | 8 | $1,230 |
+| 1990-12-17 | USWA | Memphis · Tag League | Arena show (2×) | — | 14 | $3,310 |
+| 1990-12-22 | USWA | Championship TV · Tag League S1 E17 | TV taping / spot show (1×) | — | 7 | $815 |
+| 1990-12-28 | USWA | Louisville · Tag League | Arena show (2×) | — | 11 | $2,230 |
+| 1990-12-29 | USWA | Championship TV · Tag League S1 E18 | TV taping / spot show (1×) | — | 4 | $240 |
+| 1990-12-31 | USWA | Memphis · Tag League | Arena show (2×) | — | 11 | $1,380 |
+| 1991-01-05 | USWA | Championship TV · Tag League S2 E1 | TV taping / spot show (1×) | — | 6 | $765 |
+| 1991-01-07 | USWA | Memphis · Tag League | Arena show (2×) | — | 12 | $1,860 |
+| 1991-01-12 | USWA | Championship TV · Tag League S2 E2 | TV taping / spot show (1×) | — | 4 | $240 |
+| 1991-01-14 | USWA | Memphis · Tag League | Arena show (2×) | — | 8 | $2,190 |
+| 1991-01-19 | USWA | Championship TV · S2 E3 | TV taping / spot show (1×) | — | 6 | $795 |
+| 1991-01-21 | USWA | Memphis · Gauntlet For The Gold | Supershow (3×) | — | 27 | $9,495 |
+| 1991-01-26 | USWA | Championship TV · S2 E4 | TV taping / spot show (1×) | — | 10 | $685 |
+| 1991-01-28 | USWA | Memphis · House show | Arena show (2×) | — | 14 | $2,750 |
+| 1991-01-30 | USWA | Evansville · House show | TV taping / spot show (1×) | — | 19 | $2,545 |
+| 1991-02-01 | USWA | Louisville · House show | Arena show (2×) | — | 18 | $4,740 |
+| 1991-02-02 | USWA | Championship TV · S2 E5 | TV taping / spot show (1×) | — | 11 | $700 |
+| 1991-02-04 | USWA | Memphis · House show | Arena show (2×) | — | 13 | $2,930 |
+| 1991-02-06 | USWA | Jonesboro · House show | TV taping / spot show (1×) | — | 13 | $1,065 |
+| 1991-02-08 | USWA | Louisville · House show | Arena show (2×) | — | 14 | $3,040 |
+| 1991-02-09 | USWA | Championship TV · S2 E6 | TV taping / spot show (1×) | — | 12 | $1,100 |
+| 1991-02-11 | USWA | Memphis · House show | Arena show (2×) | — | 18 | $4,200 |
+| 1991-02-15 | USWA | Louisville · House show | Arena show (2×) | — | 23 | $6,160 |
+| 1991-02-16 | USWA | Championship TV · S2 E7 | TV taping / spot show (1×) | — | 14 | $1,960 |
+| 1991-02-18 | USWA | Memphis · House show | Arena show (2×) | — | 14 | $4,300 |
+| 1991-02-22 | USWA | Louisville · House show | Arena show (2×) | — | 16 | $4,420 |
+| 1991-02-23 | USWA | Championship TV · S2 E8 | TV taping / spot show (1×) | — | 12 | $1,685 |
+| 1991-02-25 | USWA | Memphis · House show | Arena show (2×) | — | 16 | $4,380 |
+| 1991-03-01 | USWA | Louisville · House show | Arena show (2×) | — | 12 | $3,500 |
+| 1991-03-02 | USWA | Championship TV · S2 E9 | TV taping / spot show (1×) | — | 11 | $1,495 |
+| 1991-03-04 | USWA | Memphis · Fully Loaded | Supershow (3×) | — | 22 | $10,215 |
+| 1991-03-08 | USWA | Louisville · House show | Arena show (2×) | — | 13 | $3,120 |
+| 1991-03-11 | USWA | Memphis · House show | Arena show (2×) | — | 13 | $3,160 |
+| 1991-03-22 | USWA | Louisville · House show | Arena show (2×) | — | 19 | $4,520 |
+| 1991-03-29 | USWA | Galveston · House show | TV taping / spot show (1×) | — | 22 | $1,855 |
+| 1991-03-30 | USWA | Dallas, TX Sportatorium debut · House show | Arena show (2×) | — | 15 | $4,060 |
+| 1991-04-08 | USWA | Nashville · Debut show | TV taping / spot show (1×) | — | 22 | $2,030 |
+| 1991-04-12 | USWA | Louisville · House show | Arena show (2×) | — | 20 | $3,930 |
+| 1991-04-13 | USWA | Memphis · International Incident | Supershow (3×) | — | 24 | $9,960 |
+| 1991-04-24 | USWA | Worldwide · S1 E1 | TV taping / spot show (1×) | — | 10 | $385 |
+| 1991-04-27 | USWA | Memphis · The Three Way Dance | Supershow (3×) | — | 17 | $8,490 |
+| 1991-05-01 | USWA | Worldwide · S1 E2 | TV taping / spot show (1×) | — | 8 | $320 |
+| 1991-05-08 | USWA | Worldwide · S1 E3 | TV taping / spot show (1×) | — | 15 | $880 |
+| 1991-05-10 | Power Pro | Nashville · Genesis: A New Beginning | Card (1×) | — | 6 | $220 |
+| 1991-05-11 | USWA | Memphis · House show | Arena show (2×) | — | 22 | $4,160 |
+| 1991-05-15 | USWA | Worldwide · S1 E4 | TV taping / spot show (1×) | — | 4 | $445 |
+| 1991-05-22 | USWA | Worldwide · S1 E5 | TV taping / spot show (1×) | — | 12 | $885 |
+| 1991-05-24 | USWA | Friday Night Fights · S1 E1 | Arena show (2×) | — | 13 | $3,520 |
+| 1991-05-25 | USWA | Slamboree | Supershow (3×) | — | 13 | $5,865 |
+| 1991-05-29 | USWA | Worldwide · S1 E6 | TV taping / spot show (1×) | — | 4 | $440 |
+| 1991-06-01 | USWA | Championship TV · S2 E21 | Arena show (2×) | $45,000 | 10 | $8,930 |
+| 1991-06-05 | USWA | Worldwide · S1 E7 | TV taping / spot show (1×) | — | 15 | $850 |
+| 1991-06-08 | USWA | Championship TV · S2 E22 | Arena show (2×) | — | 13 | $2,490 |
+| 1991-06-12 | USWA | Worldwide · S1 E8 | TV taping / spot show (1×) | — | 8 | $810 |
+| 1991-06-15 | USWA | Championship TV · S2 E23 | Arena show (2×) | — | 22 | $4,450 |
+| 1991-06-19 | USWA | Worldwide · S1 E9 | TV taping / spot show (1×) | — | 10 | $655 |
+| 1991-06-21 | USWA | Friday Night Fights Nashville, TN · House show | Arena show (2×) | — | 8 | $1,550 |
+| 1991-06-22 | USWA | Championship TV · S2 E24 | Arena show (2×) | $53,250 | 14 | $11,868 |
+| 1991-06-26 | USWA | Worldwide · S1 E10 | TV taping / spot show (1×) | $3,200 | 13 | $1,060 |
+| 1991-06-28 | USWA | Friday Night Fights · Louisville, KY | Arena show (2×) | $46,000 | 21 | $11,690 |
+| 1991-06-29 | TWA | Philadelphia · Super Summer Sizzler '91 | Philadelphia home show / supercard (1.25×) | $12,600 | 15 | $5,161 |
+| 1991-06-29 | USWA | Championship TV · S2 E25 | Arena show (2×) | $78,000 | 14 | $14,570 |
+| 1991-06-30 | Power Pro | Nashville · First Strike (first "Level Up" event) | Card (1×) | — | 9 | $325 |

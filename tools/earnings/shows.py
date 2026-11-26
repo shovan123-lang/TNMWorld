@@ -152,6 +152,35 @@ RATE_BEFORE = {
  "uswa": {"Rob Zakowski": ("1991-07-22", 30)},   # re-signed 7/22/91 at $45 (was $30). Sean, 2026-11-26.
 }
 
+# ---- Cards that ran before the tracker's first month (lifetime.json "first", July 1991). Sean, 2026-11-26: a wrestler's
+# earnings count every show they were on since the promotion's first card on its official site. build.py pays these
+# cards into career totals only (this month's pay and the Finance tabs don't change). Who wrestled on each card comes
+# from the Talent File engine (hist_cards.js), so the paid cards are the ones counted as Matches on the Talent File.
+# Each appearance pays the wrestler's base rate (CONTRACTS, or RATE_BEFORE) × the card's class below; one appearance
+# per card, however many matches. Main-event and semi-main gate cuts are paid only where the card's gate is known
+# (EARLY_GATES, or a $ figure on the site's card); the main event is the card's last match, the semi-main the one before.
+# Managers and announcers aren't named in the old results, so they aren't paid for these cards.
+EARLY_SUPERSHOWS = {   # USWA's named specials at the Mid South Coliseum
+ "Unified Title Tournament", "Grave Consequences", "Thanksgiving Thunder 1990", "Gauntlet For The Gold", "Fully Loaded",
+ "International Incident", "The Three Way Dance", "Slamboree"}
+def EARLY_CLASS(c):
+  """(class, multiplier, main-event cut, semi-main cut) for a card before the tracker; None if the promotion isn't paid per card."""
+  p, t, city, d = c["p"], c["type"], c["city"], c["d"]
+  if p == "uswa":   # CONTRACTS.uswa classes
+    if any(t == x or t.startswith(x + " ·") for x in EARLY_SUPERSHOWS): return ("Supershow", 3, 0.12, 0.06)
+    if "Friday Night Fights" in t or "Friday Night Fights" in city: return ("Arena show", 2, 0.10, 0.05)
+    if t.startswith("Championship TV") and d >= "1991-06-01": return ("Arena show", 2, 0.10, 0.05)   # live from the Mid South Coliseum from 6/1/91
+    if city.split(",")[0] in ("Memphis", "Louisville") or city.startswith("Dallas"): return ("Arena show", 2, 0.10, 0.05)
+    return ("TV taping / spot show", 1, 0, 0)   # studio Championship TV, Worldwide, Evansville, Jonesboro, Galveston, Nashville
+  if p == "twa":    # CONTRACTS.twa classes
+    if city.startswith("Philadelphia"): return ("Philadelphia home show / supercard", 1.25, 0.05, 0)
+    return ("Spot show", 1, 0, 0)
+  if p in ("pp", "asw", "cmll", "fmw"): return ("Card", 1, 0, 0)
+  return None   # salaried (WWF, WCW) and per-tour (AJPW, NJPW) promotions aren't paid per card
+EARLY_GATES = {   # gates printed on the official USWA pages (the other old pages give attendance only)
+ ("uswa", "MEMPH-15"): 66573, ("uswa", "CHAMPI-5"): 45000, ("uswa", "CHAMPI-2"): 53250, ("uswa", "CHAMPI-1"): 78000,
+ ("uswa", "FRIDAY_N"): 46000, ("uswa", "WORLDW-3"): 3200}
+
 # ---- Weekly guarantees: the promotion tops a wrestler's pay up to `week` for every pay week (Monday to Sunday)
 # from `start`, until `cards` appearances are used. A week counts once the world date is past its Sunday,
 # and is paid in the month its Sunday falls in. `carry`: {"YYYY-MM-DD" (that Sunday): $} for show pay that

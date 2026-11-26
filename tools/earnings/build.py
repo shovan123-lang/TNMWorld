@@ -3,7 +3,7 @@
    python3 tools/earnings/build.py [WORLD_DATE]
 Writes data/earnings.js (the website) and tools/earnings/earnings.md (for the project ledger).
 Show participants, bonuses and tours live in shows.py; pay rates come from CONTRACTS in data/*.js."""
-import json,sys,os,subprocess
+import json,sys,os,subprocess,re
 HERE=os.path.dirname(os.path.abspath(__file__)); ROOT=os.path.join(HERE,'..','..')
 sys.path.insert(0,HERE); import shows as S
 dump=json.loads(subprocess.check_output(['node',os.path.join(HERE,'dump.js')]))
@@ -133,6 +133,40 @@ if WORLD[:7]>S.MONTH:   # this month is over: file its final totals
   LIFE["months"][S.MONTH]={p["name"]:by_promo(p) for p in people.values() if by_promo(p)}
   LIFE.setdefault("bonus",{})[S.MONTH]={p["name"]:round(p["bonus"],2) for p in people.values() if p["bonus"]}
   json.dump(LIFE,open(LIFE_PATH,'w'),ensure_ascii=False,indent=1,sort_keys=True)
+import calendar as _cal
+_mn=lambda m:_cal.month_name[int(m[5:7])]+" "+m[:4]
+# ---- Cards before the tracker's first month (shows.py EARLY_CLASS): paid into career totals only ----
+import unicodedata as _ud
+_nk=lambda s:re.sub(r'[^a-z0-9]+',' ',_ud.normalize('NFD',s).encode('ascii','ignore').decode().lower()).strip()
+FIRST=LIFE.get("first",S.MONTH)
+_early=json.loads(subprocess.check_output(['node',os.path.join(HERE,'hist_cards.js'),FIRST]))['cards']
+ecards=[]
+for c in _early:   # one card a night: an archive split over two pages (Gauntlet For The Gold) counts once
+  q=ecards[-1] if ecards else None
+  if q and q['p']==c['p'] and q['d']==c['d'] and q['city']==c['city'] and c['city'] and (c['type'].startswith(q['type']) or q['type'].startswith(c['type'])):
+    q['people']=sorted(set(q['people'])|set(c['people'])); q['links'].append(c['link']); continue
+  ecards.append(dict(c,links=[c['link']] if c['link'] else []))
+rateN={k:{_nk(n):n for n in v} for k,v in rate.items()}
+early=[]; early_unrated={}; early_warn=[]
+for c in ecards:
+  cls=S.EARLY_CLASS(c)
+  if not cls: early_warn.append("{} {} {}: not a per-card promotion, not paid".format(c['p'],c['d'],c['type'])); continue
+  lab,mult,mp,sp=cls; k=c['p']; R=rate.get(k,{}); RB=getattr(S,'RATE_BEFORE',{}).get(k,{})
+  gate=S.EARLY_GATES.get((k,c['link'])) or POOLM._gate(c['gate'])
+  show=((c['city'].split(',')[0]+' · ') if c['city'] and not c['city'].startswith(('Friday Night','Dallas, TX S')) else (c['city']+' · ' if c['city'] else ''))+c['type']
+  cut={}
+  if gate:
+    for pct,names in ((mp,c['main']),(sp,c['semi'])):
+      if pct and names:
+        for n in names: cut[n]=cut.get(n,0)+gate*pct/len(names)
+  paid=[]; tot=0
+  for n0 in c['people']:
+    n=rateN.get(k,{}).get(_nk(n0))
+    if not n: early_unrated.setdefault(n0,set()).add(k); continue
+    b=RB[n][1] if n in RB and c['d']<RB[n][0] else R[n]; amt=round(b*mult+cut.get(n0,0),2); tot+=amt
+    p=get(n,k,tier.get((k,n),"F")); p.setdefault("early",[]).append((len(early),amt)); paid.append(n)
+  early.append(dict(p=k,d=c['d'],show=show,links=c['links'],cls=lab,mult=mult,gate=gate,n=len(paid),total=round(tot,2),
+    cut=round(sum(v for n,v in cut.items() if rateN.get(k,{}).get(_nk(n))),2)))
 closed={m:v for m,v in LIFE["months"].items() if m!=S.MONTH}
 lifeBy={}
 for m,v in closed.items():
@@ -150,17 +184,18 @@ for p in people.values():
   e=p["salary"]+p["shows"]+p["bonus"]
   lb=dict(lifeBy.get(p["name"],{}))
   for k,a in by_promo(p).items(): lb[k]=round(lb.get(k,0)+a,2)
+  ea=p.get("early",[])
+  for i,a in ea: lb[early[i]['p']]=round(lb.get(early[i]['p'],0)+a,2)
   life=round(sum(lb.values()),2)
   if e==0 and p["due"]==0 and life==0: continue
   out.append(dict(name=p["name"],role=p["role"],promos=[k for k in PN if k in p["promos"]],salary=round(p["salary"],2),
     shows=round(p["shows"],2),apps=p["apps"],bonus=round(p["bonus"],2),earned=round(e,2),due=round(p["due"],2),
-    proj=round(e+p["due"],2),life=life,lifeBonus=round(lifeBonus.get(p["name"],0)+p["bonus"],2),lifeBy={k:lb[k] for k in PN if k in lb},
+    proj=round(e+p["due"],2),life=life,**(dict(early=round(sum(a for i,a in ea),2),earlyApps=len(ea),ec=[[i,a] for i,a in ea],since=_mn(early[ea[0][0]]['d'][:7])) if ea else {}),lifeBonus=round(lifeBonus.get(p["name"],0)+p["bonus"],2),lifeBy={k:lb[k] for k in PN if k in lb},
     lines=sorted(p["lines"],key=lambda l:(l["d"],l["p"]))))
 out.sort(key=lambda x:(-x["earned"],-x["proj"],x["name"]))
-import calendar as _cal
-_mn=lambda m:_cal.month_name[int(m[5:7])]+" "+m[:4]
 data=dict(month=_mn(S.MONTH),lifeFrom=_mn(LIFE.get("first",S.MONTH)),lifeMonths=sorted(set(closed)|{S.MONTH}),world=WORLD,updated=__import__('datetime').date.today().isoformat(),people=out,shows=showlist,notes=S.NOT_ON_SCALE,
-  pool=dict(pct=S.POOL["pct"],cards=POOL_CARDS,nogate=POOL_NOGATE))
+  pool=dict(pct=S.POOL["pct"],cards=POOL_CARDS,nogate=POOL_NOGATE),
+  early=dict(before=_mn(FIRST),cards=early,unrated=sorted("{} ({})".format(n,", ".join(PN[k] for k in sorted(v))) for n,v in early_unrated.items())))
 open(os.path.join(ROOT,'data','earnings.js'),'w').write("// Generated by tools/earnings/build.py. Don't edit by hand: change tools/earnings/shows.py and rebuild.\nconst EARNINGS = "+json.dumps(data,ensure_ascii=False)+";\n")
 m=lambda v:"${:,.0f}".format(v)
 L=["| # | Name | Promotions | Salary to date | Show pay | Bonuses | **Earned** | Tour fees due | July projected |","|---|---|---|---|---|---|---|---|---|"]
@@ -173,9 +208,14 @@ for s in showlist: S2.append("| {} | {} | {} | {} | {} | {} |".format(s['d'],PN[
 S3=["| Date | Promotion | Card | Gate | Pool (3%) | Champions on the card | Each |","|---|---|---|---|---|---|---|"]
 for c in POOL_CARDS: S3.append("| {} | {} | {} | {} | {} | {} | {} |".format(c['d'],PN[c['p']],c['show'],m(c['gate']),"${:,.2f}".format(c['pool']),", ".join("{} ({})".format(n,t) for n,t in c['champs']),"${:,.2f}".format(c['each'])))
 for c in POOL_NOGATE: S3.append("| {} | {} | {} | no gate logged | — | {} | — |".format(c['d'],PN[c['p']],c['show'],", ".join(c['champs'])))
-open(os.path.join(HERE,'earnings.md'),'w').write("\n".join(L)+"\n\nSHOWS\n"+"\n".join(S2)+"\n\nCHAMPIONS' POOL\n"+"\n".join(S3)+"\n")
+S4=["| Date | Promotion | Card | Class | Gate | Paid | Total |","|---|---|---|---|---|---|---|"]
+for c in early: S4.append("| {} | {} | {} | {} ({}×) | {} | {} | {} |".format(c['d'],PN[c['p']],c['show'],c['cls'],c['mult'],m(c['gate']) if c['gate'] else "—",c['n'],m(c['total'])))
+open(os.path.join(HERE,'earnings.md'),'w').write("\n".join(L)+"\n\nSHOWS\n"+"\n".join(S2)+"\n\nCHAMPIONS' POOL\n"+"\n".join(S3)+"\n\nCARDS BEFORE "+_mn(FIRST).upper()+" (career totals only)\n"+"\n".join(S4)+"\n")
 tot=sum(x["earned"] for x in out); due=sum(x["due"] for x in out)
 print("world",WORLD,"people",len(out),"earned",round(tot),"due",round(due))
 for x in out[:12]: print(" ",x["name"],round(x["earned"]))
 print("champions' pool: {} cards, ${:,.2f}".format(len(POOL_CARDS),sum(c['pool'] for c in POOL_CARDS)))
 for w in POOL_WARN: print("  pool check:",w)
+print("cards before {}: {} cards, ${:,.2f} into career totals".format(_mn(FIRST),len(early),sum(c['total'] for c in early)))
+for w in early_warn: print("  early check:",w)
+if early_unrated: print("  no pay rate, not paid:",", ".join(sorted(early_unrated)))

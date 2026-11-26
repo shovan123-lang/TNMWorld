@@ -657,7 +657,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/twa.js?v=a82b244a"></script>
 <script src="data/fmw.js?v=d5c8dbe0"></script>
 <script src="data/history.js?v=8be05e77"></script>
-<script src="data/earnings.js?v=c1692238"></script>
+<script src="data/earnings.js?v=0ee6fad8"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
 <script src="data/ratings.js?v=8d9e4ac1"></script>
 <script>
@@ -1019,12 +1019,15 @@ function tfEarnBlock(f){
     return `<h3 class="amonth" style="font-size:22px">Earnings</h3><div class="empty">${deals.length?deals.map(([k,r])=>`${esc(P[k].short)}: ${r[0]} level, ${tfMoney(r[2])} ${esc(CONTRACTS[k].unit||'')}`.trim()).join(' · ')+'. No paid dates yet.':'Not on a pay scale yet.'}</div>`;}
   const by=Object.entries(x.lifeBy||{}).sort((a,b)=>b[1]-a[1]), mx=Math.max(1,...by.map(r=>r[1]));
   const lines=(x.lines||[]).filter(l=>l.kind!=='due').slice().reverse(), dueL=(x.lines||[]).filter(l=>l.kind==='due');
-  return `<h3 class="amonth" style="font-size:22px">Earnings <small>career since ${esc(EARNINGS.lifeFrom||'July 1991')} · through ${fmt(EARNINGS.world)}</small></h3>
+  // Cards before the tracker's first month (EARNINGS.early, tools/earnings/build.py) count toward the career total only
+  const EC=EARNINGS.early||{cards:[]}, ec=(x.ec||[]).map(([i,a])=>[EC.cards[i],a]).filter(r=>r[0]).reverse();
+  return `<h3 class="amonth" style="font-size:22px">Earnings <small>career since ${esc(x.since||EARNINGS.lifeFrom||'July 1991')} · through ${fmt(EARNINGS.world)}</small></h3>
   <div class="tf-earn">
-    <div class="tf-earn-tot"><b>${tfMoney(x.life)}</b><span>Career earnings</span><div class="mute">${tfMoney(x.earned)} in ${esc(EARNINGS.month)}${x.due>0?` · ${tfMoney(x.due)} in tour fees still to come`:''}</div></div>
+    <div class="tf-earn-tot"><b>${tfMoney(x.life)}</b><span>Career earnings</span><div class="mute">${tfMoney(x.earned)} in ${esc(EARNINGS.month)}${x.due>0?` · ${tfMoney(x.due)} in tour fees still to come`:''}${ec.length?` · ${tfMoney(x.early)} from ${ec.length} card${ec.length===1?'':'s'} before ${esc(EC.before)}`:''}</div></div>
     <div class="tf-earn-by">${by.map(([k,v])=>`<div class="barrow" style="--c:${P[k].c}"><span>${pchip(k)}</span><div class="bar" style="width:${(v/mx*100).toFixed(1)}%"></div><span class="num">${tfMoney(v)}</span></div>`).join('')}</div>
   </div>
-  ${lines.length?`<details class="bk" style="margin-top:8px"><summary>${esc(EARNINGS.month)} paydays (${lines.length})</summary><div class="tbl-wrap"><table><tbody>${lines.map(l=>`<tr><td style="white-space:nowrap">${l.kind==='salary'?'To '+fmt(l.d):fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}${dueL.map(l=>`<tr class="past"><td style="white-space:nowrap">${fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}</tbody></table></div></details>`:''}`;
+  ${lines.length?`<details class="bk" style="margin-top:8px"><summary>${esc(EARNINGS.month)} paydays (${lines.length})</summary><div class="tbl-wrap"><table><tbody>${lines.map(l=>`<tr><td style="white-space:nowrap">${l.kind==='salary'?'To '+fmt(l.d):fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}${dueL.map(l=>`<tr class="past"><td style="white-space:nowrap">${fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}</tbody></table></div></details>`:''}
+  ${ec.length?`<details class="bk" style="margin-top:8px"><summary>Before ${esc(EC.before)} (${ec.length} card${ec.length===1?'':'s'}, ${tfMoney(x.early)})</summary><div class="tbl-wrap"><table><tbody>${ec.map(([c,a])=>`<tr><td style="white-space:nowrap">${fmt(c.d)}</td><td>${pchip(c.p)}</td><td>${esc(c.show)} · ${esc(c.cls)}, ${c.mult}×</td><td class="num">${tfMoney(a)}</td></tr>`).join('')}</tbody></table></div></details>`:''}`;
 }
 
 /* Mask and hair trophies from the apuestas records (every promotion that keeps them) */
@@ -2013,7 +2016,17 @@ function viewEarnings(){
   ${poolSection(X)}
   <h2 class="sec">How each show was counted</h2>
   <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Promotion</th><th>Show</th><th>Paid</th><th>Itemized</th><th>Ledger payroll</th></tr></thead><tbody>${X.shows.map(s=>`<tr><td style="white-space:nowrap">${fmt(s.d)}</td><td>${chip(s.p)}</td><td>${esc(s.show)}</td><td class="num">${s.n}</td><td class="num">${eMoney(s.total)}</td><td class="num">${eMoney(s.logged)}</td></tr>`).join('')}</tbody></table></div>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Where the itemized total is under the ledger's payroll, the ledger figure also counted announcers or staff who aren't in this tracker. ${X.notes.map(esc).join('. ')}. Last rebuilt ${esc(X.updated)}.</p>`;
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Where the itemized total is under the ledger's payroll, the ledger figure also counted announcers or staff who aren't in this tracker. ${X.notes.map(esc).join('. ')}. Last rebuilt ${esc(X.updated)}.</p>
+  ${earlySection(X)}`;
+}
+/* Cards that ran before the tracker's first month (X.early, tools/earnings/build.py): paid at each wrestler's rate × the
+   card's class, into career totals on the Talent Files only. This month's figures above don't include them. */
+function earlySection(X){
+  const Q=X.early; if(!Q||!Q.cards.length) return '';
+  const tot=Q.cards.reduce((a,c)=>a+c.total,0), ps=ORDER.filter(k=>Q.cards.some(c=>c.p===k));
+  return `<h2 class="sec">Before ${esc(Q.before)} <small>${Q.cards.length} cards, ${eMoney(tot)} in career earnings</small></h2>
+  <p style="font-family:var(--cond);font-size:14px;margin:0 0 8px">${ps.map(k=>esc(P[k].short)).join(', ')} ran cards before the tracker started. Every wrestler on them is paid their base rate × the card's class, once a card, and it counts toward the career totals on the Talent Files, not toward ${esc(X.month)} above. Main-event and semi-main gate cuts are paid only where the official page gives the gate.${Q.unrated&&Q.unrated.length?` No pay rate, so not paid: ${Q.unrated.map(esc).join(', ')}.`:''}</p>
+  <details class="bk"><summary>Card by card (${Q.cards.length})</summary><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Promotion</th><th>Card</th><th>Class</th><th>Gate</th><th>Paid</th><th>Total</th></tr></thead><tbody>${Q.cards.map(c=>`<tr><td style="white-space:nowrap">${fmt(c.d)}</td><td>${chip(c.p)}</td><td>${esc(c.show)}</td><td>${esc(c.cls)}, ${c.mult}×</td><td class="num">${c.gate?eMoney(c.gate):'—'}</td><td class="num">${c.n}</td><td class="num">${eMoney(c.total)}</td></tr>`).join('')}</tbody></table></div></details>`;
 }
 /* Champions' pool: each card puts a share of its gate (X.pool.pct) into a pool split evenly among the champions
    who worked it. tools/earnings/pool.py builds X.pool.cards (paid cards) and X.pool.nogate (cards with champions but no gate). */
