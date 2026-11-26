@@ -146,6 +146,26 @@ tr.big td{font-weight:700}
 .rwhy{color:var(--mute);font-size:13px}
 .rhow{margin:18px 0 0;border-top:1px solid var(--soft);padding-top:8px;font-family:var(--cond);font-size:14px}
 .rhow summary{cursor:pointer;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px}
+.wr-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--soft);border:2px solid var(--ink);margin:10px 0 0}
+.wr-tiles>div{background:var(--paper);padding:8px 10px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.wr-tiles .k{font-family:var(--cond);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.wr-tiles b{font-family:var(--head);font-weight:400;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.wr-tiles .n{font-family:var(--cond);font-size:14px}
+.wr-tiles .m{font-family:var(--cond);font-size:12px;color:var(--mute)}
+.wr-range{margin-top:14px}
+.wpanel{margin-top:12px}
+.wpanel .wp-h{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:14px}
+.wpanel figcaption>.mute{font-size:13px}
+.wpanel .rlegend{margin:6px 0}
+.wkey{flex:none;display:inline-block;vertical-align:middle}
+.wshow{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.wsort{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;white-space:nowrap}
+.wsort:hover{color:var(--red)}
+.wsort .arr{display:inline-block;width:1.1em;text-align:right;font-size:10px}
+.spark{display:block}
+.wbar-td{width:30%;min-width:90px;vertical-align:middle}
+.wbar{height:10px;background:var(--paper2)}
+.wbar i{display:block;height:100%;border-radius:0 4px 4px 0}
 .rhow p,.rhow ul{margin:8px 0}
 .tvr{font-weight:700;color:var(--ink);text-decoration:none}a.tvr:hover{text-decoration:underline}
 .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -508,7 +528,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/history.js?v=5a0f148c"></script>
 <script src="data/earnings.js?v=c1692238"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
-<script src="data/ratings.js?v=d502871f"></script>
+<script src="data/ratings.js?v=0623898d"></script>
 <script>
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -580,7 +600,7 @@ const ORDER = ['wwf','wcw','uswa','njpw','ajpw','fmw','cmll','asw','pp','twa'];
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
 
 /* =========================== NAV =========================== */
-const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
+const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['ratings','TV Ratings'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
 const TAB_LABEL={overview:'Overview',stories:'Stories',file:'Talent File',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas',ratings:'Ratings'};
@@ -592,11 +612,11 @@ function renderNav(cur,curT){
     <div class="menu" role="menu">${promoTabs(k).map(t=>`<a role="menuitem" href="#${k}/${t}" class="${cur===k&&(curT||'overview')===t?'cur':''}">${TAB_LABEL[t]}</a>`+(t==='overview'&&SITES[k]&&!SITES[k].noTitles?`<a role="menuitem" href="${SITES[k].base}TITLES.HTM" target="_blank" rel="noopener">Title Histories ↗</a>`:'')).join('')}
     ${SITES[k]?`<a role="menuitem" href="${SITES[k].base}WELCOME.HTM" target="_blank" rel="noopener">Official ${esc(p.short)} site ↗</a>`:''}
     ${la?`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#${la}">${esc(ARTICLES[la].title)}</a>`:''}</div></div>`;};
-  const worldOn=['calendar','showarchive','storyarchive','belts','file','talent','arrivals','departures','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
-  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',showarchive:'Show Archive',file:'Talent File',talent:'Talent Exchange',arrivals:'Arrivals',departures:'Departures',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
+  const worldOn=['calendar','showarchive','ratings','storyarchive','belts','file','talent','arrivals','departures','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
+  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',showarchive:'Show Archive',ratings:'TV Ratings',file:'Talent File',talent:'Talent Exchange',arrivals:'Arrivals',departures:'Departures',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
   <div class="items"><a href="#home" class="top ${cur==='home'?'on':''}">Front Page</a>
   <div class="dd" style="--c:var(--red)"><a href="#calendar" class="top ${worldOn?'on':''}" aria-haspopup="true">World<span class="caret">▾</span></a>
-    <div class="menu" role="menu"><a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#storyarchive" class="${cur==='storyarchive'?'cur':''}">Story Archive</a><a role="menuitem" href="#belts" class="${cur==='belts'?'cur':''}">Title Belts</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a><a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a><a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#departures" class="${cur==='departures'?'cur':''}">Departures</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a><div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a></div></div>
+    <div class="menu" role="menu"><a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#ratings" class="${cur==='ratings'?'cur':''}">TV Ratings &amp; PPV Buys</a><a role="menuitem" href="#storyarchive" class="${cur==='storyarchive'?'cur':''}">Story Archive</a><a role="menuitem" href="#belts" class="${cur==='belts'?'cur':''}">Title Belts</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a><a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a><a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#departures" class="${cur==='departures'?'cur':''}">Departures</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a><div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a></div></div>
   ${ORDER.map(promo).join('')}</div>`;
   $('#burger').onclick=()=>{const n=document.querySelector('nav.main');n.classList.toggle('open');$('#burger').setAttribute('aria-expanded',n.classList.contains('open'));};
   // Touch / small screens: first tap on a promotion opens its menu instead of navigating
@@ -1385,7 +1405,7 @@ function viewRatings(k){
     <figcaption><ul class="rlegend">${legend}</ul></figcaption>
     <div id="rchart-svg"></div><div class="rtip" id="rtip"></div>
   </figure>
-  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 0">${esc(U.long)}. Worked out from each show's card (card rating, headliners, title matches, go-home hype and the crowd), with part of last week's number carried over. <a href="#rhow" onclick="document.getElementById('rhow').open=true">How the ratings work ↓</a></p>
+  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 0">${esc(U.long)}. Worked out from each show's card (card rating, headliners, title matches, go-home hype and the crowd), with part of last week's number carried over. <a href="#rhow" onclick="document.getElementById('rhow').open=true">How the ratings work ↓</a> · <a href="#ratings">Every show in the TNM World →</a></p>
   <h3 class="amonth">Every episode <small>${eps.length} rated</small></h3>
   ${eps.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th><th class="num">Rating</th><th class="num">Change</th><th>What moved it</th></tr></thead><tbody>${rows}</tbody></table></div>`:'<div class="empty">No episodes rated yet.</div>'}
   ${un.length?`<h3 class="amonth">Not rated yet <small>${un.length}</small></h3><ul class="tf-last">${un.map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${esc(x.show.name)} <span class="mute">· ${x.e.d===WORLD_DATE?'airs today; rated once its results are logged':'aired, but no results are logged yet'}</span></li>`).join('')}</ul>`:''}`:''}
@@ -1461,7 +1481,151 @@ function drawRatings(k){
   fig.onkeydown=ev=>{if(ev.key==='ArrowRight'||ev.key==='ArrowLeft'){ev.preventDefault();show(Math.max(0,Math.min(nW-1,(cur<0?nW-1:cur+(ev.key==='ArrowRight'?1:-1)))));}else if(ev.key==='Escape')show(-1);};
   fig.onblur=()=>show(-1);
 }
-let _rResize;window.addEventListener('resize',()=>{clearTimeout(_rResize);_rResize=setTimeout(()=>{const f=$('#rchart');if(f)drawRatings(f.dataset.k);},150);});
+let _rResize;window.addEventListener('resize',()=>{clearTimeout(_rResize);_rResize=setTimeout(()=>{const f=$('#rchart');if(f)drawRatings(f.dataset.k);document.querySelectorAll('.wpanel').forEach(drawWorldPanel);},150);});
+/* ---- World ▸ TV Ratings: every rated show in the TNM World side by side.
+   US national Nielsen, USWA local and Japanese Video Research ratings are on different scales, so each market
+   (RATINGS.units[].market) gets its own panel and its own axis; the panels share the weeks along the bottom.
+   "Vs usual" (the latest rating against the show's usual number for its slot) is the one figure that compares
+   shows across markets. #ratings starts at the first month this world has shows of its own; #ratings/all adds the
+   archive history (USWA from September 1990). ---- */
+const WR_COLORS={wwf:'#1f6fd1',wcw:'#a87500',uswa:'#008f73',njpw:'#6a4ce2',ajpw:'#d4561a'};   /* one per promotion; the promotions that share a panel (WWF and WCW, NJPW and AJPW) are checked for colour-blind separation on the paper */
+const WR_MARKS=[['circle',''],['square','6 4'],['triangle','1.5 3.5'],['diamond','8 3 1.5 3']];   /* marker and dash for a promotion's 1st to 4th show, in RATINGS.shows order */
+const wrColor=s=>WR_COLORS[s.p]||'#6a645a';
+const wrMark=s=>WR_MARKS[Math.max(0,tvShows(s.p).indexOf(s))%WR_MARKS.length];
+const wrUnits=()=>typeof RATINGS==='undefined'?[]:Object.keys(RATINGS.units).filter(u=>RATINGS.shows.some(s=>s.unit===u));
+const fmtY=d=>fmt(d)+(d.slice(0,4)!==WORLD_DATE.slice(0,4)?', '+d.slice(0,4):'');
+function wrDot(shape,cx,cy,c,r){r=r||4.5;const ring=`stroke="var(--paper)" stroke-width="2"`, f=n=>n.toFixed(1);
+  if(shape==='square')return `<rect x="${f(cx-r*0.85)}" y="${f(cy-r*0.85)}" width="${f(r*1.7)}" height="${f(r*1.7)}" rx="1" fill="${c}" ${ring}/>`;
+  if(shape==='triangle'){const h=r*1.2;return `<path d="M${f(cx)},${f(cy-h)}L${f(cx+h)},${f(cy+h*0.8)}L${f(cx-h)},${f(cy+h*0.8)}Z" fill="${c}" ${ring} stroke-linejoin="round"/>`;}
+  if(shape==='diamond'){const h=r*1.25;return `<path d="M${f(cx)},${f(cy-h)}L${f(cx+h)},${f(cy)}L${f(cx)},${f(cy+h)}L${f(cx-h)},${f(cy)}Z" fill="${c}" ${ring} stroke-linejoin="round"/>`;}
+  return `<circle cx="${f(cx)}" cy="${f(cy)}" r="${r}" fill="${c}" ${ring}/>`;}
+const wrKey=s=>{const [sh,da]=wrMark(s),c=wrColor(s);return `<svg class="wkey" width="28" height="14" viewBox="0 0 28 14" aria-hidden="true"><line x1="2" x2="26" y1="7" y2="7" stroke="${c}" stroke-width="2" stroke-dasharray="${da}" stroke-linecap="round"/>${wrDot(sh,14,7,c,3.6)}</svg>`;};
+function wrData(all){
+  const T=tvr(), hist=new Set(typeof HIST!=='undefined'?HIST:[]), own=T.eps.filter(x=>!hist.has(x.e));
+  const from=own.length?own[0].d.slice(0,8)+'01':(T.eps.length?T.eps[0].d:WORLD_DATE);
+  return {T,all,from,first:T.eps.length?T.eps[0].d:from,hasEarlier:T.eps.some(x=>x.d<from),eps:all?T.eps:T.eps.filter(x=>x.d>=from)};
+}
+function wrStats(s,eps){const pts=eps.filter(x=>x.show===s);if(!pts.length)return {s,pts,n:0};
+  const l=pts[pts.length-1], hi=pts.reduce((a,x)=>x.v>=a.v?x:a), lo=pts.reduce((a,x)=>x.v<=a.v?x:a);
+  return {s,pts,n:pts.length,l,hi,lo,ch:l.prev==null?null:Math.round((l.v-l.prev)*10)/10,avg:pts.reduce((a,x)=>a+x.v,0)/pts.length,vs:Math.round((l.v/s.base-1)*100),vsRaw:l.v/s.base};}
+const wrPct=v=>v===0?'usual':(v>0?'+':'−')+Math.abs(v)+'%';
+function wrSpark(x){const p=x.pts.slice(-12), c=wrColor(x.s), W=64, H=20, lo=Math.min(...p.map(q=>q.v)), hi=Math.max(...p.map(q=>q.v)), sp=hi-lo||1;
+  const X=i=>p.length<2?W/2:3+i/(p.length-1)*(W-6), Y=v=>hi===lo?H/2:3+(1-(v-lo)/sp)*(H-6);
+  return `<svg class="spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true">${p.length>1?`<path d="${p.map((q,i)=>(i?'L':'M')+X(i).toFixed(1)+','+Y(q.v).toFixed(1)).join('')}" fill="none" stroke="${c}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>`:''}<circle cx="${X(p.length-1).toFixed(1)}" cy="${Y(p[p.length-1].v).toFixed(1)}" r="2.6" fill="${c}"/></svg>`;}
+/* The comparison table's columns: v = what it sorts by (null sorts last either way), txt = sorts A to Z first. */
+const WR_COLS=[
+  {k:'show',l:'Show',txt:1,v:x=>x.s.name,c:x=>`<span class="wshow">${wrKey(x.s)}<a href="#${x.s.p}/ratings">${esc(x.s.name)}</a></span>`},
+  {k:'p',l:'Promotion',txt:1,v:x=>ORDER.indexOf(x.s.p)*100+RATINGS.shows.indexOf(x.s),c:x=>pchip(x.s.p)},
+  {k:'market',l:'Market',txt:1,v:x=>x.n?wrUnits().indexOf(x.s.unit)*1000-x.l.v:null,c:x=>esc(RATINGS.units[x.s.unit].market)},
+  {k:'latest',l:'Latest',num:1,v:x=>x.n?x.l.v:null,c:x=>x.n?`<b>${tvNum(x.s,x.l.v)}</b><div class="rwhy">${esc(fmtY(x.l.d))}</div>`:'<span class="mute">Not rated yet</span>'},
+  {k:'ch',l:'Change',num:1,v:x=>x.n?x.ch:null,c:x=>!x.n?'—':x.ch==null?'<span class="mute">first</span>':x.ch===0?'<span class="mute">same</span>':(x.ch>0?'+':'−')+Math.abs(x.ch).toFixed(1)},
+  {k:'avg',l:'Average',num:1,v:x=>x.n?x.avg:null,c:x=>x.n?tvNum(x.s,x.avg):'—'},
+  {k:'hi',l:'High',num:1,v:x=>x.n?x.hi.v:null,c:x=>x.n?`<span title="${esc(fmtY(x.hi.d))}">${tvNum(x.s,x.hi.v)}</span>`:'—'},
+  {k:'lo',l:'Low',num:1,v:x=>x.n?x.lo.v:null,c:x=>x.n?`<span title="${esc(fmtY(x.lo.d))}">${tvNum(x.s,x.lo.v)}</span>`:'—'},
+  {k:'n',l:'Episodes',num:1,v:x=>x.n||null,c:x=>x.n||'—'},
+  {k:'vs',l:'Vs usual',num:1,v:x=>x.n?x.vsRaw:null,c:x=>x.n?`<span title="Latest ${tvNum(x.s,x.l.v)} against a usual ${tvNum(x.s,x.s.base)} for ${esc(x.s.outlet)}"><b>${wrPct(x.vs)}</b></span>`:'—'},
+  {k:'trend',l:'Trend',c:x=>x.n?wrSpark(x):''}];
+let _wr=null, wrSort={k:'market',dir:1};
+function wrTable(){
+  const col=WR_COLS.find(c=>c.k===wrSort.k)||WR_COLS[2], rows=_wr.st.slice().sort((a,b)=>{const x=col.v(a),y=col.v(b);
+    if(x==null||y==null)return (x==null)-(y==null)||RATINGS.shows.indexOf(a.s)-RATINGS.shows.indexOf(b.s);
+    return (typeof x==='string'?x.localeCompare(y):x-y)*wrSort.dir||RATINGS.shows.indexOf(a.s)-RATINGS.shows.indexOf(b.s);});
+  const th=c=>{const on=c.k===wrSort.k, cls=c.num?' class="num"':'';
+    if(!c.v)return `<th${cls}>${c.l}</th>`;
+    return `<th${cls} aria-sort="${on?(wrSort.dir>0?'ascending':'descending'):'none'}"><button class="wsort" data-sort="${c.k}" title="Sort by ${c.l.toLowerCase()}">${c.l}<span class="arr">${on?(wrSort.dir>0?'▲':'▼'):''}</span></button></th>`;};
+  return `<table><thead><tr>${WR_COLS.map(th).join('')}</tr></thead><tbody>${rows.map(x=>`<tr${x.n?'':' class="past"'}>${WR_COLS.map(c=>`<td${c.num?' class="num"':''}>${c.c(x)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+function viewWorldRatings(t){
+  if(typeof RATINGS==='undefined')return '<div class="empty" style="margin-top:20px">No TV ratings yet.</div>';
+  const D=wrData(t==='all'), T=D.T, units=wrUnits(), st=RATINGS.shows.map(s=>wrStats(s,D.eps)), money=v=>'$'+Math.round(v).toLocaleString('en-US');
+  _wr={D,st};
+  const tile=(k,big,line,sub)=>`<div><span class="k">${k}</span><b>${big}</b><span class="n">${line}</span>${sub?`<span class="m">${sub}</span>`:''}</div>`;
+  const tiles=units.map(u=>{const r=st.filter(x=>x.n&&x.s.unit===u).sort((a,b)=>b.l.v-a.l.v)[0];
+      return r?tile('Top · '+esc(RATINGS.units[u].market),tvNum(r.s,r.l.v),`${pchip(r.s.p)} <a href="#${r.s.p}/ratings">${esc(r.s.short)}</a>`,esc(fmtY(r.l.d))):'';}).join('')
+    +(()=>{const r=st.filter(x=>x.n).sort((a,b)=>b.vsRaw-a.vsRaw)[0];return r?tile('Best vs usual',wrPct(r.vs),`${pchip(r.s.p)} <a href="#${r.s.p}/ratings">${esc(r.s.short)}</a>`,`${tvNum(r.s,r.l.v)} against ${tvNum(r.s,r.s.base)}`):'';})()
+    +(()=>{const r=T.ppvs.filter(x=>x.buys!=null).sort((a,b)=>b.buys-a.buys)[0];return r?tile('Most PPV buys',r.buys.toLocaleString('en-US'),`${pchip(r.p)} ${esc(r.name)}`,esc(fmtY(r.d))):'';})();
+  const range=D.hasEarlier?`<div class="sub wr-range" style="--c:var(--red)"><button data-tab="world" class="${D.all?'':'on'}">Since ${monthLabel(D.from)}</button><button data-tab="all" class="${D.all?'on':''}">Since ${monthLabel(D.first)}</button></div>`:'';
+  const panels=units.map(u=>{const U=RATINGS.units[u], shows=RATINGS.shows.filter(s=>s.unit===u);
+    const legend=shows.map(s=>{const x=st.find(r=>r.s===s);return `<li>${wrKey(s)}${esc(s.name)} ${x.n?`<b>${tvNum(s,x.l.v)}</b>`:'<span class="mute">not rated yet</span>'}</li>`;}).join('');
+    return `<figure class="rchart wpanel" data-unit="${u}" tabindex="0" aria-label="${esc(U.market)} TV ratings by week. Every number is also in the table below.">
+      <figcaption><span class="wp-h">${esc(U.market)}</span> <span class="mute">· ${esc(U.long)}</span><ul class="rlegend">${legend}</ul></figcaption>
+      <div class="wsvg"></div><div class="rtip"></div></figure>`;}).join('');
+  const ppv=T.ppvs.slice().sort((a,b)=>b.d.localeCompare(a.d)||(b.buys??-1)-(a.buys??-1)), maxB=Math.max(1,...ppv.map(x=>x.buys||0));
+  const ppvRows=ppv.map(x=>`<tr><td style="white-space:nowrap">${esc(fmtY(x.d))}</td><td>${pchip(x.p)} <a href="#${x.p}/ratings">${esc(x.name)}</a></td><td class="num">${x.buys!=null?`<b>${x.buys.toLocaleString('en-US')}</b>`:'<span class="mute">Not yet reported</span>'}</td><td class="wbar-td">${x.buys!=null?`<div class="wbar"><i style="width:${(x.buys/maxB*100).toFixed(1)}%;background:${WR_COLORS[x.p]||'var(--ink)'}"></i></div>`:''}</td><td class="num">${x.take!=null?money(x.take):'—'}</td></tr>`).join('');
+  return `<h2 class="sec">TV Ratings &amp; PPV Buys <small>Every rated show in the TNM World</small></h2>
+  <p class="mute" style="font-family:var(--cond);font-size:14px;margin:0 0 6px">US national, USWA local and Japanese ratings are counted on different scales, so each market has its own chart with its own axis, and a local or Japanese number can't be set against a national one. To compare shows across markets, use <b>Vs usual</b>: each show's latest rating against its usual number for its time slot.</p>
+  ${tiles?`<div class="wr-tiles">${tiles}</div>`:''}
+  ${range}
+  ${D.eps.length?panels:'<div class="empty">No episodes rated yet.</div>'}
+  <h3 class="amonth">Every show <small>${D.all?'since '+monthLabel(D.first):'since '+monthLabel(D.from)} · tap a heading to sort</small></h3>
+  <div class="tbl-wrap" id="wrtable">${wrTable()}</div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 0">Average, high and low cover ${D.all?'every rated episode':'the episodes since '+monthLabel(D.from)}. Change is against the show's previous rated episode. Vs usual compares the latest rating with the show's usual number, the starting point the model uses for its time slot. Ratings are worked out from each show's card; each promotion's Ratings tab shows how.</p>
+  <h2 class="sec">PPV Buys <small>Every promotion, newest first</small></h2>
+  ${ppv.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Event</th><th class="num">Buys</th><th></th><th class="num">To the promotion</th></tr></thead><tbody>${ppvRows}</tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 0">Buys as logged on each promotion's Finance tab; nothing here is estimated.</p>`:'<div class="empty">No pay-per-views have run yet.</div>'}`;
+}
+/* One market's weekly chart. All the panels share the same weeks, so a week lines up from panel to panel. */
+function drawWorldPanel(fig){
+  const u=fig.dataset.unit, box=fig.querySelector('.wsvg'), tip=fig.querySelector('.rtip'); if(!box||!_wr)return;
+  const all=_wr.D.eps, shows=RATINGS.shows.filter(s=>s.unit===u), eps=all.filter(x=>x.show.unit===u), U=RATINGS.units[u];
+  if(!eps.length){box.innerHTML=`<div class="empty">No ${esc(U.market)} episodes rated in this stretch.</div>`;return;}
+  const DAY=864e5, w0=dt(weekStart(all[0].d)), wN=dt(weekStart(all[all.length-1].d)), nW=Math.round((wN-w0)/DAY/7)+1;
+  const Wd=Math.max(280,Math.round(box.clientWidth||600)), small=Wd<520, H=small?220:250;
+  const L=small?34:40, R=small?26:34, Tp=20, B=40, iw=Wd-L-R, ih=H-Tp-B;
+  const x=d=>L+((dt(d)-w0)/DAY+0.5)/(nW*7)*iw;
+  const maxV=Math.max(...eps.map(e=>e.v)), step=[0.5,1,2,2.5,5,10].find(st=>Math.ceil(maxV*1.12/st)<=5)||10, top=Math.ceil(maxV*1.12/step)*step;
+  const y=v=>Tp+(1-v/top)*ih, ticks=[];for(let v=0;v<=top+1e-9;v+=step)ticks.push(v);
+  const lab=v=>(step<1?v.toFixed(1):String(v))+(U.pct?'%':'');
+  const every=Math.max(1,Math.ceil(nW*46/iw)), long=nW>16, dense=iw/nW<14;
+  const wkDate=i=>new Date(w0.getTime()+i*7*DAY), wkEnd=i=>new Date(w0.getTime()+(i*7+6)*DAY), monthStart=i=>i===0||wkEnd(i).getUTCMonth()!==wkEnd(i-1).getUTCMonth();
+  let svg=`<svg viewBox="0 0 ${Wd} ${H}" width="${Wd}" height="${H}" aria-hidden="true">`;
+  svg+=`<text x="${L}" y="11" class="axt">${esc(U.label)}</text>`;
+  svg+=`<rect class="wband" x="0" y="${Tp}" width="0" height="${ih}" fill="rgba(27,26,23,.07)"/>`;
+  ticks.forEach(v=>{svg+=`<line x1="${L}" x2="${Wd-R}" y1="${y(v)}" y2="${y(v)}" stroke="${v?'var(--soft)':'var(--ink)'}" stroke-width="1"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" class="ax">${lab(v)}</text>`;});
+  let lastLab=-1e9;
+  for(let i=0;i<=nW;i++){const xx=L+i/nW*iw;
+    if(!long||i===nW||monthStart(i))svg+=`<line x1="${xx}" x2="${xx}" y1="${Tp}" y2="${Tp+ih}" stroke="var(--soft)" stroke-width="1" opacity=".6"/>`;
+    if(i>=nW)continue;const d=long?wkEnd(i):wkDate(i);
+    if(!long){if(i%every===0)svg+=`<text x="${L+(i+0.5)/nW*iw}" y="${Tp+ih+16}" text-anchor="middle" class="ax">${MON[d.getUTCMonth()]} ${d.getUTCDate()}</text>`;}
+    else if(monthStart(i)&&xx-lastLab>=(small?40:46)){lastLab=xx;const yr=i===0||d.getUTCMonth()===0?` '${String(d.getUTCFullYear()).slice(2)}`:'';svg+=`<text x="${xx+3}" y="${Tp+ih+16}" class="ax">${MON[d.getUTCMonth()]}${yr}</text>`;}}
+  svg+=`<text x="${L+iw/2}" y="${H-4}" text-anchor="middle" class="axt">${long?'By week, Monday to Sunday':'Week of (Monday to Sunday)'}</text>`;
+  const ends=[];
+  shows.forEach(s=>{const pts=eps.filter(e=>e.show===s);if(!pts.length)return;const c=wrColor(s),[shape,dash]=wrMark(s);
+    if(pts.length>1)svg+=`<path d="${pts.map((p,i)=>(i&&(dt(p.d)-dt(pts[i-1].d))/DAY<=21?'L':'M')+x(p.d).toFixed(1)+','+y(p.v).toFixed(1)).join('')}" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="${dash}" stroke-linejoin="round" stroke-linecap="round"/>`;
+    const gap=(a,b)=>!a||!b||Math.abs(dt(a.d)-dt(b.d))/DAY>21;
+    pts.forEach((p,i)=>{if(dense&&i<pts.length-1&&!(gap(pts[i-1],p)&&gap(p,pts[i+1])))return;svg+=wrDot(shape,x(p.d),y(p.v),c);});
+    const l=pts[pts.length-1];ends.push([x(l.d),y(l.v),tvNum(s,l.v)]);});
+  // value at each line's end, skipped where it would sit on another value or on another show's last marker (the legend has every latest value)
+  const placed=[];ends.sort((a,b)=>a[1]-b[1]).forEach(([ex,ey,t])=>{const tx=Math.min(ex+8,Wd-2-t.length*7),ty=ey-8,tw=t.length*7;
+    if(placed.some(([px,py])=>Math.abs(px-tx)<34&&Math.abs(py-ty)<14)||ends.some(([ox,oy])=>(ox!==ex||oy!==ey)&&ox>tx-7&&ox<tx+tw+7&&oy>ty-19&&oy<ty+7))return;
+    placed.push([tx,ty]);svg+=`<text x="${tx}" y="${ty}" class="vl">${t}</text>`;});
+  svg+=`<rect class="whit" x="${L}" y="${Tp}" width="${iw}" height="${ih}" fill="transparent"/></svg>`;
+  box.innerHTML=svg;
+  const band=box.querySelector('.wband'), hit=box.querySelector('.whit');
+  let cur=-1;
+  const show=(i,py)=>{if(i<0||i>=nW){band.setAttribute('width',0);tip.style.display='none';cur=-1;return;}
+    cur=i;const ws=isoD(new Date(w0.getTime()+i*7*DAY)), list=eps.filter(e=>e.week===ws);
+    band.setAttribute('x',L+i/nW*iw);band.setAttribute('width',iw/nW);
+    tip.innerHTML='';const h=document.createElement('div');h.className='h';h.textContent=fmtWeek(ws);tip.appendChild(h);
+    if(!list.length){const r=document.createElement('div');r.textContent='No rated episodes';tip.appendChild(r);}
+    list.forEach(e=>{const r=document.createElement('div');r.style.setProperty('--k',wrColor(e.show));const ic=document.createElement('i'),b=document.createElement('b'),n=document.createElement('span');b.textContent=tvNum(e.show,e.v);n.textContent=e.show.short+' · '+fmt(e.d);r.append(ic,b,n);tip.appendChild(r);});
+    tip.style.display='block';const sc=box.clientWidth/Wd,tw=tip.offsetWidth,th=tip.offsetHeight,cx=(L+(i+0.5)/nW*iw)*sc,half=iw/nW*sc/2;
+    let left=cx+half+8;if(left+tw>box.clientWidth)left=cx-half-8-tw;left=Math.max(0,left);
+    const tp=Math.max(0,Math.min(H*sc-th,(py!=null?py:Tp*sc)-th/2));
+    tip.style.left=(box.offsetLeft+left)+'px';tip.style.top=(box.offsetTop+tp)+'px';};
+  const at=ev=>{const r=box.getBoundingClientRect(),sx=(ev.clientX-r.left)*(Wd/r.width);return [Math.floor((sx-L)/iw*nW),ev.clientY-r.top];};
+  hit.addEventListener('pointermove',ev=>{const [i,py]=at(ev);show(i,py);});
+  hit.addEventListener('pointerdown',ev=>{const [i,py]=at(ev);show(i,py);});
+  hit.addEventListener('pointerleave',ev=>{if(ev.pointerType==='mouse')show(-1);});
+  fig.onkeydown=ev=>{if(ev.key==='ArrowRight'||ev.key==='ArrowLeft'){ev.preventDefault();show(Math.max(0,Math.min(nW-1,(cur<0?nW-1:cur+(ev.key==='ArrowRight'?1:-1)))));}else if(ev.key==='Escape')show(-1);};
+  fig.onblur=()=>show(-1);
+}
+function bindWorldRatings(){
+  document.querySelectorAll('.wpanel').forEach(drawWorldPanel);
+  const box=$('#wrtable'); if(!box) return;
+  box.onclick=ev=>{const b=ev.target.closest('.wsort');if(!b)return;const c=WR_COLS.find(c=>c.k===b.dataset.sort);
+    wrSort=wrSort.k===c.k?{k:c.k,dir:-wrSort.dir}:{k:c.k,dir:c.txt?1:-1};box.innerHTML=wrTable();const nb=box.querySelector(`.wsort[data-sort="${c.k}"]`);if(nb)nb.focus();};
+}
 function viewFinance(k){
   const S=finSum(k); if(!S) return `<div class="empty" style="margin-top:20px">No finance records yet.</div>`;
   const f=S.f, rows=S.rows;
@@ -1870,6 +2034,7 @@ function route(){
   if(P[key]) html=viewPromo(key,curTab[key]);
   else if(key==='calendar') html=viewCalendar();
   else if(key==='showarchive') html=viewShowArchive();
+  else if(key==='ratings') html=viewWorldRatings(t);
   else if(key==='storyarchive') html=viewStoryArchive();
   else if(key==='belts') html=viewBelts();
   else if(key==='file') html=viewTalentFile(t);
@@ -1887,6 +2052,7 @@ function bind(key){
   document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;calFilter.has(f)?calFilter.delete(f):calFilter.add(f);if(!calFilter.size)ORDER.forEach(k=>calFilter.add(k));route();});
   const cs=$('#csearch'); if(cs) cs.oninput=()=>{const q=cs.value.toLowerCase();document.querySelectorAll('#ctbl tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   if(key==='earnings') bindEarnings();
+  if(key==='ratings') bindWorldRatings();
   if(key==='storyarchive') bindStoryArchive();
   if(key==='file') bindTalentFile();
   if(P[key]&&curTab[key]==='file') bindPromoTalent(key);

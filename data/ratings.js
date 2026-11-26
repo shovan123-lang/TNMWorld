@@ -30,7 +30,8 @@
 
    Units. WWF and WCW: national Nielsen household ratings. USWA: local household ratings in the markets that carry
    each show (Memphis for Championship TV). NJPW and AJPW: Video Research household ratings (%), charted on the
-   tour night taped for TV. Don't compare across units.
+   tour night taped for TV. Don't compare across units: the World ratings page (World menu, TV Ratings) gives each
+   unit (`market`) its own panel, and compares shows across markets only against each show's usual number (`base`).
 
    To set a number by hand (a "real" rating), add it to RATINGS.fixed as "<promo> <date> <show id>": 4.1.
    A fixed number carries over to the next week like any other.
@@ -42,9 +43,9 @@
 
 const RATINGS = {
   units: {
-    nielsen: {label: "Nielsen rating", long: "National Nielsen household rating", pct: 0},
-    local: {label: "Local rating", long: "Local household rating in the markets that carry each show (Memphis for Championship TV)", pct: 0},
-    vr: {label: "Rating (%)", long: "Video Research household rating, charted on the tour night taped for TV", pct: 1}
+    nielsen: {label: "Nielsen rating", long: "National Nielsen household rating", market: "US national", pct: 0},
+    local: {label: "Local rating", long: "Local household rating in the markets that carry each show (Memphis for Championship TV)", market: "USWA local", pct: 0},
+    vr: {label: "Rating (%)", long: "Video Research household rating, charted on the tour night taped for TV", market: "Japan", pct: 1}
   },
   shows: [
     {id: "superstars", p: "wwf", name: "WWF Superstars", short: "Superstars", match: /^Superstars\b/i, outlet: "Syndication, Saturday morning", base: 3.6, min: 2.6, max: 4.8, unit: "nielsen"},
