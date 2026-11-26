@@ -646,9 +646,9 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/world.js?v=9d0f7af4"></script>
 <script src="data/births.js?v=6c59314b"></script>
 <script src="tools/talent_engine.js?v=9ccfd69c"></script>
-<script src="data/wcw.js?v=441abe6d"></script>
-<script src="data/wwf.js?v=b52bfc83"></script>
-<script src="data/uswa.js?v=3a0930c8"></script>
+<script src="data/wcw.js?v=f4eb9bc6"></script>
+<script src="data/wwf.js?v=2d6a9926"></script>
+<script src="data/uswa.js?v=ac436ea9"></script>
 <script src="data/pp.js?v=954659ea"></script>
 <script src="data/ajpw.js?v=c6ba88e6"></script>
 <script src="data/njpw.js?v=2201a760"></script>
@@ -2354,7 +2354,7 @@ function viewPromo(k,tab){
   const p=P[k]; tab=tab||'overview';
   const ev=E.filter(e=>e.p===k).sort((a,b)=>a.d.localeCompare(b.d));
   const tabs=[['overview','Overview'],...(hasTitleHist(k)?[['titles','Title Histories']]:[]),['file','Talent File'],['roster','Roster'],['schedule','Schedule'],['stories','Stories']];
-  if(SITES[k]) tabs.push(['archive',k==='uswa'?'TV Archive':'Show Archive']);
+  if(SITES[k]) tabs.push(['archive','Show Archive']);
   if(CONTRACTS[k]) tabs.push(['contracts','Contracts']);
   if(hasRatings(k)) tabs.push(['ratings','Ratings']);
   if(FINANCE[k]) tabs.push(['finance','Finance']);
