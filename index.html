@@ -553,6 +553,7 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 .av-rest ul{list-style:none;padding:0;margin:0 0 10px;border-top:1px solid var(--soft)}
 .av-rest li{border-bottom:1px solid var(--soft)}
 .av-rest li a{display:block;padding:9px 4px;text-decoration:none}.av-rest li a:hover{background:var(--paper2)}
+.av-tbl{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.45;white-space:pre;overflow-x:auto;margin:0}
 .av-frame{display:block;width:100%;border:0;min-height:320px;overflow:hidden;background:var(--paper)}
 .av-fail{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.av-fail .ext{margin-top:0}
 .av-newbox{margin:0 0 16px;border-color:var(--c)}
@@ -2193,8 +2194,11 @@ function avBlock(b){
   const L=[];
   b.split('\n').map(l=>l.replace(/\s+$/,'')).filter(l=>l.trim()).forEach(l=>{const prev=L[L.length-1],t=l.trim();
     const open=prev!=null&&/^[([]/.test(plain(prev))&&!/[)\]]$/.test(plain(prev));
-    if(prev!=null&&(plain(prev).length>=60||open)&&!/^(Rating:|Interview:|\(|\[|<a\s|<center|<h\d)/i.test(t)&&!/<h\d/i.test(prev)) L[L.length-1]=prev+' '+t; else L.push(t);});
+    const pp=prev!=null?plain(prev):'';
+    if(prev!=null&&(pp.length>=60||open||/\b(the|a|an|with|and|of|to|in|on|by|for|from|at|his|her|their)$/.test(pp))&&!/\S {3,}\S/.test(pp+' | '+t)&&!/^(Rating:|Interview:|\(|\[|<a\s|<center|<h\d)/i.test(t)&&!/<h\d/i.test(prev)) L[L.length-1]=prev+' '+t; else L.push(t);});
   if(!L.length) return '';
+  // standings and other tables lined up with spaces keep their columns
+  if(L.filter(l=>/\S {3,}\S/.test(plain(l))).length>=2) return `<div class="av-blk"><pre class="av-tbl">${b.replace(/^\n+|\s+$/g,'')}</pre></div>`;
   const kind=s=>{const t=plain(s);
     if(/<h\d/i.test(s)) return 'h';
     if(/^(Rating|Card rating|Overall card):/i.test(t)) return 'rate';
