@@ -365,6 +365,25 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 .res-w{background:#2f6b3a}.res-l{background:var(--red)}.res-d{background:#8a7d63}
 .tfsort{font-family:var(--cond);font-size:14px;padding:4px 6px;border:2px solid var(--ink);background:var(--paper)}
 #tftbl td .pc{margin-right:2px}
+
+/* Talent File: back link + trophies */
+.tf-back{margin:16px 0 0}
+.tf-back a,.tf-allbtn,.tf-pager .tf-home{display:inline-block;font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;background:var(--ink);color:var(--paper)!important;border:2px solid var(--ink);padding:6px 14px;box-shadow:3px 3px 0 var(--red);transition:transform .12s,box-shadow .12s}
+.tf-back a:hover,.tf-allbtn:hover,.tf-pager .tf-home:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--red);background:var(--red);border-color:var(--red)}
+.tf-allbtn{font-size:12px;padding:3px 10px;box-shadow:2px 2px 0 var(--red);letter-spacing:.06em}
+
+.trophy-mini{display:inline-flex;align-items:center;gap:2px;font-family:var(--cond);font-weight:700;font-size:13px;margin-left:6px;vertical-align:middle;line-height:1}
+.trophy-mini svg{width:16px;height:16px}
+.tf-name .trophy-mini{font-size:20px;vertical-align:6px}.tf-name .trophy-mini svg{width:24px;height:24px}
+.trophy-mini.mask,.trophy.mask .ti{color:#b8862b}.trophy-mini.hair,.trophy.hair .ti{color:#6b4a2e}
+.tcase{border:2px solid var(--ink);background:var(--paper);padding:12px 14px;box-shadow:4px 4px 0 #b8862b}
+.tstatus{font-family:var(--cond);font-size:15px;margin-bottom:8px}
+.trophies{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.trophy{display:flex;gap:10px;align-items:center;border:1px solid var(--soft);background:var(--paper2);padding:8px 10px}
+.trophy .ti svg{width:30px;height:30px;display:block}
+.trophy.mask{border-left:4px solid #b8862b}.trophy.hair{border-left:4px solid #6b4a2e}
+.trophy .tt{display:flex;flex-direction:column;font-family:var(--cond);line-height:1.25}.trophy .tt b{font-size:15.5px}.trophy .tt span{font-size:12.5px;color:var(--mute)}
+.tlost{font-family:var(--cond);font-size:14px;margin:8px 0 0}
 </style>
 </head>
 <body>
@@ -566,8 +585,10 @@ function tfAll(){
   list.sort((a,b)=>a.name.localeCompare(b.name));
   _TF={list,byName,bySlug:new Map(list.map(f=>[f.slug,f]))};return _TF;
 }
-const tfNorm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
-const tfEarn=f=>typeof EARNINGS==='undefined'?null:EARNINGS.people.find(x=>tfNorm(x.name)===tfNorm(f.earn||f.name))||null;
+const tfNorm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+// Same aliases the earnings tracker uses (tools/earnings/build.py)
+const TF_EARN_ALIAS={'el gran hamada':'Gran Hamada','mike rotunda':'Irwin R. Schyster','the blue blazer':'Owen Hart','sting 1992':'Sting'};
+const tfEarn=f=>{if(typeof EARNINGS==='undefined')return null;const n=tfNorm(TF_EARN_ALIAS[tfNorm(f.earn||f.name)]||f.earn||f.name);return EARNINGS.people.find(x=>tfNorm(x.name)===n)||null;};
 const tfMoney=v=>'$'+Math.round(v||0).toLocaleString();
 const tfBest=f=>f.run.filter(r=>starVal(r.m[2])!==null).sort((a,b)=>starVal(b.m[2])-starVal(a.m[2]))[0];
 function tfTitles(f){const n=tfNorm(f.name),teams=Object.entries(typeof TEAMS!=='undefined'?TEAMS:{}).filter(([t,m])=>m.includes(f.name)).map(([t])=>tfNorm(t));
@@ -613,16 +634,16 @@ function viewTalentFileIndex(){
   <div class="tf-grid">${spots.map(card).join('')}</div>
   <h3 class="amonth" style="font-size:22px">Every wrestler <small>${T.list.length}</small></h3>
   <div class="efilters tffilters">${ORDER.map(k=>`<button data-f="${k}" class="${!tfFilter.size||tfFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['earn','Career $'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['earn','Career $'],['trophies','Trophies'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select></span></div>
   <div class="tbl-wrap"><table id="tftbl"><thead><tr><th>Wrestler</th><th>Promotions</th><th class="num">Record</th><th class="num">Matches</th><th class="num">Best</th><th class="num">Career $</th></tr></thead><tbody>${tfRows()}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Every name on every roster. Records are worked out from the results on the cards (tag matches count for every member); "undecided" results don't count either way. Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances.</p>`;
 }
 function tfRows(){
   const T=tfAll(), q=(($('#tfsearch')||{}).value||'').toLowerCase();
-  const val=f=>tfSort==='name'?0:tfSort==='wins'?f.w:tfSort==='earn'?((tfEarn(f)||{}).life||0):f.run.length;
+  const val=f=>tfSort==='name'?0:tfSort==='wins'?f.w:tfSort==='earn'?((tfEarn(f)||{}).life||0):tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
   return T.list.filter(f=>(!tfFilter.size||f.promos.some(k=>tfFilter.has(k)))&&f.name.toLowerCase().includes(q))
     .sort((a,b)=>val(b)-val(a)||a.name.localeCompare(b.name))
-    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${f.spot?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${x?tfMoney(x.life):'—'}</td></tr>`}).join('')
+    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a> ${tfTrophyBadges(f)}${f.spot?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${x?tfMoney(x.life):'—'}</td></tr>`}).join('')
     || '<tr><td colspan="6" class="mute">No one matches.</td></tr>';
 }
 function bindTalentFile(){
@@ -642,6 +663,42 @@ function tfEarnBlock(f){
   </div>
   ${lines.length?`<details class="bk" style="margin-top:8px"><summary>${esc(EARNINGS.month)} paydays (${lines.length})</summary><div class="tbl-wrap"><table><tbody>${lines.map(l=>`<tr><td style="white-space:nowrap">${l.kind==='salary'?'To '+fmt(l.d):fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}${dueL.map(l=>`<tr class="past"><td style="white-space:nowrap">${fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}</tbody></table></div></details>`:''}`;
 }
+
+/* Mask and hair trophies from the apuestas records (every promotion that keeps them) */
+const ICON_MASK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C7 2 4 6 4 11c0 4.5 2.6 8.6 6 10.5.6.3 1.4.5 2 .5s1.4-.2 2-.5c3.4-1.9 6-6 6-10.5 0-5-3-9-8-9z" fill="currentColor"/><path d="M7.2 9.6c1.4-.9 3.1-.8 4.1.6-1.4.9-3.1.8-4.1-.6zm9.6 0c-1.4-.9-3.1-.8-4.1.6 1.4.9 3.1.8 4.1-.6zM9.5 16c1.6 1.1 3.4 1.1 5 0" fill="#fff" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>';
+const ICON_HAIR='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="17.5" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="17.5" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.6 15.4 19 3M15.4 15.4 5 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+let _TROPH=null;
+function tfTrophyIndex(){
+  if(_TROPH) return _TROPH; const T=new Map(), n=s=>tfNorm(s);
+  const get=name=>{const k=n(name);if(!T.has(k))T.set(k,{masks:[],hair:[],lostM:[],lostH:[],status:null,booked:[]});return T.get(k);};
+  if(typeof APUESTAS==='undefined') return _TROPH=T;
+  for(const [k,A] of Object.entries(APUESTAS)){
+    [...(A.career||[]).map(r=>[r,0]),...(A.tnm||[]).map(r=>[r,1])].forEach(([r,era])=>{
+      if(!r.draw) r.w.forEach(([w])=>r.l.forEach(([o,wg])=>{const x={opp:o,d:r.d,at:r.at||'',era,k,note:r.note||''};if(wg==='m')get(w).masks.push(x);else if(wg==='h')get(w).hair.push(x);}));
+      r.l.forEach(([o,wg])=>{const by=r.draw?'a draw (both shaved)':r.w.map(x=>x[0]).join(' & ');const x={opp:by,d:r.d,at:r.at||'',era,k};if(wg==='m')get(o).lostM.push(x);else if(wg==='h')get(o).lostH.push(x);});
+    });
+    Object.entries(A.status||{}).forEach(([nm,st])=>{get(nm).status=st;});
+    (A.booked||[]).forEach(b=>[b.a,b.b].forEach(side=>{if(side&&side[0])get(side[0]).booked.push({...b,k})}));
+  }
+  return _TROPH=T;
+}
+const tfTroph=f=>tfTrophyIndex().get(tfNorm(f.name))||null;
+function tfTrophyBadges(f){const t=tfTroph(f);if(!t)return '';const m=t.masks.length,h=t.hair.length;
+  return (m?`<span class="trophy-mini mask" title="${m} mask${m>1?'s':''} won">${ICON_MASK}${m}</span>`:'')+(h?`<span class="trophy-mini hair" title="${h} hair match${h>1?'es':''} won">${ICON_HAIR}${h}</span>`:'');}
+function tfTrophyCase(f){
+  const t=tfTroph(f); if(!t||!(t.masks.length||t.hair.length||t.lostM.length||t.lostH.length||t.status||t.booked.length)) return '';
+  const item=(x,kind)=>`<li class="trophy ${kind}"><span class="ti">${kind==='mask'?ICON_MASK:ICON_HAIR}</span><span class="tt"><b>${esc(x.opp)}</b><span>${apuDate(x.d)}${x.at?' · '+esc(x.at):''}${x.era?' · <em>in this world</em>':''}</span></span></li>`;
+  const won=[...t.masks.map(x=>item(x,'mask')),...t.hair.map(x=>item(x,'hair'))];
+  const lost=[...t.lostM.map(x=>`Mask to ${esc(x.opp)} (${apuDate(x.d)})`),...t.lostH.map(x=>`Hair to ${esc(x.opp)} (${apuDate(x.d)})`)];
+  return `<h3 class="amonth" style="font-size:22px">Trophy Case <small>luchas de apuestas · ${t.masks.length} mask${t.masks.length===1?'':'s'}, ${t.hair.length} hair</small></h3>
+  <div class="tcase">
+    ${t.status?`<div class="tstatus"><b>${esc(t.status[0])}</b>${t.status[1]?` · ${esc(t.status[1])}`:''}</div>`:''}
+    ${won.length?`<ul class="trophies">${won.join('')}</ul>`:'<p class="mute" style="margin:6px 0">No masks or hair won yet.</p>'}
+    ${lost.length?`<p class="tlost"><span class="mute">Lost:</span> ${lost.join(' · ')}</p>`:''}
+    ${t.booked.length?`<p class="tlost"><span class="mute">On the line next:</span> ${t.booked.map(b=>`${esc(b.kind)}, ${apuDate(b.d)}${b.at?' · '+esc(b.at):''}`).join(' · ')} <span class="flag plan">plan</span></p>`:''}
+    <p class="mute" style="font-family:var(--cond);font-size:12.5px;margin:6px 0 0">Career wagers before July 1991 come from the record books; anything marked "in this world" was won here. Full records on the <a href="#cmll/apuestas">CMLL Apuestas</a> page.</p>
+  </div>`;
+}
 function viewTalentFile(slug){
   const T=tfAll(); if(!T.list.length) return `<div class="empty">No Talent File set.</div>`;
   const f=slug?T.bySlug.get(slug):null;
@@ -649,17 +706,19 @@ function viewTalentFile(slug){
   const res=r=>`<span class="res res-${r.toLowerCase()}">${r==='?'?'–':r}</span>`;
   const row=(x,fut)=>`<tr class="${fut?'':'past'}"><td style="white-space:nowrap">${fmt(x.e.d)}</td><td>${pchip(x.e.p)}</td><td><b>${esc(x.m[0])}</b><br><span class="mute" style="font-size:13px">${esc([x.e.city,x.e.type].filter(Boolean).join(' · '))}</span></td><td>${fut?'':res(x.res)}</td><td>${fut?(x.m[1]?`<span class="spoil">${esc(x.m[1])}</span>`:'<span class="mute">TBA</span>'):esc(x.m[1])}</td><td class="num">${fut?'':esc(x.m[2]||'')}</td></tr>`;
   const L=f.spot?TFILES.map(s=>T.byName.get(s.name)).filter(Boolean):T.list, i=L.indexOf(f), prev=L[(i-1+L.length)%L.length], next=L[(i+1)%L.length];
-  return `<h2 class="sec">Talent File <small><a href="#file">All files</a>${f.spot?' · spotlight':''}</small></h2>
+  return `<p class="tf-back"><a href="#file">← Talent File home</a></p>
+  <h2 class="sec">Talent File <small><a href="#file" class="tf-allbtn">All ${T.list.length} files</a>${f.spot?' · spotlight':''}</small></h2>
   <div class="tfile big">
-    <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')}</div>
+    <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')} ${tfTrophyBadges(f)}</div>
     ${tfStats(f)}
     <p class="tf-blurb">${tfBlurb(f)}</p>
   </div>
+  ${tfTrophyCase(f)}
   ${tfEarnBlock(f)}
   <h3 class="amonth" style="font-size:22px">Results <small>${f.run.length}</small></h3>
   ${f.run.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th></th><th>Result</th><th>Rating</th></tr></thead><tbody>${f.run.slice().reverse().map(x=>row(x,0)).join('')}</tbody></table></div>`:'<div class="empty">No matches on the cards yet.</div>'}
   ${f.booked.length?`<h3 class="amonth" style="font-size:22px">Booked <small>plan · finishes hidden until they happen</small></h3><div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th></th><th>Finish</th><th></th></tr></thead><tbody>${f.booked.map(x=>row(x,1)).join('')}</tbody></table></div>`:''}
-  <div class="tf-pager"><a href="#file/${prev.slug}">← ${esc(prev.name)}</a><a href="#file/${next.slug}">${esc(next.name)} →</a></div>
+  <div class="tf-pager"><a href="#file/${prev.slug}">← ${esc(prev.name)}</a><a href="#file" class="tf-home">Talent File home</a><a href="#file/${next.slug}">${esc(next.name)} →</a></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Built from every card on the site; tag matches count for every member. Matches before this world began are To establish.</p>`;
 }
 function worldNumbers(){
