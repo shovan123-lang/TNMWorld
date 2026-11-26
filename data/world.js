@@ -25,11 +25,19 @@ const DEPARTURES = [["7/1/91", "WCW", "Ric Flair", "Fired as World Champion over
 // Women on any roster. Promotion pages list them in their own section. Add new women here when they join a roster.
 const WOMEN = new Set(["Miss Elizabeth", "Missy Hyatt", "La Diabólica", "Lola González", "Pantera Sureña", "Toshiyo Yamada", "Megumi Kudo", "Combat Toyoda", "Svetlana Goundarenko", "Debbie Combs", "Reggie Bennett", "Debbie Malenko", "Eriko Tsuchiya", "Yoshika Maedomari", "Keiko Iwami", "Kumiko Matsuda", "Yuki Morimatsu", "Rie Nakamura", "Yukie Nabeno"]);
 
-// Talent File: the wrestler showcased on the front page and at #file. Change it whenever you want a new spotlight.
-// "match" is a pattern that finds this wrestler in match listings (include tag-team and trio names he's part of).
+// Talent File: one file per wrestler, shown at #file (the first one is also the front-page spotlight).
+// "match" is a pattern that finds the wrestler in match listings (include tag-team and trio names).
+// "earn" is the name used in the Talent Earnings tracker; career earnings come from there and add up month to month.
 // "record" is kept by hand (wins–losses–draws), because results are written as text.
-const SPOTLIGHT = {"name": "Eddie Guerrero", "match": "Eddie(?! Gilbert)|Los Guerreros", "record": "7–0", "since": "1991-07-03",
- "blurb": "Unbeaten in two countries. Eddie has gone 5–0 in CMLL with his family, Chavo and Fuerza, and 2–0 on USWA's Worldwide, where he beat the Spellbinder at ****1/4 in Jonesboro. Next up: the Torneo de Tercias semifinals at Arena México on 7/19."};
+const TALENT_FILES = [
+ {"slug": "eddie-guerrero", "name": "Eddie Guerrero", "match": "Eddie(?! Gilbert)|Los Guerreros", "earn": "Eddie Guerrero", "record": "9–0", "since": "1991-07-03", "blurb": "Still unbeaten in two countries. Eddie is 7–0 in CMLL with Chavo and Fuerza, including a ****1/2 Tercias semifinal win over Atlantis, Ángel Azteca and Rayo de Jalisco Jr., and 2–0 on USWA's Worldwide, where he beat the Spellbinder at ****1/4 in Jonesboro."},
+ {"slug": "jushin-liger", "name": "Jushin Liger", "match": "Liger", "earn": "Jushin Liger", "record": "11–2–1", "since": "1991-07-04", "blurb": "Three promotions, one month. Liger holds the IWGP Junior title in New Japan, split two classics with Brian Pillman in WCW (the second at ****), and pinned Último Dragón in CMLL. The rubber match with Pillman is next, then the long flight home to defend against El Samurai."},
+ {"slug": "rick-rude", "name": "Rick Rude", "match": "Rick Rude|\\bRude\\b(?! Awakening)", "earn": "Rick Rude", "record": "5–4", "since": "1991-07-01", "blurb": "The new WCW U.S. Champion. Rude ended Sting's reign in a 27-minute war in Charleston, WV (****3/4) with Paul E. in his corner, then flew to All Japan and beat Doug Furnas in Sapporo with the belt over his shoulder (****). He's lost to Misawa, Kobashi and, in an upset, Bobby Fulton."},
+ {"slug": "brian-pillman", "name": "Brian Pillman", "match": "Pillman", "earn": "Brian Pillman", "record": "6–4", "since": "1991-07-04", "blurb": "Flyin' Brian opened July on New Japan's tour, then came home to beat Jushin Liger, lose the rematch at the Bash (****) and spend the rest of the month fighting Paul E.'s crew: Bobby Eaton, Larry Zbyszko and the telephone. The Liger rubber match is in Inglewood 7/23."},
+ {"slug": "stan-hansen", "name": "Stan Hansen", "match": "Hansen", "earn": "Stan Hansen", "record": "3–3–1", "since": "1991-07-01", "blurb": "Working the USWA and All Japan at once with Dan Spivey. Hansen powerbombed one of the New Kids in Memphis, then Misawa pinned him with the Tiger Driver in the Sapporo main event 7/21. Jumbo Tsuruta is next, one-on-one, on 7/25."},
+ {"slug": "sting", "name": "Sting", "match": "Sting", "earn": "Sting", "record": "7–3", "since": "1991-07-05", "blurb": "Sting's last month in WCW. He beat Big Van Vader in a five-star main event in Salisbury, then lost the U.S. Title to Rick Rude in Charleston, WV on 7/19, his final WCW date. He's bound for New Japan full-time, with the Tokyo Dome on 1/4/92."}
+];
+const SPOTLIGHT = TALENT_FILES[0];
 
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest.
 const TICKER = [

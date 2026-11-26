@@ -317,6 +317,28 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 .nextup .mute{font-size:13px}
 .nextup .mm{font-size:13.5px;line-height:1.3;margin-top:2px}
 .nextall{display:inline-block;margin-top:8px;font-family:var(--cond);font-weight:700;font-size:14px;color:var(--c);text-decoration-color:var(--c2,var(--c))}
+
+/* Talent File roster + earnings */
+.tf-stats.five{grid-template-columns:repeat(5,1fr)}
+@media(max-width:640px){.tf-stats.five{grid-template-columns:repeat(3,1fr)}.tf-stats.five div:nth-child(3){border-right:0}}
+.tf-cash b{color:#2f6b3a}
+.tf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin:8px 0 14px}
+.tf-card{display:block;border:2px solid var(--ink);background:var(--paper);padding:12px 14px;text-decoration:none;color:inherit;transition:transform .12s,box-shadow .12s}
+.tf-card:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+.tf-card .tf-name{font-size:28px}
+.tf-chips{margin:4px 0 8px;min-height:20px}
+.tf-mini{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--soft);border-bottom:1px solid var(--soft)}
+.tf-mini div{padding:5px 6px;border-right:1px solid var(--soft)}.tf-mini div:last-child{border-right:0}
+.tf-mini b{display:block;font-family:var(--head);font-weight:400;font-size:19px;line-height:1.15}
+.tf-mini span{font-family:var(--cond);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.tf-lastline{font-family:var(--cond);font-size:13.5px;margin-top:8px}
+.tf-earn{display:grid;grid-template-columns:240px 1fr;gap:22px;align-items:center;border:2px solid var(--ink);padding:12px 14px;background:var(--paper)}
+@media(max-width:760px){.tf-earn{grid-template-columns:1fr}}
+.tf-earn-tot b{display:block;font-family:var(--head);font-weight:400;font-size:40px;line-height:1;color:#2f6b3a}
+.tf-earn-tot span{font-family:var(--cond);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.tf-earn-tot .mute{font-family:var(--cond);font-size:13.5px;margin-top:6px}
+.tf-pager{display:flex;justify-content:space-between;font-family:var(--cond);font-weight:700;margin:16px 0 4px}
+.tf-pager a{text-decoration:none}.tf-pager a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -337,7 +359,7 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 /* Data containers. Each promotion's file in data/ fills these in. */
 const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={};
 </script>
-<script src="data/world.js?v=dc80c15c"></script>
+<script src="data/world.js?v=b0ffaaef"></script>
 <script src="data/wcw.js?v=f82cdbb6"></script>
 <script src="data/wwf.js?v=5201e715"></script>
 <script src="data/uswa.js?v=53aa06d9"></script>
@@ -348,7 +370,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/asw.js?v=37e6ea1d"></script>
 <script src="data/twa.js?v=a82b244a"></script>
 <script src="data/fmw.js?v=70118c26"></script>
-<script src="data/earnings.js?v=2ef482a8"></script>
+<script src="data/earnings.js?v=5bce6048"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
 <script>
 /* =========================== DATA =========================== */
@@ -462,11 +484,13 @@ function storylinesToWatch(){
   }).join('');
 }
 
-/* ---- Talent File (front page spotlight + #file page) ---- */
-function spotMatches(){
-  if(typeof SPOTLIGHT==='undefined') return [];
-  const re=new RegExp(SPOTLIGHT.match);const out=[];
-  E.filter(e=>!e.plan||true).forEach(e=>(e.m||[]).forEach(m=>{if(re.test(m[0]))out.push({e,m,past:pastE(e)})}));
+/* ---- Talent File (front page spotlight + #file pages) ---- */
+const TFILES=typeof TALENT_FILES!=='undefined'?TALENT_FILES:(typeof SPOTLIGHT!=='undefined'?[SPOTLIGHT]:[]);
+const tfSlug=f=>f.slug||f.name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+function spotMatches(f){
+  f=f||SPOTLIGHT; if(!f) return [];
+  const re=new RegExp(f.match);const out=[];
+  E.forEach(e=>(e.m||[]).forEach(m=>{if(re.test(m[0])&&!/^(Segment|Angle|Promo|Interview|Closing)\b/i.test(m[0]))out.push({e,m,past:pastE(e)})}));
   return out.sort((a,b)=>a.e.d.localeCompare(b.e.d));
 }
 function spotStats(list){
@@ -474,34 +498,65 @@ function spotStats(list){
   const best=run.filter(x=>starVal(x.m[2])!==null).sort((a,b)=>starVal(b.m[2])-starVal(a.m[2]))[0];
   return {run,promos,best};
 }
+const tfEarn=f=>typeof EARNINGS==='undefined'?null:EARNINGS.people.find(x=>x.name===(f.earn||f.name))||null;
+const tfMoney=v=>'$'+Math.round(v||0).toLocaleString();
+function tfStats(f,run,promos,best){
+  const x=tfEarn(f);
+  return `<div class="tf-stats five"><div><b>${run.length}</b><span>Matches</span></div><div><b>${esc(f.record)}</b><span>Record</span></div><div><b>${promos.length}</b><span>Promotions</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div><div class="tf-cash"><b>${x?tfMoney(x.life):'—'}</b><span>Career earnings</span></div></div>`;
+}
 function talentFileBox(){
-  if(typeof SPOTLIGHT==='undefined') return '';
-  const list=spotMatches(), {run,promos,best}=spotStats(list);
+  if(!TFILES.length) return '';
+  const f=SPOTLIGHT, list=spotMatches(f), {run,promos,best}=spotStats(list);
   const last=run.slice(-3).reverse();
   return `<h2 class="sec">Talent File <small>In the spotlight</small></h2>
   <div class="tfile">
-    <div class="tf-name">${esc(SPOTLIGHT.name)} ${promos.map(pchip).join('')}</div>
-    <div class="tf-stats"><div><b>${run.length}</b><span>Matches</span></div><div><b>${esc(SPOTLIGHT.record)}</b><span>Record</span></div><div><b>${promos.length}</b><span>Promotions</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div></div>
-    <p class="tf-blurb">${esc(SPOTLIGHT.blurb)}</p>
+    <div class="tf-name">${esc(f.name)} ${promos.map(pchip).join('')}</div>
+    ${tfStats(f,run,promos,best)}
+    <p class="tf-blurb">${esc(f.blurb)}</p>
     <ul class="tf-last">${last.map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${pchip(x.e.p)} ${esc(x.m[0])} <span class="mute">· ${esc(x.m[1])}</span> <b class="num">${esc(x.m[2]||'')}</b></li>`).join('')}</ul>
-    <p style="font-family:var(--cond);font-size:13px;margin:6px 0 0"><a href="#file">Every match →</a></p>
+    <p style="font-family:var(--cond);font-size:13px;margin:6px 0 0"><a href="#file/${tfSlug(f)}">Every match →</a>${TFILES.length>1?` · <a href="#file">All ${TFILES.length} Talent Files →</a>`:''}</p>
   </div>`;
 }
-function viewTalentFile(){
-  if(typeof SPOTLIGHT==='undefined') return `<div class="empty">No Talent File set.</div>`;
-  const list=spotMatches(), {run,promos,best}=spotStats(list);
+function viewTalentFileIndex(){
+  const hasE=typeof EARNINGS!=='undefined';
+  return `<h2 class="sec">Talent File <small>${TFILES.length} wrestlers${hasE?` · career earnings through ${fmt(EARNINGS.world)}`:''}</small></h2>
+  <div class="tf-grid">${TFILES.map(f=>{const list=spotMatches(f),{run,promos,best}=spotStats(list),x=tfEarn(f),last=run[run.length-1];
+    return `<a class="tf-card" href="#file/${tfSlug(f)}"><div class="tf-name">${esc(f.name)}</div><div class="tf-chips">${promos.map(pchip).join('')}</div>
+      <div class="tf-mini"><div><b>${esc(f.record)}</b><span>Record</span></div><div><b>${run.length}</b><span>Matches</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div><div class="tf-cash"><b>${x?tfMoney(x.life):'—'}</b><span>Career $</span></div></div>
+      ${last?`<div class="tf-lastline"><span class="mute">Last:</span> ${fmt(last.e.d)} · ${esc(last.m[1])}</div>`:''}</a>`}).join('')}</div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances. Earnings before that are To establish.</p>`;
+}
+function tfEarnBlock(f){
+  const x=tfEarn(f); if(!x) return `<h3 class="amonth" style="font-size:22px">Earnings</h3><div class="empty">Not on a pay scale yet.</div>`;
+  const by=Object.entries(x.lifeBy||{}).sort((a,b)=>b[1]-a[1]), mx=Math.max(1,...by.map(r=>r[1]));
+  const lines=(x.lines||[]).filter(l=>l.kind!=='due').slice().reverse(), dueL=(x.lines||[]).filter(l=>l.kind==='due');
+  return `<h3 class="amonth" style="font-size:22px">Earnings <small>career since ${esc(EARNINGS.lifeFrom||'July 1991')} · through ${fmt(EARNINGS.world)}</small></h3>
+  <div class="tf-earn">
+    <div class="tf-earn-tot"><b>${tfMoney(x.life)}</b><span>Career earnings</span><div class="mute">${tfMoney(x.earned)} in ${esc(EARNINGS.month)}${x.due>0?` · ${tfMoney(x.due)} in tour fees still to come`:''}</div></div>
+    <div class="tf-earn-by">${by.map(([k,v])=>`<div class="barrow" style="--c:${P[k].c}"><span>${pchip(k)}</span><div class="bar" style="width:${(v/mx*100).toFixed(1)}%"></div><span class="num">${tfMoney(v)}</span></div>`).join('')}</div>
+  </div>
+  ${lines.length?`<details class="bk" style="margin-top:8px"><summary>${esc(EARNINGS.month)} paydays (${lines.length})</summary><div class="tbl-wrap"><table><tbody>${lines.map(l=>`<tr><td style="white-space:nowrap">${l.kind==='salary'?'To '+fmt(l.d):fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}${dueL.map(l=>`<tr class="past"><td style="white-space:nowrap">${fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}</tbody></table></div></details>`:''}`;
+}
+function viewTalentFile(slug){
+  if(!TFILES.length) return `<div class="empty">No Talent File set.</div>`;
+  const f=slug?TFILES.find(x=>tfSlug(x)===slug):null;
+  if(!f) return viewTalentFileIndex();
+  const list=spotMatches(f), {run,promos,best}=spotStats(list);
   const up=list.filter(x=>!x.past);
   const row=(x,fut)=>`<tr class="${fut?'':'past'}"><td style="white-space:nowrap">${fmt(x.e.d)}</td><td>${pchip(x.e.p)}</td><td><b>${esc(x.m[0])}</b><br><span class="mute" style="font-size:13px">${esc([x.e.city,x.e.type].filter(Boolean).join(' · '))}</span></td><td>${fut?(x.m[1]?`<span class="spoil">${esc(x.m[1])}</span>`:'<span class="mute">TBA</span>'):esc(x.m[1])}</td><td class="num">${fut?'':esc(x.m[2]||'')}</td></tr>`;
-  return `<h2 class="sec">Talent File <small>${esc(SPOTLIGHT.name)}</small></h2>
+  const i=TFILES.indexOf(f), prev=TFILES[(i-1+TFILES.length)%TFILES.length], next=TFILES[(i+1)%TFILES.length];
+  return `<h2 class="sec">Talent File <small><a href="#file">All files</a> · ${i+1} of ${TFILES.length}</small></h2>
   <div class="tfile big">
-    <div class="tf-name">${esc(SPOTLIGHT.name)} ${promos.map(pchip).join('')}</div>
-    <div class="tf-stats"><div><b>${run.length}</b><span>Matches</span></div><div><b>${esc(SPOTLIGHT.record)}</b><span>Record</span></div><div><b>${promos.length}</b><span>Promotions</span></div><div><b>${best?esc(best.m[2]):'—'}</b><span>Best</span></div></div>
-    <p class="tf-blurb">${esc(SPOTLIGHT.blurb)}</p>
+    <div class="tf-name">${esc(f.name)} ${promos.map(pchip).join('')}</div>
+    ${tfStats(f,run,promos,best)}
+    <p class="tf-blurb">${esc(f.blurb)}</p>
   </div>
+  ${tfEarnBlock(f)}
   <h3 class="amonth" style="font-size:22px">Results <small>${run.length}</small></h3>
   <div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th>Result</th><th>Rating</th></tr></thead><tbody>${run.map(x=>row(x,0)).join('')}</tbody></table></div>
   ${up.length?`<h3 class="amonth" style="font-size:22px">Booked <small>plan · finishes hidden until they happen</small></h3><div class="tbl-wrap"><table><thead><tr><th>Date</th><th></th><th>Match</th><th>Finish</th><th></th></tr></thead><tbody>${up.map(x=>row(x,1)).join('')}</tbody></table></div>`:''}
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Built from every card on the site. Matches before ${fmt(SPOTLIGHT.since)} are To establish.</p>`;
+  <div class="tf-pager">${TFILES.length>1?`<a href="#file/${tfSlug(prev)}">← ${esc(prev.name)}</a><a href="#file/${tfSlug(next)}">${esc(next.name)} →</a>`:''}</div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Built from every card on the site. Matches before ${fmt(f.since)} are To establish.</p>`;
 }
 function worldNumbers(){
   const mo=WORLD_DATE.slice(0,7);
@@ -1106,7 +1161,7 @@ function route(){
   if(P[key]) html=viewPromo(key,curTab[key]);
   else if(key==='calendar') html=viewCalendar();
   else if(key==='showarchive') html=viewShowArchive();
-  else if(key==='file') html=viewTalentFile();
+  else if(key==='file') html=viewTalentFile(t);
   else if(key==='talent') html=viewTalent();
   else if(key==='arrivals') html=viewArrivals();
   else if(key==='departures') html=viewDepartures();
