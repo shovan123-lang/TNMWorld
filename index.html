@@ -305,6 +305,7 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 .arch a:hover{color:var(--c);text-decoration:underline}
 .aicon-h{display:inline-flex;align-items:center;gap:12px}h2.sec .aicon{display:block;height:44px;width:auto}
 .arch a .sicon{height:24px;width:auto;vertical-align:middle;margin:-2px 8px 0 0}
+.arch a .sicon.own{height:44px;margin:-4px 10px 0 0}
 .ev .evicon{height:24px;width:auto;vertical-align:middle;margin:-3px 8px 0 2px}
 .show header .evicon{height:26px;width:auto;vertical-align:middle;margin:-4px 8px 0 0}
 /* Show Archive tab: each show list is a drop-down (closed by default), one show per line */
@@ -646,7 +647,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/world.js?v=9d0f7af4"></script>
 <script src="data/births.js?v=6c59314b"></script>
 <script src="tools/talent_engine.js?v=9ccfd69c"></script>
-<script src="data/wcw.js?v=f4eb9bc6"></script>
+<script src="data/wcw.js?v=d739426c"></script>
 <script src="data/wwf.js?v=2d6a9926"></script>
 <script src="data/uswa.js?v=ac436ea9"></script>
 <script src="data/pp.js?v=954659ea"></script>
@@ -669,7 +670,7 @@ const siteLink=(k,f,t)=>`<a href="#${k}/page/${f}">${t}</a>`;
 /* TV show logos (SITES.<key>.icons, keyed by show name): the logo for a section, archive label or event whose name starts with that show's name. Tapings and live cards get none. An icon path starting img/ is the hub's own file. */
 const showIcon=(k,name)=>{const S=SITES[k];if(!S||!S.icons||!name||/taping|live card/i.test(name))return '';const n=String(name),key=Object.keys(S.icons).find(x=>n===x||(n.startsWith(x)&&/^[\s,:(\u00b7]/.test(n.slice(x.length))));return key?(/^(img\/|https?:)/.test(S.icons[key])?'':S.base)+S.icons[key]:''};
 /* Show Archive tab: one show list, and the same list split into a drop-down per city (city = the label's part before the first ' · ', newest first inside, cities A to Z) */
-const archList=(k,items,ic)=>`<div class="arch">${items.map(([t,f])=>{const li=ic||showIcon(k,t);return siteLink(k,f,(li?`<img class="sicon" src="${li}" alt="">`:'')+esc(t)+archTV(k,f))}).join('')}</div>`;
+const archList=(k,items,ic)=>`<div class="arch">${items.map(([t,f])=>{const own=showIcon(k,t),li=own||ic;return siteLink(k,f,(li?`<img class="sicon${own?' own':''}" src="${li}" alt="">`:'')+esc(t)+archTV(k,f))}).join('')}</div>`;
 const archCities=(k,items,ic)=>{const m=new Map();items.forEach(([t,f])=>{const x=String(t).indexOf(' · '),c=x>0?t.slice(0,x):t,r=x>0?t.slice(x+3):t;if(!m.has(c))m.set(c,[]);m.get(c).push([r,f])});return [...m].sort((a,b)=>a[0].localeCompare(b[0])).map(([c,its])=>`<details class="arch-dd arch-city"><summary><h3 class="arch-ch"><span>${esc(c)}</span><small>${its.length} show${its.length===1?'':'s'}</small><span class="arch-tog"></span></h3></summary>${archList(k,its,ic)}</details>`).join('')};
 const uswaLink=(f,t)=>siteLink('uswa',f,t);
 const AJPW_BANNER='img/ajpw-banner.webp';
