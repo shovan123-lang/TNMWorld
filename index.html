@@ -127,6 +127,27 @@ tr.big td{font-weight:700}
 .bfill{height:12px;border-radius:0 3px 3px 0}
 .ftip{position:fixed;z-index:50;display:none;pointer-events:none;background:var(--ink);color:var(--paper);font-family:var(--cond);font-size:13px;line-height:1.35;padding:6px 9px;max-width:300px;box-shadow:3px 3px 0 rgba(0,0,0,.25)}
 @media (max-width:760px){.fcharts,.bgrid{grid-template-columns:1fr}}
+/* TV ratings: the Ratings tab chart (drawn at the box's own width, so the text stays readable on a phone) */
+.rchart{position:relative;margin:14px 0 0;border:2px solid var(--ink);background:var(--paper);padding:10px 12px 6px}
+.rchart:focus{outline:2px solid var(--c,var(--ink));outline-offset:2px}
+.rchart figcaption{font-family:var(--cond);font-size:15px;margin-bottom:6px}
+.rchart svg{display:block;width:100%;height:auto;touch-action:pan-y;user-select:none}
+.rchart .ax{font-family:var(--cond);font-size:12px;fill:var(--mute)}
+.rchart .axt{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;fill:var(--mute)}
+.rchart .vl{font-family:var(--cond);font-size:13px;font-weight:700;fill:var(--ink)}
+.rlegend{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-wrap:wrap;gap:4px 18px;font-family:var(--cond);font-size:14px}
+.rlegend li{display:flex;align-items:center;gap:6px}
+.rlegend i{display:inline-block;width:18px;border-top:3px solid var(--k);border-radius:2px}
+.rlegend b{font-variant-numeric:tabular-nums}
+.rtip{position:absolute;z-index:5;display:none;pointer-events:none;background:var(--ink);color:var(--paper);font-family:var(--cond);font-size:13px;line-height:1.4;padding:6px 9px;min-width:170px;max-width:260px;box-shadow:3px 3px 0 rgba(0,0,0,.25)}
+.rtip .h{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:#b9b1a2;margin-bottom:2px}
+.rtip div{display:flex;align-items:center;gap:6px;white-space:nowrap}.rtip i{display:inline-block;width:12px;border-top:3px solid var(--k);border-radius:2px}
+.rtip b{font-size:15px;font-variant-numeric:tabular-nums;min-width:34px}
+.rwhy{color:var(--mute);font-size:13px}
+.rhow{margin:18px 0 0;border-top:1px solid var(--soft);padding-top:8px;font-family:var(--cond);font-size:14px}
+.rhow summary{cursor:pointer;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px}
+.rhow p,.rhow ul{margin:8px 0}
+.tvr{font-weight:700;color:var(--ink);text-decoration:none}a.tvr:hover{text-decoration:underline}
 .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .stars{white-space:nowrap;font-weight:700}
 
@@ -487,6 +508,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/history.js?v=5a0f148c"></script>
 <script src="data/earnings.js?v=526b9369"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
+<script src="data/ratings.js?v=f1d59338"></script>
 <script>
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -495,7 +517,7 @@ const siteLink=(k,f,t)=>`<a href="${SITES[k].base}${f}.HTM" target="_blank" rel=
 /* TV show logos (SITES.<key>.icons, keyed by show name): the logo for a section, archive label or event whose name starts with that show's name. Tapings and live cards get none. An icon path starting img/ is the hub's own file. */
 const showIcon=(k,name)=>{const S=SITES[k];if(!S||!S.icons||!name||/taping|live card/i.test(name))return '';const n=String(name),key=Object.keys(S.icons).find(x=>n===x||(n.startsWith(x)&&/^[\s,:(\u00b7]/.test(n.slice(x.length))));return key?(/^(img\/|https?:)/.test(S.icons[key])?'':S.base)+S.icons[key]:''};
 /* Show Archive tab: one show list, and the same list split into a drop-down per city (city = the label's part before the first ' · ', newest first inside, cities A to Z) */
-const archList=(k,items,ic)=>`<div class="arch">${items.map(([t,f])=>{const li=ic||showIcon(k,t);return siteLink(k,f,(li?`<img class="sicon" src="${li}" alt="">`:'')+esc(t))}).join('')}</div>`;
+const archList=(k,items,ic)=>`<div class="arch">${items.map(([t,f])=>{const li=ic||showIcon(k,t);return siteLink(k,f,(li?`<img class="sicon" src="${li}" alt="">`:'')+esc(t)+archTV(k,f))}).join('')}</div>`;
 const archCities=(k,items,ic)=>{const m=new Map();items.forEach(([t,f])=>{const x=String(t).indexOf(' · '),c=x>0?t.slice(0,x):t,r=x>0?t.slice(x+3):t;if(!m.has(c))m.set(c,[]);m.get(c).push([r,f])});return [...m].sort((a,b)=>a[0].localeCompare(b[0])).map(([c,its])=>`<details class="arch-dd arch-city"><summary><h3 class="arch-ch"><span>${esc(c)}</span><small>${its.length} show${its.length===1?'':'s'}</small><span class="arch-tog"></span></h3></summary>${archList(k,its,ic)}</details>`).join('')};
 const uswaLink=(f,t)=>siteLink('uswa',f,t);
 const AJPW_BANNER='img/ajpw-banner.webp';
@@ -561,8 +583,8 @@ let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e
 const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
-const TAB_LABEL={overview:'Overview',stories:'Stories',file:'Talent File',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas'};
-function promoTabs(k){const t=['overview','file','roster','schedule','stories'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');if(typeof APUESTAS!=='undefined'&&APUESTAS[k])t.push('apuestas');Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)t.push(sr)});return t;}
+const TAB_LABEL={overview:'Overview',stories:'Stories',file:'Talent File',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas',ratings:'Ratings'};
+function promoTabs(k){const t=['overview','file','roster','schedule','stories'];if(SITES[k])t.push('archive');if(typeof CONTRACTS!=='undefined'&&CONTRACTS[k])t.push('contracts');if(hasRatings(k))t.push('ratings');if(typeof FINANCE!=='undefined'&&FINANCE[k])t.push('finance');if(typeof APUESTAS!=='undefined'&&APUESTAS[k])t.push('apuestas');Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)t.push(sr)});return t;}
 function latestArticle(k){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||''))[0];}
 function renderNav(cur,curT){
   const promo=k=>{const p=P[k],la=latestArticle(k);
@@ -597,7 +619,7 @@ function showCard(e,opts={}){
   }).join('');
   return `<article class="show" style="--c:${P[e.p].c}">
     <header><div>${opts.chip?chip(e.p)+' ':''}${showIcon(e.p,e.type)?`<img class="evicon" src="${showIcon(e.p,e.type)}" alt="">`:''}<b>${esc(e.type)}</b>${e.plan?'<span class="flag plan">plan</span>':''}</div>
-    <span>${fmt(e.d)} · ${esc([e.city,e.venue].filter(Boolean).join(', '))}${e.gate?' · '+esc(e.gate):''}${e.rate&&past?' · Card '+esc(e.rate):''} · <b style="font-family:var(--cond);font-size:13px;color:${past?'var(--mute)':'var(--red)'}">${label}</b></span></header>
+    <span>${fmt(e.d)} · ${esc([e.city,e.venue].filter(Boolean).join(', '))}${e.gate?' · '+esc(e.gate):''}${e.rate&&past?' · Card '+esc(e.rate):''}${past&&tvLabel(e)?' · '+tvLabel(e):''} · <b style="font-family:var(--cond);font-size:13px;color:${past?'var(--mute)':'var(--red)'}">${label}</b></span></header>
     ${rows?`<div class="tbl-wrap"><table><thead><tr><th>Match</th><th>${past?'Result':'Finish'}</th>${opts.ratings!==false?'<th>Rating</th>':''}</tr></thead><tbody>${rows}</tbody></table></div>`:''}
     ${e.taped?`<div class="notes"><b>${esc(e.taped)}</b></div>`:''}
     ${e.n?`<div class="notes"><ul>${e.n.map(x=>`<li>${past?esc(x):`<span class="spoil">${esc(x)}</span>`}</li>`).join('')}</ul></div>`:''}
@@ -1047,6 +1069,17 @@ function viewTalentFile(slug){
   <div class="tf-pager"><a href="#file/${prev.slug}">← ${esc(prev.name)}</a><a href="#file" class="tf-home">Talent File home</a><a href="#file/${next.slug}">${esc(next.name)} →</a></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Built from every card on the site and from show archive pages the cards don't carry (USWA back to September 1990); tag matches count for every member. Older matches elsewhere are To establish.</p>`;
 }
+/* By the numbers: the top-rated national TV show of the latest rated week, and the latest PPV buys. */
+function frontTV(){
+  const T=tvr(); let out='';
+  const nat=T.eps.filter(x=>x.show.unit==='nielsen'), pool=nat.length?nat:T.eps;
+  if(pool.length){const wk=pool[pool.length-1].week, top=pool.filter(x=>x.week===wk).sort((a,b)=>b.v-a.v)[0];
+    out+=`<li><span class="d">Top TV</span>${pchip(top.show.p)} <a href="#${top.show.p}/ratings">${esc(top.show.name)}</a> <b class="num">${tvNum(top.show,top.v)}</b> <span class="mute">· ${top.show.unit==='nielsen'?'Nielsen, ':''}${esc(fmtWeek(wk).replace(/, \d{4}$/,'').replace('Week of','week of'))}</span></li>`;}
+  const bought=T.ppvs.filter(x=>x.buys!=null);
+  if(bought.length){const d=bought[0].d, latest=bought.filter(x=>x.d===d);
+    out+=`<li><span class="d">PPV buys</span>${latest.map(x=>`${pchip(x.p)} <a href="#${x.p}/ratings">${esc(x.name)}</a> <b class="num">${x.buys.toLocaleString('en-US')}</b>`).join(' <span class="mute">·</span> ')} <span class="mute">· ${fmt(d)}</span></li>`;}
+  return out;
+}
 function worldNumbers(){
   const mo=WORLD_DATE.slice(0,7);
   const shows=E.filter(e=>e.d.startsWith(mo)&&isPast(e.d)&&pastE(e));
@@ -1065,6 +1098,7 @@ function worldNumbers(){
     ${worst?`<li><span class="d">Worst</span>${pchip(worst[2].p)} ${esc(worst[1][0])} <b class="num">${esc(worst[1][2])}</b> <span class="mute">· ${fmt(worst[2].d)}</span></li>`:''}
     ${big?`<li><span class="d">Top gate</span>${pchip(big.p)} ${esc(big.type)} <span class="mute">· ${esc(big.gate)}</span></li>`:''}
     ${busy?`<li><span class="d">Busiest</span>${pchip(busy[0])} ${busy[1]} shows</li>`:''}
+    ${frontTV()}
   </ul>
   <p style="font-family:var(--cond);font-size:13px;margin:6px 0 0"><a href="#showarchive">Show archive →</a></p>
   ${(()=>{const ahead=E.filter(e=>e.big&&!isPast(e.d)&&!pastE(e)).sort((a,b)=>a.d.localeCompare(b.d)).slice(0,5);return ahead.length?`<h2 class="sec">Big shows ahead <small>plan</small></h2><ul class="tf-last">${ahead.map(e=>{const ms=(e.m||[]).filter(m=>!/^(Promo|Interview|Segment|Angle|Closing)/i.test(m[0]));const main=ms.find(m=>/^Main/i.test(m[0]))||ms.find(m=>/Title|Triple Crown|IWGP|Championship/i.test(m[0]))||ms.slice(-1)[0];return `<li><span class="d">${fmt(e.d)}</span>${pchip(e.p)} <b>${esc(e.type)}</b> <span class="mute">· ${esc(e.city||'')}</span>${main?`<br><span style="padding-left:78px;display:inline-block" class="mute">${esc(main[0])}</span>`:''}</li>`}).join('')}</ul>`:''})()}`;
@@ -1312,6 +1346,111 @@ function finCharts(k,S){
   if(!t){tip.style.display='none';return;}
   tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';
   const w=tip.offsetWidth;tip.style.left=Math.min(e.clientX+14,innerWidth-w-8)+'px';tip.style.top=(e.clientY+14)+'px';});})();
+/* ---- TV ratings and PPV buys (the model and the shows rated are in data/ratings.js) ---- */
+let _tvr=null;
+const tvr=()=>_tvr||(_tvr=typeof tvRatings==='function'?tvRatings({P,E,CONTRACTS,FINANCE,TEAMS,WORLD_DATE}):{eps:[],byShow:{},unrated:[],ppvs:[],byCard:new Map()});
+const TV_COLORS=['#1f6fd1','#d4561a','#008f73','#a87500'];   /* fixed per show, in RATINGS.shows order; checked for colour-blind separation on the paper */
+const tvShows=k=>typeof RATINGS==='undefined'?[]:RATINGS.shows.filter(s=>s.p===k);
+const tvColor=s=>TV_COLORS[tvShows(s.p).indexOf(s)%TV_COLORS.length];
+const tvUnit=s=>RATINGS.units[s.unit]||{label:'Rating',long:'',pct:0};
+const tvNum=(s,v)=>v.toFixed(1)+(tvUnit(s).pct?'%':'');
+function hasRatings(k){return tvShows(k).length>0||tvr().ppvs.some(x=>x.p===k);}
+/* The rating or PPV buys of one card, for the Show Archive and the result cards. */
+function tvLabel(e,long){const x=tvr().byCard.get(e);if(!x)return '';
+  if(x.show)return `<a class="tvr" href="#${e.p}/ratings" title="${esc(x.show.name)}: ${esc(tvUnit(x.show).long)}">TV rating ${tvNum(x.show,x.v)}</a>`;
+  return `<a class="tvr" href="#${e.p}/ratings">${x.buys!=null?x.buys.toLocaleString('en-US')+' PPV buys':'PPV buys not yet reported'}</a>`;}
+/* Archive links on the Show Archive tab: the rating of the episode that page is for. */
+function archTV(k,f){const x=[...tvr().byCard.values()].find(x=>x.show&&x.e.p===k&&x.e.link===f);return x?` <span class="mute" style="font-size:12px">· TV ${tvNum(x.show,x.v)}</span>`:'';}
+function tvWhy(x){
+  const out=[];
+  out.push(x.qFrom==='card'?`Card ${x.qText}`:x.qFrom==='best match'?`Best match ${x.qText}`:'No match rated');
+  if(x.who.length)out.push(x.who.slice(0,3).join(', ')+(x.who.length>3?` +${x.who.length-3} more`:''));
+  if(x.titles)out.push(x.titles===1?'Title match':x.titles+' title matches');
+  if(x.hype)out.push(x.hype.charAt(0).toUpperCase()+x.hype.slice(1));
+  if(x.crowd!=null&&(x.crowd>=RATINGS.weights.crowdBig||x.crowd<RATINGS.weights.crowdSmall))out.push((x.crowd>=RATINGS.weights.crowdBig?'Big crowd':'Small crowd')+` (${x.crowd.toLocaleString('en-US')})`);
+  if(x.fixed)out.push('Set by hand');
+  return out.join(' · ');
+}
+function viewRatings(k){
+  const T=tvr(), shows=tvShows(k), eps=T.eps.filter(x=>x.show.p===k), un=T.unrated.filter(x=>x.show.p===k), ppv=T.ppvs.filter(x=>x.p===k);
+  const U=shows.length?tvUnit(shows[0]):null;
+  const legend=shows.map(s=>{const l=T.byShow[s.id].slice(-1)[0];return `<li style="--k:${tvColor(s)}"><i></i>${esc(s.name)} ${l?`<b>${tvNum(s,l.v)}</b> <span class="mute">${esc(fmt(l.d))}</span>`:'<span class="mute">not rated yet</span>'}</li>`}).join('');
+  const rows=eps.slice().reverse().map(x=>{const ch=x.prev==null?'':(x.v-x.prev);return `<tr><td style="white-space:nowrap">${fmt(x.d)}</td><td><span style="display:inline-block;width:12px;border-top:3px solid ${tvColor(x.show)};border-radius:2px;vertical-align:4px;margin-right:6px"></span>${esc(x.show.name)}${x.e.link&&SITES[k]?` <span class="rwhy">${siteLink(k,x.e.link,'show ↗')}</span>`:''}</td><td class="num"><b>${tvNum(x.show,x.v)}</b></td><td class="num">${ch===''?'<span class="mute">first</span>':ch===0?'<span class="mute">same</span>':(ch>0?'+':'−')+Math.abs(ch).toFixed(1)}</td><td class="rwhy">${esc(tvWhy(x))}</td></tr>`}).join('');
+  const money=v=>'$'+Math.round(v).toLocaleString('en-US');
+  const W=RATINGS.weights, pc=v=>Math.round(v*100)+'%';
+  return `${shows.length?`<h2 class="sec">TV Ratings <small>Week by week · ${esc(U.label)}</small></h2>
+  <figure class="rchart" id="rchart" data-k="${k}" tabindex="0" style="--c:${P[k].c}" aria-label="${esc(P[k].short)} TV ratings by week. Every number is also in the table below.">
+    <figcaption><ul class="rlegend">${legend}</ul></figcaption>
+    <div id="rchart-svg"></div><div class="rtip" id="rtip"></div>
+  </figure>
+  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 0">${esc(U.long)}. Worked out from each show's card (card rating, headliners, title matches, go-home hype and the crowd), with part of last week's number carried over. <a href="#rhow" onclick="document.getElementById('rhow').open=true">How the ratings work ↓</a></p>
+  <h3 class="amonth">Every episode <small>${eps.length} rated</small></h3>
+  ${eps.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th><th class="num">Rating</th><th class="num">Change</th><th>What moved it</th></tr></thead><tbody>${rows}</tbody></table></div>`:'<div class="empty">No episodes rated yet.</div>'}
+  ${un.length?`<h3 class="amonth">Not rated yet <small>${un.length}</small></h3><ul class="tf-last">${un.map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${esc(x.show.name)} <span class="mute">· ${x.e.d===WORLD_DATE?'airs today; rated once its results are logged':'aired, but no results are logged yet'}</span></li>`).join('')}</ul>`:''}`:''}
+  <h2 class="sec">PPV Buys <small>From the Finance tab</small></h2>
+  ${ppv.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Event</th><th class="num">Buys</th><th class="num">To ${esc(P[k].short)}</th></tr></thead><tbody>${ppv.map(x=>`<tr><td style="white-space:nowrap">${fmt(x.d)}</td><td>${esc(x.name)}</td><td class="num">${x.buys!=null?`<b>${x.buys.toLocaleString('en-US')}</b>`:'<span class="mute">Not yet reported</span>'}</td><td class="num">${x.take!=null?money(x.take):'—'}</td></tr>`).join('')}</tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 0">Buys as logged on the <a href="#${k}/finance">Finance tab</a>; nothing here is estimated.</p>`:`<div class="empty">No ${esc(P[k].short)} pay-per-views have run yet.</div>`}
+  ${shows.length?`<details class="rhow" id="rhow"><summary>How the ratings work</summary>
+    <p>Each show starts from its time slot's usual number and moves from there, using what the card holds:</p>
+    <ul><li><b>Card:</b> ${pc(W.card)} for every star the card rating is above **1/2, less below it. With no card rating it uses the best match; with nothing rated it counts as **.</li>
+    <li><b>Headliners:</b> ${pc(W.stars)} for every headliner past the first, from the ${esc(P[k].short)} pay scale (tier A counts one, tier B half, up to ${W.starsCap}).</li>
+    <li><b>Title matches:</b> ${pc(W.titles)} each, up to ${W.titlesCap}.</li>
+    <li><b>Hype:</b> ${pc(W.hype)} for a go-home show (a PPV within ${W.hypeDays} days) or a special.</li>
+    <li><b>Crowd:</b> ${pc(W.crowd)} for ${W.crowdBig.toLocaleString('en-US')} or more on camera, less for under ${W.crowdSmall.toLocaleString('en-US')}.</li>
+    <li><b>Carryover:</b> ratings are sticky, so the final number is ${pc(1-W.carry)} this week's and ${pc(W.carry)} the show's last rated episode, kept inside the slot's range.</li></ul>
+    <div class="tbl-wrap"><table><thead><tr><th>Show</th><th>Slot</th><th class="num">Usual</th><th class="num">Range</th></tr></thead><tbody>${shows.map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.outlet)}</td><td class="num">${tvNum(s,s.base)}</td><td class="num">${tvNum(s,s.min)} to ${tvNum(s,s.max)}</td></tr>`).join('')}</tbody></table></div>
+    <p class="mute">Starting points are 1991-style estimates, not real Nielsen or Video Research figures. Japanese shows are charted on the tour night taped for TV. New episodes are rated as soon as their results are logged.</p>
+  </details>`:''}`;
+}
+/* The weekly chart: one line per show, weeks Monday to Sunday along the bottom. Drawn at the box's width; redrawn on resize. */
+function drawRatings(k){
+  const box=$('#rchart-svg'), fig=$('#rchart'), tip=$('#rtip'); if(!box) return;
+  const T=tvr(), shows=tvShows(k), eps=T.eps.filter(x=>x.show.p===k);
+  if(!eps.length){box.innerHTML='<div class="empty">No episodes rated yet.</div>';return;}
+  const s0=shows[0], DAY=864e5, w0=dt(weekStart(eps[0].d)), wN=dt(weekStart(eps[eps.length-1].d)), nW=Math.round((wN-w0)/DAY/7)+1;
+  const Wd=Math.max(280,Math.round(box.clientWidth||600)), small=Wd<520, H=small?250:300;
+  const L=small?34:40, R=small?26:34, Tp=24, B=44, iw=Wd-L-R, ih=H-Tp-B;
+  const x=d=>L+((dt(d)-w0)/DAY+0.5)/(nW*7)*iw;
+  const maxV=Math.max(...eps.map(e=>e.v)), stepOpts=[0.5,1,2,2.5,5,10], step=stepOpts.find(st=>Math.ceil(maxV*1.12/st)<=5)||10, top=Math.ceil(maxV*1.12/step)*step;
+  const y=v=>Tp+(1-v/top)*ih, ticks=[];for(let v=0;v<=top+1e-9;v+=step)ticks.push(v);
+  const lab=v=>(step<1?v.toFixed(1):String(v))+(tvUnit(s0).pct?'%':'');
+  const every=Math.max(1,Math.ceil(nW*46/iw));
+  let svg=`<svg viewBox="0 0 ${Wd} ${H}" width="${Wd}" height="${H}" aria-hidden="true">`;
+  svg+=`<text x="${L}" y="12" class="axt">${esc(tvUnit(s0).label)}</text>`;
+  svg+=`<rect id="rband" x="0" y="${Tp}" width="0" height="${ih}" fill="rgba(27,26,23,.07)"/>`;
+  ticks.forEach(v=>{svg+=`<line x1="${L}" x2="${Wd-R}" y1="${y(v)}" y2="${y(v)}" stroke="${v?'var(--soft)':'var(--ink)'}" stroke-width="1"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" class="ax">${lab(v)}</text>`;});
+  for(let i=0;i<=nW;i++){const xx=L+i/nW*iw;svg+=`<line x1="${xx}" x2="${xx}" y1="${Tp}" y2="${Tp+ih}" stroke="var(--soft)" stroke-width="1" opacity=".6"/>`;
+    if(i<nW&&i%every===0){const d=new Date(w0.getTime()+i*7*DAY);svg+=`<text x="${L+(i+0.5)/nW*iw}" y="${Tp+ih+16}" text-anchor="middle" class="ax">${MON[d.getUTCMonth()]} ${d.getUTCDate()}</text>`;}}
+  svg+=`<text x="${L+iw/2}" y="${H-6}" text-anchor="middle" class="axt">Week of (Monday to Sunday)</text>`;
+  const ends=[];
+  shows.forEach(s=>{const pts=T.byShow[s.id];if(!pts.length)return;const c=tvColor(s);
+    if(pts.length>1)svg+=`<path d="${pts.map((p,i)=>(i?'L':'M')+x(p.d).toFixed(1)+','+y(p.v).toFixed(1)).join('')}" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    pts.forEach(p=>{svg+=`<circle cx="${x(p.d).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="4.5" fill="${c}" stroke="var(--paper)" stroke-width="2"/>`;});
+    const l=pts[pts.length-1];ends.push([x(l.d),y(l.v),tvNum(s,l.v)]);});
+  // value at each line's end, skipped where it would sit on top of another
+  const placed=[];ends.sort((a,b)=>a[1]-b[1]).forEach(([ex,ey,t])=>{const tx=Math.min(ex+7,Wd-2-t.length*7),ty=ey-7;if(placed.some(([px,py])=>Math.abs(px-tx)<34&&Math.abs(py-ty)<14))return;placed.push([tx,ty]);svg+=`<text x="${tx}" y="${ty}" class="vl">${t}</text>`;});
+  svg+=`<rect id="rhit" x="${L}" y="${Tp}" width="${iw}" height="${ih}" fill="transparent"/></svg>`;
+  box.innerHTML=svg;
+  const band=box.querySelector('#rband'), hit=box.querySelector('#rhit');
+  let cur=-1;
+  const show=(i,py)=>{if(i<0||i>=nW){band.setAttribute('width',0);tip.style.display='none';cur=-1;return;}
+    cur=i;const ws=isoD(new Date(w0.getTime()+i*7*DAY)), list=eps.filter(e=>e.week===ws);
+    band.setAttribute('x',L+i/nW*iw);band.setAttribute('width',iw/nW);
+    tip.innerHTML='';const h=document.createElement('div');h.className='h';h.textContent=fmtWeek(ws);tip.appendChild(h);
+    if(!list.length){const r=document.createElement('div');r.textContent='No rated episodes';tip.appendChild(r);}
+    list.forEach(e=>{const r=document.createElement('div');r.style.setProperty('--k',tvColor(e.show));const ic=document.createElement('i'),b=document.createElement('b'),n=document.createElement('span');b.textContent=tvNum(e.show,e.v);n.textContent=e.show.short+' · '+fmt(e.d);r.append(ic,b,n);tip.appendChild(r);});
+    tip.style.display='block';const sc=box.clientWidth/Wd,tw=tip.offsetWidth,th=tip.offsetHeight,cx=(L+(i+0.5)/nW*iw)*sc,band2=iw/nW*sc/2;
+    let left=cx+band2+8;if(left+tw>box.clientWidth)left=cx-band2-8-tw;left=Math.max(0,left);
+    const top=Math.max(0,Math.min(H*sc-th,(py!=null?py:Tp*sc)-th/2));
+    tip.style.left=(box.offsetLeft+left)+'px';tip.style.top=(box.offsetTop+top)+'px';};
+  const at=ev=>{const r=box.getBoundingClientRect(),sx=(ev.clientX-r.left)*(Wd/r.width);return [Math.floor((sx-L)/iw*nW),ev.clientY-r.top];};
+  hit.addEventListener('pointermove',ev=>{const [i,py]=at(ev);show(i,py);});
+  hit.addEventListener('pointerdown',ev=>{const [i,py]=at(ev);show(i,py);});
+  hit.addEventListener('pointerleave',ev=>{if(ev.pointerType==='mouse')show(-1);});
+  fig.onkeydown=ev=>{if(ev.key==='ArrowRight'||ev.key==='ArrowLeft'){ev.preventDefault();show(Math.max(0,Math.min(nW-1,(cur<0?nW-1:cur+(ev.key==='ArrowRight'?1:-1)))));}else if(ev.key==='Escape')show(-1);};
+  fig.onblur=()=>show(-1);
+}
+let _rResize;window.addEventListener('resize',()=>{clearTimeout(_rResize);_rResize=setTimeout(()=>{const f=$('#rchart');if(f)drawRatings(f.dataset.k);},150);});
 function viewFinance(k){
   const S=finSum(k); if(!S) return `<div class="empty" style="margin-top:20px">No finance records yet.</div>`;
   const f=S.f, rows=S.rows;
@@ -1526,6 +1665,7 @@ function viewPromo(k,tab){
   const tabs=[['overview','Overview'],['file','Talent File'],['roster','Roster'],['schedule','Schedule'],['stories','Stories']];
   if(SITES[k]) tabs.push(['archive',k==='uswa'?'TV Archive':'Show Archive']);
   if(CONTRACTS[k]) tabs.push(['contracts','Contracts']);
+  if(hasRatings(k)) tabs.push(['ratings','Ratings']);
   if(FINANCE[k]) tabs.push(['finance','Finance']);
   if(typeof APUESTAS!=='undefined'&&APUESTAS[k]) tabs.push(['apuestas','Apuestas']);
   Object.keys(SERIES).forEach(sr=>{if(sr==='observer'||seriesOf(k,sr).length)tabs.push([sr,SERIES[sr].label])});
@@ -1555,6 +1695,8 @@ function viewPromo(k,tab){
     ${S.arch.map(([g,items])=>{const ic=showIcon(k,g);return `<details class="arch-dd"><summary><h2 class="sec">${ic?`<span class="aicon-h"><img class="aicon" src="${ic}" alt="">${g}</span>`:`<span>${g}</span>`}<small>${items.length} show${items.length===1?'':'s'}</small><span class="arch-tog"></span></h2></summary>${!items.length?'<div class="empty">Nothing archived here yet.</div>':(S.byCity||[]).includes(g)?archCities(k,items,ic):archList(k,items,ic)}</details>`;}).join('')}`;
   } else if(tab==='contracts'){
     body=viewContracts(k);
+  } else if(tab==='ratings'){
+    body=viewRatings(k);
   } else if(tab==='finance'){
     body=viewFinance(k);
   } else if(tab==='apuestas'){
@@ -1599,7 +1741,7 @@ function viewCalendar(){
 function showRow(e,withDate,withIcon){
   const best=e=>(e.m||[]).filter(x=>x[2]).map(x=>[x,starVal(x[2])]).filter(x=>x[1]!==null).sort((a,b)=>b[1]-a[1])[0];
   return (()=>{const b=best(e);return `<div class="ev ${e.big?'big':''}">${withDate?`<span class="lwd">${fmt(e.d)}</span>`:''}${chip(e.p)}${withIcon&&showIcon(e.p,e.type)?`<img class="evicon" src="${showIcon(e.p,e.type)}" alt="">`:''}<b>${esc(e.type)}</b> <span class="mute">· ${esc([e.city,e.venue].filter(Boolean).join(', '))}</span>${e.rate?` <span class="num arate">${esc(e.rate)}</span>`:''}
-    <div class="adet">${e.gate?`<span>${esc(e.gate)}</span>`:''}${b?`<span>Best: ${esc(b[0][0])} ${esc(b[0][2])}</span>`:''}${(e.reads||[]).filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])}</a>`).join('')}${e.link&&SITES[e.p]?siteLink(e.p,e.link,'Full show ↗'):''}</div></div>`})();
+    <div class="adet">${e.gate?`<span>${esc(e.gate)}</span>`:''}${tvLabel(e)?`<span>${tvLabel(e)}</span>`:''}${b?`<span>Best: ${esc(b[0][0])} ${esc(b[0][2])}</span>`:''}${(e.reads||[]).filter(r=>ARTICLES[r[1]]).map(r=>`<a href="#${r[1]}">${esc(r[0])}</a>`).join('')}${e.link&&SITES[e.p]?siteLink(e.p,e.link,'Full show ↗'):''}</div></div>`})();
 }
 /* Shows grouped by month, then by day, newest first (the Show Archive format). */
 function archiveMonths(shows){
@@ -1738,6 +1880,7 @@ function bind(key){
   if(key==='file') bindTalentFile();
   if(P[key]&&curTab[key]==='file') bindPromoTalent(key);
   if(P[key]&&(curTab[key]||'overview')==='overview') bindMiniTalent(key);
+  if(P[key]&&curTab[key]==='ratings') drawRatings(key);
   const as=$('#asearch'); if(as) as.oninput=()=>{const q=as.value.toLowerCase();document.querySelectorAll('#atbl tbody tr,#acareer tbody tr').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')};
   const s=$('#rsearch'); if(s) s.oninput=()=>{const q=s.value.toLowerCase();document.querySelectorAll('.rgrid>div').forEach(d=>d.style.display=d.dataset.n.includes(q)?'':'none')};
 }

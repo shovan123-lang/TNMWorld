@@ -22,6 +22,7 @@ Live site: https://shovan123-lang.github.io/TNMWorld/
 - Articles go in the promotion's `ARTICLES` block: Observer reports use `series: "observer"`, From the Road diaries use `series: "diary"`, news items use `news: 1`. Body text is a list of `["p", text]` and `["h", heading]` pairs.
 - Gates and merchandise go in `FINANCE.<key>.rows` (`gate`, `merch`, `payroll`; use `null` when a number isn't known yet).
 - After a show runs, the after-show checklist covers logging results, the write-ups and pushing the site.
+- TV ratings update on their own from logged results; PPV buys need logging in Finance (see TV ratings and PPV buys below).
 
 ## Moving the world clock
 
@@ -42,6 +43,16 @@ Rebuild it **every time the world clock moves** (Sean, 2026-11-11), and after lo
 - The gate comes from the promotion's Finance row for that date, or the card's own gate in `E`. A card with champions but no gate pays nothing yet and is listed on the Talent Earnings page.
 - Who worked the card comes from `SHOWS` (per-show promotions) or the card's results (WWF, WCW, AJPW, NJPW). Seconds ("w/") don't count; live segments do.
 - Settings are at the end of `shows.py`: `POOL` (the percentage, and `guests`, which would also pay other promotions' champions who work a card; off), `POOL_TEAMS` (tag team → members), `POOL_NAMES`, `POOL_SEEN` (how a champion's name appears in results) and `POOL_FIX` (add or drop a champion on one card, with the reason). A new tag-team champion needs a `POOL_TEAMS` line, and a champion the results call by another name needs a `POOL_SEEN` line; the build prints a "pool check" line when the title ledger and a promotion's champions list disagree.
+
+## TV ratings and PPV buys
+
+Each rated promotion has a **Ratings** tab (WWF, WCW, USWA, NJPW, AJPW): a weekly chart with a line per show, every episode with what moved its number, and the PPV buys. The front page's "By the numbers" shows the week's top Nielsen show and the latest PPV buys, and the Show Archive and each card show their rating or buys.
+
+- **TV ratings are worked out from the shows**, not typed in. `data/ratings.js` holds the model and lists the rated shows (`RATINGS.shows`: Superstars, Challenge, Prime Time, All American, WCW Saturday Night, WCW Pro, USWA Championship TV, USWA Worldwide, and the Japanese tour nights taped for TV). Each show has a base number for its slot; an episode moves off that base with its card quality (match stars), how many headliners appear (tier A and B in `CONTRACTS`), title matches, a PPV within the week, and a big or small crowd, then 40% carries over from the show's last episode. The Ratings tab's "How the ratings work" box lists the weights.
+- An episode is rated once its card has run (on or before `asOf`, and before `WORLD_DATE`) and has results. Log each TV airing as its own card on its air date with a type that names the show (for example "Superstars of Wrestling, Episode 2 (syndication)"); a card whose type says "taping" is the taping, not the airing, and isn't rated; a Japanese tour night is rated when its type names the TV network or says "TV taping". A show that matches nothing simply isn't rated.
+- To set a real number instead, add it to `RATINGS.fixed` as `"<promotion> <YYYY-MM-DD> <show id>": 3.4`. The line carries on from it.
+- **PPV buys are never invented.** A PPV card (type with "(PPV)" or "pay-per-view") shows buys only when they're logged: in `FINANCE.<key>.other` as a "Pay-per-view share" line with `buys:` or "N buys" in its note, or "N buys" in the Finance row's note. Otherwise it says "not yet reported".
+- `node tools/ratings.js [wwf wcw ...] [--why]` prints every rated episode, what moved it, what wasn't rated and the PPV buys. Run it after logging a show to check the numbers.
 
 ## Title histories
 
