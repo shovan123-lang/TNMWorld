@@ -594,7 +594,7 @@ function showCard(e,opts={}){
     ${e.link?`<div class="notes" style="font-family:var(--cond)">${siteLink(e.p,e.link,'Full show on the '+P[e.p].short+' site ↗')}</div>`:''}
   </article>`;
 }
-function belt(k,t){return `<div class="belt" style="--c:${P[k].c}">${/^fmw titles$/i.test(t[0])?'':beltSVG(k,t[0],'corner')}<div class="t">${esc(t[0])}</div><div class="h">${esc(t[1])}</div>${t[2]?`<div class="n">${esc(t[2])}</div>`:''}</div>`}
+function belt(k,t,raw){return `<div class="belt" style="--c:${P[k].c}">${/^fmw titles$/i.test(t[0])?'':beltSVG(k,raw||t[0],'corner')}<div class="t">${esc(t[0])}</div><div class="h">${esc(t[1])}</div>${t[2]?`<div class="n">${esc(t[2])}</div>`:''}</div>`}
 
 /* =========================== VIEWS =========================== */
 /* ---- Front page bottom row: Card of the Week + Storylines to Watch ---- */
@@ -879,8 +879,9 @@ function beltRibbonText(k,t){
   if(/^wwf$/i.test(x)||!x) x='World Heavyweight';
   if(/^(unified world|world heavyweight|world)$/i.test(x)) x=/unified/i.test(x)?'Unified World':'World Heavyweight';
   return x.toUpperCase();}
+const beltPhoto=(k,t)=>BELT_IMG.find(b=>b.k===k&&b.match.test(String(t).trim()));
 function beltSVG(k,t,cls){
-  const photo=BELT_IMG.find(b=>b.k===k&&b.match.test(String(t).trim()));
+  const photo=beltPhoto(k,t);
   if(photo) return `<img class="beltsvg beltimg ${cls||''}" src="${photo.src}" alt="${esc((P[k]?P[k].short+' ':'')+t)} belt" loading="lazy">`;
   const u='b'+(++BELT_UID), kind=beltKind(t), c=`var(--${k})`, c2=`var(--${k}-2,#d4a62a)`;
   const silver=kind==='junior', M=silver?`url(#${u}s)`:`url(#${u}g)`, MD=silver?'#6c7379':'#7a4f0e', ML=silver?'#ffffff':'#fff3c8';
@@ -1085,7 +1086,7 @@ function viewHome(){
 
   <hr class="fold">
   <h2 class="sec">Championship Board <small>Top title in every promotion</small></h2>
-  <div class="belts">${ORDER.map(k=>belt(k,[P[k].short+' · '+P[k].titles[0][0],P[k].titles[0][1],P[k].titles[0][2]])).join('')}</div>
+  <div class="belts">${ORDER.map(k=>{const t=P[k].titles[0];return belt(k,[P[k].short+' · '+t[0],t[1],t[2]],beltPhoto(k,t[0])?t[0]:null)}).join('')}</div>
 
   <section class="grid g2 col-rule">
     <div>
