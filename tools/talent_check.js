@@ -7,7 +7,7 @@ for(const f of fs.readdirSync(path.join(ROOT,'data'))) if(f.endsWith('.js')) vm.
 vm.runInContext(fs.readFileSync(path.join(__dirname,'talent_engine.js'),'utf8'),ctx);
 const W=ctx.WORLD_DATE;const past=e=>e.ran?true:(ctx.P[e.p].asOf?e.d<=ctx.P[e.p].asOf:e.d<W);
 const extra=ctx.TalentEngine.extras(ctx.P,ctx.CONTRACTS,ctx.TALENT_EXTRA||[],Object.keys(ctx.P));
-const unres={},miss={};const files=ctx.TalentEngine.build(ctx.P,ctx.E,{past,world:W,teams:ctx.TEAMS||{},unres,extra,piece:(b,k)=>{const x=b.trim();if(/^[A-Z]/.test(x)&&!/\b(title|tba|to establish|team|qf|sf|final|#\d)\b/i.test(x))(miss[x+'  ('+k+')']=(miss[x+'  ('+k+')']||0)+1);}});
+const unres={},miss={};const files=ctx.TalentEngine.build(ctx.P,(ctx.HIST||[]).concat(ctx.E),{past,world:W,teams:ctx.TEAMS||{},unres,extra,piece:(b,k)=>{const x=b.trim();if(/^[A-Z]/.test(x)&&!/\b(title|tba|to establish|team|qf|sf|final|#\d)\b/i.test(x))(miss[x+'  ('+k+')']=(miss[x+'  ('+k+')']||0)+1);}});
 if(process.argv[2]==='--missing'){const m=Object.entries(miss).sort((a,b)=>b[1]-a[1]);console.log(m.length?m.map(x=>x[1]+'  '+x[0]).join('\n'):'Every name on the cards has a Talent File.');process.exit(0);}
 if(process.argv[2]==='--unres'){console.log(Object.entries(unres).sort((a,b)=>b[1]-a[1]).slice(0,+process.argv[3]||80).map(x=>x[1]+'  '+x[0]).join('\n'));process.exit(0);}
 const want=process.argv[2];
