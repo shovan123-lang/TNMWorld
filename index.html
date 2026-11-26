@@ -404,6 +404,8 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 .belts-h{display:flex;align-items:center;gap:10px}
 
 .trophy-mini.diary{color:#7a5a1e}
+.beltimg{object-fit:contain;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.beltimg.big{aspect-ratio:240/122;padding:4px 6px}
 </style>
 </head>
 <body>
@@ -783,6 +785,8 @@ function beltLabel(k,t){const x=String(t).toLowerCase();
   if(/united states/.test(x))return 'U.S.'; if(/intercontinental/.test(x))return 'IC'; if(/southern/.test(x))return 'SOUTH'; if(/national/.test(x))return 'NACIONAL';
   if(/triple crown/.test(x))return 'TRIPLE'; if(/iwgp/.test(x))return 'IWGP'; if(/british/.test(x))return 'BRITISH'; if(/unified/.test(x))return 'UNIFIED';
   return k==='pp'?'POWER':k==='twa'?'TRI-STATE':'WORLD';}
+/* Supplied belt photos: these replace the drawn belt for that title everywhere (gallery, champion boxes, Talent Files). */
+const BELT_IMG=[{k:'wcw',match:/^(wcw )?world heavyweight$/i,src:'img/belts/wcw-world-heavyweight.png'}];
 let BELT_UID=0;
 function beltRibbonText(k,t){
   let x=String(t).replace(new RegExp('^('+(P[k]?P[k].short:'')+'|'+(P[k]&&P[k].nav||'')+')\\s+','i'),'').replace(/\bchampionship\b/i,'').trim();
@@ -790,6 +794,8 @@ function beltRibbonText(k,t){
   if(/^(unified world|world heavyweight|world)$/i.test(x)) x=/unified/i.test(x)?'Unified World':'World Heavyweight';
   return x.toUpperCase();}
 function beltSVG(k,t,cls){
+  const photo=BELT_IMG.find(b=>b.k===k&&b.match.test(String(t).trim()));
+  if(photo) return `<img class="beltsvg beltimg ${cls||''}" src="${photo.src}" alt="${esc((P[k]?P[k].short+' ':'')+t)} belt" loading="lazy">`;
   const u='b'+(++BELT_UID), kind=beltKind(t), c=`var(--${k})`, c2=`var(--${k}-2,#d4a62a)`;
   const silver=kind==='junior', M=silver?`url(#${u}s)`:`url(#${u}g)`, MD=silver?'#6c7379':'#7a4f0e', ML=silver?'#ffffff':'#fff3c8';
   const short=(P[k]?P[k].short:'').toUpperCase(), rib=beltRibbonText(k,t);
