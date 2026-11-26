@@ -50,6 +50,10 @@ const SPOTLIGHT = TALENT_FILES[0];
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest.
 const TICKER = [
  [
+  "<b>USWA</b> WCW cease-and-desist: Worldwide becomes the Mid-South Showcase starting Evansville 7/24",
+  "uswa-worldwide-renamed-0722"
+ ],
+ [
   "<b>CMLL</b> Puebla: Octagón makes Masakre submit, then demands his mask; Blue Panther taps out El Dandy",
   "cmll-octagon-demands-answer-0721"
  ],
@@ -92,10 +96,6 @@ const TICKER = [
  [
   "<b>WWF</b> Superstars: Tito tops the Warlord as Heenan opens the IC challenge for SummerSlam",
   "wwf-superstars-ep2-tito-0720"
- ],
- [
-  "<b>WCW</b> Pro: Tommy Rich makes Bobby Eaton submit; the TV Title final four is set",
-  "wcw-rich-wildfire-pro2"
  ],
  [
   "<b>NJPW</b> Sapporo: Chono jumps Chōshu after the TV main; El Samurai gets Liger at Sumo Hall",

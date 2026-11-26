@@ -6,7 +6,7 @@
    is recomputed from the cards each time the page loads, so a new episode is rated as soon as its results are logged.
 
    Which shows: RATINGS.shows (Sean's list, 2026-11-26): WWF Superstars, Challenge, Prime Time, All American;
-   WCW Pro and Saturday Night; USWA Championship TV and Worldwide; and the Japanese tour nights that are on TV
+   WCW Pro and Saturday Night; USWA Championship TV and Mid-South Showcase (called Worldwide until WCW's cease-and-desist, 7/22/91); and the Japanese tour nights that are on TV
    (an NJPW or AJPW card whose type says TV Asahi, World Pro Wrestling, Nippon TV or TV taping).
    A card is an airing when its promotion matches and its type matches the show's `match`. US tapings are skipped
    (the episode is its own card on its air date). An airing is rated once it has run (the Show Archive rule) and
@@ -59,7 +59,7 @@ const RATINGS = {
     {id: "saturday", p: "wcw", name: "WCW Saturday Night", short: "Saturday Night", match: /^WCW Saturday Night\b/i, outlet: "TBS, Saturday evening", base: 2.9, min: 2.0, max: 3.8, unit: "nielsen"},
     {id: "pro", p: "wcw", name: "WCW Pro", short: "WCW Pro", match: /^WCW Pro\b/i, outlet: "Syndication, Saturday morning", base: 1.7, min: 1.1, max: 2.5, unit: "nielsen"},
     {id: "championship", p: "uswa", name: "USWA Championship TV", short: "Championship TV", match: /^Championship (Wrestling|TV)\b/i, outlet: "WMC-TV Memphis, Saturday morning, live", base: 9.5, min: 6.0, max: 14.0, unit: "local"},
-    {id: "worldwide", p: "uswa", name: "USWA Worldwide", short: "Worldwide", match: /^Worldwide\b/i, outlet: "Regional syndication", base: 3.5, min: 2.0, max: 5.5, unit: "local"},
+    {id: "worldwide", p: "uswa", name: "USWA Mid-South Showcase", short: "Mid-South Showcase", match: /^(Worldwide|Mid-South Showcase)\b/i, outlet: "Regional syndication · called Worldwide through 7/17/91", base: 3.5, min: 2.0, max: 5.5, unit: "local"},
     {id: "wpw", p: "njpw", name: "World Pro Wrestling", short: "World Pro Wrestling", match: /TV Asahi|World Pro Wrestling|TV taping/i, tour: 1, outlet: "TV Asahi", base: 6.2, min: 4.0, max: 9.0, unit: "vr"},
     {id: "ntv", p: "ajpw", name: "All Japan on Nippon TV", short: "Nippon TV", match: /Nippon TV|TV taping/i, tour: 1, outlet: "Nippon TV", base: 5.6, min: 3.5, max: 8.5, unit: "vr"}
   ],
