@@ -11,10 +11,14 @@
    A card is an airing when its promotion matches and its type matches the show's `match`. US tapings are skipped
    (the episode is its own card on its air date). An airing is rated once it has run (the Show Archive rule) and
    has results: its own match list, or, for an episode with none, the lines of an earlier taping that start "Ep N".
+   History: for the promotions in RATINGS.history, the archive-only cards in data/history.js (HIST) are rated too,
+   with the same model, so USWA's chart runs from its first Championship TV in September 1990 (Sean, 2026-11-26).
+   Episodes whose archive pages only replay house-show matches have no results there and leave a gap in the line.
 
    The model. Each show starts from its slot's usual number (`base`: outlet, time slot and promotion size in
    1991 terms) and moves from there:
-     card    +6% for every star the card rating is above **1/2, less below it (no card rating: its best match;
+     card    +6% for every star the card rating is above **1/2, less below it (no card rating: the average of its
+             rated matches, which is within about a third of a star of the card rating on the cards that have both;
              nothing rated: counted as **)
      stars   +4% for every headliner on the show past the first: names from the promotion's pay scale
              (CONTRACTS) found in the matches, results and "Segments:" note; tier A counts 1, tier B half; at most 3
@@ -56,10 +60,11 @@ const RATINGS = {
   ],
   weights: {card: 0.06, cardMid: 2.5, cardNone: 2, stars: 0.04, starsCap: 3, titles: 0.03, titlesCap: 2, hype: 0.06, hypeDays: 7, crowd: 0.03, crowdBig: 10000, crowdSmall: 1500, carry: 0.4},
   ppv: /\(PPV\)|pay-per-view|^The Great American Bash\b/i,
+  history: ["uswa"],
   fixed: {}
 };
 
-/* Works out every rating. D = {P, E, CONTRACTS, FINANCE, TEAMS, WORLD_DATE}.
+/* Works out every rating. D = {P, E, CONTRACTS, FINANCE, TEAMS, WORLD_DATE, HIST (optional)}.
    Returns {eps (rated episodes, oldest first), byShow, unrated (aired, no results yet), ppvs, byCard (Map card -> label)}. */
 function tvRatings(D) {
   const R = RATINGS, Wt = R.weights, W = D.WORLD_DATE;
@@ -68,11 +73,13 @@ function tvRatings(D) {
   const star = r => {const s = String(r || "").replace(/\s+/g, "").toUpperCase(); if (!s) return null; if (s === "DUD") return 0;
     const m = s.match(/^(-?)(\**)(?:(\d)\/(\d))?\**$/); if (!m || (!m[2] && !m[3])) return null; const v = m[2].length + (m[3] ? m[3] / m[4] : 0); return m[1] ? -v : v;};
   const ran = e => e.d < W && (e.ran ? true : (D.P[e.p] && D.P[e.p].asOf ? e.d <= D.P[e.p].asOf : e.d < W));
+  const starText = v => {const r = Math.round(v * 4) / 4, w = Math.floor(r), f = Math.round((r - w) * 4); return r <= 0 ? "DUD" : "*".repeat(w) + (f ? (f === 2 ? "1/2" : f + "/4") : "");};
   const realM = m => (m || []).filter(x => x && x[0] && x[0] !== "Card not set");
   const crowdOf = g => {const s = String(g || ""); if (/^\$/.test(s)) return null; const a = s.match(/^~?([\d,]+)/); return a ? +a[1].replace(/,/g, "") : null;};
   const addDays = (d, n) => {const x = new Date(d + "T00:00:00Z"); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10);};
   const weekOf = d => {const x = new Date(d + "T00:00:00Z"); x.setUTCDate(x.getUTCDate() - ((x.getUTCDay() + 6) % 7)); return x.toISOString().slice(0, 10);};
   const isPPV = e => R.ppv.test(e.type || "");
+  const ALL = (D.HIST || []).filter(e => (R.history || []).includes(e.p)).concat(D.E);
 
   // Headliners per promotion: tier A = 1, tier B = 0.5. Each matches on the full name, or a surname that only one of them has.
   const stars = {};
@@ -89,7 +96,7 @@ function tvRatings(D) {
 
   // Airings
   const airs = [];
-  for (const e of D.E) {
+  for (const e of ALL) {
     const s = R.shows.find(s => s.p === e.p && s.match.test(e.type || "") && (s.tour || !/taping|taped for/i.test(e.type || "")));
     if (s && e.d <= W) airs.push([s, e]);
   }
@@ -100,14 +107,14 @@ function tvRatings(D) {
     let m = realM(e.m), from = "";
     if (!m.length) {
       const n = (String(e.type).match(/\bEp(?:isode)?s?\.?\s*(\d+)/i) || [])[1];
-      const tp = n && D.E.find(t => t.p === e.p && t.d <= e.d && /taping/i.test(t.type || "") && s.match.test(t.type || "") && realM(t.m).some(x => new RegExp("^Ep\\s*" + n + "\\b").test(x[0])));
+      const tp = n && ALL.find(t => t.p === e.p && t.d <= e.d && /taping/i.test(t.type || "") && s.match.test(t.type || "") && realM(t.m).some(x => new RegExp("^Ep\\s*" + n + "\\b").test(x[0])));
       if (tp) {m = realM(tp.m).filter(x => new RegExp("^Ep\\s*" + n + "\\b").test(x[0])); from = tp.d;}
     }
     if (!ran(e) || !m.length) {unrated.push({show: s, e, why: !ran(e) ? "Airs " + e.d : "No results logged yet"}); continue;}
     // card quality
     const rated = m.map(x => star(x[2])).filter(v => v !== null);
     let q = star(e.rate), qFrom = "card", qText = e.rate || "";
-    if (q === null && rated.length) {q = Math.max(...rated); qFrom = "best match"; qText = m.find(x => star(x[2]) === q)[2];}
+    if (q === null && rated.length) {q = rated.reduce((a, b) => a + b, 0) / rated.length; qFrom = "match average"; qText = starText(q);}
     if (q === null) {q = Wt.cardNone; qFrom = "nothing rated"; qText = "";}
     // headliners
     const txt = norm(m.map(x => x[0] + " " + (x[1] || "")).join(" ") + " " + (e.n || []).filter(x => /^Segments:/i.test(x)).join(" "));
@@ -119,12 +126,12 @@ function tvRatings(D) {
     // title matches
     const titles = Math.min(Wt.titlesCap, m.filter(x => /\bTitles?\b|Championship|IWGP|Triple Crown/i.test(x[0])).length);
     // hype: go-home for the promotion's next PPV, or a special
-    const ppvNext = D.E.find(p => p.p === e.p && isPPV(p) && p.d > e.d && p.d <= addDays(e.d, Wt.hypeDays));
+    const ppvNext = ALL.find(p => p.p === e.p && isPPV(p) && p.d > e.d && p.d <= addDays(e.d, Wt.hypeDays));
     const hype = ppvNext ? "go-home for " + String(ppvNext.type).replace(/\s*\(PPV\)/, "") : (/go-home|special|crowned/i.test(e.type || "") ? "special" : "");
     // crowd on camera: the card's own gate, else its taping's
     let crowd = crowdOf(e.gate);
     if (crowd === null) {const tm = String(e.city || "").match(/taped (\d+)\/(\d+)/); const td = tm ? "1991-" + tm[1].padStart(2, "0") + "-" + tm[2].padStart(2, "0") : from;
-      const tp = td && D.E.find(t => t.p === e.p && t.d === td && t.gate); if (tp) crowd = crowdOf(tp.gate);}
+      const tp = td && ALL.find(t => t.p === e.p && t.d === td && t.gate); if (tp) crowd = crowdOf(tp.gate);}
     const cw = crowd === null ? 0 : crowd >= Wt.crowdBig ? 1 : crowd < Wt.crowdSmall ? -1 : 0;
     const lift = Wt.card * (Math.max(0, Math.min(5, q)) - Wt.cardMid) + Wt.stars * (sp - 1) + Wt.titles * titles + (hype ? Wt.hype : 0) + Wt.crowd * cw;
     const prev = last[s.id];

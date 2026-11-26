@@ -4,11 +4,11 @@
 //        node tools/ratings.js --why      add what moved each rating (card, headliners, titles, hype, crowd)
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
-const FILES = ['world', 'wcw', 'wwf', 'uswa', 'pp', 'ajpw', 'njpw', 'cmll', 'asw', 'twa', 'fmw', 'ratings'];
+const FILES = ['world', 'wcw', 'wwf', 'uswa', 'pp', 'ajpw', 'njpw', 'cmll', 'asw', 'twa', 'fmw', 'history', 'ratings'];
 function load() {
   const g = {P: {}, E: [], ARTICLES: {}, CONTRACTS: {}, FINANCE: {}, SITES: {}, BANNER_SVG: {}};
   let src = ''; for (const f of FILES) src += fs.readFileSync(path.join(ROOT, 'data', f + '.js'), 'utf8') + '\n';
-  src += ';return {WORLD_DATE, TEAMS, RATINGS, tvRatings};';
+  src += ';return {WORLD_DATE, TEAMS, HIST, RATINGS, tvRatings};';
   return Object.assign(g, new Function('P', 'E', 'ARTICLES', 'CONTRACTS', 'FINANCE', 'SITES', 'BANNER_SVG', src)(g.P, g.E, g.ARTICLES, g.CONTRACTS, g.FINANCE, g.SITES, g.BANNER_SVG));
 }
 const g = load();
