@@ -390,19 +390,19 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 
 /* Title belts */
 .beltsvg{display:block}
-.beltsvg.corner{position:absolute;right:8px;top:8px;width:76px;height:auto;filter:drop-shadow(1px 2px 1px rgba(0,0,0,.25))}
-.belt .t,.belt .h{padding-right:84px}
-.beltsvg.row{width:64px;height:auto}
+.beltsvg.corner{display:block;width:100%;max-width:240px;height:auto;margin:-2px auto 4px}
+
+.beltsvg.row{width:96px;height:auto}
 .beltgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:6px 0 16px}
 .beltcard{border:2px solid var(--ink);background:linear-gradient(180deg,var(--paper) 0,var(--paper2) 100%);padding:12px;transition:transform .12s,box-shadow .12s}
 .beltcard:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--c)}
-.beltsvg.big{width:100%;height:auto;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.3));margin-bottom:8px}
+.beltsvg.big{width:100%;height:auto;margin-bottom:8px}
 .beltcard .bt{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px;color:var(--c)}
 .beltcard .bh{font-family:var(--head);font-size:22px;line-height:1.1;text-transform:uppercase;margin-top:2px}.beltcard .bh a{text-decoration:none}.beltcard .bh a:hover{text-decoration:underline}
 .beltcard .bh .mute{font-family:var(--cond);font-size:16px;text-transform:none}
 .beltcard .bn{font-family:var(--cond);font-size:12.5px;margin-top:4px}
 .belts-h{display:flex;align-items:center;gap:10px}
-@media(max-width:640px){.beltsvg.corner{width:56px}.belt .t,.belt .h{padding-right:62px}}
+
 .trophy-mini.diary{color:#7a5a1e}
 </style>
 </head>
@@ -783,25 +783,81 @@ function beltLabel(k,t){const x=String(t).toLowerCase();
   if(/united states/.test(x))return 'U.S.'; if(/intercontinental/.test(x))return 'IC'; if(/southern/.test(x))return 'SOUTH'; if(/national/.test(x))return 'NACIONAL';
   if(/triple crown/.test(x))return 'TRIPLE'; if(/iwgp/.test(x))return 'IWGP'; if(/british/.test(x))return 'BRITISH'; if(/unified/.test(x))return 'UNIFIED';
   return k==='pp'?'POWER':k==='twa'?'TRI-STATE':'WORLD';}
+let BELT_UID=0;
+function beltRibbonText(k,t){
+  let x=String(t).replace(new RegExp('^('+(P[k]?P[k].short:'')+'|'+(P[k]&&P[k].nav||'')+')\\s+','i'),'').replace(/\bchampionship\b/i,'').trim();
+  if(/^wwf$/i.test(x)||!x) x='World Heavyweight';
+  if(/^(unified world|world heavyweight|world)$/i.test(x)) x=/unified/i.test(x)?'Unified World':'World Heavyweight';
+  return x.toUpperCase();}
 function beltSVG(k,t,cls){
-  const kind=beltKind(t), lab=beltLabel(k,t), c=`var(--${k})`, c2=`var(--${k}-2,${'#d4a62a'})`;
-  const metal=kind==='junior'?'url(#bgSilver)':'url(#bgGold)', edge=kind==='junior'?'#7c8288':'#8a5d14';
-  const txt=(x,y,size)=>`<text x="${x}" y="${y}" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="${size}" fill="#3a2608" letter-spacing=".4">${esc(lab)}</text>`;
-  const gem=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c2}" stroke="#fff" stroke-width=".8"/>`;
-  let plate='';
-  if(kind==='world') plate=`<ellipse cx="60" cy="24" rx="23" ry="21.5" fill="${metal}" stroke="${edge}" stroke-width="1.2"/><ellipse cx="60" cy="24" rx="17.5" ry="16" fill="none" stroke="${edge}" stroke-width=".8"/><ellipse cx="60" cy="19" rx="8.5" ry="8.5" fill="none" stroke="${edge}" stroke-width=".7"/><ellipse cx="60" cy="19" rx="3.6" ry="8.5" fill="none" stroke="${edge}" stroke-width=".6"/><line x1="51.5" y1="19" x2="68.5" y2="19" stroke="${edge}" stroke-width=".6"/>${gem(60,7.5,2.2)}${txt(60,36,lab.length>6?5.2:6.4)}`;
-  else if(kind==='shield') plate=`<path d="M40 6 H80 V24 C80 35 70 42 60 45 C50 42 40 35 40 24 Z" fill="${metal}" stroke="${edge}" stroke-width="1.2"/><path d="M44 10 H76 V24 C76 32 68 38 60 40.5 C52 38 44 32 44 24 Z" fill="none" stroke="${edge}" stroke-width=".7"/>${gem(60,15,2.6)}${txt(60,30,lab.length>5?5.6:7.4)}`;
-  else if(kind==='tv') plate=`<rect x="38" y="8" width="44" height="32" rx="3" fill="${metal}" stroke="${edge}" stroke-width="1.2"/><rect x="43" y="12" width="34" height="18" rx="2" fill="#2a2a2a" stroke="${edge}" stroke-width=".8"/><rect x="45" y="14" width="30" height="14" rx="1.5" fill="${c2}" opacity=".85"/>${txt(60,25,9)}<circle cx="47" cy="35" r="1.4" fill="${edge}"/><circle cx="73" cy="35" r="1.4" fill="${edge}"/>`;
-  else if(kind==='tag') plate=`<ellipse cx="48" cy="24" rx="14.5" ry="17" fill="${metal}" stroke="${edge}" stroke-width="1.1"/><ellipse cx="72" cy="24" rx="14.5" ry="17" fill="${metal}" stroke="${edge}" stroke-width="1.1"/><ellipse cx="48" cy="24" rx="10" ry="12.5" fill="none" stroke="${edge}" stroke-width=".7"/><ellipse cx="72" cy="24" rx="10" ry="12.5" fill="none" stroke="${edge}" stroke-width=".7"/>${gem(48,17,1.8)}${gem(72,17,1.8)}<text x="48" y="30" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="6" fill="#3a2608">TAG</text><text x="72" y="30" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="6" fill="#3a2608">TEAM</text>`;
-  else if(kind==='trios') plate=[40,60,80].map(x=>`<circle cx="${x}" cy="24" r="11.5" fill="${metal}" stroke="${edge}" stroke-width="1"/><circle cx="${x}" cy="24" r="7.5" fill="none" stroke="${edge}" stroke-width=".6"/>${gem(x,19.5,1.6)}`).join('')+`<text x="60" y="30" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="4.6" fill="#3a2608">TRIOS</text>`;
-  else if(kind==='junior') plate=`<ellipse cx="60" cy="24" rx="17" ry="16" fill="${metal}" stroke="${edge}" stroke-width="1.1"/><ellipse cx="60" cy="24" rx="12.5" ry="11.5" fill="none" stroke="${edge}" stroke-width=".7"/>${gem(60,15.5,2)}${txt(60,29,lab.length>3?5:8)}`;
-  else if(kind==='money') plate=`<rect x="34" y="9" width="52" height="30" rx="4" fill="${metal}" stroke="${edge}" stroke-width="1.2"/><rect x="38" y="13" width="44" height="22" rx="2.5" fill="none" stroke="${edge}" stroke-width=".7"/>${[42,48,54,66,72,78].map(x=>`<circle cx="${x}" cy="16" r="1.3" fill="#fff" stroke="#9fd3ff" stroke-width=".5"/><circle cx="${x}" cy="32" r="1.3" fill="#fff" stroke="#9fd3ff" stroke-width=".5"/>`).join('')}<text x="60" y="29.5" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="13" fill="#3a2608">$</text>`;
-  const side=x=>`<rect x="${x}" y="14.5" width="13" height="19" rx="2" fill="${metal}" stroke="${edge}" stroke-width=".8"/>${gem(x+6.5,24,1.7)}`;
-  return `<svg class="beltsvg ${cls||''}" viewBox="0 0 120 48" role="img" aria-label="${esc(t)} belt"><defs><linearGradient id="bgGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2c4"/><stop offset=".35" stop-color="#f0c865"/><stop offset=".65" stop-color="#c99a3a"/><stop offset="1" stop-color="#f6d886"/></linearGradient><linearGradient id="bgSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#cfd4d9"/><stop offset=".75" stop-color="#9aa0a6"/><stop offset="1" stop-color="#e9ecef"/></linearGradient></defs>
-    <rect x="1" y="13" width="118" height="22" rx="6" fill="${c}"/><rect x="1" y="13" width="118" height="22" rx="6" fill="#000" opacity=".22"/>
-    <path d="M5 16.5 H115 M5 31.5 H115" stroke="${c2}" stroke-width=".7" stroke-dasharray="2.2 1.6" opacity=".9"/>
-    ${kind==='trios'?side(4)+side(103):side(8)+side(99)}${plate}</svg>`;
+  const u='b'+(++BELT_UID), kind=beltKind(t), c=`var(--${k})`, c2=`var(--${k}-2,#d4a62a)`;
+  const silver=kind==='junior', M=silver?`url(#${u}s)`:`url(#${u}g)`, MD=silver?'#6c7379':'#7a4f0e', ML=silver?'#ffffff':'#fff3c8';
+  const short=(P[k]?P[k].short:'').toUpperCase(), rib=beltRibbonText(k,t);
+  const jewel=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="url(#${u}j)" stroke="${MD}" stroke-width=".5"/><circle cx="${x-r*.35}" cy="${y-r*.35}" r="${r*.3}" fill="#fff" opacity=".8"/>`;
+  const star=(x,y,r,f)=>{let d='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.42:r;d+=(i?'L':'M')+(x+rr*Math.cos(a)).toFixed(2)+' '+(y+rr*Math.sin(a)).toFixed(2)}return `<path d="${d}Z" fill="${f||M}" stroke="${MD}" stroke-width=".4"/>`};
+  const compass=(x,y,r)=>`<path d="M${x} ${y-r}L${x+r*.22} ${y-r*.22}L${x+r} ${y}L${x+r*.22} ${y+r*.22}L${x} ${y+r}L${x-r*.22} ${y+r*.22}L${x-r} ${y}L${x-r*.22} ${y-r*.22}Z" fill="${M}" stroke="${MD}" stroke-width=".4"/>`;
+  const scallop=(cx,cy,rx,ry,n,amp)=>{let d='';for(let i=0;i<=120;i++){const a=i/120*2*Math.PI,m=1+amp*Math.cos(n*a);d+=(i?'L':'M')+(cx+rx*m*Math.cos(a)).toFixed(2)+' '+(cy+ry*m*Math.sin(a)).toFixed(2)}return d+'Z'};
+  const laurel=(cx,cy,r,a0,a1,mir)=>{let o='';const n=9;for(let i=0;i<n;i++){const a=(a0+(a1-a0)*i/(n-1))*Math.PI/180,x=cx+r*Math.cos(a),y=cy+r*Math.sin(a),rot=a*180/Math.PI+(mir?-35:35);o+=`<ellipse cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" rx="3.2" ry="1.3" transform="rotate(${rot.toFixed(1)} ${x.toFixed(2)} ${y.toFixed(2)})" fill="${M}" stroke="${MD}" stroke-width=".3"/>`}return o};
+  const globe=(cx,cy,r)=>`<circle cx="${cx}" cy="${cy}" r="${r+1.6}" fill="${M}" stroke="${MD}" stroke-width=".6"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#${u}o)"/>
+    <g fill="${M}" opacity=".95"><path d="M${cx-r*.55} ${cy-r*.55}c${r*.25} -${r*.15} ${r*.55} -${r*.05} ${r*.5} ${r*.22}c-${r*.05} ${r*.2} ${r*.2} ${r*.25} ${r*.1} ${r*.45}c-${r*.1} ${r*.15} -${r*.35} ${r*.05} -${r*.4} ${r*.25}c-${r*.05} ${r*.2} -${r*.3} ${r*.1} -${r*.3} -${r*.12}c0 -${r*.25} -${r*.2} -${r*.3} ${r*.1} -${r*.8}z"/><path d="M${cx-r*.05} ${cy+r*.15}c${r*.25} 0 ${r*.35} ${r*.25} ${r*.25} ${r*.45}c-${r*.08} ${r*.2} -${r*.2} ${r*.25} -${r*.25} ${r*.05}c-${r*.05} -${r*.2} -${r*.2} -${r*.35} 0 -${r*.5}z"/><path d="M${cx+r*.25} ${cy-r*.75}c${r*.3} -${r*.05} ${r*.55} ${r*.15} ${r*.6} ${r*.35}c-${r*.15} ${r*.05} -${r*.3} ${r*.2} -${r*.45} ${r*.1}c-${r*.1} -${r*.1} -${r*.25} -${r*.25} -${r*.15} -${r*.45}z"/></g>
+    <g fill="none" stroke="${ML}" stroke-width=".35" opacity=".55"><ellipse cx="${cx}" cy="${cy}" rx="${r*.45}" ry="${r}"/><line x1="${cx}" y1="${cy-r}" x2="${cx}" y2="${cy+r}"/><line x1="${cx-r}" y1="${cy}" x2="${cx+r}" y2="${cy}"/><ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r*.42}"/></g>
+    <circle cx="${cx-r*.35}" cy="${cy-r*.4}" r="${r*.55}" fill="#fff" opacity=".12"/>`;
+  const ribbon=(cx,y,w,h,txt,fs)=>`<path d="M${cx-w/2} ${y} H${cx+w/2} L${cx+w/2+5} ${y+h/2} L${cx+w/2} ${y+h} H${cx-w/2} L${cx-w/2-5} ${y+h/2} Z" fill="${M}" stroke="${MD}" stroke-width=".7"/><path d="M${cx-w/2+1.5} ${y+1.3} H${cx+w/2-1.5} V${y+h-1.3} H${cx-w/2+1.5}Z" fill="#141210" stroke="${MD}" stroke-width=".3"/><text x="${cx}" y="${y+h/2+fs*.36}" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-weight="700" font-size="${fs}" fill="url(#${u}g)" textLength="${Math.min(w-6,txt.length*fs*.62)}" lengthAdjust="spacingAndGlyphs">${esc(txt)}</text>`;
+  // the full medallion, drawn at (120,60) and scaled for tag / trios / junior
+  const medallion=(withRibbon)=>`<path d="${scallop(120,60,54,50,12,.045)}" fill="${M}" stroke="${MD}" stroke-width="1.2"/>
+    <path d="${scallop(120,60,49,45.5,12,.045)}" fill="url(#${u}f)" stroke="${MD}" stroke-width=".6"/>
+    <ellipse cx="120" cy="60" rx="41" ry="38" fill="#121110" stroke="${MD}" stroke-width=".8"/>
+    <ellipse cx="120" cy="60" rx="41" ry="38" fill="url(#${u}f)" opacity=".18"/>
+    ${[-150,-120,-60,-30,30,60,120,150].map(a=>{const r=a*Math.PI/180;return jewel(120+51.5*Math.cos(r),60+47.5*Math.sin(r),1.9)}).join('')}
+    <path d="M110 14 L107.5 5 L113.5 9.5 L120 2.5 L126.5 9.5 L132.5 5 L130 14 Z" fill="${M}" stroke="${MD}" stroke-width=".6"/>${jewel(120,7.5,1.6)}
+    <text x="120" y="35" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-style="italic" font-size="${short.length>4?10:13}" fill="url(#${u}s)" stroke="#2a2a2a" stroke-width=".5" textLength="${Math.min(44,short.length*9)}" lengthAdjust="spacingAndGlyphs">${esc(short)}</text>
+    <path d="M100 38.5 Q120 35.5 140 38.5" stroke="${c2}" stroke-width="1.6" fill="none"/>
+    ${laurel(120,58,24,105,235,0)}${laurel(120,58,24,-55,75,1)}
+    ${globe(120,58,15)}
+    ${withRibbon?ribbon(120,78,62,9,rib.length>18?rib.slice(0,24):rib,6.4)+ribbon(120,88.5,38,7,'CHAMPION',5.4):''}
+    ${star(120,101,2.6)}${star(110,99,1.6)}${star(130,99,1.6)}`;
+  let center='';
+  if(kind==='world') center=medallion(true);
+  else if(kind==='junior') center=`<g transform="translate(120 60) scale(.9) translate(-120 -60)">${medallion(true)}</g>`;
+  else if(kind==='tag') center=`<g transform="translate(94 57) scale(.6) translate(-120 -60)">${medallion(false)}</g><g transform="translate(146 57) scale(.6) translate(-120 -60)">${medallion(false)}</g>${ribbon(120,86,70,9,rib,6.2)}${ribbon(120,96.5,40,7,'CHAMPIONS',5.2)}`;
+  else if(kind==='trios') center=[82,120,158].map(x=>`<g transform="translate(${x} 56) scale(.46) translate(-120 -60)">${medallion(false)}</g>`).join('')+ribbon(120,82,74,9,rib,6.2)+ribbon(120,92.5,40,7,'CHAMPIONS',5.2);
+  else if(kind==='shield') center=`<path d="M78 14 H162 V54 C162 82 142 98 120 108 C98 98 78 82 78 54 Z" fill="${M}" stroke="${MD}" stroke-width="1.2"/><path d="M84 19 H156 V54 C156 78 139 92 120 101 C101 92 84 78 84 54 Z" fill="#121110" stroke="${MD}" stroke-width=".7"/><path d="M84 19 H156 V54 C156 78 139 92 120 101 C101 92 84 78 84 54 Z" fill="url(#${u}f)" opacity=".18"/>
+      ${[[81,20],[159,20],[81,52],[159,52]].map(([x,y])=>jewel(x,y,1.8)).join('')}
+      <path d="M112 14 L109.5 6 L115 9.5 L120 3.5 L125 9.5 L130.5 6 L128 14 Z" fill="${M}" stroke="${MD}" stroke-width=".6"/>
+      <text x="120" y="33" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-style="italic" font-size="12" fill="url(#${u}s)" stroke="#2a2a2a" stroke-width=".5" textLength="${Math.min(40,short.length*8.5)}" lengthAdjust="spacingAndGlyphs">${esc(short)}</text>
+      ${laurel(120,52,15,110,230,0)}${laurel(120,52,15,-50,70,1)}${star(120,52,11)}${jewel(120,52,2.4)}
+      ${ribbon(120,70,58,9,rib,6.2)}${ribbon(120,80.5,34,7,'CHAMPION',5.2)}`;
+  else if(kind==='tv') center=`<rect x="70" y="12" width="100" height="94" rx="10" fill="${M}" stroke="${MD}" stroke-width="1.2"/><rect x="75" y="17" width="90" height="84" rx="7" fill="url(#${u}f)" stroke="${MD}" stroke-width=".6"/>
+      <rect x="84" y="24" width="72" height="44" rx="6" fill="#121110" stroke="${MD}" stroke-width="1"/><rect x="89" y="28" width="62" height="36" rx="4" fill="url(#${u}o)"/><text x="120" y="54" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="22" fill="url(#${u}g)" stroke="#2a1a05" stroke-width=".5">TV</text><circle cx="108" cy="34" r="5" fill="#fff" opacity=".1"/>
+      ${[[79,21],[161,21],[79,97],[161,97]].map(([x,y])=>jewel(x,y,1.8)).join('')}
+      <text x="120" y="22.5" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-style="italic" font-size="6" fill="url(#${u}s)" stroke="#2a2a2a" stroke-width=".3">${esc(short)}</text>
+      ${ribbon(120,74,62,9,rib,6.2)}${ribbon(120,85,38,7,'CHAMPION',5.2)}${star(120,98,2.4)}`;
+  else if(kind==='money') center=`<rect x="64" y="16" width="112" height="88" rx="12" fill="${M}" stroke="${MD}" stroke-width="1.2"/><rect x="70" y="22" width="100" height="76" rx="8" fill="#121110" stroke="${MD}" stroke-width=".8"/>
+      ${Array.from({length:13},(_,i)=>`<circle cx="${74+i*7.6}" cy="19" r="1.5" fill="#fff" stroke="#9fd3ff" stroke-width=".5"/><circle cx="${74+i*7.6}" cy="101" r="1.5" fill="#fff" stroke="#9fd3ff" stroke-width=".5"/>`).join('')}
+      <text x="120" y="76" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="54" fill="url(#${u}g)" stroke="${MD}" stroke-width=".8">$</text>
+      ${ribbon(120,82,70,9,'MILLION DOLLAR',6.2)}${[78,162].map(x=>`<g>${[30,44,58,72].map(y=>`<path d="M${x} ${y-3}L${x+3} ${y}L${x} ${y+3}L${x-3} ${y}Z" fill="#e8f6ff" stroke="#8fc6ef" stroke-width=".5"/>`).join('')}</g>`).join('')}`;
+  const sideBig=x=>`<rect x="${x-15}" y="33" width="30" height="54" rx="6" fill="${M}" stroke="${MD}" stroke-width=".9"/><rect x="${x-11.5}" y="37" width="23" height="46" rx="4" fill="#121110" stroke="${MD}" stroke-width=".5"/>${laurel(x,62,10,110,250,0)}${laurel(x,62,10,-70,70,1)}${globe(x,62,6.2)}${star(x,44,3)}${jewel(x,79,1.5)}`;
+  const sideSmall=x=>`<rect x="${x-10}" y="40" width="20" height="40" rx="4" fill="${M}" stroke="${MD}" stroke-width=".8"/><rect x="${x-7.5}" y="43.5" width="15" height="33" rx="3" fill="#121110" stroke="${MD}" stroke-width=".4"/>${compass(x,60,6.5)}`;
+  const bigX=kind==='money'||kind==='tv'?[46,194]:[52,188], smX=kind==='money'||kind==='tv'?[22,218]:[24,216];
+  return `<svg class="beltsvg ${cls||''}" viewBox="0 -4 240 122" role="img" aria-label="${esc(t)} belt"><defs>
+    <linearGradient id="${u}g" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#fff4c2"/><stop offset=".22" stop-color="#f2c75a"/><stop offset=".45" stop-color="#b9841f"/><stop offset=".62" stop-color="#f7d777"/><stop offset=".85" stop-color="#a86f12"/><stop offset="1" stop-color="#e9bd55"/></linearGradient>
+    <linearGradient id="${u}s" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#d9dde1"/><stop offset=".55" stop-color="#8e959b"/><stop offset=".75" stop-color="#eef1f3"/><stop offset="1" stop-color="#a4aab0"/></linearGradient>
+    <radialGradient id="${u}o" cx=".38" cy=".35" r=".75"><stop offset="0" stop-color="#3f74c9"/><stop offset=".6" stop-color="#173a86"/><stop offset="1" stop-color="#0b1d47"/></radialGradient>
+    <radialGradient id="${u}j" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset=".25" stop-color="${'#ff6b6b'}" style="stop-color:${c2}"/><stop offset="1" stop-color="#5a0d0d"/></radialGradient>
+    <linearGradient id="${u}l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e2b28"/><stop offset=".5" stop-color="#151413"/><stop offset="1" stop-color="#252220"/></linearGradient>
+    <pattern id="${u}f" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="${silver?'#c9ced3':'#d9a640'}"/><path d="M0 3 Q1.5 0 3 3 T6 3" fill="none" stroke="${MD}" stroke-width=".55"/><circle cx="1.5" cy="4.6" r=".5" fill="${ML}"/></pattern>
+    <pattern id="${u}t" width="3" height="3" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".45" fill="#fff" opacity=".07"/><circle cx="2.4" cy="2.2" r=".35" fill="#000" opacity=".25"/></pattern>
+    <filter id="${u}d" x="-5%" y="-5%" width="110%" height="120%"><feDropShadow dx="0" dy="1.6" stdDeviation="1.3" flood-opacity=".45"/></filter></defs>
+    <g filter="url(#${u}d)">
+      <path d="M10 33 Q120 26 230 33 Q238 34 238 43 V77 Q238 86 230 87 Q120 94 10 87 Q2 86 2 77 V43 Q2 34 10 33Z" fill="url(#${u}l)" stroke="${c}" stroke-width="1.8"/>
+      <path d="M10 33 Q120 26 230 33 Q238 34 238 43 V77 Q238 86 230 87 Q120 94 10 87 Q2 86 2 77 V43 Q2 34 10 33Z" fill="url(#${u}t)"/>
+      <path d="M11 37 Q120 30.5 229 37 M11 83 Q120 89.5 229 83" fill="none" stroke="#8a857e" stroke-width=".6" stroke-dasharray="1.6 1.2"/>
+      ${[48,60,72].map(y=>`<circle cx="7.5" cy="${y}" r="2.3" fill="url(#${u}g)" stroke="${MD}" stroke-width=".4"/><circle cx="232.5" cy="${y}" r="2.3" fill="url(#${u}g)" stroke="${MD}" stroke-width=".4"/>`).join('')}
+      ${sideSmall(smX[0])}${sideSmall(smX[1])}${sideBig(bigX[0])}${sideBig(bigX[1])}
+      ${center}
+    </g></svg>`;
 }
+
 /* Every title in the world: promotion pages (P[k].titles) plus the lineages (TITLE_LEDGER) */
 function allBelts(){
   const out=[], seen=new Set(), norm=x=>tfNorm(x).replace(/ heavyweight$| championship$/,'');
