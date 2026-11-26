@@ -131,6 +131,7 @@ def by_promo(p):
   return b
 if WORLD[:7]>S.MONTH:   # this month is over: file its final totals
   LIFE["months"][S.MONTH]={p["name"]:by_promo(p) for p in people.values() if by_promo(p)}
+  LIFE.setdefault("bonus",{})[S.MONTH]={p["name"]:round(p["bonus"],2) for p in people.values() if p["bonus"]}
   json.dump(LIFE,open(LIFE_PATH,'w'),ensure_ascii=False,indent=1,sort_keys=True)
 closed={m:v for m,v in LIFE["months"].items() if m!=S.MONTH}
 lifeBy={}
@@ -140,6 +141,10 @@ for m,v in closed.items():
     for k,a in b.items(): d[k]=round(d.get(k,0)+a,2)
 for n in {n for v in closed.values() for n in v}:   # people paid in earlier months but not this one
   if n not in people: people[n]={"name":n,"promos":set(lifeBy[n]),"role":"Wrestler","salary":0.0,"shows":0.0,"bonus":0.0,"due":0.0,"apps":0,"lines":[]}
+lifeBonus={}   # career bonuses (champions' pool and main-event bonuses) from earlier months
+for m,v in LIFE.get("bonus",{}).items():
+  if m==S.MONTH: continue
+  for n,a in v.items(): lifeBonus[n]=round(lifeBonus.get(n,0)+a,2)
 out=[]
 for p in people.values():
   e=p["salary"]+p["shows"]+p["bonus"]
@@ -149,7 +154,7 @@ for p in people.values():
   if e==0 and p["due"]==0 and life==0: continue
   out.append(dict(name=p["name"],role=p["role"],promos=[k for k in PN if k in p["promos"]],salary=round(p["salary"],2),
     shows=round(p["shows"],2),apps=p["apps"],bonus=round(p["bonus"],2),earned=round(e,2),due=round(p["due"],2),
-    proj=round(e+p["due"],2),life=life,lifeBy={k:lb[k] for k in PN if k in lb},
+    proj=round(e+p["due"],2),life=life,lifeBonus=round(lifeBonus.get(p["name"],0)+p["bonus"],2),lifeBy={k:lb[k] for k in PN if k in lb},
     lines=sorted(p["lines"],key=lambda l:(l["d"],l["p"]))))
 out.sort(key=lambda x:(-x["earned"],-x["proj"],x["name"]))
 import calendar as _cal
