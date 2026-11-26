@@ -216,6 +216,8 @@ footer{margin:40px 0 0;border-top:4px double var(--ink);padding:14px 0 30px;font
 .arch{columns:3 240px;column-gap:24px;font-family:var(--cond);font-size:14px}
 .arch a{display:block;break-inside:avoid;padding:4px 0;border-bottom:1px dotted var(--soft);text-decoration:none}
 .arch a:hover{color:var(--c);text-decoration:underline}
+.aicon-h{display:inline-flex;align-items:center;gap:12px}h2.sec .aicon{display:block;height:44px;width:auto}
+.arch a .sicon{height:24px;width:auto;vertical-align:middle;margin:-2px 8px 0 0}
 .ext{display:inline-block;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--c);padding:6px 12px;text-decoration:none;margin-top:8px}
 .ext:hover{background:var(--ink)}
 .photo-r{float:right;width:40%;max-width:320px;margin:4px 0 10px 18px;border:2px solid var(--ink);background:var(--paper2);padding:0}
@@ -1398,7 +1400,7 @@ function viewPromo(k,tab){
   } else if(tab==='archive'){
     const S=SITES[k], n=S.arch.reduce((a,g)=>a+g[1].length,0);
     body=`<div class="box" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div class="kicker">${p.short} Official Archive</div><b style="font-family:var(--head);font-weight:400;font-size:24px;text-transform:uppercase">${S.label}</b><div class="mute" style="font-family:var(--cond);font-size:14px">${n} show pages. Links open the ${p.short} site in a new tab.</div></div><a class="ext" href="${S.base}WELCOME.HTM" target="_blank" rel="noopener">Open the ${p.short} site ↗</a></div>
-    ${S.arch.map(([g,items])=>`<h2 class="sec">${g} <small>${items.length} shows</small></h2>${items.length?`<div class="arch">${items.map(([t,f])=>siteLink(k,f,esc(t))).join('')}</div>`:'<div class="empty">Nothing archived here yet.</div>'}`).join('')}`;
+    ${S.arch.map(([g,items])=>{const ic=S.icons&&S.icons[g]?S.base+S.icons[g]:'';return `<h2 class="sec">${ic?`<span class="aicon-h"><img class="aicon" src="${ic}" alt="">${g}</span>`:g} <small>${items.length} shows</small></h2>${items.length?`<div class="arch">${items.map(([t,f])=>siteLink(k,f,(ic?`<img class="sicon" src="${ic}" alt="">`:'')+esc(t))).join('')}</div>`:'<div class="empty">Nothing archived here yet.</div>'}`;}).join('')}`;
   } else if(tab==='contracts'){
     body=viewContracts(k);
   } else if(tab==='finance'){
