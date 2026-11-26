@@ -711,16 +711,16 @@ function tfBlurb(f){
 }
 function talentFileBox(){
   if(!TFILES.length) return '';
-  const f=tfAll().byName.get(SPOTLIGHT.name); if(!f) return '';
+  const f=tfSpots()[0]||tfAll().byName.get(SPOTLIGHT.name); if(!f) return '';
   const last=f.run.slice(-3).reverse();
-  return `<h2 class="sec">Talent File <small>In the spotlight</small></h2>
+  return `<h2 class="sec">Talent File <small>In the spotlight today</small></h2>
   <div class="tfile">
     <div class="tf-name">${esc(f.name)} ${f.promos.map(pchip).join('')}</div>
     ${tfAgeLine(f)}
     ${tfStats(f)}
     <p class="tf-blurb">${tfBlurb(f)}</p>
     <ul class="tf-last">${last.map(x=>`<li><span class="d">${fmt(x.e.d)}</span>${pchip(x.e.p)} ${esc(x.m[0])} <span class="mute">· ${esc(x.m[1])}</span> <b class="num">${esc(x.m[2]||'')}</b></li>`).join('')}</ul>
-    <p style="font-family:var(--cond);font-size:13px;margin:6px 0 0"><a href="#file/${f.slug}">Every match →</a> · <a href="#file">All ${tfAll().list.length} Talent Files →</a></p>
+    <p style="font-family:var(--cond);font-size:13px;margin:6px 0 0"><a href="#file/${f.slug}">Every match →</a> · <a href="#file">Today's six and all ${tfAll().list.length} Talent Files →</a></p>
   </div>`;
 }
 /* Talent File spotlight: six wrestlers picked fresh each day from the active rosters (seeded by
