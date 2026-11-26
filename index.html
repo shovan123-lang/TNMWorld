@@ -618,7 +618,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/ajpw.js?v=9c0918b2"></script>
 <script src="data/njpw.js?v=bab91ae0"></script>
 <script src="data/cmll.js?v=dde3e21b"></script>
-<script src="data/asw.js?v=29569348"></script>
+<script src="data/asw.js?v=30bb2b2e"></script>
 <script src="data/twa.js?v=a82b244a"></script>
 <script src="data/fmw.js?v=d5c8dbe0"></script>
 <script src="data/history.js?v=8be05e77"></script>
@@ -971,7 +971,10 @@ function bindTalentFile(){
   const g=$('#tftag');if(g)g.onchange=()=>{tfTag=g.value;redraw();};
 }
 function tfEarnBlock(f){
-  const x=tfEarn(f); if(!x) return `<h3 class="amonth" style="font-size:22px">Earnings</h3><div class="empty">Not on a pay scale yet.</div>`;
+  const x=tfEarn(f); if(!x){
+    // On a promotion's pay scale but no paid dates yet: show the deal itself
+    const deals=ORDER.flatMap(k=>((typeof CONTRACTS!=='undefined'&&CONTRACTS[k]&&CONTRACTS[k].rows)||[]).filter(r=>tfNorm(r[1])===tfNorm(f.name)).map(r=>[k,r]));
+    return `<h3 class="amonth" style="font-size:22px">Earnings</h3><div class="empty">${deals.length?deals.map(([k,r])=>`${esc(P[k].short)}: ${r[0]} level, ${tfMoney(r[2])} ${esc(CONTRACTS[k].unit||'')}`.trim()).join(' · ')+'. No paid dates yet.':'Not on a pay scale yet.'}</div>`;}
   const by=Object.entries(x.lifeBy||{}).sort((a,b)=>b[1]-a[1]), mx=Math.max(1,...by.map(r=>r[1]));
   const lines=(x.lines||[]).filter(l=>l.kind!=='due').slice().reverse(), dueL=(x.lines||[]).filter(l=>l.kind==='due');
   return `<h3 class="amonth" style="font-size:22px">Earnings <small>career since ${esc(EARNINGS.lifeFrom||'July 1991')} · through ${fmt(EARNINGS.world)}</small></h3>
