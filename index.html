@@ -148,6 +148,13 @@ tr.big td{font-weight:700}
 .fcharts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
 .fchart{margin:0;border:2px solid var(--ink);background:var(--paper);padding:10px 12px}
 .tf-draw{margin:14px 0}
+.tf-draw summary{cursor:pointer;font-family:var(--cond);font-size:16px;list-style:none;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.tf-draw summary::-webkit-details-marker{display:none}
+.tf-draw summary::before{content:'▸';font-size:14px;transition:transform .15s}
+.tf-draw[open] summary::before{transform:rotate(90deg)}
+.tf-draw summary::after{content:'Show chart';margin-left:auto;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.tf-draw[open] summary::after{content:'Hide chart'}
+.tf-draw-head{font-size:15px}
 .di-parts{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;min-width:150px}
 .di-part{white-space:nowrap;font-family:var(--cond);font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
 .di-part i{display:block;height:6px;background:var(--soft);margin-top:2px;position:relative}
@@ -1411,6 +1418,7 @@ function tfDiaryBlock(f){
 }
 /* Draw Index chart: one point per World Clock advance (DRAWS.snaps), on a fixed 0-100 scale so every file
    reads the same way; 50 is the line between above and below average. Rank is worked out per snapshot. */
+let tfDrawOpen=false;   // the Draw Index chart starts closed; stays open between files once opened
 function tfDrawChart(f){
   if(!HAS_DRAWS||!(DRAWS.snaps||[]).length) return '';
   const k=tfNorm(f.name), pts=DRAWS.snaps.filter(x=>x.d<=WORLD_DATE&&x.rows[k]!=null).map(x=>{const v=x.rows[k];
@@ -1424,8 +1432,8 @@ function tfDrawChart(f){
   const path=pts.map((p,i)=>(i?'L':'M')+x(i).toFixed(1)+','+y(p.v).toFixed(1)).join('');
   const every=Math.max(1,Math.ceil(n/8));
   const head=`<b>${last.v.toFixed(1)}</b> · #${last.rank} of ${last.of} in the world${ch!=null?` · <span style="color:${ch>0?'var(--green,#2e7d32)':ch<0?'var(--red)':'var(--mute)'}">${ch>0?'▲ +':ch<0?'▼ ':''}${ch===0?'no change':ch.toFixed(1)}${rk?` (${rk>0?'up':'down'} ${Math.abs(rk)} spot${Math.abs(rk)===1?'':'s'})`:''}</span> since ${esc(fmt(prev.d))}`:''}${n>2&&peak!==last?` · peak ${peak.v.toFixed(1)}, ${esc(fmt(peak.d))}`:''}`;
-  return `<figure class="fchart tf-draw"><figcaption><b>Draw Index</b> <span class="mute">drawing power, 0 to 100, at each World Clock advance</span></figcaption>
-  <div style="font-family:var(--cond);font-size:15px;margin:0 0 4px">${head}</div>
+  return `<details class="fchart tf-draw"${tfDrawOpen?' open':''} ontoggle="tfDrawOpen=this.open"><summary><b>Draw Index</b> <span class="tf-draw-head">${head}</span></summary>
+  <div class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 4px">Drawing power, 0 to 100, each week. <a href="#draws">How it works →</a></div>
   <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Draw Index over time, now ${last.v.toFixed(1)}, rank ${last.rank}">
    ${[0,25,50,75,100].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="${v===50?'var(--mute)':'var(--soft)'}" stroke-width="1"${v===50?' stroke-dasharray="4 3"':''}/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" class="ax">${v}</text>`).join('')}
    ${pts.map((p,i)=>i%every===0||i===n-1?`<text x="${x(i)}" y="${H-8}" text-anchor="middle" class="ax">${+p.d.slice(5,7)}/${+p.d.slice(8,10)}</text>`:'').join('')}
@@ -1433,7 +1441,7 @@ function tfDrawChart(f){
    ${pts.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.v)}" r="${i===n-1?6:3.5}" fill="${c}" stroke="var(--paper)" stroke-width="${i===n-1?2:1}"/>`).join('')}
    ${pts.map((p,i)=>{const w=n>1?iw/(n-1):iw;return `<rect class="hit" x="${x(i)-w/2}" y="${T}" width="${w}" height="${ih}" fill="transparent" data-tip="<b>${esc(fmt(p.d))}</b><br>Draw Index <b>${p.v.toFixed(1)}</b><br>#${p.rank} of ${p.of} in the world"/>`}).join('')}
   </svg>
-  ${n<2?`<p class="mute" style="font-family:var(--cond);font-size:13px;margin:4px 0 0">First reading. The line builds from here, one point every time the World Clock moves.</p>`:''}</figure>`;
+  ${n<2?`<p class="mute" style="font-family:var(--cond);font-size:13px;margin:4px 0 0">First reading. The line builds from here, one point every week.</p>`:''}</details>`;
 }
 /* Draw Index page (#draws): the latest edition of data/draws.js, the write-ups in data/draw_notes.js,
    risers and fallers against the previous edition, and how the Index works. All copy is in-world. */
