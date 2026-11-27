@@ -568,7 +568,7 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 @media(max-width:520px){.kfilters{display:grid;grid-template-columns:1fr 1fr}.kfilters button{justify-content:space-between}}
 .ptag{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;color:#fff;margin-left:4px;vertical-align:middle;line-height:1;flex:none}
 .ptag svg{width:12px;height:12px}
-.ptag.mgr{background:#4b4234}.ptag.w{background:var(--women)}.ptag.mini{background:var(--minis)}
+.ptag.mgr{background:#4b4234}.ptag.w{background:var(--women)}.ptag.mini{background:var(--minis)}.ptag.mask{background:#7a1f2b}
 .tf-name .ptag{width:26px;height:26px;vertical-align:6px}.tf-name .ptag svg{width:18px;height:18px}
 .ptag-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--cond);font-size:13px;color:var(--mute);margin:4px 0 8px}
 .ptag-legend>span{display:inline-flex;align-items:center;gap:5px}.ptag-legend .ptag{margin-left:0}
@@ -722,7 +722,7 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={};
 </script>
 <script src="data/titles.js?v=473d2acb"></script>
-<script src="data/world.js?v=09d91ffa"></script>
+<script src="data/world.js?v=bbd4cb0a"></script>
 <script src="data/births.js?v=6c59314b"></script>
 <script src="tools/talent_engine.js?v=9ccfd69c"></script>
 <script src="data/wcw.js?v=b2282462"></script>
@@ -1152,25 +1152,29 @@ function tfTrophyBadges(f){const t=tfTroph(f);if(!t)return '';const m=t.masks.le
 const ICON_MGR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6V4.5C9 3.7 9.7 3 10.5 3h3c.8 0 1.5.7 1.5 1.5V6h4.5c.8 0 1.5.7 1.5 1.5V18c0 .8-.7 1.5-1.5 1.5h-15C3.7 19.5 3 18.8 3 18V7.5C3 6.7 3.7 6 4.5 6H9zm1.5 0h3V4.5h-3V6zM3 11.5h18v1.6H3z" fill="currentColor"/></svg>';
 const ICON_FEM='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5.2" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M12 14.2V22M8 18.5h8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
 const ICON_MINI='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="11" r="2.6" fill="currentColor"/><path d="M8.6 21v-4.2c0-1.6 1.2-2.8 2.8-2.8h1.2c1.6 0 2.8 1.2 2.8 2.8V21z" fill="currentColor"/><path d="M4 3.5h16M12 3.5v3.2M9.8 5.2 12 7l2.2-1.8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const PTAG={mgr:['Manager',ICON_MGR],w:["Women's division",ICON_FEM],mini:['Minis',ICON_MINI]};
+const PTAG={mgr:['Manager',ICON_MGR],w:["Women's division",ICON_FEM],mini:['Minis',ICON_MINI],mask:['Wears a mask',ICON_MASK]};
+const PTAG_ORDER=['mgr','w','mini','mask'];
 let _PTAGS=null;
 function ptagIndex(){
   if(_PTAGS) return _PTAGS; const T=new Map(), add=(n,t)=>{const k=tfNorm(n);if(!T.has(k))T.set(k,new Set());T.get(k).add(t);};
   const isMgr=note=>{const first=String(note||'').split(/[.·;(]/)[0];return /\bmanager\b/i.test(first)&&!/\b(fired|former|ex-|left|lost|new|his|her|their|without)\b/i.test(first);};
   const isMini=note=>/^Mini\b/i.test(String(note||'').trim());
   if(typeof WOMEN!=='undefined') WOMEN.forEach(n=>add(n,'w'));
+  // Masked: CMLL from the Apuestas tab (status Masked), everyone else from MASKED (data/world.js)
+  if(typeof MASKED!=='undefined') MASKED.forEach(n=>add(n,'mask'));
+  if(typeof APUESTAS!=='undefined') Object.values(APUESTAS).forEach(a=>Object.entries(a.status||{}).forEach(([n,v])=>{if(v&&v[0]==='Masked')add(n,'mask');}));
   ORDER.forEach(k=>{(P[k].roster||[]).forEach(([n,note])=>{if(isMgr(note))add(n,'mgr');if(isMini(note))add(n,'mini');});
     const c=typeof CONTRACTS!=='undefined'&&CONTRACTS[k]; if(c) c.rows.forEach(r=>{if(r[0]==='M')add(r[1],'mgr');if(isMini(r[3]))add(r[1],'mini');});});
   return _PTAGS=T;
 }
-const ptags=name=>[...(ptagIndex().get(tfNorm(name))||[])].sort((a,b)=>['mgr','w','mini'].indexOf(a)-['mgr','w','mini'].indexOf(b));
+const ptags=name=>[...(ptagIndex().get(tfNorm(name))||[])].sort((a,b)=>PTAG_ORDER.indexOf(a)-PTAG_ORDER.indexOf(b));
 const ptagIcons=name=>ptags(name).map(t=>`<span class="ptag ${t}" title="${PTAG[t][0]}" aria-label="${PTAG[t][0]}">${PTAG[t][1]}</span>`).join('');
-const ptagWords=name=>ptags(name).map(t=>t==='w'?'Women':PTAG[t][0].replace(/s$/,'')).join(', ');
-const ptagLegend=names=>{const has=new Set(names.flatMap(ptags));return has.size?`<div class="ptag-legend">${['mgr','w','mini'].filter(t=>has.has(t)).map(t=>`<span><span class="ptag ${t}">${PTAG[t][1]}</span>${PTAG[t][0]}</span>`).join('')}</div>`:''};
+const ptagWords=name=>ptags(name).map(t=>t==='w'?'Women':t==='mask'?'Masked':PTAG[t][0].replace(/s$/,'')).join(', ');
+const ptagLegend=names=>{const has=new Set(names.flatMap(ptags));return has.size?`<div class="ptag-legend">${PTAG_ORDER.filter(t=>has.has(t)).map(t=>`<span><span class="ptag ${t}">${PTAG[t][1]}</span>${PTAG[t][0]}</span>`).join('')}</div>`:''};
 /* "Show" dropdown on the Talent File lists: everyone, or only women, minis or managers (the same tags as the icons). */
-const PT_SHOW=[['','Everyone'],['w','Women'],['mini','Minis'],['mgr','Managers']];
+const PT_SHOW=[['','Everyone'],['w','Women'],['mini','Minis'],['mgr','Managers'],['mask','Masked']];
 const ptagShowOK=(v,names)=>!v||names.some(n=>ptags(n).includes(v));
-const ptagShow=(id,names,cur)=>{const c={w:0,mini:0,mgr:0};names.forEach(n=>ptags(n).forEach(t=>c[t]++));
+const ptagShow=(id,names,cur)=>{const c={w:0,mini:0,mgr:0,mask:0};names.forEach(n=>ptags(n).forEach(t=>c[t]++));
   return `<span class="mute" style="font-family:var(--cond);font-size:13px">Show <select id="${id}" class="tfsort">${PT_SHOW.filter(([v])=>!v||c[v]).map(([v,l])=>`<option value="${v}"${cur===v?' selected':''}>${l}${v?` (${c[v]})`:''}</option>`).join('')}</select></span>`;};
 function tfTrophyCase(f){
   const t=tfTroph(f); if(!t||!(t.masks.length||t.hair.length||t.lostM.length||t.lostH.length||t.status||t.booked.length)) return '';
