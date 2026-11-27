@@ -40,7 +40,8 @@ ShowDumps (optional): star ratings are read from lines that carry both
 a result ("def.", "beat", "pinned", "submitted", "drew", "vs.") and a
 star rating such as ***1/4 or ****.
 
-Weights: draw 35, heat+points 25, match quality 20, charisma+reach 20.
+Weights: draw (box office) 30, TV 25, crowd 20, star power 15, ring 10.
+TV and star power need --extra extra.csv (node tools/draw_extra.js).
 A missing part scores 20 out of 100 (below average), and the confidence
 column shows how many of the four parts had real data.
 """
@@ -54,7 +55,9 @@ import unicodedata
 from collections import defaultdict
 
 ENC = "cp1252"
-WEIGHTS = {"draw": 0.35, "heat": 0.25, "quality": 0.20, "star": 0.20}
+# Being well known is what makes a draw: TV carries a quarter of the index.
+WEIGHTS = {"draw": 0.30, "tv": 0.25, "heat": 0.20, "star": 0.15,
+           "quality": 0.10}
 FREE_AGENT_CARDS = 10
 MISSING = 20.0
 # Folders that are not promotions.
@@ -84,7 +87,9 @@ def find(folder, name):
 
 
 def norm(name):
-    return re.sub(r"[^a-z0-9]", "", name.lower())
+    s = unicodedata.normalize("NFD", name)
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r"[^a-z0-9]", "", s.lower())
 
 
 # ---------------------------------------------------------------- readers
@@ -224,6 +229,19 @@ def read_stars_csv(path):
     return ratings
 
 
+def read_extra(path):
+    """extra.csv from tools/draw_extra.js: tv, w, l, d, titles, worked."""
+    out = {}
+    if not path:
+        return out
+    with open(path, newline="", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            out[norm(r["wrestler"])] = {k: to_num(r.get(k, "")) or 0 for k in
+                                        ("tv", "w", "l", "d", "titles",
+                                         "worked")}
+    return out
+
+
 def read_draws(path):
     """{wrestler: (mean gate_vs_avg, mean log10 gate)} from draws.csv.
     The ratio says how he draws for his own promotion; the dollars say
@@ -361,7 +379,8 @@ def write_js(ranked, path, date):
     rows = {site_key(r["name"]): {
         "rank": r["rank"], "idx": round(r["index"], 1), "n": r["name"],
         "p": r["site_promos"],
-        "b": part(r["parts"]["draw"]), "c": part(r["parts"]["heat"]),
+        "b": part(r["parts"]["draw"]), "t": part(r["parts"]["tv"]),
+        "c": part(r["parts"]["heat"]),
         "r": part(r["parts"]["quality"]), "s": part(r["parts"]["star"])}
         for r in ranked}
     with open(path, "w", encoding="utf-8", newline="\n") as f:
@@ -376,9 +395,10 @@ def write_js(ranked, path, date):
 
 
 def rank(tnm_dir, dumps=None, draws_csv=None, out="draw_index.csv",
-         js=None, date="", stars_csv=None):
+         js=None, date="", stars_csv=None, extra_csv=None):
     master = read_master(tnm_dir)
     draws = read_draws(draws_csv)
+    xdata = read_extra(extra_csv)
 
     # Pass 1: gather per-promotion rows for hired wrestlers.
     rows = []  # one per wrestler per promotion
@@ -440,20 +460,39 @@ def rank(tnm_dir, dumps=None, draws_csv=None, out="draw_index.csv",
         rec["workrate"] = max(wr) if wr else None
         raw_star[key] = rec["charisma"]
 
+    import math
     q_s, c_s = scale(raw_quality), scale(raw_star)
+    # TV: log of the exposure credit, so the first appearances count most.
+    tv_s = scale({k: math.log1p(xdata[k]["tv"]) for k in world if k in xdata})
+    # Momentum: win rate pulled toward .500 by two wins and two losses.
+    mo_s = scale({k: (xdata[k]["w"] + 2) / (xdata[k]["w"] + xdata[k]["l"] + 4)
+                  for k in world if k in xdata})
     rel_s = scale({k: v[0] for k, v in raw_draw.items() if v})
     abs_s = scale({k: v[1] for k, v in raw_draw.items() if v and v[1]})
-    d_s = {k: (0.5 * rel_s[k] + 0.5 * abs_s[k]) if k in abs_s else rel_s[k]
+    # Mostly the money itself (a wrestler who headlines every big house is
+    # that promotion's average, so the ratio alone undersells him), some of
+    # how he does against his own promotion's usual house.
+    d_s = {k: (0.3 * rel_s[k] + 0.7 * abs_s[k]) if k in abs_s else rel_s[k]
            for k in rel_s}
     max_reach = max((len(r["promos"]) for r in world.values()), default=1)
 
     for key, rec in world.items():
-        star = None
+        x = xdata.get(key, {})
+        # Star power: charisma 40, momentum 30, titles 20, reach 10 (the
+        # promotions he has actually worked a card for, not just signed with).
+        sp = []
         if key in c_s:
-            reach = 100 * (len(rec["promos"]) - 1) / max(max_reach - 1, 1)
-            star = 0.75 * c_s[key] + 0.25 * reach
+            sp.append((0.4, c_s[key]))
+        if key in mo_s:
+            sp.append((0.3, mo_s[key]))
+        if x:
+            sp.append((0.2, min(x["titles"], 2) * 50))
+            sp.append((0.1, min(max(x["worked"] - 1, 0), 2) * 50))
+        star = (sum(w * v for w, v in sp) / sum(w for w, _ in sp)) if sp \
+            else None
         parts = {
             "draw": d_s.get(key),
+            "tv": tv_s.get(key, 0.0 if xdata else None),
             "heat": statistics.mean(rec["heat"]) if rec["heat"] else None,
             "quality": q_s.get(key),
             "star": star,
@@ -464,7 +503,7 @@ def rank(tnm_dir, dumps=None, draws_csv=None, out="draw_index.csv",
         rec["index"] = sum(WEIGHTS[k] * (v if v is not None else MISSING)
                            for k, v in parts.items())
         rec["parts"] = parts
-        rec["confidence"] = f"{len(have)}/4"
+        rec["confidence"] = f"{len(have)}/{len(parts)}"
 
     ranked = sorted(world.values(), key=lambda r: -r["index"])
     for i, r in enumerate(ranked, 1):
@@ -473,14 +512,14 @@ def rank(tnm_dir, dumps=None, draws_csv=None, out="draw_index.csv",
     with open(out, "w", newline="", encoding="utf-8") as f:
         wr = csv.writer(f)
         wr.writerow(["rank", "wrestler", "index", "confidence", "draw",
-                     "heat", "quality", "star", "promotions", "contracts",
+                     "tv", "heat", "quality", "star", "promotions", "contracts",
                      "push", "matches_rated", "charisma", "workrate"])
         for r in ranked:
             p = r["parts"]
             wr.writerow([
                 r["rank"], r["name"], round(r["index"], 1), r["confidence"],
                 *[("" if p[k] is None else round(p[k], 1))
-                  for k in ("draw", "heat", "quality", "star")],
+                  for k in ("draw", "tv", "heat", "quality", "star")],
                 "; ".join(r["promos"]),
                 "; ".join(f"{x['promo']}: {contract_label(x['contract'])}"
                           for x in r["rows"]),
@@ -537,7 +576,8 @@ def main(argv):
         print(__doc__)
         return 1
     opts = {"--dumps": None, "--draws": None, "--out": "draw_index.csv",
-            "--js": None, "--date": "", "--stars-csv": None}
+            "--js": None, "--date": "", "--stars-csv": None,
+            "--extra": None}
     args = argv[3:]
     for i in range(0, len(args) - 1, 2):
         if args[i] in opts:
@@ -546,7 +586,8 @@ def main(argv):
         probe(argv[2])
     else:
         rank(argv[2], opts["--dumps"], opts["--draws"], opts["--out"],
-             opts["--js"], opts["--date"], opts["--stars-csv"])
+             opts["--js"], opts["--date"], opts["--stars-csv"],
+             opts["--extra"])
     return 0
 
 

@@ -164,7 +164,7 @@ tr.big td{font-weight:700}
 .di-top[open] summary::after{content:'Hide list'}
 .di-top-t{font-family:var(--head);font-size:22px;text-transform:uppercase}
 .di-top-lead{font-family:var(--cond);font-size:14px;color:var(--mute)}
-.di-parts{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;min-width:150px}
+.di-parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(30px,1fr));gap:4px;min-width:170px}
 .di-part{white-space:nowrap;font-family:var(--cond);font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
 .di-part i{display:block;height:6px;background:var(--soft);margin-top:2px;position:relative}
 .di-part i b{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
@@ -712,9 +712,9 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/earnings.js?v=c3cdddce"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
 <script src="data/tournaments.js?v=c094dd90"></script>
-<script src="data/ratings.js?v=2986294c"></script>
-<script src="data/draw_notes.js?v=264db0ac"></script>
-<script src="data/draws.js?v=c1fa14b9"></script>
+<script src="data/ratings.js?v=34b6fff3"></script>
+<script src="data/draw_notes.js?v=6451ed18"></script>
+<script src="data/draws.js?v=9ac50f10"></script>
 <script>
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -1465,7 +1465,7 @@ function viewDraws(){
   const chips=r=>(r.p||[]).filter(k=>P[k]).map(pchip).join('');
   const chg=r=>{if(!prev) return '<span class="mute">new</span>';const pr=prevRank(r.k);if(pr==null)return '<span class="mute">new</span>';const d=pr-r.rank;
     return d>0?`<span class="di-chg" style="color:var(--green,#2e7d32)">▲ ${d}</span>`:d<0?`<span class="di-chg" style="color:var(--red)">▼ ${-d}</span>`:'<span class="di-chg mute">–</span>';};
-  const PARTS=[['b','Gate','Box office'],['c','Crowd','Crowd'],['r','Ring','Ring'],['s','Star','Star power']];
+  const PARTS=[['b','Gate','Box office'],['t','TV','TV'],['c','Crowd','Crowd'],['s','Star','Star power'],['r','Ring','Ring']].filter(([k])=>k!=='t'||rows.some(r=>r.t!=null));
   const bars=r=>`<div class="di-parts">${PARTS.map(([k,l,t])=>`<div class="di-part" title="${t}: ${r[k]==null?'no record yet':r[k]}">${l}<i>${r[k]!=null?`<b style="width:${r[k]}%"></b>`:''}</i></div>`).join('')}</div>`;
   const ed=Object.keys(typeof DRAW_NOTES!=='undefined'?DRAW_NOTES:{}).filter(d=>d<=WORLD_DATE).sort().pop(), N=ed?DRAW_NOTES[ed]:null;
   const noteCards=list=>`<div class="di-notes">${(list||[]).map(x=>{const k=tfNorm(x.n), r=DRAWS.rows[k], f=byKey.get(k);
@@ -1481,7 +1481,7 @@ function viewDraws(){
   return `<h2 class="sec">Draw Index <small>edition of ${esc(fmt(DRAWS.world))} · ${rows.length} wrestlers in ten promotions</small></h2>
   ${N?`<div class="di-lead"><h3 class="amonth" style="font-size:26px">${esc(N.title)}</h3><p class="dek">${esc(N.dek)}</p>${(N.paras||[]).map(p=>`<p>${esc(p)}</p>`).join('')}</div>`:''}
   <details class="di-top"${diTopOpen?' open':''} ontoggle="diTopOpen=this.open"><summary><span class="di-top-t">The top 25</span> <span class="di-top-lead">${rows.slice(0,3).map(r=>`${r.rank}. ${esc(r.n)}`).join(' · ')}</span></summary>
-  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:8px 0 6px">Bars: Gate (box office), Crowd, Ring, Star (star power). How they're weighed is at the bottom of the page.</p>
+  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:8px 0 6px">Bars: Gate (box office), TV, Crowd, Star (star power), Ring. How they're weighed is at the bottom of the page.</p>
   <div class="tbl-wrap"><table><thead><tr><th class="num">#</th><th>Wrestler</th><th class="num">Index</th><th>What it's made of</th>${prev?'<th class="num">Week</th>':''}</tr></thead><tbody>
   ${rows.slice(0,25).map(r=>`<tr><td class="num"><b>${r.rank}</b></td><td>${who(r)}<br>${chips(r)}</td><td class="num"><b>${r.idx.toFixed(1)}</b></td><td>${bars(r)}</td>${prev?`<td class="num">${chg(r)}</td>`:''}</tr>`).join('')}
   </tbody></table></div></details>
@@ -1491,16 +1491,17 @@ function viewDraws(){
   ${N&&N.cool&&N.cool.length?`<h3 class="amonth" style="font-size:22px">Cooling off</h3>${noteCards(N.cool)}`:''}
   ${N&&N.watch&&N.watch.length?`<h3 class="amonth" style="font-size:22px">Ones to watch</h3>${noteCards(N.watch)}`:''}
   <h3 class="amonth" style="font-size:22px">The leaders in each column</h3>
-  <div class="di-cats">${cat('b','Box office','Who headlines the biggest houses')}${cat('c','Crowd','Who gets the loudest reaction')}${cat('r','Ring','Whose matches rate the best')}${cat('s','Star power','Presence, and how many promotions want him')}</div>
+  <div class="di-cats">${cat('b','Box office','Who headlines the biggest houses')}${rows.some(r=>r.t!=null)?cat('t','Television','Who the most fans see every week'):''}${cat('c','Crowd','Who gets the loudest reaction')}${cat('s','Star power','Presence, momentum and gold')}${cat('r','Ring','Whose matches rate the best')}</div>
   <div class="di-how"><h3 class="amonth" style="font-size:22px">How the Draw Index works</h3>
-  <p>The Draw Index is the Report's weekly measure of who really draws in the wrestling business, from Atlanta to Arena México to the Budokan. Every wrestler working in one of the ten promotions we cover gets a number from 0 to 100. Fifty is an average working wrestler; the true main eventers live in the sixties and up. It's built from four things, weighted the way a promoter would weigh them:</p>
+  <p>The Draw Index is the Report's weekly measure of who really draws in the wrestling business, from Atlanta to Arena México to the Budokan. Every wrestler working in one of the ten promotions we cover gets a number from 0 to 100. A working wrestler sits in the thirties and forties; the true main eventers live in the sixties and up. Being well known is what makes a draw, so it's built from five things, weighted the way a promoter would weigh them:</p>
   <ul>
-   <li><b>Box office (35%).</b> When he's in the main event, how does the house compare with what that promotion usually does? We count both: a sellout in a small hall is a good night for that office, but a full Budokan or a $200,000 Arena México is a bigger one, and the Index knows the difference.</li>
-   <li><b>Crowd (25%).</b> How loud the building gets when he comes through the curtain, as our correspondents report it, plus where he stands in his own promotion's rankings.</li>
-   <li><b>Ring (20%).</b> The average star rating of his last ten matches. A man who draws and can't work won't draw for long.</li>
-   <li><b>Star power (20%).</b> Charisma and presence, and reach: a wrestler wanted in more than one territory is worth more to all of them.</li>
+   <li><b>Box office (30%).</b> When he's in the main event, how much money is in the building? Mostly the dollars themselves (a full Budokan or a $200,000 Arena México beats a sold-out bingo hall), and some of how the house compares with what that promotion usually does.</li>
+   <li><b>Television (25%).</b> Every week he's on a television show, and how that episode rated. National TV counts most: TBS, USA Network and the syndicated shows in America, TV Asahi and Nippon TV in Japan. Regional TV counts half. Wrestling on the show counts in full; an interview, an angle or standing at ringside counts half. A wrestler nobody sees on TV can't be a star outside the building he works in.</li>
+   <li><b>Crowd (20%).</b> How loud the building gets when he comes through the curtain, as our correspondents report it, plus where he stands in his own promotion's rankings.</li>
+   <li><b>Star power (15%).</b> Charisma and presence, momentum (fans rally behind a winner, and a man who keeps losing cools off), the gold around his waist, and the number of promotions he's actually working for.</li>
+   <li><b>Ring (10%).</b> The average star rating of his last ten matches. Great matches keep a draw drawing, but they don't make anyone famous by themselves.</li>
   </ul>
-  <p>The Index counts what a wrestler is doing now. A man who isn't headlining, or isn't working at all through injury, a contract dispute or a move to a new territory, gets little credit in that column until he's back in front of a crowd, however big his name is. That's why some famous names sit low and some workhorses sit high.</p>
+  <p>The Index counts what a wrestler is doing now. A man who isn't headlining, isn't on TV, or isn't working at all through injury, a contract dispute or a move to a new territory gets little credit until he's back in front of the fans, however big his name is. That's why some famous names sit low and some TV regulars sit high.</p>
   <p>The Index comes out every week. Each wrestler's Talent File charts his number over time, and the Report's TV ratings estimates use it too: a show built on top draws does a bigger number.</p></div>`;
 }
 function viewTalentFile(slug){

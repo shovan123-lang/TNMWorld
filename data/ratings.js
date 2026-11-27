@@ -198,7 +198,7 @@ function tvRatings(D) {
     const key = e.p + " " + e.d + " " + s.id;
     const fixed = R.fixed[key] != null;
     if (fixed) v = R.fixed[key];
-    const ep = {show: s, e, d: e.d, week: weekOf(e.d), v, fixed, prev: prev ? prev.v : null, q, qFrom, qText, who: [...who.keys()], sp, draw, drawWho, snap: snap ? snap.d : null, titles, hype, crowd, lift, rerun};
+    const ep = {show: s, e, m, d: e.d, week: weekOf(e.d), v, fixed, prev: prev ? prev.v : null, q, qFrom, qText, who: [...who.keys()], sp, draw, drawWho, snap: snap ? snap.d : null, titles, hype, crowd, lift, rerun};
     eps.push(ep); last[s.id] = ep; byCard.set(e, ep);
   }
   const byShow = {}; R.shows.forEach(s => byShow[s.id] = eps.filter(x => x.show === s));
