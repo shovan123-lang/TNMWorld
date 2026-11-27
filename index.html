@@ -418,6 +418,9 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 .amonth small{font-family:var(--cond);font-size:13px;letter-spacing:.1em;color:var(--mute);margin-left:8px}
 .arate{font-family:var(--cond);font-weight:700;font-size:13px;margin-left:6px}
 .adet{padding-left:58px;font-family:var(--cond);font-size:13px;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:2px}
+.rhead.ma{color:var(--c,var(--red));border-bottom-color:var(--c,var(--red))}
+.rblurb{font-family:var(--cond);font-size:13px;margin:2px 0 6px}
+.rgrid .disc{font-style:normal;font-family:var(--cond);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--c,var(--red));margin-right:2px}
 .rhead.mini{color:var(--minis);border-bottom-color:var(--minis)}
 .roster.mini div{border-left:4px solid var(--minis);padding-left:8px;background:rgba(42,111,151,.06)}
 .roster.mini div b{color:var(--minis)}
@@ -731,7 +734,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/cmll.js?v=52efc723"></script>
 <script src="data/asw.js?v=38836ba2"></script>
 <script src="data/twa.js?v=035b6ed4"></script>
-<script src="data/fmw.js?v=88794d12"></script>
+<script src="data/fmw.js?v=bf90fb8b"></script>
 <script src="data/history.js?v=8be05e77"></script>
 <script src="data/earnings.js?v=c3cdddce"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
@@ -2686,8 +2689,10 @@ function viewPromo(k,tab){
   } else if(tab==='roster'){
     body = p.roster.length? `<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0;gap:10px;flex-wrap:wrap"><input class="search" id="rsearch" placeholder="Search ${p.roster.length} names…"><span class="mute" style="font-family:var(--cond);font-size:13px">${k==='ajpw'?'Number = age as of July 1991':''}</span></div>${ptagLegend(p.roster.map(r=>r[0]))}${(()=>{const card=([n,note],cls)=>{const inj=note.startsWith('INJ:');return `<div data-n="${esc(n.toLowerCase())}"${cls?` class="${cls}"`:''}><b>${esc(n)}</b>${ptagIcons(n)}${inj?'<span class="flag inj">INJ</span>':''}<span>${esc(inj?note.slice(4):note)||'&nbsp;'}</span></div>`};
       const isW=r=>typeof WOMEN!=='undefined'&&WOMEN.has(r[0]), isMini=r=>/^Mini\b/i.test(r[1]||'');
-      const groups=[["Men's division",'',p.roster.filter(r=>!isW(r)&&!isMini(r))],["Women's division",'w',p.roster.filter(isW)],["Mini's division",'mini',p.roster.filter(r=>!isW(r)&&isMini(r))]].filter(g=>g[2].length);
-      return groups.length>1?groups.map(([t,c,list])=>`<h3 class="rhead ${c}">${t} <small>${list.length}</small></h3><div class="roster rgrid ${c}">${list.map(r=>card(r,c)).join('')}</div>`).join(''):`<div class="roster rgrid">${p.roster.map(r=>card(r,'')).join('')}</div>`})()}`
+      const FT=p.fighters||null, isF=r=>!!(FT&&FT.list[r[0]]);
+      const groups=[["Men's division",'',p.roster.filter(r=>!isW(r)&&!isMini(r)&&!isF(r))],[FT?FT.title:'','ma',p.roster.filter(isF)],["Women's division",'w',p.roster.filter(isW)],["Mini's division",'mini',p.roster.filter(r=>!isW(r)&&isMini(r))]].filter(g=>g[2].length);
+      const fcard=([n,note])=>card([n,note],'ma').replace('<span>',`<span><em class="disc">${esc(FT.list[n])}</em> `);
+      return groups.length>1?groups.map(([t,c,list])=>`<h3 class="rhead ${c}">${t} <small>${list.length}</small></h3>${c==='ma'&&FT.blurb?`<p class="mute rblurb">${esc(FT.blurb)}</p>`:''}<div class="roster rgrid ${c}">${list.map(r=>c==='ma'?fcard(r):card(r,c)).join('')}</div>`).join(''):`<div class="roster rgrid">${p.roster.map(r=>card(r,'')).join('')}</div>`})()}`
       : `<div class="empty" style="margin-top:20px">No roster on file. Build it as you go.</div>`;
   } else {
     const ran=e=>isPast(e.d)&&pastE(e), sch=ev.filter(e=>!ran(e)), done=ev.filter(ran).sort((a,b)=>b.d.localeCompare(a.d));
