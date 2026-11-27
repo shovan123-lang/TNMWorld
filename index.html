@@ -731,7 +731,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/pp.js?v=954659ea"></script>
 <script src="data/ajpw.js?v=7d12d6b5"></script>
 <script src="data/njpw.js?v=e6a99d9e"></script>
-<script src="data/cmll.js?v=52efc723"></script>
+<script src="data/cmll.js?v=396b55dd"></script>
 <script src="data/asw.js?v=38836ba2"></script>
 <script src="data/twa.js?v=035b6ed4"></script>
 <script src="data/fmw.js?v=bf90fb8b"></script>
@@ -739,7 +739,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/earnings.js?v=c3cdddce"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
 <script src="data/tournaments.js?v=c094dd90"></script>
-<script src="data/ratings.js?v=34b6fff3"></script>
+<script src="data/ratings.js?v=fc43c9e5"></script>
 <script src="data/draw_notes.js?v=d9c41efe"></script>
 <script src="data/draws.js?v=971ae2ad"></script>
 <script>
@@ -1575,7 +1575,7 @@ function viewDraws(){
   <p>The Draw Index is the Report's weekly measure of who really draws in the wrestling business, from Atlanta to Arena México to the Budokan. Every wrestler working in one of the ten promotions we cover gets a number from 0 to 100. A working wrestler sits in the thirties and forties; the true main eventers live in the sixties and up. Being well known is what makes a draw, so it's built from five things, weighted the way a promoter would weigh them:</p>
   <ul>
    <li><b>Box office (30%).</b> When he's in the main event, how much money is in the building? Mostly the dollars themselves (a full Budokan or a $200,000 Arena México beats a sold-out bingo hall), and some of how the house compares with what that promotion usually does.</li>
-   <li><b>Television (25%).</b> Every week he's on a television show, and how that episode rated. National TV counts most: TBS, USA Network and the syndicated shows in America, TV Asahi and Nippon TV in Japan. Regional TV counts half. Wrestling on the show counts in full; an interview, an angle or standing at ringside counts half. A wrestler nobody sees on TV can't be a star outside the building he works in.</li>
+   <li><b>Television (25%).</b> Every week he's on a television show, and how that episode rated. National TV counts most: TBS, USA Network and the syndicated shows in America, TV Asahi and Nippon TV in Japan, Televisa in Mexico. Regional TV counts half. Wrestling on the show counts in full; an interview, an angle or standing at ringside counts half. A wrestler nobody sees on TV can't be a star outside the building he works in.</li>
    <li><b>Crowd (20%).</b> How loud the building gets when he comes through the curtain, as our correspondents report it, plus where he stands in his own promotion's rankings.</li>
    <li><b>Star power (15%).</b> Charisma and presence, momentum (fans rally behind a winner, and a man who keeps losing cools off), the gold around his waist, and the number of promotions he's actually working for.</li>
    <li><b>Ring (10%).</b> The average star rating of his last ten matches. Great matches keep a draw drawing, but they don't make anyone famous by themselves.</li>
@@ -1948,7 +1948,7 @@ function viewRatings(k){
     <li><b>Crowd:</b> ${pc(W.crowd)} for ${W.crowdBig.toLocaleString('en-US')} or more on camera, less for under ${W.crowdSmall.toLocaleString('en-US')}.</li>
     <li><b>Carryover:</b> ratings are sticky, so the final number is ${pc(1-W.carry)} this week's and ${pc(W.carry)} the show's last rated episode, kept inside the slot's range.</li></ul>
     <div class="tbl-wrap"><table><thead><tr><th>Show</th><th>Slot</th><th class="num">Usual</th><th class="num">Range</th></tr></thead><tbody>${shows.map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.outlet)}</td><td class="num">${tvNum(s,s.base)}</td><td class="num">${tvNum(s,s.min)} to ${tvNum(s,s.max)}</td></tr>`).join('')}</tbody></table></div>
-    <p class="mute">Starting points are 1991-style estimates, not real Nielsen or Video Research figures. Japanese shows are charted on the tour night taped for TV. New episodes are rated as soon as their results are logged.</p>
+    <p class="mute">Starting points are 1991-style estimates, not real Nielsen, Video Research or Mexican figures. Japanese shows are charted on the tour night taped for TV, and CMLL on the Friday at Arena México taped for Sunday. New episodes are rated as soon as their results are logged.</p>
   </details>`:''}`;
 }
 /* The weekly chart: one line per show, weeks Monday to Sunday along the bottom. Drawn at the box's width; redrawn on resize. */
@@ -2015,7 +2015,7 @@ let _rResize;window.addEventListener('resize',()=>{clearTimeout(_rResize);_rResi
    "Vs usual" (the latest rating against the show's usual number for its slot) is the one figure that compares
    shows across markets. #ratings starts at the first month this world has shows of its own; #ratings/all adds the
    archive history (USWA from September 1990). ---- */
-const WR_COLORS={wwf:'#1f6fd1',wcw:'#a87500',uswa:'#008f73',njpw:'#6a4ce2',ajpw:'#d4561a'};   /* one per promotion; the promotions that share a panel (WWF and WCW, NJPW and AJPW) are checked for colour-blind separation on the paper */
+const WR_COLORS={wwf:'#1f6fd1',wcw:'#a87500',uswa:'#008f73',njpw:'#6a4ce2',ajpw:'#d4561a',cmll:'#1c3d8f'};   /* one per promotion; the promotions that share a panel (WWF and WCW, NJPW and AJPW) are checked for colour-blind separation on the paper */
 const WR_MARKS=[['circle',''],['square','6 4'],['triangle','1.5 3.5'],['diamond','8 3 1.5 3']];   /* marker and dash for a promotion's 1st to 4th show, in RATINGS.shows order */
 const wrColor=s=>WR_COLORS[s.p]||'#6a645a';
 const wrMark=s=>WR_MARKS[Math.max(0,tvShows(s.p).indexOf(s))%WR_MARKS.length];
@@ -2080,7 +2080,7 @@ function viewWorldRatings(t){
   const ppv=T.ppvs.slice().sort((a,b)=>b.d.localeCompare(a.d)||(b.buys??-1)-(a.buys??-1)), maxB=Math.max(1,...ppv.map(x=>x.buys||0));
   const ppvRows=ppv.map(x=>`<tr><td style="white-space:nowrap">${esc(fmtY(x.d))}</td><td>${pchip(x.p)} <a href="#${x.p}/ratings">${esc(x.name)}</a></td><td class="num">${x.buys!=null?`<b>${x.buys.toLocaleString('en-US')}</b>`:'<span class="mute">Not yet reported</span>'}</td><td class="wbar-td">${x.buys!=null?`<div class="wbar"><i style="width:${(x.buys/maxB*100).toFixed(1)}%;background:${WR_COLORS[x.p]||'var(--ink)'}"></i></div>`:''}</td><td class="num">${x.take!=null?money(x.take):'—'}</td></tr>`).join('');
   return `<h2 class="sec">TV Ratings &amp; PPV Buys <small>Every rated show in the TNM World</small></h2>
-  <p class="mute" style="font-family:var(--cond);font-size:14px;margin:0 0 6px">US national, USWA local and Japanese ratings are counted on different scales, so each market has its own chart with its own axis, and a local or Japanese number can't be set against a national one. To compare shows across markets, use <b>Vs usual</b>: each show's latest rating against its usual number for its time slot.</p>
+  <p class="mute" style="font-family:var(--cond);font-size:14px;margin:0 0 6px">US national, USWA local, Japanese and Mexican ratings are counted on different scales, so each market has its own chart with its own axis, and a local, Japanese or Mexican number can't be set against a national one. To compare shows across markets, use <b>Vs usual</b>: each show's latest rating against its usual number for its time slot.</p>
   ${tiles?`<div class="wr-tiles">${tiles}</div>`:''}
   ${range}
   ${D.eps.length?panels:'<div class="empty">No episodes rated yet.</div>'}

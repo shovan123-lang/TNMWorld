@@ -7,7 +7,10 @@
 
    Which shows: RATINGS.shows (Sean's list, 2026-11-26): WWF Superstars, Challenge, Prime Time, All American;
    WCW Pro and Saturday Night; USWA Championship TV and Mid-South Showcase (called Worldwide until WCW's cease-and-desist, 7/22/91); and the Japanese tour nights that are on TV
-   (an NJPW or AJPW card whose type says TV Asahi, World Pro Wrestling, Nippon TV or TV taping).
+   (an NJPW or AJPW card whose type says TV Asahi, World Pro Wrestling, Nippon TV or TV taping); and CMLL on Televisa
+   (Sean, 2026-11-27): the Friday card at Arena México, taped for Sunday. A CMLL card is an airing when its type is
+   Viernes Espectacular, Verano de Escándalo or says "Televisa taping" (Arena México Fridays only; every other CMLL
+   date is a non-televised house show). Charted on the Friday it was taped, like the Japanese tour nights.
    A card is an airing when its promotion matches and its type matches the show's `match`. US tapings are skipped
    (the episode is its own card on its air date). An airing is rated once it has run (the Show Archive rule) and
    has results: its own match list, or, for an episode with none, the lines of an earlier taping that start "Ep N".
@@ -43,7 +46,8 @@
 
    Units. WWF and WCW: national Nielsen household ratings. USWA: local household ratings in the markets that carry
    each show (Memphis for Championship TV). NJPW and AJPW: Video Research household ratings (%), charted on the
-   tour night taped for TV. Don't compare across units: the World ratings page (World menu, TV Ratings) gives each
+   tour night taped for TV. CMLL: Mexico City household ratings (the starting point, 9.0, is a 1991-style estimate
+   for a Sunday network slot). Don't compare across units: the World ratings page (World menu, TV Ratings) gives each
    unit (`market`) its own panel, and compares shows across markets only against each show's usual number (`base`).
 
    To set a number by hand (a "real" rating), add it to RATINGS.fixed as "<promo> <date> <show id>": 4.1.
@@ -60,7 +64,8 @@ const RATINGS = {
   units: {
     nielsen: {label: "Nielsen rating", long: "National Nielsen household rating", market: "US national", pct: 0},
     local: {label: "Local rating", long: "Local household rating in the markets that carry each show (Memphis for Championship TV)", market: "USWA local", pct: 0},
-    vr: {label: "Rating (%)", long: "Video Research household rating, charted on the tour night taped for TV", market: "Japan", pct: 1}
+    vr: {label: "Rating (%)", long: "Video Research household rating, charted on the tour night taped for TV", market: "Japan", pct: 1},
+    mx: {label: "Rating", long: "Mexico City household rating, charted on the Friday night at Arena México taped for Sunday", market: "Mexico", pct: 0}
   },
   shows: [
     {id: "superstars", p: "wwf", name: "WWF Superstars", short: "Superstars", match: /^Superstars\b/i, outlet: "Syndication, Saturday morning", base: 3.6, min: 2.6, max: 4.8, unit: "nielsen"},
@@ -72,7 +77,8 @@ const RATINGS = {
     {id: "championship", p: "uswa", name: "USWA Championship TV", short: "Championship TV", match: /^Championship (Wrestling|TV)\b/i, outlet: "WMC-TV Memphis, Saturday morning, live", base: 9.5, min: 6.0, max: 14.0, unit: "local"},
     {id: "worldwide", p: "uswa", name: "USWA Mid-South Showcase", short: "Mid-South Showcase", match: /^(Worldwide|Mid-South Showcase)\b/i, outlet: "Regional syndication · called Worldwide through 7/17/91", base: 3.5, min: 2.0, max: 5.5, unit: "local"},
     {id: "wpw", p: "njpw", name: "World Pro Wrestling", short: "World Pro Wrestling", match: /TV Asahi|World Pro Wrestling|TV taping/i, tour: 1, outlet: "TV Asahi", base: 6.2, min: 4.0, max: 9.0, unit: "vr"},
-    {id: "ntv", p: "ajpw", name: "All Japan on Nippon TV", short: "Nippon TV", match: /Nippon TV|TV taping/i, tour: 1, outlet: "Nippon TV", base: 5.6, min: 3.5, max: 8.5, unit: "vr"}
+    {id: "ntv", p: "ajpw", name: "All Japan on Nippon TV", short: "Nippon TV", match: /Nippon TV|TV taping/i, tour: 1, outlet: "Nippon TV", base: 5.6, min: 3.5, max: 8.5, unit: "vr"},
+    {id: "televisa", p: "cmll", name: "CMLL on Televisa", short: "Televisa", match: /^Viernes Espectacular\b|^Verano de Esc[aá]ndalo\b|Televisa taping/i, tour: 1, outlet: "Televisa, Sunday (taped Friday at Arena México)", base: 9.0, min: 6.0, max: 13.0, unit: "mx"}
   ],
   weights: {card: 0.06, cardMid: 2.5, cardNone: 2, draw: 0.03, drawMid: 0.5, drawTop: 3, drawEmpty: 20, tierShare: 0.4, tierScore: {A: 1, B: 0.75, C: 0.5, D: 0.3, E: 0.15, F: 0.1}, stars: 0.04, starsCap: 3, titles: 0.03, titlesCap: 2, hype: 0.06, hypeDays: 7, crowd: 0.03, crowdBig: 10000, crowdSmall: 1500, carry: 0.4},
   ppv: /\(PPV\)|pay-per-view|^The Great American Bash\b/i,

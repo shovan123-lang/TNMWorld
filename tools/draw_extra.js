@@ -26,7 +26,7 @@ const extra = ctx.TalentEngine.extras(P, ctx.CONTRACTS, ctx.TALENT_EXTRA || [], 
 const files = ctx.TalentEngine.build(P, (ctx.HIST || []).concat(ctx.E), {past, world: W, teams: TEAMS, extra});
 const T = ctx.tvRatings({P, E: ctx.E, CONTRACTS: ctx.CONTRACTS, FINANCE: ctx.FINANCE, TEAMS, WORLD_DATE: W, HIST: [], DRAWS: null});
 
-const REACH = {nielsen: 1.0, vr: 0.9, local: 0.5};
+const REACH = {nielsen: 1.0, vr: 0.9, mx: 0.9, local: 0.5};
 const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const credit = ep => (REACH[ep.show.unit] || 0.5) * ep.v / ep.show.base;
 const onMatch = new Map();   // match row object -> credit of the episode it aired on
