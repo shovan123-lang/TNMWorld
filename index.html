@@ -147,6 +147,9 @@ tr.big td{font-weight:700}
 .tbl-wrap{overflow-x:auto}
 .fcharts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
 .fchart{margin:0;border:2px solid var(--ink);background:var(--paper);padding:10px 12px}
+.tf-draw{margin:14px 0}
+.tf-draw svg{width:100%;height:auto;display:block}
+.fchart.tf-draw svg .ax{font-size:17px}
 .fchart:last-child{grid-column:1/-1}
 .fchart figcaption{font-family:var(--cond);font-size:15px;margin-bottom:6px;display:flex;gap:8px;flex-wrap:wrap;align-items:baseline}
 .fchart .lg{margin-left:auto;font-size:13px;color:var(--mute);display:flex;gap:6px;align-items:center}
@@ -482,6 +485,7 @@ nav.main .menu a:hover{background:var(--paper2);color:var(--c,var(--ink));box-sh
 .res{display:inline-block;min-width:20px;text-align:center;font-family:var(--cond);font-weight:700;font-size:12px;padding:1px 4px;color:#fff;background:var(--mute)}
 .res-w{background:#2f6b3a}.res-l{background:var(--red)}.res-d{background:#8a7d63}
 .tfsort{font-family:var(--cond);font-size:14px;padding:4px 6px;border:2px solid var(--ink);background:var(--paper)}
+.tfsort.on{background:var(--ink);color:var(--paper)}
 .tfdir{cursor:pointer;font-weight:700;color:var(--ink);white-space:nowrap}.tfdir:hover{background:var(--ink);color:var(--paper)}
 .mtf .search,.mtf select{width:100%;max-width:none;box-sizing:border-box}
 .mtf select{margin-top:8px}
@@ -659,15 +663,15 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 /* Data containers. Each promotion's file in data/ fills these in. */
 const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={};
 </script>
-<script src="data/titles.js?v=bf7b267d"></script>
+<script src="data/titles.js?v=473d2acb"></script>
 <script src="data/world.js?v=09d91ffa"></script>
 <script src="data/births.js?v=6c59314b"></script>
 <script src="tools/talent_engine.js?v=9ccfd69c"></script>
-<script src="data/wcw.js?v=b1563379"></script>
+<script src="data/wcw.js?v=b2282462"></script>
 <script src="data/wwf.js?v=615e118e"></script>
 <script src="data/uswa.js?v=ad5c3d4b"></script>
 <script src="data/pp.js?v=954659ea"></script>
-<script src="data/ajpw.js?v=13dbd89d"></script>
+<script src="data/ajpw.js?v=7d12d6b5"></script>
 <script src="data/njpw.js?v=e6a99d9e"></script>
 <script src="data/cmll.js?v=52efc723"></script>
 <script src="data/asw.js?v=38836ba2"></script>
@@ -677,7 +681,8 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/earnings.js?v=c3cdddce"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
 <script src="data/tournaments.js?v=c094dd90"></script>
-<script src="data/ratings.js?v=82451221"></script>
+<script src="data/ratings.js?v=2986294c"></script>
+<script src="data/draws.js?v=1e522114"></script>
 <script>
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -995,7 +1000,12 @@ function tfSpots(){
   _TFS={day,list:out};return out;
 }
 const tfIsSpot=f=>tfSpots().includes(f);
-let tfFilter=new Set(), tfSort='matches', tfTag='', tfDir=1;
+let tfFilter=new Set(), tfSort='matches', tfTag='', tfDir=1, tfTop=false;
+/* Draw Index (data/draws.js, written by tools/tnm_draw.py at each World Clock advance) */
+const HAS_DRAWS=typeof DRAWS!=='undefined'&&!!DRAWS.rows;
+const tfDraw=f=>HAS_DRAWS?DRAWS.rows[tfNorm(f.name)]||null:null;
+const TF_TOP=25;
+const tfDrawBadge=f=>{const d=tfDraw(f);return d&&d.rank<=TF_TOP?` <span class="flag" style="color:var(--red)" title="Draw Index ${d.idx}">#${d.rank} draw</span>`:''};
 function viewTalentFileIndex(){
   const T=tfAll(), hasE=typeof EARNINGS!=='undefined';
   const spots=tfSpots();
@@ -1007,28 +1017,31 @@ function viewTalentFileIndex(){
   <div class="tf-grid">${spots.map(card).join('')}</div>
   <h3 class="amonth" style="font-size:22px">Every wrestler <small>${T.list.length}</small></h3>
   <div class="efilters tffilters">${ORDER.map(k=>`<button data-f="${k}" class="${!tfFilter.size||tfFilter.has(k)?'':'off'}${LOGO[k]?' logo':''}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</button>`).join('')}</div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['stars','Star Rating'],['earn','Career $'],['bonus','Bonuses'],['titles','Title reigns'],['trophies','Mask & hair'],['age','Age'],['name','Name']].map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select> <button type="button" id="tfdir" class="tfsort tfdir" title="Flip the sort">${tfDirLabel(tfSort,tfDir)}</button></span>${ptagShow('tftag',T.list.map(f=>f.name),tfTag)}</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 6px"><input class="search" id="tfsearch" placeholder="Find a wrestler…"><span class="mute" style="font-family:var(--cond);font-size:13px">Sort by <select id="tfsort" class="tfsort">${[['matches','Matches'],['wins','Wins'],['stars','Star Rating'],['earn','Career $'],['bonus','Bonuses'],['titles','Title reigns'],['trophies','Mask & hair'],['age','Age'],['name','Name']].concat(HAS_DRAWS?[['draw','Draw Index']]:[]).map(([v,l])=>`<option value="${v}"${tfSort===v?' selected':''}>${l}</option>`).join('')}</select> <button type="button" id="tfdir" class="tfsort tfdir" title="Flip the sort">${tfDirLabel(tfSort,tfDir)}</button>${HAS_DRAWS?` <button type="button" id="tftop" class="tfsort${tfTop?' on':''}" aria-pressed="${tfTop}" title="Only the world's top ${TF_TOP} draws">Top draws</button>`:''}</span>${ptagShow('tftag',T.list.map(f=>f.name),tfTag)}</div>
   ${ptagLegend(T.list.map(f=>f.name))}
-  <div class="tbl-wrap"><table id="tftbl"><thead><tr><th>Wrestler</th><th>Promotions</th><th class="num">Age</th><th class="num">Record</th><th class="num">Matches</th><th class="num">Star Rating</th><th class="num" id="tfmoneyh">${tfSort==='bonus'?'Bonuses':'Career $'}</th></tr></thead><tbody>${tfRows()}</tbody></table></div>
+  <div class="tbl-wrap"><table id="tftbl"><thead><tr><th>Wrestler</th><th>Promotions</th><th class="num">Age</th><th class="num">Record</th><th class="num">Matches</th><th class="num">Star Rating</th><th class="num" id="tfmoneyh">${tfColHead()}</th></tr></thead><tbody>${tfRows()}</tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Every name on every roster, plus wrestlers who have left, anyone else on a pay scale, and named enhancement talent. Records are worked out from the results on the cards (tag matches count for every member); "undecided" results don't count either way. Ages are worked out from each wrestler's date of birth and the World Clock, so they move as the clock does; "—" means no date of birth on record. Career earnings count everything paid in this world since ${hasE?esc(EARNINGS.lifeFrom||'July 1991'):'July 1991'} and add up as the World Clock advances. Bonuses are champions' pool shares (3% of each card's gate, split among that promotion's champions on the card) plus main-event bonuses.</p>`;
 }
+const tfColHead=()=>tfSort==='bonus'?'Bonuses':tfSort==='draw'?'Draw Index':'Career $';
 const tfBonus=x=>x?(x.lifeBonus!=null?x.lifeBonus:x.bonus)||0:0;
-const tfCash=(x,srt)=>srt==='bonus'?(tfBonus(x)?tfMoney(tfBonus(x)):'—'):x?tfMoney(x.life):'—';
+const tfCash=(x,srt,f)=>srt==='draw'?(d=>d?`${d.idx} <span class="mute">#${d.rank}</span>`:'—')(f&&tfDraw(f)):srt==='bonus'?(tfBonus(x)?tfMoney(tfBonus(x)):'—'):x?tfMoney(x.life):'—';
 function tfRows(){
   const T=tfAll(), q=(($('#tfsearch')||{}).value||'').toLowerCase();
-  const val=f=>tfSort==='name'?0:tfSort==='age'?((tfAge(f)||{}).sort??null):tfSort==='wins'?f.w:tfSort==='stars'?tfStars(f):tfSort==='earn'?((tfEarn(f)||{}).life??null):tfSort==='bonus'?tfBonus(tfEarn(f)):tfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
-  return T.list.filter(f=>(!tfFilter.size||f.promos.some(k=>tfFilter.has(k)))&&(!tfTag||ptags(f.name).includes(tfTag))&&f.name.toLowerCase().includes(q))
+  const val=f=>tfSort==='name'?0:tfSort==='age'?((tfAge(f)||{}).sort??null):tfSort==='wins'?f.w:tfSort==='stars'?tfStars(f):tfSort==='earn'?((tfEarn(f)||{}).life??null):tfSort==='bonus'?tfBonus(tfEarn(f)):tfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:tfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):tfSort==='draw'?((tfDraw(f)||{}).idx??null):f.run.length;
+  return T.list.filter(f=>(!tfTop||(tfDraw(f)&&tfDraw(f).rank<=TF_TOP))&&(!tfFilter.size||f.promos.some(k=>tfFilter.has(k)))&&(!tfTag||ptags(f.name).includes(tfTag))&&f.name.toLowerCase().includes(q))
     .sort(tfCmp(val,tfDir,tfSort==='name'))
-    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${ptagIcons(f.name)} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,tfSort)}</td></tr>`}).join('')
+    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${ptagIcons(f.name)} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfDrawBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td><td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td><td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,tfSort,f)}</td></tr>`}).join('')
     || '<tr><td colspan="7" class="mute">No one matches.</td></tr>';
 }
 function bindTalentFile(){
-  const redraw=()=>{const b=$('#tftbl tbody');if(b)b.innerHTML=tfRows();const h=$('#tfmoneyh');if(h)h.textContent=tfSort==='bonus'?'Bonuses':'Career $';};
+  const redraw=()=>{const b=$('#tftbl tbody');if(b)b.innerHTML=tfRows();const h=$('#tfmoneyh');if(h)h.textContent=tfColHead();};
   document.querySelectorAll('.tffilters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;if(!tfFilter.size)tfFilter=new Set([f]);else if(tfFilter.has(f))tfFilter.delete(f);else tfFilter.add(f);
     document.querySelectorAll('.tffilters button').forEach(x=>x.classList.toggle('off',!!tfFilter.size&&!tfFilter.has(x.dataset.f)));redraw();});
   const s=$('#tfsearch');if(s)s.oninput=redraw; const o=$('#tfsort');if(o)o.onchange=()=>{tfSort=o.value;const d=$('#tfdir');if(d)d.textContent=tfDirLabel(tfSort,tfDir);redraw();};
   const dr=$('#tfdir');if(dr)dr.onclick=()=>{tfDir=-tfDir;dr.textContent=tfDirLabel(tfSort,tfDir);redraw();};
   const g=$('#tftag');if(g)g.onchange=()=>{tfTag=g.value;redraw();};
+  const tp=$('#tftop');if(tp)tp.onclick=()=>{tfTop=!tfTop;tp.classList.toggle('on',tfTop);tp.setAttribute('aria-pressed',tfTop);
+    if(tfTop&&tfSort!=='draw'){tfSort='draw';tfDir=1;const o=$('#tfsort');if(o)o.value='draw';const d=$('#tfdir');if(d)d.textContent=tfDirLabel(tfSort,tfDir);}redraw();};
 }
 function tfEarnBlock(f){
   const x=tfEarn(f); if(!x){
@@ -1380,6 +1393,32 @@ function tfDiaryBlock(f){
   return `<h3 class="amonth" style="font-size:22px">From the Road <small>${ids.length} diar${ids.length===1?'y':'ies'} by ${esc(f.name)}</small></h3>
   <ul class="slist tf-diaries">${ids.map(id=>{const a=ARTICLES[id];return `<li class="srow"><span class="d">${fmt(a.date)}</span>${pchip(a.p)}<span class="kind k-diary">Diary</span><a href="#${id}"><b>${esc(a.title)}</b></a>${a.dek?`<span class="dek">${esc(a.dek)}</span>`:''}</li>`}).join('')}</ul>`;
 }
+/* Draw Index chart: one point per World Clock advance (DRAWS.snaps), on a fixed 0-100 scale so every file
+   reads the same way; 50 is the line between above and below average. Rank is worked out per snapshot. */
+function tfDrawChart(f){
+  if(!HAS_DRAWS||!(DRAWS.snaps||[]).length) return '';
+  const k=tfNorm(f.name), pts=DRAWS.snaps.filter(x=>x.d<=WORLD_DATE&&x.rows[k]!=null).map(x=>{const v=x.rows[k];
+    return {d:x.d,v,rank:1+Object.values(x.rows).filter(o=>o>v).length,of:Object.keys(x.rows).length}});
+  if(!pts.length) return '';
+  const last=pts[pts.length-1], prev=pts[pts.length-2], c=(P[f.promos[0]]||{}).c||'var(--ink)';
+  const ch=prev?Math.round((last.v-prev.v)*10)/10:null, rk=prev?prev.rank-last.rank:null;
+  const peak=pts.reduce((a,b)=>b.v>a.v?b:a);
+  const W=640,H=300,L=44,R=16,T=14,B=34,iw=W-L-R,ih=H-T-B, n=pts.length;
+  const x=i=>n>1?L+i*iw/(n-1):L+iw/2, y=v=>T+(100-v)/100*ih;
+  const path=pts.map((p,i)=>(i?'L':'M')+x(i).toFixed(1)+','+y(p.v).toFixed(1)).join('');
+  const every=Math.max(1,Math.ceil(n/8));
+  const head=`<b>${last.v.toFixed(1)}</b> · #${last.rank} of ${last.of} in the world${ch!=null?` · <span style="color:${ch>0?'var(--green,#2e7d32)':ch<0?'var(--red)':'var(--mute)'}">${ch>0?'▲ +':ch<0?'▼ ':''}${ch===0?'no change':ch.toFixed(1)}${rk?` (${rk>0?'up':'down'} ${Math.abs(rk)} spot${Math.abs(rk)===1?'':'s'})`:''}</span> since ${esc(fmt(prev.d))}`:''}${n>2&&peak!==last?` · peak ${peak.v.toFixed(1)}, ${esc(fmt(peak.d))}`:''}`;
+  return `<figure class="fchart tf-draw"><figcaption><b>Draw Index</b> <span class="mute">drawing power, 0 to 100, at each World Clock advance</span></figcaption>
+  <div style="font-family:var(--cond);font-size:15px;margin:0 0 4px">${head}</div>
+  <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Draw Index over time, now ${last.v.toFixed(1)}, rank ${last.rank}">
+   ${[0,25,50,75,100].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="${v===50?'var(--mute)':'var(--soft)'}" stroke-width="1"${v===50?' stroke-dasharray="4 3"':''}/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" class="ax">${v}</text>`).join('')}
+   ${pts.map((p,i)=>i%every===0||i===n-1?`<text x="${x(i)}" y="${H-8}" text-anchor="middle" class="ax">${+p.d.slice(5,7)}/${+p.d.slice(8,10)}</text>`:'').join('')}
+   ${n>1?`<path d="${path}L${x(n-1).toFixed(1)},${y(0)}L${x(0).toFixed(1)},${y(0)}Z" fill="${c}" opacity=".12"/><path d="${path}" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round"/>`:''}
+   ${pts.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.v)}" r="${i===n-1?6:3.5}" fill="${c}" stroke="var(--paper)" stroke-width="${i===n-1?2:1}"/>`).join('')}
+   ${pts.map((p,i)=>{const w=n>1?iw/(n-1):iw;return `<rect class="hit" x="${x(i)-w/2}" y="${T}" width="${w}" height="${ih}" fill="transparent" data-tip="<b>${esc(fmt(p.d))}</b><br>Draw Index <b>${p.v.toFixed(1)}</b><br>#${p.rank} of ${p.of} in the world"/>`}).join('')}
+  </svg>
+  ${n<2?`<p class="mute" style="font-family:var(--cond);font-size:13px;margin:4px 0 0">First reading. The line builds from here, one point every time the World Clock moves.</p>`:''}</figure>`;
+}
 function viewTalentFile(slug){
   const T=tfAll(); if(!T.list.length) return `<div class="empty">No Talent File set.</div>`;
   const f=slug?T.bySlug.get(slug):null;
@@ -1398,6 +1437,7 @@ function viewTalentFile(slug){
     ${tfStats(f)}
     <p class="tf-blurb">${tfBlurb(f)}</p>
   </div>
+  ${tfDrawChart(f)}
   ${tfDiaryBlock(f)}
   ${tfChampionships(f)}
   ${tfTrophyCase(f)}
@@ -1685,7 +1725,7 @@ function finCharts(k,S){
   const w=tip.offsetWidth;tip.style.left=Math.min(e.clientX+14,innerWidth-w-8)+'px';tip.style.top=(e.clientY+14)+'px';});})();
 /* ---- TV ratings and PPV buys (the model and the shows rated are in data/ratings.js) ---- */
 let _tvr=null;
-const tvr=()=>_tvr||(_tvr=typeof tvRatings==='function'?tvRatings({P,E,CONTRACTS,FINANCE,TEAMS,WORLD_DATE,HIST:typeof HIST!=='undefined'?HIST:[]}):{eps:[],byShow:{},unrated:[],ppvs:[],byCard:new Map()});
+const tvr=()=>_tvr||(_tvr=typeof tvRatings==='function'?tvRatings({P,E,CONTRACTS,FINANCE,TEAMS,WORLD_DATE,HIST:typeof HIST!=='undefined'?HIST:[],DRAWS:typeof DRAWS!=='undefined'?DRAWS:null}):{eps:[],byShow:{},unrated:[],ppvs:[],byCard:new Map()});
 const TV_COLORS=['#1f6fd1','#d4561a','#008f73','#a87500'];   /* fixed per show, in RATINGS.shows order; checked for colour-blind separation on the paper */
 const tvShows=k=>typeof RATINGS==='undefined'?[]:RATINGS.shows.filter(s=>s.p===k);
 const tvColor=s=>TV_COLORS[tvShows(s.p).indexOf(s)%TV_COLORS.length];
@@ -2194,7 +2234,7 @@ function ptfRows(k){
   const val=f=>ptfSort==='name'?0:ptfSort==='age'&&hasAge?((tfAge(f)||{}).sort??null):ptfSort==='wins'?f.w:ptfSort==='stars'?tfStars(f):ptfSort==='earn'?((tfEarn(f)||{}).life??null):ptfSort==='bonus'?tfBonus(tfEarn(f)):ptfSort==='titles'?tfBelts(f).length*10+tfBelts(f).filter(x=>x.cur).length:ptfSort==='trophies'?(t=>t?t.masks.length*2+t.hair.length:0)(tfTroph(f)):f.run.length;
   return ptfList(k).filter(f=>(!ptfTag||ptags(f.name).includes(ptfTag))&&f.name.toLowerCase().includes(q))
     .sort(tfCmp(val,ptfDir,ptfSort==='name'))
-    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${ptagIcons(f.name)} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td>${hasAge?`<td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td>`:''}<td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,ptfSort)}</td></tr>`}).join('')
+    .map(f=>{const x=tfEarn(f),best=tfBest(f);return `<tr><td><a href="#file/${f.slug}"><b>${esc(f.name)}</b></a>${ptagIcons(f.name)} ${tfBeltBadge(f)}${tfTrophyBadges(f)}${tfDiaryBadge(f)}${tfDrawBadge(f)}${tfIsSpot(f)?' <span class="flag" style="color:var(--red)">spotlight</span>':''}</td><td>${f.promos.map(pchip).join('')}</td>${hasAge?`<td class="num">${(a=>a?(a.died?'†':'')+a.txt:'—')(tfAge(f))}</td>`:''}<td class="num">${f.run.length?esc(f.record):'—'}</td><td class="num">${f.run.length}</td><td class="num">${best?esc(best.m[2]):'—'}</td><td class="num">${tfCash(x,ptfSort)}</td></tr>`}).join('')
     || `<tr><td colspan="${hasAge?7:6}" class="mute">No one matches.</td></tr>`;
 }
 function bindPromoTalent(k){

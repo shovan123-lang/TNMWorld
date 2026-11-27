@@ -22,8 +22,19 @@
      card    +6% for every star the card rating is above **1/2, less below it (no card rating: the average of its
              rated matches, which is within about a third of a star of the card rating on the cards that have both;
              nothing rated: counted as **)
-     stars   +4% for every headliner on the show past the first: names from the promotion's pay scale
-             (CONTRACTS) found in the matches, results and "Segments:" note; tier A counts 1, tier B half; at most 3
+     talent  once the Draw Index is running (data/draws.js, written by tools/tnm_draw.py at each World Clock
+             advance). Each name on the show gets a star power from 0 to 1:
+                 power = 0.4 x tier + 0.6 x (Draw Index / 100)
+             tier is his tier on this promotion's pay scale (A 1, B .75, C .5, D .3, E .15, F .1; not on it or
+             M/O/S: 0) and a name with no index counts 20. The show's talent is the average power of its top 3
+             names (an empty slot counts 0.6 x .20 = .12), and moves the rating +3% for every 0.1 above 0.5, less
+             below it: a show with three A-tier 90s gains about 14%, a show of nobodies loses about 11%.
+             Names are found in the matches, results and "Segments:" note (a tag team counts its members; a surname
+             alone counts for a wrestler on this promotion's pay scale if nobody else there shares it). Each episode
+             uses the snapshot in force on its air date (DRAWS.snaps), so a new snapshot never re-rates old weeks.
+     stars   before the Draw Index (or when no snapshot is that old), in place of talent: +4% for every headliner on the show past the
+             first: names from the promotion's pay scale (CONTRACTS) found in the matches, results and "Segments:"
+             note; tier A counts 1, tier B half; at most 3
      titles  +3% for each title match, at most 2
      hype    +6% for a go-home show (the promotion's next PPV within 7 days) or a special
      crowd   +3% for a crowd of 10,000 or more on camera, -3% for under 1,500 (the card's own gate, or its taping's)
@@ -63,13 +74,13 @@ const RATINGS = {
     {id: "wpw", p: "njpw", name: "World Pro Wrestling", short: "World Pro Wrestling", match: /TV Asahi|World Pro Wrestling|TV taping/i, tour: 1, outlet: "TV Asahi", base: 6.2, min: 4.0, max: 9.0, unit: "vr"},
     {id: "ntv", p: "ajpw", name: "All Japan on Nippon TV", short: "Nippon TV", match: /Nippon TV|TV taping/i, tour: 1, outlet: "Nippon TV", base: 5.6, min: 3.5, max: 8.5, unit: "vr"}
   ],
-  weights: {card: 0.06, cardMid: 2.5, cardNone: 2, stars: 0.04, starsCap: 3, titles: 0.03, titlesCap: 2, hype: 0.06, hypeDays: 7, crowd: 0.03, crowdBig: 10000, crowdSmall: 1500, carry: 0.4},
+  weights: {card: 0.06, cardMid: 2.5, cardNone: 2, draw: 0.03, drawMid: 0.5, drawTop: 3, drawEmpty: 20, tierShare: 0.4, tierScore: {A: 1, B: 0.75, C: 0.5, D: 0.3, E: 0.15, F: 0.1}, stars: 0.04, starsCap: 3, titles: 0.03, titlesCap: 2, hype: 0.06, hypeDays: 7, crowd: 0.03, crowdBig: 10000, crowdSmall: 1500, carry: 0.4},
   ppv: /\(PPV\)|pay-per-view|^The Great American Bash\b/i,
   history: ["uswa"],
   fixed: {}
 };
 
-/* Works out every rating. D = {P, E, CONTRACTS, FINANCE, TEAMS, WORLD_DATE, HIST (optional)}.
+/* Works out every rating. D = {P, E, CONTRACTS, FINANCE, TEAMS, WORLD_DATE, HIST (optional), DRAWS (optional)}.
    Returns {eps (rated episodes, oldest first), byShow, unrated (aired, no results yet), ppvs, byCard (Map card -> label)}. */
 function tvRatings(D) {
   const R = RATINGS, Wt = R.weights, W = D.WORLD_DATE;
@@ -97,6 +108,27 @@ function tvRatings(D) {
     return (stars[k] = list);
   };
   const teamKeys = Object.keys(D.TEAMS || {}).filter(t => /\s/.test(t) || /^[A-Z]{2,}$/.test(t));
+  // Draw Index snapshots, oldest first. dkey matches the site's Talent File key (tfNorm).
+  const dkey = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const snaps = ((D.DRAWS || {}).snaps || []).slice().sort((a, b) => a.d.localeCompare(b.d));
+  const snapFor = d => {let r = null; for (const x of snaps) if (x.d <= d) r = x; return r;};
+  // Pay-scale tier score per promotion, keyed like the Draw Index.
+  const tiers = {};
+  const tierOf = (k0, key) => {
+    if (!tiers[k0]) {tiers[k0] = {}; for (const r of (((D.CONTRACTS || {})[k0] || {}).rows || [])) tiers[k0][dkey(String(r[1]).replace(/\s+19\d\d$/, ""))] = Wt.tierScore[r[0]] || 0;}
+    return tiers[k0][key] || 0;
+  };
+  // Surnames (4+ letters) that only one wrestler on the promotion's pay scale has, so "Hogan" or "Piper's Pit"
+  // finds him. Anyone else needs his full name on the card (Jimmy Hart doesn't count as Bret on a WWF show).
+  const lastOf = (snap, k0) => {
+    snap._last = snap._last || {};
+    if (snap._last[k0]) return snap._last[k0];
+    const pay = new Set((((D.CONTRACTS || {})[k0] || {}).rows || []).map(r => dkey(String(r[1]).replace(/\s+19\d\d$/, ""))));
+    const by = {};
+    for (const k in snap.rows) {if (!pay.has(k)) continue;const t = k.split(" ").filter(x => x.length >= 4 && !STOP.has(x) && !/^\d+$/.test(x)); const l = t[t.length - 1]; if (l) (by[l] = by[l] || []).push(k);}
+    const out = {}; for (const l in by) if (by[l].length === 1) out[l] = by[l][0];
+    return (snap._last[k0] = out);
+  };
   const has = (txt, w) => w && new RegExp("(^|[^a-z0-9])" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "($|[^a-z0-9])").test(txt);
 
   // Airings
@@ -129,6 +161,25 @@ function tvRatings(D) {
     for (const x of starsFor(e.p)) if (has(txt, x.full) || has(txt, x.last)) who.set(x.name, x.w);
     for (const t of teamKeys) if ((/^[A-Z]+$/.test(t) ? new RegExp("\\b" + t + "\\b").test(raw) : has(txt, norm(t)))) for (const mem of D.TEAMS[t]) {const x = starsFor(e.p).find(y => y.name === mem); if (x) who.set(x.name, x.w);}
     const sp = Math.min(Wt.starsCap, [...who.values()].reduce((a, b) => a + b, 0));
+    // talent: tier and Draw Index together, from the snapshot in force on the air date
+    const snap = snapFor(e.d);
+    let draw = null, drawWho = [];
+    if (snap) {
+      const dt = " " + dkey(m.map(x => x[0] + " " + (x[1] || "")).join(" ") + " " + (e.n || []).filter(x => /^Segments:/i.test(x)).join(" ")) + " ";
+      const on = new Set();
+      for (const k in snap.rows) if (k && dt.includes(" " + k + " ")) on.add(k);
+      const lasts = lastOf(snap, e.p); for (const l in lasts) if (dt.includes(" " + l + " ") || dt.includes(" " + l + "s ")) on.add(lasts[l]);
+      for (const t of teamKeys) if ((/^[A-Z]+$/.test(t) ? new RegExp("\\b" + t + "\\b").test(raw) : dt.includes(" " + dkey(t) + " ")))
+        for (const mem of D.TEAMS[t]) on.add(dkey(mem));
+      for (const n of who.keys()) on.add(dkey(n));   // pay-scale headliners found the old way
+      const pw = [...on].map(k => {const ix = snap.rows[k] != null ? snap.rows[k] : Wt.drawEmpty, t = tierOf(e.p, k);
+        return [k, Wt.tierShare * t + (1 - Wt.tierShare) * ix / 100, ix, t];}).filter(x => x[2] !== Wt.drawEmpty || x[3] > 0);
+      const top = pw.sort((a, b) => b[1] - a[1]).slice(0, Wt.drawTop);
+      drawWho = top.map(([k, p, ix, t]) => `${k} ${p.toFixed(2)} (index ${ix}, tier ${t})`);
+      const vals = top.map(x => x[1]); while (vals.length < Wt.drawTop) vals.push((1 - Wt.tierShare) * Wt.drawEmpty / 100);
+      draw = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length * 100) / 100;
+    }
+    const talent = draw !== null ? Wt.draw * (draw - Wt.drawMid) * 10 : Wt.stars * (sp - 1);
     // title matches
     const titles = Math.min(Wt.titlesCap, m.filter(x => /\bTitles?\b|Championship|IWGP|Triple Crown/i.test(x[0])).length);
     // hype: go-home for the promotion's next PPV, or a special
@@ -139,7 +190,7 @@ function tvRatings(D) {
     if (crowd === null) {const tm = String(e.city || "").match(/taped (\d+)\/(\d+)/); const td = tm ? "1991-" + tm[1].padStart(2, "0") + "-" + tm[2].padStart(2, "0") : from;
       const tp = td && ALL.find(t => t.p === e.p && t.d === td && t.gate); if (tp) crowd = crowdOf(tp.gate);}
     const cw = crowd === null ? 0 : crowd >= Wt.crowdBig ? 1 : crowd < Wt.crowdSmall ? -1 : 0;
-    const lift = Wt.card * (Math.max(0, Math.min(5, q)) - Wt.cardMid) + Wt.stars * (sp - 1) + Wt.titles * titles + (hype ? Wt.hype : 0) + Wt.crowd * cw;
+    const lift = Wt.card * (Math.max(0, Math.min(5, q)) - Wt.cardMid) + talent + Wt.titles * titles + (hype ? Wt.hype : 0) + Wt.crowd * cw;
     const prev = last[s.id];
     let v = s.base * (1 + lift);
     v = (1 - Wt.carry) * v + Wt.carry * (prev ? prev.v : s.base);
@@ -147,7 +198,7 @@ function tvRatings(D) {
     const key = e.p + " " + e.d + " " + s.id;
     const fixed = R.fixed[key] != null;
     if (fixed) v = R.fixed[key];
-    const ep = {show: s, e, d: e.d, week: weekOf(e.d), v, fixed, prev: prev ? prev.v : null, q, qFrom, qText, who: [...who.keys()], sp, titles, hype, crowd, lift, rerun};
+    const ep = {show: s, e, d: e.d, week: weekOf(e.d), v, fixed, prev: prev ? prev.v : null, q, qFrom, qText, who: [...who.keys()], sp, draw, drawWho, snap: snap ? snap.d : null, titles, hype, crowd, lift, rerun};
     eps.push(ep); last[s.id] = ep; byCard.set(e, ep);
   }
   const byShow = {}; R.shows.forEach(s => byShow[s.id] = eps.filter(x => x.show === s));
