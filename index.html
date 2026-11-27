@@ -1129,7 +1129,8 @@ function tfTrophyIndex(){
   const get=name=>{const k=n(name);if(!T.has(k))T.set(k,{masks:[],hair:[],lostM:[],lostH:[],status:null,booked:[]});return T.get(k);};
   if(typeof APUESTAS==='undefined') return _TROPH=T;
   for(const [k,A] of Object.entries(APUESTAS)){
-    [...(A.career||[]).map(r=>[r,0]),...(A.tnm||[]).map(r=>[r,1])].forEach(([r,era])=>{
+    // Trophies count only wagers won in this world (July 1991 on); careers before that stay in the CMLL record books.
+    (A.tnm||[]).map(r=>[r,1]).forEach(([r,era])=>{
       if(!r.draw) r.w.forEach(([w])=>r.l.forEach(([o,wg])=>{const x={opp:o,d:r.d,at:r.at||'',era,k,note:r.note||''};if(wg==='m')get(w).masks.push(x);else if(wg==='h')get(w).hair.push(x);}));
       r.l.forEach(([o,wg])=>{const by=r.draw?'a draw (both shaved)':r.w.map(x=>x[0]).join(' & ');const x={opp:by,d:r.d,at:r.at||'',era,k};if(wg==='m')get(o).lostM.push(x);else if(wg==='h')get(o).lostH.push(x);});
     });
@@ -1178,7 +1179,7 @@ function tfTrophyCase(f){
     ${won.length?`<ul class="trophies">${won.join('')}</ul>`:'<p class="mute" style="margin:6px 0">No masks or hair won yet.</p>'}
     ${lost.length?`<p class="tlost"><span class="mute">Lost:</span> ${lost.join(' · ')}</p>`:''}
     ${t.booked.length?`<p class="tlost"><span class="mute">On the line next:</span> ${t.booked.map(b=>`${esc(b.kind)}, ${apuDate(b.d)}${b.at?' · '+esc(b.at):''}`).join(' · ')} <span class="flag plan">plan</span></p>`:''}
-    <p class="mute" style="font-family:var(--cond);font-size:12.5px;margin:6px 0 0">Career wagers before July 1991 come from the record books; anything marked "in this world" was won here. Full records on the <a href="#cmll/apuestas">CMLL Apuestas</a> page.</p>
+    <p class="mute" style="font-family:var(--cond);font-size:12.5px;margin:6px 0 0">Only masks and hair won since July 1991 count here. Wagers before that are in the record books on the <a href="#cmll/apuestas">CMLL Apuestas</a> page.</p>
   </div></details>`;
 }
 
@@ -2288,7 +2289,7 @@ const WAGER={m:'mask',h:'hair',t:'title',c:'career','?':'stakes unrecorded','':'
 function apuTally(k){
   const A=APUESTAS[k], roster=new Set(P[k].roster.map(r=>r[0])), T={};
   const get=n=>T[n]=T[n]||{n,mw:[],hw:[],ml:[],hl:[]};
-  [...A.career.map(r=>[r,0]),...A.tnm.map(r=>[r,1])].forEach(([r,era])=>{
+  A.tnm.map(r=>[r,1]).forEach(([r,era])=>{   // trophies since July 1991 only
     r.w.forEach(([n])=>{if(!roster.has(n))return; r.l.forEach(([o,wg])=>{if(wg==='m')get(n).mw.push([o,r.d,era]); else if(wg==='h')get(n).hw.push([o,r.d,era]);});});
     r.l.forEach(([n,wg])=>{if(!roster.has(n))return; const by=r.draw?'draw':r.w.map(x=>x[0]).join(' & '); if(wg==='m')get(n).ml.push([by,r.d,era]); else if(wg==='h')get(n).hl.push([by,r.d,era]);});
   });
@@ -2313,13 +2314,13 @@ function viewApuestas(k){
   ${up.length?`<div class="grid g2" style="gap:12px">${up.map(b=>`<div class="box apu-card"><div class="kicker">${esc(b.kind)}</div><div style="font-family:var(--head);font-size:22px;text-transform:uppercase;line-height:1.1;margin:4px 0">${esc(b.a[0])} <span class="mute" style="font-size:15px">(${WAGER[b.a[1]]||'To establish'})</span><br>vs. ${esc(b.b[0])} <span class="mute" style="font-size:15px">(${WAGER[b.b[1]]||'To establish'})</span></div><div class="mute" style="font-family:var(--cond);font-size:14px">${apuDate(b.d)} · ${esc(b.at)}</div>${b.fin?`<div style="margin-top:6px;font-family:var(--cond);font-size:14px">Booked: <span class="spoil">${esc(b.fin)}</span></div>`:''}</div>`).join('')}</div>`:'<div class="empty">No mask or hair matches booked.</div>'}
   <h2 class="sec" style="margin-top:26px">Since July 1991 <small>Run in this world</small></h2>
   ${A.tnm.length?`<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Winner</th><th>Loser</th><th>Where</th></tr></thead><tbody>${apuRows(A.tnm,roster)}</tbody></table></div>`:'<div class="empty">No apuestas have run yet. The first are booked for Verano de Escándalo, July 26.</div>'}
-  <h2 class="sec" style="margin-top:26px">Trophy Case <small>Masks and hair taken, career to date</small></h2>
+  <h2 class="sec" style="margin-top:26px">Trophy Case <small>Masks and hair taken since July 1991</small></h2>
   <div style="margin:10px 0"><input class="search" id="asearch" placeholder="Search a wrestler…"></div>
   <div class="tbl-wrap"><table id="atbl"><thead><tr><th>Wrestler</th><th>Status, July 1991</th><th class="num">Masks won</th><th class="num">Hair won</th><th class="num">Mask lost</th><th class="num">Hair lost</th></tr></thead><tbody>
   ${tally.map(x=>`<tr data-n="${esc(x.n.toLowerCase())}"><td><b>${esc(x.n)}</b></td><td style="font-size:14px">${st(x.n)}</td><td class="num">${trophies(x.mw,'Mask of')}</td><td class="num">${trophies(x.hw,'Hair of')}</td><td class="num">${trophies(x.ml,'To')}</td><td class="num">${trophies(x.hl,'To')}</td></tr>`).join('')}
   </tbody></table></div>
   <h2 class="sec" style="margin-top:26px">The Record Books <small>Before July 1991 · ${book.length} matches between wrestlers in the TNM world · newest first</small></h2>
-  <p class="mute" style="margin:6px 0 10px;font-family:var(--cond);font-size:13px">Trophy Case counts every career match (${A.career.length} on record). This list shows only the ones where everyone involved is on a TNM roster.</p>
+  <p class="mute" style="margin:6px 0 10px;font-family:var(--cond);font-size:13px">History only: these don't count toward anyone's Trophy Case, which starts in July 1991. ${A.career.length} career matches are on record; this list shows the ones where everyone involved is on a TNM roster.</p>
   <div class="tbl-wrap"><table id="acareer"><thead><tr><th>Date</th><th>Winner</th><th>Loser</th><th>Where</th></tr></thead><tbody>${apuRows(book,roster)}</tbody></table></div>`;
 }
 /* Round-robin tournament tab (data/tournaments.js): block tables, night-by-night results and the final.
