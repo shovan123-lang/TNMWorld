@@ -155,6 +155,15 @@ tr.big td{font-weight:700}
 .tf-draw summary::after{content:'Show chart';margin-left:auto;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
 .tf-draw[open] summary::after{content:'Hide chart'}
 .tf-draw-head{font-size:15px}
+.di-top{margin:18px 0 4px}
+.di-top summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;border-bottom:3px solid var(--ink);padding-bottom:6px}
+.di-top summary::-webkit-details-marker{display:none}
+.di-top summary::before{content:'▸';font-size:16px;transition:transform .15s}
+.di-top[open] summary::before{transform:rotate(90deg)}
+.di-top summary::after{content:'Show list';margin-left:auto;font-family:var(--cond);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.di-top[open] summary::after{content:'Hide list'}
+.di-top-t{font-family:var(--head);font-size:22px;text-transform:uppercase}
+.di-top-lead{font-family:var(--cond);font-size:14px;color:var(--mute)}
 .di-parts{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;min-width:150px}
 .di-part{white-space:nowrap;font-family:var(--cond);font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
 .di-part i{display:block;height:6px;background:var(--soft);margin-top:2px;position:relative}
@@ -1445,6 +1454,7 @@ function tfDrawChart(f){
 }
 /* Draw Index page (#draws): the latest edition of data/draws.js, the write-ups in data/draw_notes.js,
    risers and fallers against the previous edition, and how the Index works. All copy is in-world. */
+let diTopOpen=false;   // the top 25 starts closed; stays as left while browsing
 function viewDraws(){
   if(!HAS_DRAWS) return `<h2 class="sec">Draw Index</h2><div class="empty">The first Draw Index hasn't been published yet.</div>`;
   const T=tfAll(), byKey=new Map(T.list.map(f=>[tfNorm(f.name),f]));
@@ -1470,11 +1480,11 @@ function viewDraws(){
   const cat=(k,l,blurb)=>`<div class="di-note"><h4>${l}</h4><div class="mute" style="font-size:13px">${blurb}</div><ol>${rows.filter(r=>r[k]!=null).sort((a,b)=>b[k]-a[k]||a.rank-b.rank).slice(0,5).map(r=>`<li>${who(r)} <span class="mute">${r[k]}</span></li>`).join('')}</ol></div>`;
   return `<h2 class="sec">Draw Index <small>edition of ${esc(fmt(DRAWS.world))} · ${rows.length} wrestlers in ten promotions</small></h2>
   ${N?`<div class="di-lead"><h3 class="amonth" style="font-size:26px">${esc(N.title)}</h3><p class="dek">${esc(N.dek)}</p>${(N.paras||[]).map(p=>`<p>${esc(p)}</p>`).join('')}</div>`:''}
-  <h3 class="amonth" style="font-size:22px">The top 25 <small>drawing power, 0 to 100</small></h3>
-  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:0 0 6px">Bars: Gate (box office), Crowd, Ring, Star (star power). How they're weighed is at the bottom of the page.</p>
+  <details class="di-top"${diTopOpen?' open':''} ontoggle="diTopOpen=this.open"><summary><span class="di-top-t">The top 25</span> <span class="di-top-lead">${rows.slice(0,3).map(r=>`${r.rank}. ${esc(r.n)}`).join(' · ')}</span></summary>
+  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:8px 0 6px">Bars: Gate (box office), Crowd, Ring, Star (star power). How they're weighed is at the bottom of the page.</p>
   <div class="tbl-wrap"><table><thead><tr><th class="num">#</th><th>Wrestler</th><th class="num">Index</th><th>What it's made of</th>${prev?'<th class="num">Week</th>':''}</tr></thead><tbody>
   ${rows.slice(0,25).map(r=>`<tr><td class="num"><b>${r.rank}</b></td><td>${who(r)}<br>${chips(r)}</td><td class="num"><b>${r.idx.toFixed(1)}</b></td><td>${bars(r)}</td>${prev?`<td class="num">${chg(r)}</td>`:''}</tr>`).join('')}
-  </tbody></table></div>
+  </tbody></table></div></details>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Every wrestler's full history is on his <a href="#file">Talent File</a> (sort by Draw Index, or tap Top draws).</p>
   <h3 class="amonth" style="font-size:22px">Risers &amp; fallers</h3>${movers}
   ${N&&N.rise&&N.rise.length?`<h3 class="amonth" style="font-size:22px">On the rise</h3>${noteCards(N.rise)}`:''}
