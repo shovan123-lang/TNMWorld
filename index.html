@@ -722,7 +722,7 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={};
 </script>
 <script src="data/titles.js?v=473d2acb"></script>
-<script src="data/world.js?v=428af711"></script>
+<script src="data/world.js?v=e66f51b9"></script>
 <script src="data/births.js?v=6c59314b"></script>
 <script src="tools/talent_engine.js?v=9ccfd69c"></script>
 <script src="data/wcw.js?v=b2282462"></script>
@@ -2157,6 +2157,15 @@ function bindWorldRatings(){
   box.onclick=ev=>{const b=ev.target.closest('.wsort');if(!b)return;const c=WR_COLS.find(c=>c.k===b.dataset.sort);
     wrSort=wrSort.k===c.k?{k:c.k,dir:-wrSort.dir}:{k:c.k,dir:c.txt?1:-1};box.innerHTML=wrTable();const nb=box.querySelector(`.wsort[data-sort="${c.k}"]`);if(nb)nb.focus();};
 }
+function finDeals(k){
+  const D=(FINANCE._deals||[]).filter(x=>x.p===k); if(!D.length) return '';
+  const st=x=>x.from&&x.from>WORLD_DATE?`<span class="flag" style="color:var(--mute)">starts ${esc(fmt(x.from))}</span>`:x.to&&x.to<WORLD_DATE?'<span class="flag" style="color:var(--mute)">ended</span>':'<span class="flag" style="color:#2e7d32">in force</span>';
+  const term=x=>x.from&&x.to?(x.from===x.to?fmt(x.from):`${fmt(x.from)} to ${fmt(x.to)}`):x.to?`Through ${fmt(x.to)}`:x.from?`From ${fmt(x.from)}`:'Ongoing';
+  const sp=D.filter(x=>x.kind==='Sponsorship').length;
+  return `<h2 class="sec">Signed deals <small>${D.length} partner${D.length===1?'':'s'}</small></h2>
+  <div class="tbl-wrap"><table><thead><tr><th>Partner</th><th>Type</th><th>What they get</th><th>Terms</th><th>Term</th><th>Status</th></tr></thead><tbody>${D.map(x=>`<tr><td><b>${esc(x.partner)}</b></td><td>${esc(x.kind)}</td><td>${esc(x.what)}</td><td>${esc(x.terms)}</td><td style="white-space:nowrap">${esc(term(x))}</td><td>${st(x)}</td></tr>`).join('')}</tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Licensing is counted month by month in Other revenue above.${sp?' Sponsorship money is counted show by show once each sponsored show has aired.':''}</p>`;
+}
 function viewFinance(k){
   const S=finSum(k); if(!S) return `<div class="empty" style="margin-top:20px">No finance records yet.</div>`;
   const f=S.f, rows=S.rows;
@@ -2196,6 +2205,7 @@ function viewFinance(k){
   <div class="tbl-wrap"><table><thead><tr><th>Stream</th><th>Amount</th><th>Notes</th></tr></thead><tbody>${streams.map(s=>{const L=byStream[s];
     if(s==='Merchandise')return `<tr><td>${esc(s)}</td>${hasM?`<td class="num"><b>${money(S.merch)}</b></td><td class="mute">Counted show by show above</td>`:'<td class="mute">Not tracked yet</td><td></td>'}</tr>`;
     return L?`<tr><td>${esc(s)}</td><td class="num"><b>${money(L.reduce((a,o)=>a+o.amt,0))}</b></td><td>${L.map(o=>`${o.daily?'To '+fmt(o.d):fmt(o.d)}: ${esc(o.note||'')}`).join('<br>')}</td></tr>`:`<tr><td>${esc(s)}</td><td class="mute">Not tracked yet</td><td></td></tr>`;}).join('')}</tbody></table></div>
+  ${finDeals(k)}
   <p class="mute" style="font-family:var(--cond);font-size:13px">Payroll uses the rates on the Contracts tab.${hasPool?` "Champions' pool" is ${Math.round(EARNINGS.pool.pct*100)}% of the gate, split evenly among the champions who worked the card (each tag team member counts as one), paid on top of their other pay.`:''} "Show costs" is the building, tax, crew, advertising, travel, TV, pay-per-view and merchandise costs for that night, not talent.</p>`;
 }
 
