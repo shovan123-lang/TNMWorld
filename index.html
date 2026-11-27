@@ -190,6 +190,7 @@ tr.big td{font-weight:700}
 .di-part{white-space:nowrap;font-family:var(--cond);font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
 .di-part i{display:block;height:6px;background:var(--soft);margin-top:2px;position:relative}
 .di-part i b{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.di-ppv{font-family:var(--cond);font-size:11px;font-weight:700;color:var(--red);white-space:nowrap;letter-spacing:.03em}
 .di-chg{font-family:var(--cond);font-weight:700;white-space:nowrap}
 .di-notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:8px 0 18px}
 .di-note{border:2px solid var(--ink);background:var(--paper);padding:10px 12px}
@@ -736,8 +737,8 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/apuestas.js?v=9006aede"></script>
 <script src="data/tournaments.js?v=c094dd90"></script>
 <script src="data/ratings.js?v=34b6fff3"></script>
-<script src="data/draw_notes.js?v=6451ed18"></script>
-<script src="data/draws.js?v=9ac50f10"></script>
+<script src="data/draw_notes.js?v=d9c41efe"></script>
+<script src="data/draws.js?v=971ae2ad"></script>
 <script>
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -1462,7 +1463,7 @@ function tfDrawWhy(f,row,last,prev){
   const best=tfBest(f), cur=tfBelts(f).filter(x=>x.cur);
   const lvl=v=>v>=65?'a main-event draw':v>=55?'an upper-card draw':v>=45?'a solid midcard name':v>=35?'a working midcarder':'an undercard name';
   const move=prev?(prev.rank-last.rank):0;
-  const s1=`At ${last.v.toFixed(1)}, ${f.name} ranks #${last.rank} of ${last.of} in the world, the number of ${lvl(last.v)}${move?`, ${move>0?'up':'down'} ${Math.abs(move)} spot${Math.abs(move)===1?'':'s'} since ${fmt(prev.d)}`:''}.`;
+  const s1=`At ${last.v.toFixed(1)}, ${f.name} ranks #${last.rank} of ${last.of} in the world, the number of ${lvl(last.v)}${row.v?`, with ${row.v.toFixed(1)} of it a pay-per-view boost from ${row.pv} that fades if ${he} misses the next big show`:''}${move?`; ${move>0?'up':'down'} ${Math.abs(move)} spot${Math.abs(move)===1?'':'s'} since ${fmt(prev.d)}`:''}.`;
   const parts=[['b',row.b],['t',row.t],['c',row.c],['s',row.s],['r',row.r]].filter(x=>x[1]!=null);
   const top=parts.slice().sort((a,b)=>b[1]-a[1])[0], low=parts.slice().sort((a,b)=>a[1]-b[1])[0];
   const rec=f.w+f.l?`${f.w}–${f.l}${f.d?'–'+f.d:''}`:'';
@@ -1553,7 +1554,7 @@ function viewDraws(){
   <details class="di-top"${diTopOpen?' open':''} ontoggle="diTopOpen=this.open"><summary><span class="di-top-t">The top 25</span> <span class="di-top-lead">${rows.slice(0,3).map(r=>`${r.rank}. ${esc(r.n)}`).join(' · ')}</span></summary>
   <p class="mute" style="font-family:var(--cond);font-size:13px;margin:8px 0 6px">Bars: Gate (box office), TV, Crowd, Star (star power), Ring. How they're weighed is at the bottom of the page.</p>
   <div class="tbl-wrap"><table><thead><tr><th class="num">#</th><th>Wrestler</th><th class="num">Index</th><th>What it's made of</th>${prev?'<th class="num">Week</th>':''}</tr></thead><tbody>
-  ${rows.slice(0,25).map(r=>`<tr><td class="num"><b>${r.rank}</b></td><td>${who(r)}<br>${chips(r)}</td><td class="num"><b>${r.idx.toFixed(1)}</b></td><td>${bars(r)}</td>${prev?`<td class="num">${chg(r)}</td>`:''}</tr>`).join('')}
+  ${rows.slice(0,25).map(r=>`<tr><td class="num"><b>${r.rank}</b></td><td>${who(r)}<br>${chips(r)}</td><td class="num"><b>${r.idx.toFixed(1)}</b>${r.v?`<br><span class="di-ppv" title="Pay-per-view boost from ${esc(r.pv||'')}">+${r.v.toFixed(1)} PPV</span>`:''}</td><td>${bars(r)}</td>${prev?`<td class="num">${chg(r)}</td>`:''}</tr>`).join('')}
   </tbody></table></div></details>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Every wrestler's full history is on his <a href="#file">Talent File</a> (sort by Draw Index, or tap Top draws).</p>
   <h3 class="amonth" style="font-size:22px">Risers &amp; fallers</h3>${movers}
@@ -1561,7 +1562,7 @@ function viewDraws(){
   ${N&&N.cool&&N.cool.length?`<h3 class="amonth" style="font-size:22px">Cooling off</h3>${noteCards(N.cool)}`:''}
   ${N&&N.watch&&N.watch.length?`<h3 class="amonth" style="font-size:22px">Ones to watch</h3>${noteCards(N.watch)}`:''}
   <h3 class="amonth" style="font-size:22px">The leaders in each column</h3>
-  <div class="di-cats">${cat('b','Box office','Who headlines the biggest houses')}${rows.some(r=>r.t!=null)?cat('t','Television','Who the most fans see every week'):''}${cat('c','Crowd','Who gets the loudest reaction')}${cat('s','Star power','Presence, momentum and gold')}${cat('r','Ring','Whose matches rate the best')}</div>
+  <div class="di-cats">${cat('b','Box office','Who headlines the biggest houses')}${rows.some(r=>r.t!=null)?cat('t','Television','Who the most fans see every week'):''}${cat('c','Crowd','Who gets the loudest reaction')}${cat('s','Star power','Presence, momentum and gold')}${cat('r','Ring','Whose matches rate the best')}${rows.some(r=>r.v)?`<div class="di-note"><h4>Pay-per-view</h4><div class="mute" style="font-size:13px">The biggest boosts from the last big shows</div><ol>${rows.filter(r=>r.v).sort((a,b)=>b.v-a.v||a.rank-b.rank).slice(0,5).map(r=>`<li>${who(r)} <span class="mute">+${r.v.toFixed(1)} · ${esc(r.pv||'')}</span></li>`).join('')}</ol></div>`:''}</div>
   <div class="di-how"><h3 class="amonth" style="font-size:22px">How the Draw Index works</h3>
   <p>The Draw Index is the Report's weekly measure of who really draws in the wrestling business, from Atlanta to Arena México to the Budokan. Every wrestler working in one of the ten promotions we cover gets a number from 0 to 100. A working wrestler sits in the thirties and forties; the true main eventers live in the sixties and up. Being well known is what makes a draw, so it's built from five things, weighted the way a promoter would weigh them:</p>
   <ul>
@@ -1571,6 +1572,7 @@ function viewDraws(){
    <li><b>Star power (15%).</b> Charisma and presence, momentum (fans rally behind a winner, and a man who keeps losing cools off), the gold around his waist, and the number of promotions he's actually working for.</li>
    <li><b>Ring (10%).</b> The average star rating of his last ten matches. Great matches keep a draw drawing, but they don't make anyone famous by themselves.</li>
   </ul>
+  <p><b>The pay-per-view boost.</b> On top of those five, a wrestler who was on the last big pay-per-view gets up to 8 extra points: the full amount for the main event, three-quarters for another title match or the semi-main, half for the undercard, a quarter for the pre-show, and more for the shows that sell the most buys. It's a trailing number. Every time his promotion runs a pay-per-view without him, the boost loses 40 percent, and it halves every two months regardless, so a man has to keep making the big shows to keep it.</p>
   <p>The Index counts what a wrestler is doing now. A man who isn't headlining, isn't on TV, or isn't working at all through injury, a contract dispute or a move to a new territory gets little credit until he's back in front of the fans, however big his name is. That's why some famous names sit low and some TV regulars sit high.</p>
   <p>The Index comes out every week. Each wrestler's Talent File charts his number over time, and the Report's TV ratings estimates use it too: a show built on top draws does a bigger number.</p></div>`;
 }

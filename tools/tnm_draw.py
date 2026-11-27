@@ -40,7 +40,8 @@ ShowDumps (optional): star ratings are read from lines that carry both
 a result ("def.", "beat", "pinned", "submitted", "drew", "vs.") and a
 star rating such as ***1/4 or ****.
 
-Weights: draw (box office) 30, TV 25, crowd 20, star power 15, ring 10.
+Weights: draw (box office) 30, TV 25, crowd 20, star power 15, ring 10,
+plus a trailing PPV boost of up to +8 points (see tools/draw_extra.js).
 TV and star power need --extra extra.csv (node tools/draw_extra.js).
 A missing part scores 20 out of 100 (below average), and the confidence
 column shows how many of the four parts had real data.
@@ -59,6 +60,7 @@ ENC = "cp1252"
 WEIGHTS = {"draw": 0.30, "tv": 0.25, "heat": 0.20, "star": 0.15,
            "quality": 0.10}
 FREE_AGENT_CARDS = 10
+PPV_BONUS = 8.0   # index points for a full trailing PPV credit (extra.csv "ppv", 0-1)
 MISSING = 20.0
 # Folders that are not promotions.
 SKIP = {"DATA", "SHOWDUMPS", "_BACKUPS", "PLUGINS", "NEWPLUGS", "PLUGDOCS"}
@@ -236,9 +238,10 @@ def read_extra(path):
         return out
     with open(path, newline="", encoding="utf-8") as f:
         for r in csv.DictReader(f):
-            out[norm(r["wrestler"])] = {k: to_num(r.get(k, "")) or 0 for k in
-                                        ("tv", "w", "l", "d", "titles",
-                                         "worked")}
+            x = {k: to_num(r.get(k, "")) or 0 for k in
+                 ("tv", "w", "l", "d", "titles", "worked", "ppv")}
+            x["ppv_on"] = r.get("ppv_on", "") or ""
+            out[norm(r["wrestler"])] = x
     return out
 
 
@@ -381,7 +384,8 @@ def write_js(ranked, path, date):
         "p": r["site_promos"],
         "b": part(r["parts"]["draw"]), "t": part(r["parts"]["tv"]),
         "c": part(r["parts"]["heat"]),
-        "r": part(r["parts"]["quality"]), "s": part(r["parts"]["star"])}
+        "r": part(r["parts"]["quality"]), "s": part(r["parts"]["star"]),
+        **({"v": r["ppv"], "pv": r["ppv_on"]} if r.get("ppv") else {})}
         for r in ranked}
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write("/* TNM World Wrestling Report: Draw Index.\n"
@@ -500,8 +504,12 @@ def rank(tnm_dir, dumps=None, draws_csv=None, out="draw_index.csv",
         have = {k: v for k, v in parts.items() if v is not None}
         # A missing piece scores MISSING (below average): no headline
         # gates or no rated matches is itself a sign he isn't drawing.
-        rec["index"] = sum(WEIGHTS[k] * (v if v is not None else MISSING)
-                           for k, v in parts.items())
+        base = sum(WEIGHTS[k] * (v if v is not None else MISSING)
+                   for k, v in parts.items())
+        # PPV boost on top: trailing, so it fades when he misses PPVs.
+        rec["ppv"] = round(PPV_BONUS * x.get("ppv", 0), 1) if x else 0.0
+        rec["ppv_on"] = x.get("ppv_on", "") if x else ""
+        rec["index"] = min(100.0, base + rec["ppv"])
         rec["parts"] = parts
         rec["confidence"] = f"{len(have)}/{len(parts)}"
 
@@ -511,13 +519,15 @@ def rank(tnm_dir, dumps=None, draws_csv=None, out="draw_index.csv",
 
     with open(out, "w", newline="", encoding="utf-8") as f:
         wr = csv.writer(f)
-        wr.writerow(["rank", "wrestler", "index", "confidence", "draw",
+        wr.writerow(["rank", "wrestler", "index", "ppv_boost", "ppv_on",
+                     "confidence", "draw",
                      "tv", "heat", "quality", "star", "promotions", "contracts",
                      "push", "matches_rated", "charisma", "workrate"])
         for r in ranked:
             p = r["parts"]
             wr.writerow([
-                r["rank"], r["name"], round(r["index"], 1), r["confidence"],
+                r["rank"], r["name"], round(r["index"], 1), r["ppv"],
+                r["ppv_on"], r["confidence"],
                 *[("" if p[k] is None else round(p[k], 1))
                   for k in ("draw", "tv", "heat", "quality", "star")],
                 "; ".join(r["promos"]),

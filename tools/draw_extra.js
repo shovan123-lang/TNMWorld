@@ -8,6 +8,11 @@
 //   w l d   record from the cards (the Talent File engine)
 //   titles  belts held now (P.<key>.titles; a team's belt counts for each member)
 //   worked  promotions he has actually worked a card for
+//   ppv     trailing PPV credit, 0 to 1 (tools/tnm_draw.py turns it into up to +8 index points):
+//           each PPV match = place on the card (main event 1, other title match or semi-main .75, undercard .5,
+//           pre-show .25) x the PPV's size (sqrt of buys / 125,000), then it fades: x .6 for every PPV his
+//           promotions have run since without him, and halved every 60 days. Capped at 1.
+//   ppv_on  the PPV that gives most of it
 // Usage: node tools/draw_extra.js > extra.csv
 const fs = require('fs'), vm = require('vm'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -45,7 +50,17 @@ const lastBy = {};
 for (const f of files.values()) {const t = norm(f.name).split(' '); const l = t[t.length - 1]; if (l && l.length >= 5) (lastBy[l] = lastBy[l] || []).push(f.name);}
 const surname = {}; for (const l in lastBy) if (lastBy[l].length === 1) surname[lastBy[l][0]] = ' ' + l + ' ';
 const csv = v => /[",]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
-console.log('wrestler,tv,w,l,d,titles,worked');
+// PPVs that have run, with buys (Finance), and each match's place on the card
+const TOP = /World Title|WWF Title|Unified Title|World Heavyweight|Triple Crown|IWGP Heavyweight|World Championship/i;
+const ppvs = T.ppvs.filter(p => p.d <= W).map(p => {
+  const ms = (p.e.m || []).filter(m => m && /\bvs\.?\s/i.test(m[0]));
+  const mainIdx = (() => {const i = ms.findIndex(m => TOP.test(m[0])); return i >= 0 ? i : ms.length - 1;})();
+  const place = new Map(ms.map((m, i) => [m, /^Pre-show/i.test(m[0]) ? .25 : i === mainIdx ? 1 :
+    (/Title|Championship/i.test(m[0]) || Math.abs(i - mainIdx) === 1) ? .75 : .5]));
+  return {p: p.p, d: p.d, name: p.name, size: Math.sqrt(Math.min(1, (p.buys || 0) / 125000)), place};
+}).sort((a, b) => a.d.localeCompare(b.d));
+const days = (a, b) => (new Date(b) - new Date(a)) / 864e5;
+console.log('wrestler,tv,w,l,d,titles,worked,ppv,ppv_on');
 for (const f of files.values()) {
   let tv = 0; const key = ' ' + norm(f.name) + ' ';
   for (const r of f.run) if (onMatch.has(r.m)) tv += onMatch.get(r.m);
@@ -55,5 +70,13 @@ for (const f of files.values()) {
     if (txt.includes(key) || (sk && (txt.includes(sk) || txt.includes(sk.trimEnd() + 's ')))) tv += c;
   }
   const worked = new Set(f.run.filter(r => r.e.d >= '1991-07-01').map(r => r.e.p)).size;
-  console.log([csv(f.name), tv.toFixed(3), f.w, f.l, f.d, holders[norm(f.name)] || 0, worked].join(','));
+  // trailing PPV credit
+  const mine = new Set(f.run.map(r => r.e.p)); let ppv = 0, best = 0, bestOn = '';
+  for (const pv of ppvs) {
+    const r = f.run.find(r => r.e === undefined ? false : pv.place.has(r.m)); if (!r) continue;
+    const missed = ppvs.filter(x => x.d > pv.d && mine.has(x.p) && !f.run.some(r2 => x.place.has(r2.m))).length;
+    const c = pv.place.get(r.m) * pv.size * Math.pow(.6, missed) * Math.pow(.5, days(pv.d, W) / 60);
+    ppv += c; if (c > best) {best = c; bestOn = pv.name;}
+  }
+  console.log([csv(f.name), tv.toFixed(3), f.w, f.l, f.d, holders[norm(f.name)] || 0, worked, Math.min(1, ppv).toFixed(3), csv(bestOn)].join(','));
 }
