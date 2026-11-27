@@ -86,12 +86,14 @@ const TITLE_LEDGER = [
    ["7/10/1991","Dundee pinned Chris Adams with the piledriver in 17:10.","**1/2"]]}
  ]}
 ]},
-{id:"wcw",name:"WCW",full:"World Championship Wrestling",home:"Atlanta, GA",c:"#6d6be0",asof:"7/21/1991",url:"https://shovan123-lang.github.io/WCW1/HTML/WELCOME.HTM",titles:[
+{id:"wcw",name:"WCW",full:"World Championship Wrestling",home:"Atlanta, GA",c:"#6d6be0",asof:"7/23/1991",url:"https://shovan123-lang.github.io/WCW1/HTML/WELCOME.HTM",titles:[
  {t:"World Heavyweight",L:[
   {v:1,w:"7/6/1991",e:"Saturday Night, Atlanta",h:"Jim Herd announces Ric Flair is gone and the title is vacant. A new belt is unveiled; the champion will be crowned in a cage at the Great American Bash."},
   {c:"Lex Luger",w:"7/14/1991",e:"Great American Bash 1991",h:"Cage match for the vacant title: Luger pinned Barry Windham after a piledriver in 23:07.",r:"****",d:4,def:[]},
-  {c:"Nikita Koloff",w:"7/18/1991",e:"House show, Cleveland",h:"Koloff beat Lex Luger, who passed out in a front facelock, in 23:17.",r:"***1/2",d:3,cur:1,def:[
-   ["7/19/1991","Koloff beat Lex Luger by disqualification in 15:23 when Harley Race and Mr. Hughes interfered.","**3/4"]]}
+  {c:"Nikita Koloff",w:"7/18/1991",e:"House show, Cleveland",h:"Koloff beat Lex Luger, who passed out in a front facelock, in 23:17.",r:"***1/2",d:5,cur:1,def:[
+   ["7/19/1991","Koloff beat Lex Luger by disqualification in 15:23 when Harley Race and Mr. Hughes interfered.","**3/4"],
+   ["7/22/1991", "House show, Nashville: Koloff beat Lex Luger by count-out in 16:21.", "*1/4"],
+   ["7/23/1991", "House show, Inglewood: Koloff and Lex Luger went to a double count-out in 16:56. Koloff kept the title.", "*3/4"]]}
  ]},
  {t:"United States Heavyweight",L:[
   {c:"Sting",w:null,e:null,h:null,x:"Lost 7/19/1991",def:[
@@ -101,12 +103,14 @@ const TITLE_LEDGER = [
    ["7/12/1991","Sting beat Arn Anderson, who passed out in the Scorpion Deathlock.","***3/4"],
    ["7/14/1991","Sting made Nikita Koloff submit to the Scorpion Deathlock in 18:44.","***1/2"],
    ["7/16/1991","Sting pinned Bill Irwin after a diving crossbody.","*1/4"]]},
-  {c:"Rick Rude",w:"7/19/1991",e:"House show, Charleston, WV",h:"Rude pinned Sting with a vertical facebuster in 27:07 after Paul E. Dangerously interfered. It was Sting's last WCW date.",r:"****3/4",d:2,cur:1,def:[]}
+  {c:"Rick Rude",w:"7/19/1991",e:"House show, Charleston, WV",h:"Rude pinned Sting with a vertical facebuster in 27:07 after Paul E. Dangerously interfered. It was Sting's last WCW date.",r:"****3/4",d:4,cur:1,def:[]}
  ]},
  {t:"World Tag Team",L:[
   {v:1,w:"7/2/1991",e:"Ritz-Epps Center, Ft. Bragg, NC",h:"The tag titles are vacant. A one-night tournament is advertised for Johnson City on 7/20."},
-  {c:"The Fabulous Freebirds",m:"Michael Hayes & Jimmy Garvin",w:"7/20/1991",e:"Saturday Night, Johnson City",h:"Won the one-night tournament: beat the Bruise Brothers (Hayes victory roll on Don Harris, 10:49), then the Young Pistols in the final when Hayes pinned Tracy Smothers with a DDT after Diamond Dallas Page tripped him, 12:44.",r:"***",d:1,cur:1,def:[
-   ["7/21/1991","House show, Knoxville: Michael Hayes pinned Jim Brunzell of the Killer Bees with the DDT in 10:07.","**1/2"]]}
+  {c:"The Fabulous Freebirds",m:"Michael Hayes & Jimmy Garvin",w:"7/20/1991",e:"Saturday Night, Johnson City",h:"Won the one-night tournament: beat the Bruise Brothers (Hayes victory roll on Don Harris, 10:49), then the Young Pistols in the final when Hayes pinned Tracy Smothers with a DDT after Diamond Dallas Page tripped him, 12:44.",r:"***",d:3,cur:1,def:[
+   ["7/21/1991","House show, Knoxville: Michael Hayes pinned Jim Brunzell of the Killer Bees with the DDT in 10:07.","**1/2"],
+   ["7/22/1991", "House show, Nashville: the Young Pistols won by disqualification in 18:51 when Paul E. Dangerously interfered against Tracy Smothers. The Freebirds kept the titles.", "**1/2"],
+   ["7/23/1991", "House show, Inglewood: Michael Hayes pinned the Junk Yard Dog with the DDT in 12:42 to beat Tracy Smothers & JYD.", "*"]]}
  ]},
  {t:"World Television",L:[
   {v:1,w:"7/9/1991",e:"WCW Pro TV taping",h:"The title is vacant. A tournament on WCW Pro will crown the new champion; it is under way."}
@@ -129,7 +133,7 @@ const TITLE_LEDGER = [
   {c:"The Legion of Doom",m:"Road Warrior Hawk & Road Warrior Animal",w:"7/20/1991",e:"Broadcast house show, the Spectrum, Philadelphia",h:"Death Match, first to seven falls: LOD beat the Nasty Boys 7 falls to 4 in 55:59. Hawk took all seven, two by disqualification for Jimmy Hart's interference.",r:"**1/2",d:1,cur:1,def:[["7/21/1991","Hawk pinned Hercules with a flying clothesline in 11:40 to beat Power & Glory. Animal hurt his elbow. Maple Leaf Gardens, Toronto.","**3/4"]]}]},
  {t:"Million Dollar Championship",holder:"Ted DiBiase",note:"No title matches in the archive yet."}
 ]},
-{id:"ajpw",name:"AJPW",full:"All Japan Pro Wrestling",home:"Tokyo",c:"#e8252d",asof:"7/21/1991",url:"https://shovan123-lang.github.io/AJPW/HTML/WELCOME.HTM",titles:[
+{id:"ajpw",name:"AJPW",full:"All Japan Pro Wrestling",home:"Tokyo",c:"#e8252d",asof:"7/23/1991",url:"https://shovan123-lang.github.io/AJPW/HTML/WELCOME.HTM",titles:[
  {t:"Triple Crown Heavyweight",L:[{c:"Jumbo Tsuruta",cur:1,def:[
    ["7/3/1991","Jumbo pinned Toshiaki Kawada with the Jumbo knee in 9:13.","***"],
    ["7/15/1991","Jumbo pinned Kenta Kobashi with a backdrop driver in 18:55.","****1/4"],
@@ -137,8 +141,9 @@ const TITLE_LEDGER = [
  {t:"World Tag Team",L:[
   {c:"Misawa & Kawada",m:"Mitsuharu Misawa & Toshiaki Kawada",x:"Lost 7/15/1991",def:[
    ["7/11/1991","Beat Rick Rude & Abdullah the Butcher.","***1/2"]]},
-  {c:"Miracle Violence Connection",m:"Steve Williams & Terry Gordy",w:"7/15/1991",e:"Okayama Budokan (Night 8)",h:"Terry Gordy pinned Kawada after a powerbomb in 20:21.",r:"****",d:6,cur:1,def:[
-   ["7/19/1991","Gordy pinned Tommy Rogers with a powerbomb in 18:28 to beat the Fantastics.","***3/4"]]}
+  {c:"Miracle Violence Connection",m:"Steve Williams & Terry Gordy",w:"7/15/1991",e:"Okayama Budokan (Night 8)",h:"Terry Gordy pinned Kawada after a powerbomb in 20:21.",r:"****",d:8,cur:1,def:[
+   ["7/19/1991","Gordy pinned Tommy Rogers with a powerbomb in 18:28 to beat the Fantastics.","***3/4"],
+   ["7/23/1991", "Yokohama Cultural Gymnasium (Night 12): Steve Williams pinned Kenta Kobashi with the Doctor Bomb in 23:25 to beat Misawa & Kobashi.", "***1/2"]]}
  ]},
  {t:"All Asia Tag Team",L:[{c:"The Can-Am Express",m:"Doug Furnas & Dan Kroffat",cur:1,def:[
    ["7/1/1991","Beat the Fantastics.","**3/4"],
@@ -148,14 +153,14 @@ const TITLE_LEDGER = [
    ["7/17/1991","Kroffat pinned Davey Boy Smith with a tiger driver to beat the British Bulldogs in 15:06.","***1/4"]]}]},
  {t:"World Junior Heavyweight",note:"To confirm. No title matches in the archive yet."}
 ]},
-{id:"njpw",name:"NJPW",full:"New Japan Pro Wrestling",home:"Tokyo",c:"#f0a800",asof:"7/19/1991",url:"https://shovan123-lang.github.io/NJPW/HTML/WELCOME.HTM",titles:[
+{id:"njpw",name:"NJPW",full:"New Japan Pro Wrestling",home:"Tokyo",c:"#f0a800",asof:"7/22/1991",url:"https://shovan123-lang.github.io/NJPW/HTML/WELCOME.HTM",titles:[
  {t:"IWGP Heavyweight",L:[{c:"Riki Choshu",cur:1,def:[
    ["7/4/1991","Choshu pinned Bam Bam Bigelow with the Riki lariat in 25:55.","*****"],
    ["7/6/1991","Choshu pinned Mike Rotunda with the Riki lariat in 15:08.","**1/2"]]}]},
  {t:"IWGP Tag Team",L:[
   {c:"Hase & Sasaki",m:"Hiroshi Hase & Kensuke Sasaki",x:"Lost 7/5/1991",def:[
    ["7/4/1991","Beat Junji Hirata & Shinya Hashimoto.","***"]]},
-  {c:"Hirata & Hashimoto",m:"Junji Hirata & Shinya Hashimoto",w:"7/5/1991",e:"Summer Crush '91, Niigata City Gym",h:"Hirata pinned Hase with the Machine Suplex in 15:37.",r:"**",d:14,cur:1,def:[
+  {c:"Hirata & Hashimoto",m:"Junji Hirata & Shinya Hashimoto",w:"7/5/1991",e:"Summer Crush '91, Niigata City Gym",h:"Hirata pinned Hase with the Machine Suplex in 15:37.",r:"**",d:17,cur:1,def:[
    ["7/19/1991","Hashimoto pinned Hiroshi Hase with an ax kick in 18:21 to beat Hase & Sasaki.","**1/4"]]}
  ]},
  {t:"IWGP Junior Heavyweight",L:[{c:"Jushin Liger",cur:1,def:[
