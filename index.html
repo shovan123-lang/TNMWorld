@@ -58,8 +58,29 @@ nav.main .menu .sep{border-top:1px solid var(--soft);margin:6px 0}
 nav.main .menu .lbl{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding:4px 14px 0}
 nav.main .menu a.head{text-transform:none;font-family:var(--serif);font-weight:600;font-size:15px;letter-spacing:0;white-space:normal;line-height:1.25;padding-top:2px}
 nav.main .burger{display:none}
+/* Talent File search in the black bar */
+nav.main{position:sticky}
+nav.main .wrap{padding-right:46px}
+.nsearch{position:absolute;top:0;right:0;height:100%;max-height:48px}
+.nsearch-btn{height:100%;min-height:42px;width:46px;display:flex;align-items:center;justify-content:center;background:none;border:0;border-left:1px solid #3a3833;color:var(--paper);cursor:pointer}
+.nsearch-btn:hover,.nsearch-btn[aria-expanded=true]{background:#2c2a26}
+.nsearch-pop{position:absolute;top:100%;right:0;width:min(360px,100vw);background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-top:4px solid var(--red);box-shadow:0 8px 20px rgba(0,0,0,.25);z-index:30}
+.nsearch-pop input{width:100%;box-sizing:border-box;font-family:var(--cond);font-size:17px;padding:10px 12px;border:0;border-bottom:1px solid var(--soft);background:var(--paper);color:var(--ink);outline:none}
+.nsearch-pop ul{list-style:none;margin:0;padding:0;max-height:60vh;overflow-y:auto}
+.nsearch-pop li a{display:flex;align-items:center;gap:8px;padding:8px 12px;text-decoration:none;color:var(--ink);font-family:var(--cond);font-size:16px}
+.nsearch-pop li a b{font-weight:700}
+.nsearch-pop li a .chips{margin-left:auto;display:flex;gap:3px;align-items:center}
+.nsearch-pop li a .rk{font-size:12px;color:var(--mute);white-space:nowrap}
+.nsearch-pop li.on a,.nsearch-pop li a:hover{background:var(--paper2)}
+.fp-find{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;margin:10px 0 4px;padding:12px 14px;background:var(--paper);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:text;color:var(--mute);font-family:var(--cond);font-size:18px;text-align:left}
+.fp-find:hover{background:var(--paper2)}
+.fp-find small{margin-left:auto;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+@media(max-width:520px){.fp-find small{display:none}}
+.nsearch-pop .none{padding:10px 12px;color:var(--mute);font-family:var(--cond)}
 @media(max-width:1060px){
   nav.main .burger{display:flex;width:100%;justify-content:space-between}
+  .nsearch{height:auto}.nsearch-btn{height:44px}
+  nav.main .top.burger{box-sizing:border-box;min-width:0;padding-right:58px}
   nav.main .wrap{flex-direction:column;padding:0}
   nav.main .items{display:none;flex-direction:column}
   nav.main.open .items{display:flex}
@@ -683,7 +704,8 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
   <h1>The TNM World <span>Wrestling</span> Report</h1>
   <div class="tag">Every territory, every title, every week. Atlanta to Arena México to Budokan to Blackpool.</div>
 </header>
-<nav class="main"><div class="wrap" id="nav"></div></nav>
+<nav class="main"><div class="wrap" id="nav"></div><div class="nsearch" id="nsearch"><button type="button" class="nsearch-btn" id="nsbtn" aria-label="Search the Talent File" aria-expanded="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></button>
+<div class="nsearch-pop" id="nspop" hidden><input id="nsq" type="search" placeholder="Find a wrestler…" autocomplete="off" aria-label="Find a wrestler" role="combobox" aria-expanded="false" aria-controls="nsres"><ul id="nsres" role="listbox"></ul></div></div></nav>
 <div class="ticker" aria-label="Headlines"><div id="ticker"></div></div>
 <main class="wrap">
   <div class="tools"><span>Upcoming finishes are hidden until they happen.</span><span class="toggle" id="spoilBtn" role="button" tabindex="0"><span class="dot"></span>Show booked finishes</span></div>
@@ -1642,6 +1664,7 @@ function viewHome(){
   const F=FRONT;
   const fst=([p,k,id,t,x])=>`<div class="story sm"><div class="kicker" style="--c:var(--${p})">${esc(k)}</div><h4><a href="#${id}" style="text-decoration:none">${esc(t)}</a></h4><p>${esc(x)}</p></div>`;
   return `
+  <button type="button" class="fp-find" onclick="event.stopPropagation();nsOpen(true)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg><span>Find a wrestler…</span><small>Talent File · ${tfAll().list.length} wrestlers</small></button>
   <section class="grid lead col-rule" style="margin-top:8px">
     <div class="story">
       <div class="kicker" style="--c:var(--${F.lead.p})">${esc(F.lead.kicker)}</div>
@@ -2798,6 +2821,32 @@ function viewArticle(id){
 }
 /* =========================== ROUTER =========================== */
 let curTab={};
+/* Talent File search (black bar): type a name, pick a file. Enter opens the top match. */
+(function(){
+  const btn=$('#nsbtn'), pop=$('#nspop'), q=$('#nsq'), ul=$('#nsres'); if(!btn) return;
+  let hits=[], sel=0;
+  const open=window.nsOpen=on=>{if(on)window.scrollTo(0,Math.min(window.scrollY,0));pop.hidden=!on;btn.setAttribute('aria-expanded',on);q.setAttribute('aria-expanded',on&&hits.length>0);if(on){q.value='';draw();setTimeout(()=>q.focus(),0);}};
+  const score=(f,s)=>{const n=tfNorm(f.name);if(n===s)return 0;if(n.startsWith(s))return 1;if(n.split(' ').some(w=>w.startsWith(s)))return 2;if(n.includes(s))return 3;return 9;};
+  const draw=()=>{const s=tfNorm(q.value);
+    if(!s){ul.innerHTML='';hits=[];return;}
+    const L=tfAll().list;
+    hits=L.map(f=>[score(f,s),f]).filter(x=>x[0]<9).sort((a,b)=>a[0]-b[0]||((tfDraw(a[1])||{}).rank||9999)-((tfDraw(b[1])||{}).rank||9999)||a[1].name.localeCompare(b[1].name)).slice(0,8).map(x=>x[1]);
+    sel=0;
+    ul.innerHTML=hits.length?hits.map((f,i)=>{const d=tfDraw(f);return `<li role="option" class="${i===sel?'on':''}"><a href="#file/${f.slug}"><b>${esc(f.name)}</b><span class="chips">${f.promos.slice(0,3).map(pchip).join('')}${d?` <span class="rk">#${d.rank} draw</span>`:''}</span></a></li>`}).join(''):'<li class="none">No Talent File by that name.</li>';
+    q.setAttribute('aria-expanded',hits.length>0);};
+  const mark=()=>ul.querySelectorAll('li[role=option]').forEach((li,i)=>li.classList.toggle('on',i===sel));
+  btn.onclick=e=>{e.stopPropagation();open(pop.hidden);};
+  q.oninput=draw;
+  q.onkeydown=e=>{
+    if(e.key==='ArrowDown'&&hits.length){e.preventDefault();sel=(sel+1)%hits.length;mark();}
+    else if(e.key==='ArrowUp'&&hits.length){e.preventDefault();sel=(sel-1+hits.length)%hits.length;mark();}
+    else if(e.key==='Enter'&&hits.length){e.preventDefault();location.hash='#file/'+hits[sel].slug;open(false);}
+    else if(e.key==='Escape'){open(false);btn.focus();}};
+  ul.onclick=e=>{if(e.target.closest('a'))open(false);};
+  pop.onclick=e=>e.stopPropagation();
+  document.addEventListener('click',()=>{if(!pop.hidden)open(false);});
+  document.addEventListener('keydown',e=>{if(e.key==='/'&&!/input|textarea|select/i.test((document.activeElement||{}).tagName||'')){e.preventDefault();open(true);}});
+})();
 function route(){
   document.querySelector('nav.main')&&document.querySelector('nav.main').classList.remove('open');document.body.classList.remove('mnav-open');
   let h=(location.hash||'#home').slice(1), t=null, f=null;
