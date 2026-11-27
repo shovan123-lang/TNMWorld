@@ -1109,6 +1109,10 @@ function tfEarnBlock(f){
     return `<h3 class="amonth" style="font-size:22px">Earnings</h3><div class="empty">${deals.length?deals.map(([k,r])=>`${esc(P[k].short)}: ${r[0]} level, ${tfMoney(r[2])} ${esc(CONTRACTS[k].unit||'')}`.trim()).join(' · ')+'. No paid dates yet.':'Not on a pay scale yet.'}</div>`;}
   const by=Object.entries(x.lifeBy||{}).sort((a,b)=>b[1]-a[1]), mx=Math.max(1,...by.map(r=>r[1]));
   const lines=(x.lines||[]).filter(l=>l.kind!=='due').slice().reverse(), dueL=(x.lines||[]).filter(l=>l.kind==='due');
+  // A monthly salary covers every date worked for that promotion that month: say how many, so it doesn't read as one night's pay
+  const mo=String(EARNINGS.world||WORLD_DATE).slice(0,7), she=ptags(f.name).includes('w');
+  const worked=(k,upTo)=>new Set(f.run.filter(r=>r.e.p===k&&r.e.d.slice(0,7)===mo&&r.e.d<=upTo).map(r=>r.e.d)).size;
+  const what=l=>{if(l.kind!=='salary')return esc(l.what);const n=worked(l.p,l.d);return esc(l.what)+(n?` <span class="mute">· covers the ${n} date${n===1?'':'s'} ${she?'she':'he'} worked</span>`:'');};
   // Cards before the tracker's first month (EARNINGS.early, tools/earnings/build.py) count toward the career total only
   const EC=EARNINGS.early||{cards:[]}, ec=(x.ec||[]).map(([i,a])=>[EC.cards[i],a]).filter(r=>r[0]).reverse();
   return `<h3 class="amonth" style="font-size:22px">Earnings <small>career since ${esc(x.since||EARNINGS.lifeFrom||'July 1991')} · through ${fmt(EARNINGS.world)}</small></h3>
@@ -1116,7 +1120,7 @@ function tfEarnBlock(f){
     <div class="tf-earn-tot"><b>${tfMoney(x.life)}</b><span>Career earnings</span><div class="mute">${tfMoney(x.earned)} in ${esc(EARNINGS.month)}${x.due>0?` · ${tfMoney(x.due)} in tour fees still to come`:''}${ec.length?` · ${tfMoney(x.early)} from ${ec.length} card${ec.length===1?'':'s'} before ${esc(EC.before)}`:''}</div></div>
     <div class="tf-earn-by">${by.map(([k,v])=>`<div class="barrow" style="--c:${P[k].c}"><span>${pchip(k)}</span><div class="bar" style="width:${(v/mx*100).toFixed(1)}%"></div><span class="num">${tfMoney(v)}</span></div>`).join('')}</div>
   </div>
-  ${lines.length?`<details class="bk" style="margin-top:8px"><summary>${esc(EARNINGS.month)} paydays (${lines.length})</summary><div class="tbl-wrap"><table><tbody>${lines.map(l=>`<tr><td style="white-space:nowrap">${l.kind==='salary'?'To '+fmt(l.d):fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}${dueL.map(l=>`<tr class="past"><td style="white-space:nowrap">${fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}</tbody></table></div></details>`:''}
+  ${lines.length?`<details class="bk" style="margin-top:8px"><summary>${esc(EARNINGS.month)} pay (${lines.length} entr${lines.length===1?'y':'ies'})</summary><div class="tbl-wrap"><table><tbody>${lines.map(l=>`<tr><td style="white-space:nowrap">${l.kind==='salary'?'To '+fmt(l.d):fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${what(l)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}${dueL.map(l=>`<tr class="past"><td style="white-space:nowrap">${fmt(l.d)}</td><td>${pchip(l.p)}</td><td>${esc(l.what)}</td><td class="num">${tfMoney(l.amt)}</td></tr>`).join('')}</tbody></table></div></details>`:''}
   ${ec.length?`<details class="bk" style="margin-top:8px"><summary>Before ${esc(EC.before)} (${ec.length} card${ec.length===1?'':'s'}, ${tfMoney(x.early)})</summary><div class="tbl-wrap"><table><tbody>${ec.map(([c,a])=>`<tr><td style="white-space:nowrap">${fmt(c.d)}</td><td>${pchip(c.p)}</td><td>${esc(c.show)} · ${esc(c.cls)}, ${c.mult}×</td><td class="num">${tfMoney(a)}</td></tr>`).join('')}</tbody></table></div></details>`:''}`;
 }
 
