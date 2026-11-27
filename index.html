@@ -148,6 +148,21 @@ tr.big td{font-weight:700}
 .fcharts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
 .fchart{margin:0;border:2px solid var(--ink);background:var(--paper);padding:10px 12px}
 .tf-draw{margin:14px 0}
+.di-parts{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;min-width:150px}
+.di-part{white-space:nowrap;font-family:var(--cond);font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+.di-part i{display:block;height:6px;background:var(--soft);margin-top:2px;position:relative}
+.di-part i b{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.di-chg{font-family:var(--cond);font-weight:700;white-space:nowrap}
+.di-notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:8px 0 18px}
+.di-note{border:2px solid var(--ink);background:var(--paper);padding:10px 12px}
+.di-note h4{font-family:var(--cond);font-size:18px;margin:2px 0 6px;line-height:1.15}
+.di-note .who{font-family:var(--cond);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.di-note p{margin:0;font-size:15px;line-height:1.45}
+.di-lead p{font-size:17px;line-height:1.55;max-width:760px}
+.di-lead .dek{font-style:italic;color:var(--mute)}
+.di-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin:8px 0 18px}
+.di-cats ol{margin:6px 0 0;padding-left:22px;font-size:15px}
+.di-how p,.di-how li{font-size:15px;line-height:1.5;max-width:760px}
 .tf-draw svg{width:100%;height:auto;display:block}
 .fchart.tf-draw svg .ax{font-size:17px}
 .fchart:last-child{grid-column:1/-1}
@@ -682,7 +697,8 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/apuestas.js?v=9006aede"></script>
 <script src="data/tournaments.js?v=c094dd90"></script>
 <script src="data/ratings.js?v=2986294c"></script>
-<script src="data/draws.js?v=1e522114"></script>
+<script src="data/draw_notes.js?v=264db0ac"></script>
+<script src="data/draws.js?v=c1fa14b9"></script>
 <script>
 /* =========================== DATA =========================== */
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -777,7 +793,7 @@ let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e
 /* =========================== NAV =========================== */
 // Talent Exchange is retired for now (the Talent File covers it). Its page and data stay; set TX_ON=true to bring it back.
 const TX_ON=false;
-const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['ratings','TV Ratings'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
+const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['ratings','TV Ratings'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['draws','Draw Index'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
 const TAB_LABEL={overview:'Overview',titles:'Title Histories',stories:'Stories',file:'Talent File',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas',ratings:'Ratings',g1:'G1 Climax'};
@@ -793,9 +809,9 @@ function renderNav(cur,curT){
     return `<div class="dd" style="--c:${p.c}"><a href="#${k}" class="top ${cur===k?'on':''}" aria-haspopup="true">${esc(p.nav||p.short)}<span class="caret">▾</span></a>
     <div class="menu" role="menu"><div class="mlinks${nLinks(L)>8?' cols':''}">${L}</div>
     ${promoLatest(k)}</div></div>`;};
-  const worldLinks=`<a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#ratings" class="${cur==='ratings'?'cur':''}">TV Ratings &amp; PPV Buys</a><a role="menuitem" href="#storyarchive" class="${cur==='storyarchive'?'cur':''}">Story Archive</a><a role="menuitem" href="#belts" class="${cur==='belts'?'cur':''}">Title Belts</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a>${TX_ON?`<a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a>`:''}<a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#departures" class="${cur==='departures'?'cur':''}">Departures</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a>`;
+  const worldLinks=`<a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#ratings" class="${cur==='ratings'?'cur':''}">TV Ratings &amp; PPV Buys</a><a role="menuitem" href="#storyarchive" class="${cur==='storyarchive'?'cur':''}">Story Archive</a><a role="menuitem" href="#belts" class="${cur==='belts'?'cur':''}">Title Belts</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a><a role="menuitem" href="#draws" class="${cur==='draws'?'cur':''}">Draw Index</a>${TX_ON?`<a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a>`:''}<a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#departures" class="${cur==='departures'?'cur':''}">Departures</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a>`;
   const worldLatest=`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a>`;
-  const worldOn=['calendar','showarchive','ratings','storyarchive','belts','file','talent','arrivals','departures','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
+  const worldOn=['calendar','showarchive','ratings','storyarchive','belts','file','draws','talent','arrivals','departures','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
   $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',showarchive:'Show Archive',ratings:'TV Ratings',file:'Talent File',talent:'Talent Exchange',arrivals:'Arrivals',departures:'Departures',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
   <div class="items"><a href="#home" class="top ${cur==='home'?'on':''}">Front Page</a>
   <div class="dd" style="--c:var(--red)"><a href="#calendar" class="top ${worldOn?'on':''}" aria-haspopup="true">World<span class="caret">▾</span></a>
@@ -1418,6 +1434,56 @@ function tfDrawChart(f){
    ${pts.map((p,i)=>{const w=n>1?iw/(n-1):iw;return `<rect class="hit" x="${x(i)-w/2}" y="${T}" width="${w}" height="${ih}" fill="transparent" data-tip="<b>${esc(fmt(p.d))}</b><br>Draw Index <b>${p.v.toFixed(1)}</b><br>#${p.rank} of ${p.of} in the world"/>`}).join('')}
   </svg>
   ${n<2?`<p class="mute" style="font-family:var(--cond);font-size:13px;margin:4px 0 0">First reading. The line builds from here, one point every time the World Clock moves.</p>`:''}</figure>`;
+}
+/* Draw Index page (#draws): the latest edition of data/draws.js, the write-ups in data/draw_notes.js,
+   risers and fallers against the previous edition, and how the Index works. All copy is in-world. */
+function viewDraws(){
+  if(!HAS_DRAWS) return `<h2 class="sec">Draw Index</h2><div class="empty">The first Draw Index hasn't been published yet.</div>`;
+  const T=tfAll(), byKey=new Map(T.list.map(f=>[tfNorm(f.name),f]));
+  const rows=Object.entries(DRAWS.rows).map(([k,r])=>({k,...r})).sort((a,b)=>a.rank-b.rank);
+  const snaps=(DRAWS.snaps||[]).filter(x=>x.d<=WORLD_DATE), prev=snaps.length>1?snaps[snaps.length-2]:null;
+  const prevRank=k=>{if(!prev||prev.rows[k]==null)return null;const v=prev.rows[k];return 1+Object.values(prev.rows).filter(o=>o>v).length;};
+  const who=r=>{const f=byKey.get(r.k);return `${f?`<a href="#file/${f.slug}"><b>${esc(r.n)}</b></a>`:`<b>${esc(r.n)}</b>`}`;};
+  const chips=r=>(r.p||[]).filter(k=>P[k]).map(pchip).join('');
+  const chg=r=>{if(!prev) return '<span class="mute">new</span>';const pr=prevRank(r.k);if(pr==null)return '<span class="mute">new</span>';const d=pr-r.rank;
+    return d>0?`<span class="di-chg" style="color:var(--green,#2e7d32)">▲ ${d}</span>`:d<0?`<span class="di-chg" style="color:var(--red)">▼ ${-d}</span>`:'<span class="di-chg mute">–</span>';};
+  const PARTS=[['b','Gate','Box office'],['c','Crowd','Crowd'],['r','Ring','Ring'],['s','Star','Star power']];
+  const bars=r=>`<div class="di-parts">${PARTS.map(([k,l,t])=>`<div class="di-part" title="${t}: ${r[k]==null?'no record yet':r[k]}">${l}<i>${r[k]!=null?`<b style="width:${r[k]}%"></b>`:''}</i></div>`).join('')}</div>`;
+  const ed=Object.keys(typeof DRAW_NOTES!=='undefined'?DRAW_NOTES:{}).filter(d=>d<=WORLD_DATE).sort().pop(), N=ed?DRAW_NOTES[ed]:null;
+  const noteCards=list=>`<div class="di-notes">${(list||[]).map(x=>{const k=tfNorm(x.n), r=DRAWS.rows[k], f=byKey.get(k);
+    return `<div class="di-note"><div class="who">${f?`<a href="#file/${f.slug}">${esc(x.n)}</a>`:esc(x.n)}${r?` · #${r.rank} · ${r.idx.toFixed(1)}`:''}</div><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p></div>`}).join('')}</div>`;
+  // movers against the previous edition
+  let movers='';
+  if(prev){const mv=rows.map(r=>({r,pr:prevRank(r.k)})).filter(x=>x.pr!=null).map(x=>({...x,d:x.pr-x.r.rank}));
+    const up=mv.filter(x=>x.d>0).sort((a,b)=>b.d-a.d).slice(0,8), dn=mv.filter(x=>x.d<0).sort((a,b)=>a.d-b.d).slice(0,8);
+    const li=x=>`<li>${who(x.r)} ${chips(x.r)} <span class="mute">#${x.pr} → #${x.r.rank}</span></li>`;
+    movers=`<div class="di-cats"><div class="di-note"><h4>Biggest risers</h4><ol style="list-style:none;padding:0">${up.map(li).join('')||'<li class="mute">Nobody moved up.</li>'}</ol></div><div class="di-note"><h4>Biggest fallers</h4><ol style="list-style:none;padding:0">${dn.map(li).join('')||'<li class="mute">Nobody moved down.</li>'}</ol></div></div>`;}
+  else movers=`<p class="mute" style="font-family:var(--cond);font-size:14px">This is the first edition of the Index. Risers and fallers start with next week's edition.</p>`;
+  const cat=(k,l,blurb)=>`<div class="di-note"><h4>${l}</h4><div class="mute" style="font-size:13px">${blurb}</div><ol>${rows.filter(r=>r[k]!=null).sort((a,b)=>b[k]-a[k]||a.rank-b.rank).slice(0,5).map(r=>`<li>${who(r)} <span class="mute">${r[k]}</span></li>`).join('')}</ol></div>`;
+  return `<h2 class="sec">Draw Index <small>edition of ${esc(fmt(DRAWS.world))} · ${rows.length} wrestlers in ten promotions</small></h2>
+  ${N?`<div class="di-lead"><h3 class="amonth" style="font-size:26px">${esc(N.title)}</h3><p class="dek">${esc(N.dek)}</p>${(N.paras||[]).map(p=>`<p>${esc(p)}</p>`).join('')}</div>`:''}
+  <h3 class="amonth" style="font-size:22px">The top 25 <small>drawing power, 0 to 100</small></h3>
+  <p class="mute" style="font-family:var(--cond);font-size:13px;margin:0 0 6px">Bars: Gate (box office), Crowd, Ring, Star (star power). How they're weighed is at the bottom of the page.</p>
+  <div class="tbl-wrap"><table><thead><tr><th class="num">#</th><th>Wrestler</th><th class="num">Index</th><th>What it's made of</th>${prev?'<th class="num">Week</th>':''}</tr></thead><tbody>
+  ${rows.slice(0,25).map(r=>`<tr><td class="num"><b>${r.rank}</b></td><td>${who(r)}<br>${chips(r)}</td><td class="num"><b>${r.idx.toFixed(1)}</b></td><td>${bars(r)}</td>${prev?`<td class="num">${chg(r)}</td>`:''}</tr>`).join('')}
+  </tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Every wrestler's full history is on his <a href="#file">Talent File</a> (sort by Draw Index, or tap Top draws).</p>
+  <h3 class="amonth" style="font-size:22px">Risers &amp; fallers</h3>${movers}
+  ${N&&N.rise&&N.rise.length?`<h3 class="amonth" style="font-size:22px">On the rise</h3>${noteCards(N.rise)}`:''}
+  ${N&&N.cool&&N.cool.length?`<h3 class="amonth" style="font-size:22px">Cooling off</h3>${noteCards(N.cool)}`:''}
+  ${N&&N.watch&&N.watch.length?`<h3 class="amonth" style="font-size:22px">Ones to watch</h3>${noteCards(N.watch)}`:''}
+  <h3 class="amonth" style="font-size:22px">The leaders in each column</h3>
+  <div class="di-cats">${cat('b','Box office','Who headlines the biggest houses')}${cat('c','Crowd','Who gets the loudest reaction')}${cat('r','Ring','Whose matches rate the best')}${cat('s','Star power','Presence, and how many promotions want him')}</div>
+  <div class="di-how"><h3 class="amonth" style="font-size:22px">How the Draw Index works</h3>
+  <p>The Draw Index is the Report's weekly measure of who really draws in the wrestling business, from Atlanta to Arena México to the Budokan. Every wrestler working in one of the ten promotions we cover gets a number from 0 to 100. Fifty is an average working wrestler; the true main eventers live in the sixties and up. It's built from four things, weighted the way a promoter would weigh them:</p>
+  <ul>
+   <li><b>Box office (35%).</b> When he's in the main event, how does the house compare with what that promotion usually does? We count both: a sellout in a small hall is a good night for that office, but a full Budokan or a $200,000 Arena México is a bigger one, and the Index knows the difference.</li>
+   <li><b>Crowd (25%).</b> How loud the building gets when he comes through the curtain, as our correspondents report it, plus where he stands in his own promotion's rankings.</li>
+   <li><b>Ring (20%).</b> The average star rating of his last ten matches. A man who draws and can't work won't draw for long.</li>
+   <li><b>Star power (20%).</b> Charisma and presence, and reach: a wrestler wanted in more than one territory is worth more to all of them.</li>
+  </ul>
+  <p>The Index counts what a wrestler is doing now. A man who isn't headlining, or isn't working at all through injury, a contract dispute or a move to a new territory, gets little credit in that column until he's back in front of a crowd, however big his name is. That's why some famous names sit low and some workhorses sit high.</p>
+  <p>The Index comes out every week. Each wrestler's Talent File charts his number over time, and the Report's TV ratings estimates use it too: a show built on top draws does a bigger number.</p></div>`;
 }
 function viewTalentFile(slug){
   const T=tfAll(); if(!T.list.length) return `<div class="empty">No Talent File set.</div>`;
@@ -2690,6 +2756,7 @@ function route(){
   else if(key==='storyarchive') html=viewStoryArchive();
   else if(key==='belts') html=viewBelts();
   else if(key==='file') html=viewTalentFile(t);
+  else if(key==='draws') html=viewDraws();
   else if(key==='talent') html=viewTalent();
   else if(key==='arrivals') html=viewArrivals();
   else if(key==='departures') html=viewDepartures();

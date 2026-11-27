@@ -326,6 +326,12 @@ def site_key(name):
     return re.sub(r"[^a-z0-9]+", " ", s).strip()
 
 
+# Circuit folder -> the site's promotion key (CARD.LGS order).
+SITE_KEY = {"USWA": "uswa", "POWER": "pp", "ALL": "ajpw", "CONSEJO": "cmll",
+            "WORLD": "wwf", "WORLD1": "wcw", "NEW": "njpw",
+            "EASTERN1": "twa", "ALL1": "asw", "FRONTIER": "fmw"}
+
+
 def write_js(ranked, path, date):
     """data/draws.js for the TNM World site.
 
@@ -336,6 +342,9 @@ def write_js(ranked, path, date):
     index go public; contracts and push stay off the site.
     """
     import json
+    for r in ranked:
+        r["site_promos"] = [SITE_KEY.get(x.upper(), x.lower())
+                            for x in r["promos"]]
     snaps = []
     if os.path.exists(path):
         old = open(path, encoding="utf-8").read()
@@ -346,9 +355,15 @@ def write_js(ranked, path, date):
     snaps.append({"d": date, "rows": {site_key(r["name"]): round(
         r["index"], 1) for r in ranked}})
     snaps.sort(key=lambda x: x["d"])
-    rows = {site_key(r["name"]): {"rank": r["rank"],
-                                  "idx": round(r["index"], 1)}
-            for r in ranked}
+    # Parts for the Draw Index page: b box office, c crowd, r ring work,
+    # s star power (0-100, null = no record yet). No push or contracts.
+    part = lambda v: None if v is None else round(v)
+    rows = {site_key(r["name"]): {
+        "rank": r["rank"], "idx": round(r["index"], 1), "n": r["name"],
+        "p": r["site_promos"],
+        "b": part(r["parts"]["draw"]), "c": part(r["parts"]["heat"]),
+        "r": part(r["parts"]["quality"]), "s": part(r["parts"]["star"])}
+        for r in ranked}
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write("/* TNM World Wrestling Report: Draw Index.\n"
                 "   Written by tools/tnm_draw.py at each World Clock "
