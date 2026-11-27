@@ -148,12 +148,13 @@ tr.big td{font-weight:700}
 .fcharts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
 .fchart{margin:0;border:2px solid var(--ink);background:var(--paper);padding:10px 12px}
 .tf-draw{margin:14px 0}
-.tf-draw summary{cursor:pointer;font-family:var(--cond);font-size:16px;list-style:none;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
-.tf-draw summary::-webkit-details-marker{display:none}
-.tf-draw summary::before{content:'▸';font-size:14px;transition:transform .15s}
-.tf-draw[open] summary::before{transform:rotate(90deg)}
-.tf-draw summary::after{content:'Show chart';margin-left:auto;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
-.tf-draw[open] summary::after{content:'Hide chart'}
+.tf-draw-top{font-family:var(--cond);font-size:16px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.tf-draw-why{margin:6px 0 4px;font-size:15px;line-height:1.5}
+.tf-draw-chart summary{cursor:pointer;list-style:none;display:flex;gap:10px;align-items:baseline;font-family:var(--cond);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);border-top:1px solid var(--soft);padding-top:6px;margin-top:4px}
+.tf-draw-chart summary::-webkit-details-marker{display:none}
+.tf-draw-chart summary::before{content:'▸ Show';transition:none}
+.tf-draw-chart[open] summary::before{content:'▾ Hide'}
+.tf-draw-chart summary a{margin-left:auto;text-transform:none;letter-spacing:0;font-size:13px}
 .tf-draw-head{font-size:15px}
 .di-top{margin:18px 0 4px}
 .di-top summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;border-bottom:3px solid var(--ink);padding-bottom:6px}
@@ -1427,6 +1428,51 @@ function tfDiaryBlock(f){
 }
 /* Draw Index chart: one point per World Clock advance (DRAWS.snaps), on a fixed 0-100 scale so every file
    reads the same way; 50 is the line between above and below average. Rank is worked out per snapshot. */
+/* Three sentences on a wrestler's Draw Index, built from his numbers and his record. In-world voice only:
+   where he stands, what's driving it (with a fact from his file), what's holding him back. */
+function tfDrawWhy(f,row,last,prev){
+  if(!row) return '';
+  const she=ptags(f.name).includes('w'), He=she?'She':'He', he=she?'she':'he', His=she?'Her':'His', his=she?'her':'his', him=she?'her':'him';
+  const money=g=>{const m=String(g||'').match(/\$([\d,]+)/);return m?+m[1].replace(/,/g,''):null;};
+  const usd=v=>'$'+v.toLocaleString('en-US');
+  const isMain=r=>{const ms=(r.e.m||[]).filter(m=>m&&/\bvs\.?\s/i.test(m[0])&&!/^(segment|promo|interview|dark)/i.test(m[0]));return ms.length&&ms[ms.length-1]===r.m;};
+  const mains=f.run.filter(r=>!r.e.hist&&isMain(r)&&money(r.e.gate)).sort((a,b)=>money(b.e.gate)-money(a.e.gate));
+  const best=tfBest(f), cur=tfBelts(f).filter(x=>x.cur);
+  const lvl=v=>v>=65?'a main-event draw':v>=55?'an upper-card draw':v>=45?'a solid midcard name':v>=35?'a working midcarder':'an undercard name';
+  const move=prev?(prev.rank-last.rank):0;
+  const s1=`At ${last.v.toFixed(1)}, ${f.name} ranks #${last.rank} of ${last.of} in the world, the number of ${lvl(last.v)}${move?`, ${move>0?'up':'down'} ${Math.abs(move)} spot${Math.abs(move)===1?'':'s'} since ${fmt(prev.d)}`:''}.`;
+  const parts=[['b',row.b],['t',row.t],['c',row.c],['s',row.s],['r',row.r]].filter(x=>x[1]!=null);
+  const top=parts.slice().sort((a,b)=>b[1]-a[1])[0], low=parts.slice().sort((a,b)=>a[1]-b[1])[0];
+  const rec=f.w+f.l?`${f.w}–${f.l}${f.d?'–'+f.d:''}`:'';
+  const city=e=>String(e.city||'').split(',')[0];
+  const bestTxt=best?`${his} best match on record rated ${best.m[2]} in ${city(best.e)}`:'';
+  const S2={
+    b:()=>mains.length?`${His} strength is the box office: ${he} headlined a ${usd(money(mains[0].e.gate))} house in ${city(mains[0].e)}${mains.length>1?`, one of ${mains.length} main events with money in the building`:''}.`:`${His} strength is the box office: ${his} main events draw money.`,
+    t:()=>`Television is what makes ${him}: fans see ${him} on TV ${row.t>=60?'every week':'regularly'}, and that's what turns a wrestler into a name people pay to see.`,
+    c:()=>`The crowds are ${his} strength: buildings come alive when ${he} comes through the curtain${rec?`, and ${he}'s ${rec} on the cards`:''}.`,
+    s:()=>`${His} star power carries ${him}${cur.length?`: ${he} holds the ${cur[0].title} title`:''}${rec?`${cur.length?' and':': '} ${he}'s ${rec} on the cards`:''}.`.replace(': .','.').replace('carries him.','carries him.'),
+    r:()=>`${His} matches carry ${him}${bestTxt?`: ${bestTxt}`:''}.`
+  };
+  const S3={
+    t:()=>row.t===0?`What holds ${him} back is television: ${he} hasn't been seen on TV yet, and until fans outside the building see ${him}, there's a ceiling on what ${he} can draw.`:`What holds ${him} back is television: ${he}'s barely been on TV, so most fans have never seen ${him}.`,
+    b:()=>`What holds ${him} back is the box office: ${mains.length?`${his} main events haven't drawn big money`:`${he} hasn't headlined a card yet`}, so ${his} drawing power is still unproven.`,
+    c:()=>`What holds ${him} back is the crowd: the buildings where ${he}'s working now haven't caught on to ${him} yet.`,
+    s:()=>f.l>f.w?`What holds ${him} back is a ${rec} record: fans cool off on a wrestler who keeps losing.`:`What holds ${him} back is star power: ${he} doesn't have the presence or the gold of the names above ${him} yet.`,
+    r:()=>`What holds ${him} back is ${his} matches: they haven't rated well, and fans who aren't entertained don't come back.`
+  };
+  const noTV=row.t===0||row.t==null&&!f.run.length;
+  let s3;
+  const worked=f.run.filter(r=>!r.e.hist).length;
+  if(!worked) return `<p class="tf-draw-why">${esc(s1)} ${esc(`${His} name still means something, but ${he} hasn't wrestled on a card since the Report started tracking in July.`)} ${esc(`The Index only counts what happens in front of the fans, so ${his} number won't move until ${he}'s back in the ring.`)}</p>`;
+  if(false) s3='';
+  else if(f.l>=3&&f.l>=2*f.w+3) s3=`What holds ${him} back is a ${rec} record: fans cool off on a wrestler who keeps losing${row.t!=null&&row.t<40?`, and ${he}'s rarely been on TV to change their minds`:''}.`;
+  else if(row.t===0&&low[0]!=='t'&&top[0]!=='t') s3=S3.t();
+  else if(low[1]>=60) s3=`There's no weak spot in ${his} game right now; the job is to stay there.`;
+  else s3=(S3[low[0]]||S3.c)();
+  let s2=(S2[top[0]]||S2.c)();
+  if(last.v<40) s2=s2.replace(/^(His|Her) strength is /,`What ${he} has going for ${him} is `).replace(/^(His|Her) star power carries (him|her)/,`What ${he} has going for ${him} is star power`).replace(/^(His|Her) matches carry (him|her)/,`What ${he} has going for ${him} is ${his} matches`).replace(/^The crowds are (his|her) strength/,`What ${he} has going for ${him} is the crowd`).replace(/^Television is what makes (him|her)/,`What ${he} has going for ${him} is television`);
+  return `<p class="tf-draw-why">${esc(s1)} ${esc(s2)} ${esc(s3)}</p>`;
+}
 let tfDrawOpen=false;   // the Draw Index chart starts closed; stays open between files once opened
 function tfDrawChart(f){
   if(!HAS_DRAWS||!(DRAWS.snaps||[]).length) return '';
@@ -1441,8 +1487,10 @@ function tfDrawChart(f){
   const path=pts.map((p,i)=>(i?'L':'M')+x(i).toFixed(1)+','+y(p.v).toFixed(1)).join('');
   const every=Math.max(1,Math.ceil(n/8));
   const head=`<b>${last.v.toFixed(1)}</b> · #${last.rank} of ${last.of} in the world${ch!=null?` · <span style="color:${ch>0?'var(--green,#2e7d32)':ch<0?'var(--red)':'var(--mute)'}">${ch>0?'▲ +':ch<0?'▼ ':''}${ch===0?'no change':ch.toFixed(1)}${rk?` (${rk>0?'up':'down'} ${Math.abs(rk)} spot${Math.abs(rk)===1?'':'s'})`:''}</span> since ${esc(fmt(prev.d))}`:''}${n>2&&peak!==last?` · peak ${peak.v.toFixed(1)}, ${esc(fmt(peak.d))}`:''}`;
-  return `<details class="fchart tf-draw"${tfDrawOpen?' open':''} ontoggle="tfDrawOpen=this.open"><summary><b>Draw Index</b> <span class="tf-draw-head">${head}</span></summary>
-  <div class="mute" style="font-family:var(--cond);font-size:13px;margin:6px 0 4px">Drawing power, 0 to 100, each week. <a href="#draws">How it works →</a></div>
+  const why=tfDrawWhy(f,DRAWS.rows[k],last,prev);
+  return `<div class="fchart tf-draw"><div class="tf-draw-top"><b>Draw Index</b> <span class="tf-draw-head">${head}</span></div>
+  ${why}
+  <details class="tf-draw-chart"${tfDrawOpen?' open':''} ontoggle="tfDrawOpen=this.open"><summary>Chart <a href="#draws" onclick="event.stopPropagation()">How it works →</a></summary>
   <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Draw Index over time, now ${last.v.toFixed(1)}, rank ${last.rank}">
    ${[0,25,50,75,100].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="${v===50?'var(--mute)':'var(--soft)'}" stroke-width="1"${v===50?' stroke-dasharray="4 3"':''}/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" class="ax">${v}</text>`).join('')}
    ${pts.map((p,i)=>i%every===0||i===n-1?`<text x="${x(i)}" y="${H-8}" text-anchor="middle" class="ax">${+p.d.slice(5,7)}/${+p.d.slice(8,10)}</text>`:'').join('')}
@@ -1450,7 +1498,7 @@ function tfDrawChart(f){
    ${pts.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.v)}" r="${i===n-1?6:3.5}" fill="${c}" stroke="var(--paper)" stroke-width="${i===n-1?2:1}"/>`).join('')}
    ${pts.map((p,i)=>{const w=n>1?iw/(n-1):iw;return `<rect class="hit" x="${x(i)-w/2}" y="${T}" width="${w}" height="${ih}" fill="transparent" data-tip="<b>${esc(fmt(p.d))}</b><br>Draw Index <b>${p.v.toFixed(1)}</b><br>#${p.rank} of ${p.of} in the world"/>`}).join('')}
   </svg>
-  ${n<2?`<p class="mute" style="font-family:var(--cond);font-size:13px;margin:4px 0 0">First reading. The line builds from here, one point every week.</p>`:''}</details>`;
+  ${n<2?`<p class="mute" style="font-family:var(--cond);font-size:13px;margin:4px 0 0">First reading. The line builds from here, one point every week.</p>`:''}</details></div>`;
 }
 /* Draw Index page (#draws): the latest edition of data/draws.js, the write-ups in data/draw_notes.js,
    risers and fallers against the previous edition, and how the Index works. All copy is in-world. */
