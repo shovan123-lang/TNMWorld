@@ -288,6 +288,13 @@ tr.big td{font-weight:700}
 .phead .full{font-family:var(--cond);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:14px}
 .phead .stat{text-align:right;font-family:var(--cond)}
 .phead .stat b{display:block;font-family:var(--head);font-weight:400;font-size:30px;line-height:1}
+.stat .pl{display:block;margin-top:5px;font-family:var(--cond);font-size:14px;color:var(--ink);text-decoration:none;border-top:1px solid var(--soft);padding-top:4px}
+.stat .pl b,.phead .stat .pl b{display:inline;font-family:var(--head);font-weight:400;font-size:22px;line-height:1}
+.stat .pl.up b{color:#1e6b34}.stat .pl.down b{color:var(--red)}
+.stat .pl:hover{text-decoration:underline}
+tr.per-q td{background:var(--paper2);font-weight:700}tr.per-y td{background:var(--ink);color:var(--paper);font-weight:700}
+tr.per-h td{font-family:var(--cond);text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--mute);border-bottom:1px solid var(--ink);padding-top:12px}
+td.neg{color:var(--red)}tr.per-y td.neg{color:#ff9b93}
 .sub{display:flex;flex-wrap:wrap;gap:0;margin:12px 0 0;border-bottom:2px solid var(--ink)}
 .sub button{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px;background:none;border:0;padding:8px 12px;cursor:pointer;color:var(--mute);border-bottom:4px solid transparent;margin-bottom:-2px}
 .sub button.on{color:var(--ink);border-bottom-color:var(--c)}
@@ -736,6 +743,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/twa.js?v=035b6ed4"></script>
 <script src="data/fmw.js?v=bf90fb8b"></script>
 <script src="data/history.js?v=8be05e77"></script>
+<script src="data/fin_archive.js?v=401ccb9a"></script>
 <script src="data/earnings.js?v=c3cdddce"></script>
 <script src="data/apuestas.js?v=9006aede"></script>
 <script src="data/tournaments.js?v=c094dd90"></script>
@@ -1757,6 +1765,7 @@ function viewContracts(k){
    Talent cost comes from the Talent Earnings tracker when it covers the promotion,
    so the pages always agree: salaries and tour fees day by day to the world date,
    show pay and bonuses. Other costs come from FINANCE._costs (see data/world.js). */
+/* FIN-CORE:start  (tools/finance/close_month.js runs this block in Node to file each month's results) */
 const isTV=r=>/\bTV\b|taping|Superstars|Prime Time|Worldwide|Saturday Night/i.test(r.show+' '+(r.cls||''))&&!/house show/i.test(r.show);
 const isPPV=r=>/PPV|Pay-per-view/i.test(r.show+' '+(r.cls||''))||/WrestleFest|Great American Bash|Star Wars/i.test(r.show);
 function showCosts(k,r){
@@ -1767,11 +1776,16 @@ function showCosts(k,r){
     tv:isTV(r)?(C.tv||0):0,ppv:isPPV(r)?(C.ppv||0):0,cogs:(C.cogs||0)*(r.merch||0)};
   Object.assign(o,r.costs||{}); return o;
 }
-function finSum(k){
+/* finSum(k) covers everything on the books; finSum(k,'1991-07') covers that month only (its shows, its other revenue,
+   its talent lines), which is what the promotion header and the monthly archive use. */
+const MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const earnMonth=()=>{if(typeof EARNINGS==='undefined')return null;const m=String(EARNINGS.month||'').match(/^(\w+) (\d{4})$/);const i=m?MONTH_NAMES.indexOf(m[1]):-1;return i>=0?m[2]+'-'+String(i+1).padStart(2,'0'):EARNINGS.world.slice(0,7);};
+function finSum(k,only){
   const f=FINANCE[k]; if(!f) return null;
-  const rows=f.rows||[]; let other=f.other||[];
+  const inMo=d=>!only||String(d||'').startsWith(only);
+  const rows=(f.rows||[]).filter(r=>inMo(r.d)); let other=(f.other||[]).filter(o=>inMo(o.d));
   const gate=rows.reduce((a,r)=>a+(r.gate||0),0), merch=rows.reduce((a,r)=>a+(r.merch||0),0);
-  const hasE=typeof EARNINGS!=='undefined', mo=hasE?EARNINGS.world.slice(0,7):WORLD_DATE.slice(0,7);
+  const hasE=typeof EARNINGS!=='undefined', mo=only||(hasE?EARNINGS.world.slice(0,7):WORLD_DATE.slice(0,7));
   const TVd=(FINANCE._tv||{})[k], dimTV=new Date(Date.UTC(+mo.slice(0,4),+mo.slice(5,7),0)).getUTCDate();
   const tvDays=WORLD_DATE.slice(0,7)===mo?+WORLD_DATE.slice(8,10):dimTV;
   if(TVd&&TVd.amt&&!other.some(o=>o.stream==='TV rights'))other=[...other,{d:WORLD_DATE,stream:'TV rights',daily:1,amt:TVd.amt*tvDays/dimTV,note:`${TVd.note}: $${TVd.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}];
@@ -1779,10 +1793,11 @@ function finSum(k){
   const oth=other.reduce((a,o)=>a+(o.amt||0),0), rev=gate+merch+oth;
   const ledgerPay=rows.filter(r=>r.gate!=null).reduce((a,r)=>a+(r.payroll||0),0);
   let paid=null,due=0,pool=0;
-  if(hasE){const L=EARNINGS.people.flatMap(x=>x.lines.filter(l=>l.p===k));
+  const emo=earnMonth(), lineIn=l=>!only||String(l.d).startsWith(only)||(l.kind==='salary'&&emo===only);
+  if(hasE){const L=EARNINGS.people.flatMap(x=>x.lines.filter(l=>l.p===k&&lineIn(l)));
     if(L.length){paid=L.filter(l=>l.kind!=='due').reduce((a,l)=>a+l.amt,0);due=L.filter(l=>l.kind==='due').reduce((a,l)=>a+l.amt,0);
       pool=L.filter(l=>l.kind==='pool').reduce((a,l)=>a+l.amt,0);}}
-  const pre=rows.filter(r=>r.gate!=null&&!String(r.d).startsWith(mo)).reduce((a,r)=>a+(r.payroll||0),0);
+  const pre=only?0:rows.filter(r=>r.gate!=null&&!String(r.d).startsWith(mo)).reduce((a,r)=>a+(r.payroll||0),0);
   let pay,payLabel,src;
   if(paid==null){pay=f.fixed?f.fixed[1]:ledgerPay;payLabel=f.fixed?f.fixed[0]:'Talent payroll, shows logged';src='ledger';}
   else if(f.fixed){pay=paid;payLabel=f.period==='Per tour'?'Talent earned to '+fmt(WORLD_DATE)+' (tour fees day by day)':'Talent paid to '+fmt(WORLD_DATE)+' (salaries day by day, plus bonuses)';src='tracker';}
@@ -1806,10 +1821,63 @@ function finSum(k){
   const costTot=Object.values(cost).reduce((a,v)=>a+v,0), profit=rev-costTot;
   // The champions' pool (3% of each gate, split among the champions on the card) is part of talent pay (pay)
   // but shows as its own cost line; poolCards gives each show's pool for the Shows table.
-  const poolCards=hasE&&EARNINGS.pool?EARNINGS.pool.cards.filter(c=>c.p===k):[];
+  const poolCards=hasE&&EARNINGS.pool?EARNINGS.pool.cards.filter(c=>c.p===k&&inMo(c.d)):[];
   return {f,rows,other,gate,merch,oth,rev,pay,payLabel,due,paid,pool,poolCards,net:rev-pay,src,cost,costTot,profit,per,
     margin:rev?Math.round(profit/rev*100):null,
     share:rev?Math.round(pay/rev*100):null, gshare:gate?Math.round(pay/gate*100):null};
+}
+/* The month's results in the shape the archive keeps (data/fin_archive.js). */
+function finMonthRec(k,mo){
+  const S=finSum(k,mo); if(!S) return null;
+  const R=v=>Math.round(v), streams={}, costs={};
+  S.other.forEach(o=>streams[o.stream]=R((streams[o.stream]||0)+o.amt));
+  Object.entries(S.cost).forEach(([x,v])=>{if(v>0.5)costs[x]=R(v)});
+  return {shows:S.rows.filter(r=>r.gate!=null).length,gate:R(S.gate),merch:R(S.merch),other:R(S.oth),rev:R(S.rev),
+    talent:R(S.pay),costs:R(S.costTot),profit:R(S.profit),streams,costLines:costs};
+}
+/* FIN-CORE:end */
+/* ---------- Months, quarters and years ----------
+   Closed months come from FIN_ARCHIVE (filed at each month end); the current month is live, to the world date.
+   Quarters and years add up their months. k=null adds up every promotion (the world). */
+const FIN_KEYS=['shows','gate','merch','other','rev','talent','costs','profit'];
+function finMonths(){const A=typeof FIN_ARCHIVE!=='undefined'?FIN_ARCHIVE:{};const m=new Set(Object.keys(A));m.add(WORLD_DATE.slice(0,7));return [...m].sort();}
+function finRec(k,mo){
+  const A=typeof FIN_ARCHIVE!=='undefined'?FIN_ARCHIVE:{}, closed=!!A[mo];
+  const one=x=>closed?(A[mo].p[x]||null):(mo===WORLD_DATE.slice(0,7)?finMonthRec(x,mo):null);
+  const ks=k?[k]:ORDER.filter(x=>FINANCE[x]);const out={live:!closed,n:0};FIN_KEYS.forEach(f=>out[f]=0);
+  ks.forEach(x=>{const r=one(x);if(r){out.n++;FIN_KEYS.forEach(f=>out[f]+=r[f]||0);}});
+  return out.n?out:null;
+}
+const qOf=mo=>mo.slice(0,4)+'-Q'+Math.ceil(+mo.slice(5,7)/3);
+const moLabel=mo=>MONTH_NAMES[+mo.slice(5,7)-1]+' '+mo.slice(0,4);
+function finPeriods(k){
+  const months=finMonths().map(mo=>({mo,r:finRec(k,mo)})).filter(x=>x.r);
+  const add=(key,label,list)=>{const r={live:list.some(x=>x.r.live),n:list.length};FIN_KEYS.forEach(f=>r[f]=list.reduce((a,x)=>a+x.r[f],0));return {key,label,r,months:list.length};};
+  const qs=[...new Set(months.map(x=>qOf(x.mo)))].map(q=>add(q,q.slice(5)+' '+q.slice(0,4),months.filter(x=>qOf(x.mo)===q)));
+  const ys=[...new Set(months.map(x=>x.mo.slice(0,4)))].map(y=>add(y,y,months.filter(x=>x.mo.startsWith(y))));
+  return {months:months.map(x=>({key:x.mo,label:moLabel(x.mo),r:x.r})),qs,ys};
+}
+function finPeriodTable(k){
+  const P2=finPeriods(k); if(!P2.months.length) return '';
+  const m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
+  const tag=(x,qy)=>x.r.live?` <span class="mute" style="font-weight:400">${qy?'to date':'to '+fmt(WORLD_DATE)}</span>`:(qy?'':' <span class="mute" style="font-weight:400">closed</span>');
+  const row=(x,cls,qy)=>{const r=x.r;return `<tr class="${cls}"><td style="white-space:nowrap">${esc(x.label)}${tag(x,qy)}</td><td class="num">${r.shows}</td><td class="num">${m(r.gate)}</td><td class="num">${m(r.merch)}</td><td class="num">${m(r.other)}</td><td class="num"><b>${m(r.rev)}</b></td><td class="num">${m(r.talent)}</td><td class="num">${m(r.costs-r.talent)}</td><td class="num${r.profit<0?' neg':''}"><b>${m(r.profit)}</b></td><td class="num">${r.rev?String(Math.round(r.profit/r.rev*100)).replace('-','−')+'%':'—'}</td></tr>`;};
+  const head=t=>`<tr class="per-h"><td colspan="10">${t}</td></tr>`;
+  return `<h2 class="sec">By month, quarter and year <small>${P2.months.filter(x=>!x.r.live).length} month${P2.months.filter(x=>!x.r.live).length===1?'':'s'} closed</small></h2>
+  <div class="tbl-wrap"><table><thead><tr><th>Period</th><th>Shows</th><th>Gate</th><th>Merch</th><th>Other revenue</th><th>Revenue</th><th>Talent</th><th>Other costs</th><th>Operating profit</th><th>Margin</th></tr></thead><tbody>
+  ${head('Months')}${P2.months.map(x=>row(x,'',false)).join('')}
+  ${head('Quarters')}${P2.qs.map(x=>row(x,'per-q',true)).join('')}
+  ${head('Years')}${P2.ys.map(x=>row(x,'per-y',true)).join('')}
+  </tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Each month counts only that month's shows, other revenue and talent pay. A month is filed in the archive when the world clock passes its last day, and its numbers stay fixed after that. Quarters and years add up their months, including the current month to date.</p>`;
+}
+/* Top right of each promotion page: this month's gate + merch, and the month's operating profit or loss so far. */
+function promoMoneyStat(k){
+  const p=P[k], mo=WORLD_DATE.slice(0,7), S=FINANCE[k]?finSum(k,mo):null;
+  if(!S||!S.rows.some(r=>r.gate!=null)) return null;
+  const m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US'), n=S.rows.filter(r=>r.gate!=null).length, mn=MONTH_NAMES[+mo.slice(5,7)-1];
+  return {big:m(S.gate+S.merch),sub:`${mn} gate${S.merch?' + merch':''} · ${n} show${n===1?'':'s'}`,
+    pl:`<a class="pl ${S.profit<0?'down':'up'}" href="#${k}/finance" title="Revenue ${m(S.rev)} · costs ${m(S.costTot)}, ${esc(mn)} 1 to ${esc(fmt(WORLD_DATE))}">${mn} ${S.profit<0?'operating loss':'operating profit'} <b>${m(S.profit)}</b><br><span class="mute">on ${m(S.rev)} revenue, to ${esc(fmt(WORLD_DATE))}</span></a>`};
 }
 /* ---------- Finance charts (inline SVG, no libraries) ---------- */
 const kMoney=v=>{const a=Math.abs(v),sg=v<0?'−':'';return sg+'$'+(a>=1e6?(a/1e6).toFixed(a>=1e7?1:2)+'M':a>=1e4?Math.round(a/1e3)+'K':Math.round(a).toLocaleString('en-US'))};
@@ -2194,6 +2262,7 @@ function viewFinance(k){
   </div>
   <div class="tbl-wrap"><table><tbody>${tiles.map(([l,v])=>`<tr><td>${esc(l)}</td><td class="num"><b style="font-size:18px">${v}</b></td></tr>`).join('')}</tbody></table></div>
   ${finCharts(k,S)}
+  ${finPeriodTable(k)}
   ${pl}
   ${f.fixed&&S.src==='tracker'?`<p class="mute" style="font-family:var(--cond);font-size:13px">Full ${esc(f.fixed[0].charAt(0).toLowerCase()+f.fixed[0].slice(1))}: ${money(f.fixed[1])}. Talent counts only the days through the world date, the same way the Talent Earnings tracker does.</p>`:''}
   <h2 class="sec">Shows <small>${rows.length} logged</small></h2>
@@ -2209,6 +2278,22 @@ function viewFinance(k){
   <p class="mute" style="font-family:var(--cond);font-size:13px">Payroll uses the rates on the Contracts tab.${hasPool?` "Champions' pool" is ${Math.round(EARNINGS.pool.pct*100)}% of the gate, split evenly among the champions who worked the card (each tag team member counts as one), paid on top of their other pay.`:''} "Show costs" is the building, tax, crew, advertising, travel, TV, pay-per-view and merchandise costs for that night, not talent.</p>`;
 }
 
+/* Money page: operating profit for every promotion, month by month, then by quarter and year. */
+function worldPeriodTable(){
+  const ks=ORDER.filter(k=>FINANCE[k]), W=finPeriods(null); if(!W.months.length) return '';
+  const per=Object.fromEntries(ks.map(k=>[k,finPeriods(k)]));
+  const m=v=>v==null?'—':(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
+  const cell=(k,grp,key)=>{const x=per[k][grp].find(y=>y.key===key);return x?`<td class="num${x.r.profit<0?' neg':''}">${m(x.r.profit)}</td>`:'<td class="num mute">—</td>';};
+  const row=(x,grp,cls)=>`<tr class="${cls}"><td style="white-space:nowrap">${esc(x.label)}${x.r.live?' <span class="mute" style="font-weight:400">to date</span>':''}</td>${ks.map(k=>cell(k,grp,x.key)).join('')}<td class="num"><b>${m(x.r.rev)}</b></td><td class="num">${m(x.r.costs)}</td><td class="num${x.r.profit<0?' neg':''}"><b>${m(x.r.profit)}</b></td></tr>`;
+  const head=t=>`<tr class="per-h"><td colspan="${ks.length+4}">${t}</td></tr>`;
+  return `<h2 class="sec">Operating profit by period <small>Months close when the world clock passes them</small></h2>
+  <div class="tbl-wrap"><table><thead><tr><th>Period</th>${ks.map(k=>`<th>${esc(P[k].short)}</th>`).join('')}<th>World revenue</th><th>World costs</th><th>World profit</th></tr></thead><tbody>
+  ${head('Months')}${W.months.map(x=>row(x,'months','')).join('')}
+  ${head('Quarters')}${W.qs.map(x=>row(x,'qs','per-q')).join('')}
+  ${head('Years')}${W.ys.map(x=>row(x,'ys','per-y')).join('')}
+  </tbody></table></div>
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Each month counts only that month's shows, other revenue and talent pay, so the current month here can differ from the to-date table above, which also carries cards run before July.</p>`;
+}
 function viewMoney(){
   const m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
   const a=ARTICLES['world-who-gets-paid'];
@@ -2220,6 +2305,7 @@ function viewMoney(){
   return `<h2 class="sec">Money <small>Contracts and finance across the world</small></h2>
   ${a?`<div class="box" style="margin:16px 0"><div class="kicker">${esc(a.kicker)}</div><h3 style="font-family:var(--head);font-weight:400;font-size:30px;margin:4px 0;text-transform:uppercase"><a href="#world-who-gets-paid" style="color:inherit;text-decoration:none">${esc(a.title)}</a></h3><p style="margin:6px 0">${esc(a.dek)}</p><a href="#world-who-gets-paid" style="font-family:var(--cond);font-weight:700">Read the full story →</a></div>`:''}
   <div class="tbl-wrap"><table><thead><tr><th>Promotion</th><th>Pay basis</th><th>Top of the scale</th><th>Gate</th><th>Merch &amp; other</th><th>Revenue</th><th>Talent</th><th>Other costs</th><th>Operating profit</th><th>Margin</th><th>Pages</th></tr></thead><tbody>${rows}<tr><td colspan="5"><b>World</b></td><td class="num"><b>${m(T.rev)}</b></td><td class="num"><b>${m(T.pay)}</b></td><td class="num"><b>${m(T.oc)}</b></td><td class="num"><b>${m(T.pr)}</b></td><td class="num">${T.rev?Math.round(T.pr/T.rev*100)+'%':'—'}</td><td></td></tr></tbody></table></div>
+  ${worldPeriodTable()}
   <p style="font-family:var(--cond);font-weight:700;font-size:15px"><a href="#earnings">Who's made the most this month: the Talent Earnings tracker →</a></p>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Talent matches the Talent Earnings tracker: WWF and WCW salaries and Japan tour fees count day by day to the world date, and per-show pay counts every show run. Other costs are buildings, taxes, crews, advertising, travel, TV and pay-per-view production, merchandise stock, office overhead and announcers, estimated show by show from each promotion's standard rates. "Merch &amp; other" includes pay-per-view, TV rights and hotline money (TV and hotline money count day by day through the month).</p>`;
 }
@@ -2727,10 +2813,11 @@ function viewPromo(k,tab){
     ${done.length?archiveMonths(done):'<div class="empty">No shows have run yet.</div>'}
 `;
   }
+  const MS=promoMoneyStat(k);
   return `<section style="--c:${p.c}">
     ${(BANNER_SVG[k]||BANNER_OF[k])?`<div style="margin-top:6px;border:2px solid var(--ink);line-height:0">${BANNER_SVG[k]?BANNER_SVG[k]:`<img src="${BANNER_OF[k][0]}" alt="${BANNER_OF[k][1]}" style="display:block;width:100%;height:auto">`}</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" style="margin-top:0" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right"><b style="font-family:var(--head);font-weight:400;font-size:30px;line-height:1">${esc(p.stat[0])}</b> ${esc(p.stat[1])}</div></div>`:`
-    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:''}</div><div class="stat"><b>${esc(p.stat[0])}</b>${esc(p.stat[1])}</div></div>`}
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" style="margin-top:0" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right"><b style="font-family:var(--head);font-weight:400;font-size:30px;line-height:1">${MS?MS.big:esc(p.stat[0])}</b> ${MS?MS.sub:esc(p.stat[1])}${MS?MS.pl:''}</div></div>`:`
+    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:''}</div><div class="stat"><b>${MS?MS.big:esc(p.stat[0])}</b>${MS?MS.sub:esc(p.stat[1])}${MS?MS.pl:''}</div></div>`}
     <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab||(tab==='page'&&t==='archive')?'on':''}">${l}</button>`).join('')}</div>
     ${body}
   </section>`;

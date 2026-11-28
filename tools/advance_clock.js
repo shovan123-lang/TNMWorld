@@ -4,6 +4,7 @@
    1. sets WORLD_DATE in data/world.js
    2. trims the ticker to 15 (every promotion keeps its newest)
    3. rebuilds the Talent Earnings tracker (tools/earnings/build.py)
+      and, when the clock passes a month end, files that month's profit and loss (tools/finance/close_month.js)
    4. prints a report: who's behind or ahead of the world, shows run but not in the
       earnings tracker, Japan tour fees now payable, injuries, and double bookings
       in the next 14 days.
@@ -32,6 +33,9 @@ if(!dry) fs.writeFileSync(wf,w);
 // 3: earnings
 let eb='';
 try{eb=execFileSync('python3',[path.join(ROOT,'tools','earnings','build.py'),nd],{encoding:'utf8'});execFileSync('python3',[path.join(ROOT,'tools','earnings','doc.py')]);}catch(e){say('!! Earnings rebuild FAILED: '+e.message);}
+// 3b: month end: file each finished month's profit and loss (data/fin_archive.js) while the tracker still holds it
+const closed=[];{let m=old.slice(0,7);while(m<nd.slice(0,7)){closed.push(m);const y=+m.slice(0,4),n=+m.slice(5,7);m=n===12?(y+1)+'-01':y+'-'+String(n+1).padStart(2,'0');}}
+for(const m of closed){try{say(execFileSync('node',[path.join(ROOT,'tools','finance','close_month.js'),m,'--world',nd,...(dry?['--dry']:[])],{encoding:'utf8'}).trim());}catch(e){say('!! Month close FAILED for '+m+': '+((e.stderr||'')+e.message).trim());}}
 if(dry){ // put the earnings file back the way it was
   try{execFileSync('git',['checkout','--','data/earnings.js','tools/earnings/earnings.md','tools/earnings/tracker_doc.md','tools/earnings/ledger_summary.md','tools/earnings/lifetime.json'],{cwd:ROOT});}catch(e){}
 } else {
