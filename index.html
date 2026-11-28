@@ -2844,11 +2844,49 @@ function viewPromo(k,tab){
 }
 
 function viewRegion(r){
-  const R=REGIONS[r], ids=pubArticles(null).filter(id=>R.ps.includes(ARTICLES[id].p));
-  return `<h2 class="sec">${esc(R.name)} <small>${ids.length} stor${ids.length===1?'y':'ies'}</small></h2>
-  <p class="mute" style="font-family:var(--cond);font-size:14px;margin:4px 0 8px">Stories, Observer reports and From the Road diaries from ${R.ps.map(k=>P[k].short).join(', ').replace(/, ([^,]*)$/,' and $1')}, newest first.</p>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin:0 0 6px">${R.ps.map(chip).join('')}</div>
-  ${ids.length?byWeek(ids,true):'<div class="empty">No stories yet.</div>'}`;
+  /* A front page for one region: lead story, more headlines, backstage and diaries, plus the region's shows and champions. */
+  const R=REGIONS[r], inR=k=>R.ps.includes(k), ids=pubArticles(null).filter(id=>inR(ARTICLES[id].p));
+  if(!ids.length) return `<h2 class="sec">${esc(R.name)}</h2><div class="empty">No stories yet.</div>`;
+  const A=id=>ARTICLES[id], paras=id=>(A(id).body||[]).filter(x=>x[0]==='p').map(x=>x[1]);
+  const news=ids.filter(id=>!A(id).series), obs=ids.filter(id=>A(id).series==='observer'), dia=ids.filter(id=>A(id).series==='diary');
+  const lead=news.find(id=>paras(id).length)||ids[0], rest=news.filter(id=>id!==lead).slice(0,6);
+  const kick=id=>A(id).kicker||`${P[A(id).p].short} · ${fmt(A(id).date)}`;
+  const card=id=>`<div class="story sm"><div class="kicker" style="--c:${P[A(id).p].c}">${esc(kick(id))}</div><h4><a href="#${id}" style="text-decoration:none">${esc(A(id).title)}</a></h4><p>${esc(A(id).dek||(paras(id)[0]||'').slice(0,180))}</p></div>`;
+  const week=E.filter(e=>inR(e.p)&&(x=>x>=W&&(x-W)/864e5<=6)(dt(e.d))).sort((a,b)=>a.d.localeCompare(b.d));
+  const wkDays=[...new Set(week.map(e=>e.d))];
+  const lastWeek=E.filter(e=>inR(e.p)&&pastE(e)&&e.m&&(d=>d>=1&&d<=7)((W-dt(e.d))/864e5)).sort((a,b)=>b.d.localeCompare(a.d));
+  const big=E.filter(e=>inR(e.p)&&e.big&&dt(e.d)>W).sort((a,b)=>a.d.localeCompare(b.d)).slice(0,5);
+  const headline=k=>{const st=String(P[k].status||'');const m=st.match(/^([^a-z]{8,}?\.)\s/);return m?[m[1].replace(/\.$/,''),st.slice(m[0].length)]:['',st];};
+  const champs=R.ps.flatMap(k=>(P[k].titles||[]).filter(t=>t[1]&&!/^to establish/i.test(t[1])).slice(0,3).map(t=>[k,t]));
+  return `<div class="kicker" style="--c:var(--red);margin-top:10px">The ${esc(R.name)} Edition · ${fmt(WORLD_DATE)}</div>
+  <h2 class="sec" style="margin-top:2px">${esc(R.name)} <small>${R.ps.map(k=>P[k].short).join(' · ')} · ${ids.length} stories</small></h2>
+  <section class="grid lead col-rule" style="margin-top:8px">
+    <div class="story">
+      <div class="kicker" style="--c:${P[A(lead).p].c}">${esc(kick(lead))}</div>
+      <h4><a href="#${lead}" style="text-decoration:none">${esc(A(lead).title)}</a></h4>
+      ${A(lead).dek?`<p class="dek">${esc(A(lead).dek)}</p>`:''}
+      ${LOGO[A(lead).p]?`<img class="lead-logo" src="${LOGO[A(lead).p]}" alt="${esc(P[A(lead).p].short)}">`:''}${paras(lead).slice(0,3).map((x,n)=>`<p${n?'':' class="drop"'}>${esc(x)}</p>`).join('')}
+      <p style="font-family:var(--cond);font-weight:700"><a href="#${lead}">Read the full story →</a></p>
+      ${rest.length?`<h3 style="clear:both;padding-top:4px">More from ${esc(R.name==='Indys'?'the indys':R.name==='United States'?'the United States':R.name)}</h3><div class="grid g2">${rest.map(card).join('')}</div>`:''}
+      ${obs.length?`<h3 style="clear:both;padding-top:14px;border-top:1px solid var(--soft);margin-top:18px">Backstage: the Observer</h3><div class="grid g2">${obs.slice(0,4).map(card).join('')}</div>`:''}
+      ${dia.length?`<h3 style="clear:both;padding-top:14px;border-top:1px solid var(--soft);margin-top:18px">From the Road</h3><div class="grid g2">${dia.slice(0,4).map(card).join('')}</div>`:''}
+    </div>
+    <aside>
+      <div class="box dark"><div class="kicker" style="--c:#f0b429">Around the territories</div>
+        ${R.ps.map((k,n)=>{const [h,x]=headline(k);return `<h3 style="${n?'':'margin-top:4px;'}font-size:17px">${pchip(k)} <a href="#${k}" style="color:inherit">${esc(h?h.charAt(0)+h.slice(1).toLowerCase():P[k].short)}</a></h3><p style="margin:0 0 10px;font-size:14.5px">${esc(x.length>260?x.slice(0,257).replace(/\s\S*$/,'')+'…':x)}</p>`}).join('')}
+      </div>
+      <h2 class="sec" style="font-size:22px">This week <small>${fmt(WORLD_DATE)} →</small></h2>
+      ${wkDays.length?`<ul class="tl wk">${wkDays.map(d=>`<li><div class="d">${fmt(d)}${isToday(d)?'<small style="color:var(--red)">Tonight</small>':''}</div><div>${week.filter(e=>e.d===d).map(e=>`<div class="wk-show${e.big?' big':''}">${chip(e.p)} <b>${esc(e.type)}</b> <span class="mute">· ${esc(String(e.city||'').split(',')[0])}</span>${pastE(e)?' <span class="flag" style="color:var(--mute)">ran</span>':''}</div>`).join('')}</div></li>`).join('')}</ul>`:'<div class="empty">No shows this week.</div>'}
+      <p style="font-family:var(--cond);font-size:13px"><a href="#calendar">Full world calendar →</a></p>
+      ${big.length?`<h2 class="sec" style="font-size:22px">Big shows ahead</h2><ul class="nextup">${big.map(e=>`<li class="big"><span class="d">${fmt(e.d)}</span>${chip(e.p)} <b>${esc(e.type)}</b><span class="mute">${esc([String(e.city||'').split(',')[0],e.venue].filter(Boolean).join(' · '))}</span></li>`).join('')}</ul>`:''}
+      <h2 class="sec" style="font-size:22px">Champions</h2>
+      ${champs.map(([k,t])=>`<div style="display:flex;justify-content:space-between;gap:8px;border-bottom:1px dotted var(--soft);padding:4px 0;font-family:var(--cond);font-size:14.5px"><span>${pchip(k)} ${esc(t[0])}</span><b style="text-align:right">${esc(t[1])}</b></div>`).join('')}
+      <p style="font-family:var(--cond);font-size:13px;margin-top:6px"><a href="#belts">Title Belts →</a></p>
+    </aside>
+  </section>
+  ${lastWeek.length?`<hr class="fold"><h2 class="sec">Last week's results <small>The 7 days before ${fmt(WORLD_DATE)}</small></h2><div class="lw">${lastWeek.slice(0,10).map(e=>showRow(e,1)).join('')}</div>`:''}
+  <h2 class="sec" style="margin-top:28px">Every ${esc(R.name)} story <small>Newest first, by week</small></h2>
+  ${byWeek(ids,true)}`;
 }
 let calFilter=new Set(ORDER);
 function viewCalendar(){
