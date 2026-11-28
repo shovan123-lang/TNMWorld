@@ -134,7 +134,8 @@ FINANCE._costs = {
  fmw:{rent:[0.15,1500],tax:0.10,event:600,ring:500,ads:[0.05,800],travel:3000,tv:0,cogs:0.40,office:30000},
  cmll:{rent:[0.15,1000],home:"Mexico City",homeRent:[0.03,0],tax:0.08,event:1500,ring:500,ads:[0.03,500],travel:1000,tv:0,cogs:0.40,office:80000},
  asw:{rent:[0,0],tax:0,event:0,ring:300,ads:[0,0],travel:500,tv:0,cogs:0.40,office:3000},
- twa:{rent:[0.15,1000],tax:0.05,event:400,ring:400,ads:[0.05,600],travel:1200,tv:0,cogs:0.40,office:3000}
+ twa:{rent:[0.15,1000],tax:0.05,event:400,ring:400,ads:[0.05,600],travel:1200,tv:0,cogs:0.40,office:3000},
+ gwf:{rent:[0.12,800],tax:0.05,event:500,ring:400,ads:[0.05,500],travel:300,tv:2500,cogs:0.40,office:0} /* office 0 until the GWF runs its first card; set to about 15000 a month from the debut month */
 };
 /* TV rights: monthly money each promotion gets from its TV partners (1991 US dollars, estimates).
    Counted day by day through the world date, all month long. */
@@ -148,7 +149,8 @@ FINANCE._tv = {
  fmw:{amt:0,note:"No TV in 1991; video sales only"},
  cmll:{amt:40000,note:"Televisa and regional TV fees"},
  asw:{amt:0,note:"Off ITV since 1988"},
- twa:{amt:0,note:"No TV deal"}
+ twa:{amt:0,note:"No TV deal"},
+ gwf:{amt:0,note:"ESPN weekdays plus a syndicated hour; terms To establish"}
 };
 /* Months before July 1991 count TV rights only from these months (the promotion's TV was already on the air):
    the USWA's Championship Wrestling started on WMC-TV 9/1/1990. */

@@ -4,7 +4,7 @@
 //        node tools/ratings.js --why      add what moved each rating (card, draw or headliners, titles, hype, crowd)
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
-const FILES = ['world', 'wcw', 'wwf', 'uswa', 'pp', 'ajpw', 'njpw', 'cmll', 'asw', 'twa', 'fmw', 'history', 'ratings'];
+const FILES = ['world', 'wcw', 'wwf', 'uswa', 'pp', 'ajpw', 'njpw', 'cmll', 'asw', 'twa', 'fmw', 'gwf', 'history', 'ratings'];
 function load() {
   const g = {P: {}, E: [], ARTICLES: {}, CONTRACTS: {}, FINANCE: {}, SITES: {}, BANNER_SVG: {}};
   let src = ''; for (const f of FILES) src += fs.readFileSync(path.join(ROOT, 'data', f + '.js'), 'utf8') + '\n';

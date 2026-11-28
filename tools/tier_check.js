@@ -8,7 +8,7 @@
 //        node tools/tier_check.js --all      list everyone, with the one-step moves too
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
-const FILES = ['world', 'wcw', 'wwf', 'uswa', 'pp', 'ajpw', 'njpw', 'cmll', 'asw', 'twa', 'fmw'];
+const FILES = ['world', 'wcw', 'wwf', 'uswa', 'pp', 'ajpw', 'njpw', 'cmll', 'asw', 'twa', 'fmw', 'gwf'];
 const RANKED = ['A', 'B', 'C', 'D', 'E', 'F'];
 const NO_INDEX = 20;   // same as an empty slot in the TV ratings model
 

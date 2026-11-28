@@ -7,7 +7,7 @@
 //        node tools/draw_gates.js --stars > stars.csv   every rated match: wrestler,stars,date (--stars-csv)
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
-const FILES = ['world', 'wcw', 'wwf', 'uswa', 'pp', 'ajpw', 'njpw', 'cmll', 'asw', 'twa', 'fmw'];
+const FILES = ['world', 'wcw', 'wwf', 'uswa', 'pp', 'ajpw', 'njpw', 'cmll', 'asw', 'twa', 'fmw', 'gwf'];
 const g = {P: {}, E: [], ARTICLES: {}, CONTRACTS: {}, FINANCE: {}, SITES: {}, BANNER_SVG: {}};
 let src = ''; for (const f of FILES) src += fs.readFileSync(path.join(ROOT, 'data', f + '.js'), 'utf8') + '\n';
 src += ';return {WORLD_DATE, TEAMS: typeof TEAMS !== "undefined" ? TEAMS : {}};';

@@ -38,7 +38,7 @@ def site_data():
 const fs=require('fs'),vm=require('vm'),dir=process.argv[1];
 const ctx={P:{},E:[],SITES:{},FINANCE:{},CONTRACTS:{},BANNER_SVG:{},ARTICLES:{},Object,console};
 vm.createContext(ctx);
-let src=['world','wcw','wwf','uswa','pp','ajpw','njpw','cmll','asw','twa','fmw']
+let src=['world','wcw','wwf','uswa','pp','ajpw','njpw','cmll','asw','twa','fmw','gwf']
   .map(f=>fs.readFileSync(dir+'/data/'+f+'.js','utf8')).join('\n;\n').replace(/\bconst /g,'var ');
 vm.runInContext(src,ctx);
 process.stdout.write(JSON.stringify({E:ctx.E.map(c=>({d:c.d,p:c.p,link:c.link})),

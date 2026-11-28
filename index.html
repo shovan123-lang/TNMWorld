@@ -22,6 +22,7 @@
   --cmll:#1c3d8f; --cmll-2:#e2a80b; /* CMLL blue and gold ring */
   --asw:#1b1a17; --asw-2:#e0202f;   /* ASW black, red star */
   --twa:#a81e2a; --twa-2:#8d939a;   /* Tri-State red, skyline silver */
+  --gwf:#d01f2a; --gwf-2:#111111;   /* GWF red bar, black plate */
   --head:'Anton',Impact,sans-serif; --cond:'Roboto Condensed',Arial Narrow,sans-serif; --serif:'Source Serif 4',Georgia,serif;
 }
 *{box-sizing:border-box}
@@ -469,7 +470,7 @@ hr.fold{border:0;border-top:4px double var(--rule);margin:30px 0 6px}
 .ext.logo{display:inline-flex;align-items:center;gap:6px}.ext.logo .plogo{height:22px;background:var(--paper);padding:2px 5px;box-sizing:content-box}
 
 /* Promotion accents: anything that sets --c to a promotion colour also gets its accent as --c2 */
-[style*="--c:var(--wcw)"]{--c2:var(--wcw-2)}[style*="--c:var(--wwf)"]{--c2:var(--wwf-2)}[style*="--c:var(--uswa)"]{--c2:var(--uswa-2)}[style*="--c:var(--pp)"]{--c2:var(--pp-2)}[style*="--c:var(--ajpw)"]{--c2:var(--ajpw-2)}[style*="--c:var(--njpw)"]{--c2:var(--njpw-2)}[style*="--c:var(--fmw)"]{--c2:var(--fmw-2)}[style*="--c:var(--cmll)"]{--c2:var(--cmll-2)}[style*="--c:var(--asw)"]{--c2:var(--asw-2)}[style*="--c:var(--twa)"]{--c2:var(--twa-2)}
+[style*="--c:var(--wcw)"]{--c2:var(--wcw-2)}[style*="--c:var(--wwf)"]{--c2:var(--wwf-2)}[style*="--c:var(--uswa)"]{--c2:var(--uswa-2)}[style*="--c:var(--pp)"]{--c2:var(--pp-2)}[style*="--c:var(--ajpw)"]{--c2:var(--ajpw-2)}[style*="--c:var(--njpw)"]{--c2:var(--njpw-2)}[style*="--c:var(--fmw)"]{--c2:var(--fmw-2)}[style*="--c:var(--cmll)"]{--c2:var(--cmll-2)}[style*="--c:var(--asw)"]{--c2:var(--asw-2)}[style*="--c:var(--twa)"]{--c2:var(--twa-2)}[style*="--c:var(--gwf)"]{--c2:var(--gwf-2)}
 [style*="--c:var(--asw)"] .kicker,.kicker[style*="--c:var(--asw)"]{color:var(--asw)}
 /* Headlines: colour shift plus an accent underline that wipes in */
 .story h4 a,.stw li b a{text-decoration:none;background-image:linear-gradient(var(--c2,var(--c,var(--red))),var(--c2,var(--c,var(--red))));background-repeat:no-repeat;background-position:0 96%;background-size:0 .12em;transition:background-size .22s ease,color .15s}
@@ -712,7 +713,7 @@ table.tf-reigns tr.now td{background:color-mix(in srgb,#b8862b 10%,transparent)}
 </head>
 <body>
 <header class="mast wrap">
-  <div class="top"><span id="worlddate">World date</span><span>Vol. I · Ten promotions · One world</span><span>Booker's edition</span></div>
+  <div class="top"><span id="worlddate">World date</span><span>Vol. I · Eleven promotions · One world</span><span>Booker's edition</span></div>
   <h1>The TNM World <span>Wrestling</span> Report</h1>
   <div class="tag">Every territory, every title, every week. Atlanta to Arena México to Budokan to Blackpool.</div>
 </header>
@@ -743,6 +744,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/asw.js?v=38836ba2"></script>
 <script src="data/twa.js?v=035b6ed4"></script>
 <script src="data/fmw.js?v=bf90fb8b"></script>
+<script src="data/gwf.js?v=1"></script>
 <script src="data/history.js?v=8be05e77"></script>
 <script src="data/fin_archive.js?v=401ccb9a"></script>
 <script src="data/earnings.js?v=c3cdddce"></script>
@@ -836,12 +838,12 @@ function bindStoryArchive(){
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
 const aired = id=>{const a=ARTICLES[id];return !(a&&a.airs&&dt(a.airs)>W)||spoilers};
 const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
-const LOGO = {njpw:'img/njpw-logo.svg?v=df09466d',wwf:'img/wwf-logo.webp?v=81c1e15d',wcw:'img/wcw-logo.png?v=9d5ac90c',cmll:'img/cmll-logo.png?v=62af0a6b',fmw:'img/fmw-logo.png?v=ad8b0729',uswa:'img/uswa-logo.png?v=504eb8f3',ajpw:'img/ajpw-logo.png?v=0e4c9c64',asw:'img/asw-logo.png?v=761e67a7',pp:'img/pp-logo.jpg?v=fcfe09b5',twa:'img/tsw-logo.png?v=0a5ea135'};
+const LOGO = {njpw:'img/njpw-logo.svg?v=df09466d',wwf:'img/wwf-logo.webp?v=81c1e15d',wcw:'img/wcw-logo.png?v=9d5ac90c',cmll:'img/cmll-logo.png?v=62af0a6b',fmw:'img/fmw-logo.png?v=ad8b0729',uswa:'img/uswa-logo.png?v=504eb8f3',ajpw:'img/ajpw-logo.png?v=0e4c9c64',asw:'img/asw-logo.png?v=761e67a7',pp:'img/pp-logo.jpg?v=fcfe09b5',twa:'img/tsw-logo.png?v=0a5ea135',gwf:'img/gwf-logo.png?v=1'};
 const plabel = k=>LOGO[k]?`<img class="plogo" src="${LOGO[k]}" alt="${P[k].short}">`:P[k].short;
 const chip = k=>`<a class="chip${LOGO[k]?' logo':''}" href="#${k}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</a>`;
-const ORDER = ['wwf','wcw','uswa','njpw','ajpw','fmw','cmll','asw','pp','twa'];
+const ORDER = ['wwf','wcw','uswa','njpw','ajpw','fmw','cmll','asw','pp','twa','gwf'];
 /* Front Page regions (Sean, 2026-11-28): each page lists only the stories of the promotions in it. */
-const REGIONS = {usa:{name:'United States',ps:['wwf','wcw','uswa']},mexico:{name:'Mexico',ps:['cmll']},japan:{name:'Japan',ps:['njpw','ajpw','fmw']},indys:{name:'Indys',ps:['asw','pp','twa']}};
+const REGIONS = {usa:{name:'United States',ps:['wwf','wcw','uswa']},mexico:{name:'Mexico',ps:['cmll']},japan:{name:'Japan',ps:['njpw','ajpw','fmw']},indys:{name:'Indys',ps:['asw','pp','twa','gwf']}};
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
 
 /* =========================== NAV =========================== */
