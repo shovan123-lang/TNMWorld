@@ -296,6 +296,17 @@ tr.big td{font-weight:700}
 tr.per-q td{background:var(--paper2);font-weight:700}tr.per-y td{background:var(--ink);color:var(--paper);font-weight:700}
 details.bk.per summary b{font-family:var(--cond)}
 tr.per-h td{font-family:var(--cond);text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--mute);border-bottom:1px solid var(--ink);padding-top:12px}
+.books .bv-m,.books .bv-q,.books .bv-y{display:none}.books[data-v="m"] .bv-m,.books[data-v="q"] .bv-q,.books[data-v="y"] .bv-y{display:block}
+.books .bk-hint{display:none;font-family:var(--cond);font-size:12px;margin:4px 0 0}.books[data-v="q"] .bk-hint,.books[data-v="y"] .bk-hint{display:block}
+.bk-now{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px 22px;margin:6px 0 12px}
+.bk-big{display:flex;flex-direction:column}.bk-big span{font-family:var(--cond);text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--mute)}
+.bk-big b{font-family:var(--cond);font-size:34px;line-height:1.05}.bk-big b.neg{color:var(--red)}
+.bk-vs{font-family:var(--cond);font-weight:700;font-size:14px;padding-bottom:16px}.bk-vs.up{color:#2e7d32}.bk-vs.down{color:var(--red)}.bk-vs .mute{font-weight:400}
+.bk-sw{display:inline-flex;margin:0 0 10px}.bk-sw button{font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;margin-right:-2px}
+.bk-sw button.on{background:var(--ink);color:var(--paper)}
+.books tr.bk-tog{cursor:pointer}.books tr.bk-tog td:first-child::before{content:'▸ '}.books tbody.open tr.bk-tog td:first-child::before{content:'▾ '}
+.books tr.bk-sub{display:none}.books tbody.open tr.bk-sub{display:table-row}.books tr.bk-sub td:first-child{padding-left:22px}
+.books tr.bk-sub.per-q td{background:var(--paper2);font-weight:400}
 td.neg{color:var(--red)}tr.per-y td.neg{color:#ff9b93}
 .sub{display:flex;flex-wrap:wrap;gap:0;margin:12px 0 0;border-bottom:2px solid var(--ink)}
 .sub button{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px;background:none;border:0;padding:8px 12px;cursor:pointer;color:var(--mute);border-bottom:4px solid transparent;margin-bottom:-2px}
@@ -1879,12 +1890,24 @@ function finPeriods(k){
   const ys=[...new Set(months.map(x=>x.mo.slice(0,4)))].map(y=>add(y,y,months.filter(x=>x.mo.startsWith(y))));
   return {months:months.map(x=>({key:x.mo,label:moLabel(x.mo),r:x.r})),qs,ys};
 }
-/* One collapsible section of a period table, newest period first. Months start open. */
-function perSection(title,list,thead,rowFn,open){
-  if(!list.length) return '';
-  const top=list[list.length-1], m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
-  return `<details class="bk per"${open?' open':''}><summary>${title} <span class="mute" style="font-weight:400;text-transform:none;letter-spacing:0">· ${list.length} · latest ${esc(top.label)}${top.r.live?' to date':''}: <b class="${top.r.profit<0?'neg':''}" style="color:${top.r.profit<0?'var(--red)':'inherit'}">${m(top.r.profit)}</b> ${top.r.profit<0?'loss':'profit'}</span></summary>
-  <div class="tbl-wrap"><table><thead>${thead}</thead><tbody>${[...list].reverse().map(rowFn).join('')}</tbody></table></div></details>`;
+/* The Books: one period table with a Month | Quarter | Year switch. Quarters open to show their
+   months, years to show their quarters. rows = {m,q,y} row functions (x,cls) => '<tr ...>'. */
+let BOOKS_VIEW='m';
+function booksView(btn){const v=btn.dataset.v;BOOKS_VIEW=v;
+  document.querySelectorAll('.books').forEach(b=>{b.dataset.v=v;b.querySelectorAll('.bk-sw button').forEach(x=>{const on=x.dataset.v===v;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});});}
+function booksBlock(P2,th,rows,ncol){
+  const m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
+  const mos=P2.months, cur=mos[mos.length-1], prev=mos.length>1?mos[mos.length-2]:null;
+  const tog=h=>h.replace('<tr ','<tr onclick="this.parentNode.classList.toggle(\'open\')" ');
+  const d=prev?cur.r.profit-prev.r.profit:0;
+  const now=`<div class="bk-now"><div class="bk-big"><span>${esc(cur.label)}${cur.r.live?' to '+esc(fmt(WORLD_DATE)):''}</span><b class="${cur.r.profit<0?'neg':''}">${m(cur.r.profit)}</b><span>operating ${cur.r.profit<0?'loss':'profit'}</span></div>${prev?`<div class="bk-vs ${d<0?'down':'up'}">${d<0?'▼':'▲'} ${m(Math.abs(d))} vs. ${esc(prev.label)} <span class="mute">(${m(prev.r.profit)})</span></div>`:''}</div>`;
+  const sw=`<div class="bk-sw" role="group" aria-label="Group by">${[['m','Month'],['q','Quarter'],['y','Year']].map(([v,l])=>`<button type="button" data-v="${v}" class="${BOOKS_VIEW===v?'on':''}" aria-pressed="${BOOKS_VIEW===v}" onclick="booksView(this)">${l}</button>`).join('')}</div>`;
+  let yr='', mBody='';
+  [...mos].reverse().forEach(x=>{const y=x.key.slice(0,4);if(y!==yr){yr=y;mBody+=`<tr class="per-h"><td colspan="${ncol}">${y}</td></tr>`;}mBody+=rows.m(x,'');});
+  const qBody=[...P2.qs].reverse().map(q=>`<tbody class="bk-g">${tog(rows.q(q,'per-q bk-tog'))}${[...mos].filter(x=>qOf(x.key)===q.key).reverse().map(x=>rows.m(x,'bk-sub')).join('')}</tbody>`).join('');
+  const yBody=[...P2.ys].reverse().map(y=>`<tbody class="bk-g">${tog(rows.y(y,'per-y bk-tog'))}${[...P2.qs].filter(q=>q.key.startsWith(y.key)).reverse().map(q=>rows.q(q,'bk-sub')).join('')}</tbody>`).join('');
+  const tbl=(v,body,wrap)=>`<div class="tbl-wrap bv-${v}"><table><thead>${th}</thead>${wrap?`<tbody>${body}</tbody>`:body}</table></div>`;
+  return `<div class="books" data-v="${BOOKS_VIEW}">${now}${sw}${tbl('m',mBody,true)}${tbl('q',qBody,false)}${tbl('y',yBody,false)}<p class="mute bk-hint">Click a quarter or a year to open it.</p></div>`;
 }
 function finPeriodTable(k){
   const P2=finPeriods(k); if(!P2.months.length) return '';
@@ -1892,10 +1915,8 @@ function finPeriodTable(k){
   const tag=(x,qy)=>x.r.live?` <span class="mute" style="font-weight:400">${qy?'to date':'to '+fmt(WORLD_DATE)}</span>`:(qy?'':' <span class="mute" style="font-weight:400">closed</span>');
   const row=(x,cls,qy)=>{const r=x.r;return `<tr class="${cls}"><td style="white-space:nowrap">${esc(x.label)}${tag(x,qy)}</td><td class="num">${r.shows}</td><td class="num">${m(r.gate)}</td><td class="num">${m(r.merch)}</td><td class="num">${m(r.other)}</td><td class="num"><b>${m(r.rev)}</b></td><td class="num">${m(r.talent)}</td><td class="num">${m(r.costs-r.talent)}</td><td class="num${r.profit<0?' neg':''}"><b>${m(r.profit)}</b></td><td class="num">${r.rev?String(Math.round(r.profit/r.rev*100)).replace('-','−')+'%':'—'}</td></tr>`;};
   const th=`<tr><th>Period</th><th>Shows</th><th>Gate</th><th>Merch</th><th>Other revenue</th><th>Revenue</th><th>Talent</th><th>Other costs</th><th>Operating profit</th><th>Margin</th></tr>`;
-  return `<h2 class="sec">By month, quarter and year <small>${P2.months.filter(x=>!x.r.live).length} month${P2.months.filter(x=>!x.r.live).length===1?'':'s'} closed</small></h2>
-  ${perSection('Months',P2.months,th,x=>row(x,'',false),true)}
-  ${perSection('Quarters',P2.qs,th,x=>row(x,'per-q',true),false)}
-  ${perSection('Years',P2.ys,th,x=>row(x,'per-y',true),false)}
+  return `<h2 class="sec">The Books <small>Operating profit and loss, by period · ${P2.months.filter(x=>!x.r.live).length} month${P2.months.filter(x=>!x.r.live).length===1?'':'s'} closed</small></h2>
+  ${booksBlock(P2,th,{m:(x,c)=>row(x,c,false),q:(x,c)=>row(x,c,true),y:(x,c)=>row(x,c,true)},10)}
   <p class="mute" style="font-family:var(--cond);font-size:13px">Each month counts only that month's shows, other revenue and talent pay. Months before July 1991 count their shows from the ledger (gate, merch, show costs and payroll) plus office costs; TV rights and deals start in July. A month is filed in the archive when the world clock passes its last day, and its numbers stay fixed after that. Quarters and years add up their months, including the current month to date.</p>`;
 }
 /* Top right of each promotion page: the month's operating profit or loss so far (links to the Finance tab). */
@@ -2312,10 +2333,8 @@ function worldPeriodTable(){
   const cell=(k,grp,key)=>{const x=per[k][grp].find(y=>y.key===key);return x?`<td class="num${x.r.profit<0?' neg':''}">${m(x.r.profit)}</td>`:'<td class="num mute">—</td>';};
   const row=(x,grp,cls)=>`<tr class="${cls}"><td style="white-space:nowrap">${esc(x.label)}${x.r.live?' <span class="mute" style="font-weight:400">to date</span>':''}</td>${ks.map(k=>cell(k,grp,x.key)).join('')}<td class="num"><b>${m(x.r.rev)}</b></td><td class="num">${m(x.r.costs)}</td><td class="num${x.r.profit<0?' neg':''}"><b>${m(x.r.profit)}</b></td></tr>`;
   const th=`<tr><th>Period</th>${ks.map(k=>`<th>${esc(P[k].short)}</th>`).join('')}<th>World revenue</th><th>World costs</th><th>World profit</th></tr>`;
-  return `<h2 class="sec">Operating profit by period <small>Months close when the world clock passes them</small></h2>
-  ${perSection('Months',W.months,th,x=>row(x,'months',''),true)}
-  ${perSection('Quarters',W.qs,th,x=>row(x,'qs','per-q'),false)}
-  ${perSection('Years',W.ys,th,x=>row(x,'ys','per-y'),false)}
+  return `<h2 class="sec">The Books <small>World operating profit and loss, by period · months close when the world clock passes them</small></h2>
+  ${booksBlock(W,th,{m:(x,c)=>row(x,'months',c),q:(x,c)=>row(x,'qs',c),y:(x,c)=>row(x,'ys',c)},ks.length+4)}
   <p class="mute" style="font-family:var(--cond);font-size:13px">Each month counts only that month's shows, other revenue and talent pay, so the current month here can differ from the to-date table above, which also carries cards run before July.</p>`;
 }
 function viewMoney(){
