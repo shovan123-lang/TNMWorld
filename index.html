@@ -1780,21 +1780,26 @@ function showCosts(k,r){
    its talent lines), which is what the promotion header and the monthly archive use. */
 const MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const earnMonth=()=>{if(typeof EARNINGS==='undefined')return null;const m=String(EARNINGS.month||'').match(/^(\w+) (\d{4})$/);const i=m?MONTH_NAMES.indexOf(m[1]):-1;return i>=0?m[2]+'-'+String(i+1).padStart(2,'0'):EARNINGS.world.slice(0,7);};
+/* The books (TV rights, recurring deals, the Talent Earnings tracker) start in July 1991. Earlier months
+   (TWA's Sizzler 6/29, Power Pro's May and June cards) count their shows from the ledger: gate, merch,
+   show costs and logged payroll, plus office overhead from the promotion's first show. */
+const FIN_BOOKS_FROM='1991-07';
 function finSum(k,only){
   const f=FINANCE[k]; if(!f) return null;
+  const preBooks=!!only&&only<FIN_BOOKS_FROM;
   const inMo=d=>!only||String(d||'').startsWith(only);
   const rows=(f.rows||[]).filter(r=>inMo(r.d)); let other=(f.other||[]).filter(o=>inMo(o.d));
   const gate=rows.reduce((a,r)=>a+(r.gate||0),0), merch=rows.reduce((a,r)=>a+(r.merch||0),0);
   const hasE=typeof EARNINGS!=='undefined', mo=only||(hasE?EARNINGS.world.slice(0,7):WORLD_DATE.slice(0,7));
   const TVd=(FINANCE._tv||{})[k], dimTV=new Date(Date.UTC(+mo.slice(0,4),+mo.slice(5,7),0)).getUTCDate();
   const tvDays=WORLD_DATE.slice(0,7)===mo?+WORLD_DATE.slice(8,10):dimTV;
-  if(TVd&&TVd.amt&&!other.some(o=>o.stream==='TV rights'))other=[...other,{d:WORLD_DATE,stream:'TV rights',daily:1,amt:TVd.amt*tvDays/dimTV,note:`${TVd.note}: $${TVd.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}];
-  (FINANCE._recurring||[]).filter(x=>x.p===k&&x.amt).forEach(x=>{other=[...other,{d:WORLD_DATE,stream:x.stream,daily:1,amt:x.amt*tvDays/dimTV,note:`${x.note}: $${x.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}]});
+  if(!preBooks&&TVd&&TVd.amt&&!other.some(o=>o.stream==='TV rights'))other=[...other,{d:WORLD_DATE,stream:'TV rights',daily:1,amt:TVd.amt*tvDays/dimTV,note:`${TVd.note}: $${TVd.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}];
+  (preBooks?[]:FINANCE._recurring||[]).filter(x=>x.p===k&&x.amt).forEach(x=>{other=[...other,{d:WORLD_DATE,stream:x.stream,daily:1,amt:x.amt*tvDays/dimTV,note:`${x.note}: $${x.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}]});
   const oth=other.reduce((a,o)=>a+(o.amt||0),0), rev=gate+merch+oth;
   const ledgerPay=rows.filter(r=>r.gate!=null).reduce((a,r)=>a+(r.payroll||0),0);
   let paid=null,due=0,pool=0;
   const emo=earnMonth(), lineIn=l=>!only||String(l.d).startsWith(only)||(l.kind==='salary'&&emo===only);
-  if(hasE){const L=EARNINGS.people.flatMap(x=>x.lines.filter(l=>l.p===k&&lineIn(l)));
+  if(hasE&&!preBooks){const L=EARNINGS.people.flatMap(x=>x.lines.filter(l=>l.p===k&&lineIn(l)));
     if(L.length){paid=L.filter(l=>l.kind!=='due').reduce((a,l)=>a+l.amt,0);due=L.filter(l=>l.kind==='due').reduce((a,l)=>a+l.amt,0);
       pool=L.filter(l=>l.kind==='pool').reduce((a,l)=>a+l.amt,0);}}
   const pre=only?0:rows.filter(r=>r.gate!=null&&!String(r.d).startsWith(mo)).reduce((a,r)=>a+(r.payroll||0),0);
@@ -1812,9 +1817,12 @@ function finSum(k,only){
   const first=rows.map(r=>String(r.d)).filter(d=>d.startsWith(mo)).sort()[0];
   const startDay=first?Math.min(+first.slice(8,10),day):1;
   cost.office=(C.office||0)*(WORLD_DATE.slice(0,7)===mo?Math.max(0,day-startDay+1)/dim:1);
-  cost.tv+=(C.tvMonthly||0)*(WORLD_DATE.slice(0,7)===mo?day/dim:1);
+  cost.tv+=preBooks?0:(C.tvMonthly||0)*(WORLD_DATE.slice(0,7)===mo?day/dim:1);
+  if(preBooks){const firstEver=(f.rows||[]).map(r=>String(r.d)).sort()[0]||'';
+    cost.office=(C.office||0)*(firstEver.startsWith(mo)&&first?(dim-+first.slice(8,10)+1)/dim:1);}
   const ctr=CONTRACTS[k], O=ctr?ctr.rows.filter(r=>r[0]==='O').reduce((a,r)=>a+r[2],0):0;
-  if(f.period==='Monthly') cost.staff=O*frac;
+  if(preBooks) cost.staff=f.period==='Per show'||f.period==='Weekly'?O*rows.filter(r=>r.gate!=null).length:0;
+  else if(f.period==='Monthly') cost.staff=O*frac;
   else if(f.period==='Per tour'){const T={ajpw:['1991-07-01','1991-07-27'],njpw:['1991-07-04','1991-07-30']}[k];
     cost.staff=T?O*Math.max(0,Math.min(1,(dt(WORLD_DATE)-dt(T[0]))/864e5+1)/((dt(T[1])-dt(T[0]))/864e5+1)):O;}
   else cost.staff=O*rows.filter(r=>r.gate!=null).length;
@@ -1840,11 +1848,13 @@ function finMonthRec(k,mo){
    Closed months come from FIN_ARCHIVE (filed at each month end); the current month is live, to the world date.
    Quarters and years add up their months. k=null adds up every promotion (the world). */
 const FIN_KEYS=['shows','gate','merch','other','rev','talent','costs','profit'];
-function finMonths(){const A=typeof FIN_ARCHIVE!=='undefined'?FIN_ARCHIVE:{};const m=new Set(Object.keys(A));m.add(WORLD_DATE.slice(0,7));return [...m].sort();}
+function finMonths(){const A=typeof FIN_ARCHIVE!=='undefined'?FIN_ARCHIVE:{};const m=new Set(Object.keys(A));m.add(WORLD_DATE.slice(0,7));
+  ORDER.forEach(k=>((FINANCE[k]||{}).rows||[]).forEach(r=>{const x=String(r.d).slice(0,7);if(x<FIN_BOOKS_FROM)m.add(x)}));return [...m].sort();}
 function finRec(k,mo){
   const A=typeof FIN_ARCHIVE!=='undefined'?FIN_ARCHIVE:{}, closed=!!A[mo];
-  const one=x=>closed?(A[mo].p[x]||null):(mo===WORLD_DATE.slice(0,7)?finMonthRec(x,mo):null);
-  const ks=k?[k]:ORDER.filter(x=>FINANCE[x]);const out={live:!closed,n:0};FIN_KEYS.forEach(f=>out[f]=0);
+  const cur=mo===WORLD_DATE.slice(0,7);
+  const one=x=>{if(closed)return A[mo].p[x]||null;if(!cur&&mo>=FIN_BOOKS_FROM)return null;const r=finMonthRec(x,mo);return r&&(r.shows||cur)?r:null;};
+  const ks=k?[k]:ORDER.filter(x=>FINANCE[x]);const out={live:cur&&!closed,n:0};FIN_KEYS.forEach(f=>out[f]=0);
   ks.forEach(x=>{const r=one(x);if(r){out.n++;FIN_KEYS.forEach(f=>out[f]+=r[f]||0);}});
   return out.n?out:null;
 }
@@ -1869,7 +1879,7 @@ function finPeriodTable(k){
   ${head('Quarters')}${P2.qs.map(x=>row(x,'per-q',true)).join('')}
   ${head('Years')}${P2.ys.map(x=>row(x,'per-y',true)).join('')}
   </tbody></table></div>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Each month counts only that month's shows, other revenue and talent pay. A month is filed in the archive when the world clock passes its last day, and its numbers stay fixed after that. Quarters and years add up their months, including the current month to date.</p>`;
+  <p class="mute" style="font-family:var(--cond);font-size:13px">Each month counts only that month's shows, other revenue and talent pay. Months before July 1991 count their shows from the ledger (gate, merch, show costs and payroll) plus office costs; TV rights and deals start in July. A month is filed in the archive when the world clock passes its last day, and its numbers stay fixed after that. Quarters and years add up their months, including the current month to date.</p>`;
 }
 /* Top right of each promotion page: the month's operating profit or loss so far (links to the Finance tab). */
 function promoMoneyStat(k){
