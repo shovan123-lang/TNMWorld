@@ -840,12 +840,14 @@ const LOGO = {njpw:'img/njpw-logo.svg?v=df09466d',wwf:'img/wwf-logo.webp?v=81c1e
 const plabel = k=>LOGO[k]?`<img class="plogo" src="${LOGO[k]}" alt="${P[k].short}">`:P[k].short;
 const chip = k=>`<a class="chip${LOGO[k]?' logo':''}" href="#${k}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</a>`;
 const ORDER = ['wwf','wcw','uswa','njpw','ajpw','fmw','cmll','asw','pp','twa'];
+/* Front Page regions (Sean, 2026-11-28): each page lists only the stories of the promotions in it. */
+const REGIONS = {usa:{name:'United States',ps:['wwf','wcw','uswa']},mexico:{name:'Mexico',ps:['cmll']},japan:{name:'Japan',ps:['njpw','ajpw','fmw']},indys:{name:'Indys',ps:['asw','pp','twa']}};
 let spoilers=false; try{spoilers=localStorage.getItem('tnm-spoil')==='1'}catch(e){}
 
 /* =========================== NAV =========================== */
 // Talent Exchange is retired for now (the Talent File covers it). Its page and data stay; set TX_ON=true to bring it back.
 const TX_ON=false;
-const NAV=[['home','Front Page'],...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['ratings','TV Ratings'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['draws','Draw Index'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
+const NAV=[['home','Front Page'],...Object.keys(REGIONS).map(r=>[r,REGIONS[r].name]),...ORDER.map(k=>[k,P[k].nav||P[k].short]),['calendar','World Calendar'],['showarchive','Show Archive'],['ratings','TV Ratings'],['storyarchive','Story Archive'],['belts','Title Belts'],['file','Talent File'],['draws','Draw Index'],['talent','Talent Exchange'],['arrivals','Arrivals'],['departures','Departures'],['money','Money'],['earnings','Talent Earnings']];
 const SERIES={observer:{label:'Observer Reports',kicker:'Wrestling Observer Newsletter',blurb:'Backstage, business and match observations after every show. Newest first.'},diary:{label:'From the Road',kicker:'Wrestler diaries',blurb:'The same night, told by someone who was there. Newest first.'}};
 function seriesOf(k,sr){return Object.keys(ARTICLES).filter(id=>aired(id)&&ARTICLES[id].p===k&&ARTICLES[id].series===sr).sort((a,b)=>(ARTICLES[b].date||'').localeCompare(ARTICLES[a].date||'')||b.localeCompare(a));}
 const TAB_LABEL={overview:'Overview',titles:'Title Histories',stories:'Stories',file:'Talent File',roster:'Roster',schedule:'Schedule',archive:'Show Archive',contracts:'Contracts',finance:'Finance',observer:'Observer Reports',diary:'From the Road',apuestas:'Apuestas',ratings:'Ratings',g1:'G1 Climax'};
@@ -862,15 +864,19 @@ function renderNav(cur,curT){
     <div class="menu" role="menu"><div class="mlinks${nLinks(L)>8?' cols':''}">${L}</div>
     ${promoLatest(k)}</div></div>`;};
   const worldLinks=`<a role="menuitem" href="#calendar" class="${cur==='calendar'?'cur':''}">World Calendar</a><a role="menuitem" href="#showarchive" class="${cur==='showarchive'?'cur':''}">Show Archive</a><a role="menuitem" href="#ratings" class="${cur==='ratings'?'cur':''}">TV Ratings &amp; PPV Buys</a><a role="menuitem" href="#storyarchive" class="${cur==='storyarchive'?'cur':''}">Story Archive</a><a role="menuitem" href="#belts" class="${cur==='belts'?'cur':''}">Title Belts</a><a role="menuitem" href="#file" class="${cur==='file'?'cur':''}">Talent File</a><a role="menuitem" href="#draws" class="${cur==='draws'?'cur':''}">Draw Index</a>${TX_ON?`<a role="menuitem" href="#talent" class="${cur==='talent'?'cur':''}">Talent Exchange</a>`:''}<a role="menuitem" href="#arrivals" class="${cur==='arrivals'?'cur':''}">Arrivals</a><a role="menuitem" href="#departures" class="${cur==='departures'?'cur':''}">Departures</a><a role="menuitem" href="#money" class="${cur==='money'?'cur':''}">Money: Contracts &amp; Finance</a><a role="menuitem" href="#earnings" class="${cur==='earnings'?'cur':''}">Talent Earnings</a><a role="menuitem" href="titles.html">Title Histories</a>`;
+  const regOn=!!REGIONS[cur];
+  const regionLinks=`<a role="menuitem" href="#home" class="${cur==='home'?'cur':''}">Front Page</a>${Object.keys(REGIONS).map(r=>`<a role="menuitem" href="#${r}" class="${cur===r?'cur':''}">${REGIONS[r].name}</a>`).join('')}`;
   const worldLatest=`<div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a>`;
   const worldOn=['calendar','showarchive','ratings','storyarchive','belts','file','draws','talent','arrivals','departures','money','earnings'].includes(cur)||cur==='world-who-gets-paid';
-  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({calendar:'World Calendar',showarchive:'Show Archive',ratings:'TV Ratings',file:'Talent File',talent:'Talent Exchange',arrivals:'Arrivals',departures:'Departures',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
-  <div class="items"><a href="#home" class="top ${cur==='home'?'on':''}">Front Page</a>
+  $('#nav').innerHTML=`<button class="top burger" id="burger" aria-expanded="false">☰ Menu<span class="caret">${cur&&cur!=='home'?esc((P[cur]&&(P[cur].nav||P[cur].short))||({...Object.fromEntries(Object.keys(REGIONS).map(r=>[r,REGIONS[r].name])),calendar:'World Calendar',showarchive:'Show Archive',ratings:'TV Ratings',file:'Talent File',talent:'Talent Exchange',arrivals:'Arrivals',departures:'Departures',money:'Money',earnings:'Talent Earnings'})[cur]||''):'Front Page'}</span></button>
+  <div class="items"><div class="dd" style="--c:#f0b429"><a href="#home" class="top ${cur==='home'||regOn?'on':''}" aria-haspopup="true">Front Page<span class="caret">▾</span></a>
+    <div class="menu" role="menu"><div class="mlinks">${regionLinks}</div></div></div>
   <div class="dd" style="--c:var(--red)"><a href="#calendar" class="top ${worldOn?'on':''}" aria-haspopup="true">World<span class="caret">▾</span></a>
     <div class="menu" role="menu"><div class="mlinks cols">${worldLinks}</div><div class="sep"></div><div class="lbl">Latest</div><a role="menuitem" class="head" href="#world-who-gets-paid">Who Gets Paid</a></div></div>
   ${ORDER.map(promo).join('')}</div>
   <div class="mnav" id="mnav">
-    <a href="#home" class="mn-home${cur==='home'?' cur':''}">Front Page</a>
+    <div class="mn-sec${cur==='home'||regOn?' open':''}" data-s="front"><button type="button" class="mn-h" aria-expanded="${cur==='home'||regOn}">Front Page<span class="mn-tog"></span></button>
+      <div class="mn-body"><div class="mn-grid">${regionLinks}</div></div></div>
     <div class="mn-sec${worldOn?' open':''}" data-s="world"><button type="button" class="mn-h" aria-expanded="${worldOn}">World<span class="mn-tog"></span></button>
       <div class="mn-body"><div class="mn-grid">${worldLinks}</div>${worldLatest}</div></div>
     <div class="mn-lbl">Promotions</div>
@@ -2837,6 +2843,13 @@ function viewPromo(k,tab){
   </section>`;
 }
 
+function viewRegion(r){
+  const R=REGIONS[r], ids=pubArticles(null).filter(id=>R.ps.includes(ARTICLES[id].p));
+  return `<h2 class="sec">${esc(R.name)} <small>${ids.length} stor${ids.length===1?'y':'ies'}</small></h2>
+  <p class="mute" style="font-family:var(--cond);font-size:14px;margin:4px 0 8px">Stories, Observer reports and From the Road diaries from ${R.ps.map(k=>P[k].short).join(', ').replace(/, ([^,]*)$/,' and $1')}, newest first.</p>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin:0 0 6px">${R.ps.map(chip).join('')}</div>
+  ${ids.length?byWeek(ids,true):'<div class="empty">No stories yet.</div>'}`;
+}
 let calFilter=new Set(ORDER);
 function viewCalendar(){
   const days={};
@@ -3000,6 +3013,7 @@ function route(){
   renderNav(key,arcPage&&P[key]?'page':curTab[key]);
   let html;
   if(P[key]) html=viewPromo(key,arcPage?'page':curTab[key]);
+  else if(REGIONS[key]) html=viewRegion(key);
   else if(key==='calendar') html=viewCalendar();
   else if(key==='showarchive') html=viewShowArchive();
   else if(key==='ratings') html=viewWorldRatings(t);
