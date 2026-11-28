@@ -54,6 +54,10 @@ const SPOTLIGHT = TALENT_FILES[0];
 // Headline ticker: newest first. The site shows at most 15, keeping every promotion's newest.
 const TICKER = [
  [
+  "<b>GWF</b> Dallas: the Global Wrestling Federation opens at the Sportatorium Friday, with ESPN five days a week from 7/29",
+  "gwf-global-comes-to-dallas-0724"
+ ],
+ [
   "<b>WCW</b> Inglewood: Pillman beats Liger to win the series; Koloff and Luger go to a double count-out before 10,400",
   "wcw-no-winner-inglewood-0723"
  ],
@@ -100,10 +104,6 @@ const TICKER = [
  [
   "<b>WWF</b> Challenge: Martel makes Snuka submit, puts SATO on notice",
   "wwf-challenge-ep1-martel-0721"
- ],
- [
-  "<b>WCW</b> Johnson City: THE FREEBIRDS are the first WCW World Tag Team Champions; Koloff announces his last ride",
-  "wcw-freebirds-crowned-0720"
  ],
  [
   "<b>ASW</b> Sonny Beach signs with All Star on a non-exclusive deal",
