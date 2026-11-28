@@ -1802,8 +1802,10 @@ function finSum(k,only){
   const hasE=typeof EARNINGS!=='undefined', mo=only||(hasE?EARNINGS.world.slice(0,7):WORLD_DATE.slice(0,7));
   const TVd=(FINANCE._tv||{})[k], dimTV=new Date(Date.UTC(+mo.slice(0,4),+mo.slice(5,7),0)).getUTCDate();
   const tvDays=WORLD_DATE.slice(0,7)===mo?+WORLD_DATE.slice(8,10):dimTV;
+  /* FINANCE._tv.<k>.start (YYYY-MM-DD): TV money counts only from that day on. */
+  const tvStart=TVd&&TVd.start, tvDaysK=!tvStart?tvDays:tvStart.slice(0,7)>mo?0:tvStart.slice(0,7)<mo?tvDays:Math.max(0,tvDays-(+tvStart.slice(8,10))+1);
   const tvOn=!preBooks||(FINANCE._tvFrom||{})[k]&&only>=(FINANCE._tvFrom||{})[k];
-  if(tvOn&&TVd&&TVd.amt&&!other.some(o=>o.stream==='TV rights'))other=[...other,{d:WORLD_DATE,stream:'TV rights',daily:1,amt:TVd.amt*tvDays/dimTV,note:`${TVd.note}: $${TVd.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}];
+  if(tvOn&&TVd&&TVd.amt&&tvDaysK>0&&!other.some(o=>o.stream==='TV rights'))other=[...other,{d:WORLD_DATE,stream:'TV rights',daily:1,amt:TVd.amt*tvDaysK/dimTV,note:`${TVd.note}: $${TVd.amt.toLocaleString('en-US')} a month × ${tvDaysK} of ${dimTV} days`}];
   (preBooks?[]:FINANCE._recurring||[]).filter(x=>x.p===k&&x.amt).forEach(x=>{other=[...other,{d:WORLD_DATE,stream:x.stream,daily:1,amt:x.amt*tvDays/dimTV,note:`${x.note}: $${x.amt.toLocaleString('en-US')} a month × ${tvDays} of ${dimTV} days`}]});
   const oth=other.reduce((a,o)=>a+(o.amt||0),0), rev=gate+merch+oth;
   const ledgerPay=rows.filter(r=>r.gate!=null).reduce((a,r)=>a+(r.payroll||0),0);

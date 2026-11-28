@@ -150,7 +150,7 @@ FINANCE._tv = {
  cmll:{amt:40000,note:"Televisa and regional TV fees"},
  asw:{amt:0,note:"Off ITV since 1988"},
  twa:{amt:0,note:"No TV deal"},
- gwf:{amt:0,note:"ESPN weekdays plus a syndicated hour; terms To establish"}
+ gwf:{amt:35000,start:"1991-07-29",est:1,note:"ESPN barter deal: GWF sells its own commercial time in the weekday 4:00 hour (ESPN pays no rights fee); starts with the first airing Monday 7/29"}
 };
 /* Months before July 1991 count TV rights only from these months (the promotion's TV was already on the air):
    the USWA's Championship Wrestling started on WMC-TV 9/1/1990. */
