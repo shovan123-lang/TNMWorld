@@ -293,6 +293,7 @@ tr.big td{font-weight:700}
 .stat .pl.up b{color:#1e6b34}.stat .pl.down b{color:var(--red)}
 .stat .pl:hover{text-decoration:underline}
 tr.per-q td{background:var(--paper2);font-weight:700}tr.per-y td{background:var(--ink);color:var(--paper);font-weight:700}
+details.bk.per summary b{font-family:var(--cond)}
 tr.per-h td{font-family:var(--cond);text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--mute);border-bottom:1px solid var(--ink);padding-top:12px}
 td.neg{color:var(--red)}tr.per-y td.neg{color:#ff9b93}
 .sub{display:flex;flex-wrap:wrap;gap:0;margin:12px 0 0;border-bottom:2px solid var(--ink)}
@@ -1868,18 +1869,23 @@ function finPeriods(k){
   const ys=[...new Set(months.map(x=>x.mo.slice(0,4)))].map(y=>add(y,y,months.filter(x=>x.mo.startsWith(y))));
   return {months:months.map(x=>({key:x.mo,label:moLabel(x.mo),r:x.r})),qs,ys};
 }
+/* One collapsible section of a period table, newest period first. Months start open. */
+function perSection(title,list,thead,rowFn,open){
+  if(!list.length) return '';
+  const top=list[list.length-1], m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
+  return `<details class="bk per"${open?' open':''}><summary>${title} <span class="mute" style="font-weight:400;text-transform:none;letter-spacing:0">· ${list.length} · latest ${esc(top.label)}${top.r.live?' to date':''}: <b class="${top.r.profit<0?'neg':''}" style="color:${top.r.profit<0?'var(--red)':'inherit'}">${m(top.r.profit)}</b> ${top.r.profit<0?'loss':'profit'}</span></summary>
+  <div class="tbl-wrap"><table><thead>${thead}</thead><tbody>${[...list].reverse().map(rowFn).join('')}</tbody></table></div></details>`;
+}
 function finPeriodTable(k){
   const P2=finPeriods(k); if(!P2.months.length) return '';
   const m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
   const tag=(x,qy)=>x.r.live?` <span class="mute" style="font-weight:400">${qy?'to date':'to '+fmt(WORLD_DATE)}</span>`:(qy?'':' <span class="mute" style="font-weight:400">closed</span>');
   const row=(x,cls,qy)=>{const r=x.r;return `<tr class="${cls}"><td style="white-space:nowrap">${esc(x.label)}${tag(x,qy)}</td><td class="num">${r.shows}</td><td class="num">${m(r.gate)}</td><td class="num">${m(r.merch)}</td><td class="num">${m(r.other)}</td><td class="num"><b>${m(r.rev)}</b></td><td class="num">${m(r.talent)}</td><td class="num">${m(r.costs-r.talent)}</td><td class="num${r.profit<0?' neg':''}"><b>${m(r.profit)}</b></td><td class="num">${r.rev?String(Math.round(r.profit/r.rev*100)).replace('-','−')+'%':'—'}</td></tr>`;};
-  const head=t=>`<tr class="per-h"><td colspan="10">${t}</td></tr>`;
+  const th=`<tr><th>Period</th><th>Shows</th><th>Gate</th><th>Merch</th><th>Other revenue</th><th>Revenue</th><th>Talent</th><th>Other costs</th><th>Operating profit</th><th>Margin</th></tr>`;
   return `<h2 class="sec">By month, quarter and year <small>${P2.months.filter(x=>!x.r.live).length} month${P2.months.filter(x=>!x.r.live).length===1?'':'s'} closed</small></h2>
-  <div class="tbl-wrap"><table><thead><tr><th>Period</th><th>Shows</th><th>Gate</th><th>Merch</th><th>Other revenue</th><th>Revenue</th><th>Talent</th><th>Other costs</th><th>Operating profit</th><th>Margin</th></tr></thead><tbody>
-  ${head('Months')}${P2.months.map(x=>row(x,'',false)).join('')}
-  ${head('Quarters')}${P2.qs.map(x=>row(x,'per-q',true)).join('')}
-  ${head('Years')}${P2.ys.map(x=>row(x,'per-y',true)).join('')}
-  </tbody></table></div>
+  ${perSection('Months',P2.months,th,x=>row(x,'',false),true)}
+  ${perSection('Quarters',P2.qs,th,x=>row(x,'per-q',true),false)}
+  ${perSection('Years',P2.ys,th,x=>row(x,'per-y',true),false)}
   <p class="mute" style="font-family:var(--cond);font-size:13px">Each month counts only that month's shows, other revenue and talent pay. Months before July 1991 count their shows from the ledger (gate, merch, show costs and payroll) plus office costs; TV rights and deals start in July. A month is filed in the archive when the world clock passes its last day, and its numbers stay fixed after that. Quarters and years add up their months, including the current month to date.</p>`;
 }
 /* Top right of each promotion page: the month's operating profit or loss so far (links to the Finance tab). */
@@ -2278,7 +2284,7 @@ function viewFinance(k){
   <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th>${f.fixed?'':'<th>Class</th>'}<th>Gate</th>${hasM?'<th>Merch</th>':''}${f.fixed?'':'<th>Payroll</th><th>Net</th><th>%</th>'}<th>Show costs</th>${hasPool?'<th>Champions\' pool</th>':''}<th>Notes</th></tr></thead><tbody>
   ${rows.map((r,i)=>`<tr><td style="white-space:nowrap">${fmt(r.d)}</td><td>${esc(r.show)}</td>${f.fixed?'':`<td>${esc(r.cls||'')}</td>`}<td class="num">${money(r.gate)}</td>${hasM?`<td class="num">${r.merch?money(r.merch):'—'}</td>`:''}${f.fixed?'':`<td class="num">${money(r.payroll)}</td><td class="num">${r.gate!=null&&r.payroll!=null?money(r.gate+(r.merch||0)-r.payroll):'—'}</td><td class="num">${r.gate&&r.payroll!=null?Math.round(r.payroll/r.gate*100)+'%':'—'}</td>`}<td class="num">${S.per[i]?money(Object.values(S.per[i]).reduce((a,v)=>a+v,0)):'—'}${r.costs?' <span class="mute">logged</span>':''}</td>${hasPool?(()=>{const c=poolOf(r);return c?`<td class="num" data-tip="${esc(c.champs.map(x=>x[0]).join(', '))}: ${kMoney(c.each)} each">${money(c.pool)} <span class="mute">÷ ${c.champs.length}</span></td>`:'<td class="mute">—</td>';})():''}<td>${esc(r.note||'')}</td></tr>`).join('')}
   </tbody></table></div>
-  ${f.hist&&f.hist.length?`<details class="bk" style="margin-top:10px"><summary>Shows before July 1991 (${f.hist.length}, ${esc(fmt(f.hist[0].d))} ${f.hist[0].d.slice(0,4)} to ${esc(fmt(f.hist[f.hist.length-1].d))} ${f.hist[f.hist.length-1].d.slice(0,4)}): counted month by month above</summary><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th><th>Class</th><th>Gate</th><th>Payroll</th><th>Notes</th></tr></thead><tbody>${f.hist.map(r=>`<tr><td style="white-space:nowrap">${esc(fmt(r.d))} ${r.d.slice(0,4)}</td><td>${r.page&&SITES[k]?siteLink(k,r.page,esc(r.show)):esc(r.show)}</td><td>${esc(r.cls||'')}</td><td class="num">${money(r.gate)}</td><td class="num">${money(r.payroll)}</td><td>${esc(r.note||'')}</td></tr>`).join('')}</tbody></table></div></details>`:''}
+  ${f.hist&&f.hist.length?`<details class="bk" style="margin-top:10px"><summary>Shows before July 1991 (${f.hist.length}, newest first, ${esc(fmt(f.hist[f.hist.length-1].d))} ${f.hist[f.hist.length-1].d.slice(0,4)} back to ${esc(fmt(f.hist[0].d))} ${f.hist[0].d.slice(0,4)}): counted month by month above</summary><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Show</th><th>Class</th><th>Gate</th><th>Payroll</th><th>Notes</th></tr></thead><tbody>${[...f.hist].sort((x,y)=>y.d.localeCompare(x.d)).map(r=>`<tr><td style="white-space:nowrap">${esc(fmt(r.d))} ${r.d.slice(0,4)}</td><td>${r.page&&SITES[k]?siteLink(k,r.page,esc(r.show)):esc(r.show)}</td><td>${esc(r.cls||'')}</td><td class="num">${money(r.gate)}</td><td class="num">${money(r.payroll)}</td><td>${esc(r.note||'')}</td></tr>`).join('')}</tbody></table></div></details>`:''}
   ${earningsBox(k,10)}
   <h2 class="sec">Other revenue <small>${S.oth?money(S.oth)+' logged':'Coming later'}</small></h2>
   <div class="tbl-wrap"><table><thead><tr><th>Stream</th><th>Amount</th><th>Notes</th></tr></thead><tbody>${streams.map(s=>{const L=byStream[s];
@@ -2295,13 +2301,11 @@ function worldPeriodTable(){
   const m=v=>v==null?'—':(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US');
   const cell=(k,grp,key)=>{const x=per[k][grp].find(y=>y.key===key);return x?`<td class="num${x.r.profit<0?' neg':''}">${m(x.r.profit)}</td>`:'<td class="num mute">—</td>';};
   const row=(x,grp,cls)=>`<tr class="${cls}"><td style="white-space:nowrap">${esc(x.label)}${x.r.live?' <span class="mute" style="font-weight:400">to date</span>':''}</td>${ks.map(k=>cell(k,grp,x.key)).join('')}<td class="num"><b>${m(x.r.rev)}</b></td><td class="num">${m(x.r.costs)}</td><td class="num${x.r.profit<0?' neg':''}"><b>${m(x.r.profit)}</b></td></tr>`;
-  const head=t=>`<tr class="per-h"><td colspan="${ks.length+4}">${t}</td></tr>`;
+  const th=`<tr><th>Period</th>${ks.map(k=>`<th>${esc(P[k].short)}</th>`).join('')}<th>World revenue</th><th>World costs</th><th>World profit</th></tr>`;
   return `<h2 class="sec">Operating profit by period <small>Months close when the world clock passes them</small></h2>
-  <div class="tbl-wrap"><table><thead><tr><th>Period</th>${ks.map(k=>`<th>${esc(P[k].short)}</th>`).join('')}<th>World revenue</th><th>World costs</th><th>World profit</th></tr></thead><tbody>
-  ${head('Months')}${W.months.map(x=>row(x,'months','')).join('')}
-  ${head('Quarters')}${W.qs.map(x=>row(x,'qs','per-q')).join('')}
-  ${head('Years')}${W.ys.map(x=>row(x,'ys','per-y')).join('')}
-  </tbody></table></div>
+  ${perSection('Months',W.months,th,x=>row(x,'months',''),true)}
+  ${perSection('Quarters',W.qs,th,x=>row(x,'qs','per-q'),false)}
+  ${perSection('Years',W.ys,th,x=>row(x,'ys','per-y'),false)}
   <p class="mute" style="font-family:var(--cond);font-size:13px">Each month counts only that month's shows, other revenue and talent pay, so the current month here can differ from the to-date table above, which also carries cards run before July.</p>`;
 }
 function viewMoney(){
