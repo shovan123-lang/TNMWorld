@@ -744,7 +744,7 @@ const P={}, E=[], ARTICLES={}, CONTRACTS={}, FINANCE={}, SITES={}, BANNER_SVG={}
 <script src="data/asw.js?v=38836ba2"></script>
 <script src="data/twa.js?v=035b6ed4"></script>
 <script src="data/fmw.js?v=bf90fb8b"></script>
-<script src="data/gwf.js?v=1"></script>
+<script src="data/gwf.js?v=2"></script>
 <script src="data/history.js?v=8be05e77"></script>
 <script src="data/fin_archive.js?v=401ccb9a"></script>
 <script src="data/earnings.js?v=c3cdddce"></script>
@@ -838,7 +838,7 @@ function bindStoryArchive(){
 const isPast = s=>dt(s)<W, isToday = s=>s===WORLD_DATE;
 const aired = id=>{const a=ARTICLES[id];return !(a&&a.airs&&dt(a.airs)>W)||spoilers};
 const pastE = e=>e.ran ? true : (P[e.p].asOf ? dt(e.d)<=dt(P[e.p].asOf) : dt(e.d)<W);
-const LOGO = {njpw:'img/njpw-logo.svg?v=df09466d',wwf:'img/wwf-logo.webp?v=81c1e15d',wcw:'img/wcw-logo.png?v=9d5ac90c',cmll:'img/cmll-logo.png?v=62af0a6b',fmw:'img/fmw-logo.png?v=ad8b0729',uswa:'img/uswa-logo.png?v=504eb8f3',ajpw:'img/ajpw-logo.png?v=0e4c9c64',asw:'img/asw-logo.png?v=761e67a7',pp:'img/pp-logo.jpg?v=fcfe09b5',twa:'img/tsw-logo.png?v=0a5ea135',gwf:'img/gwf-logo.png?v=1'};
+const LOGO = {njpw:'img/njpw-logo.svg?v=df09466d',wwf:'img/wwf-logo.webp?v=81c1e15d',wcw:'img/wcw-logo.png?v=9d5ac90c',cmll:'img/cmll-logo.png?v=62af0a6b',fmw:'img/fmw-logo.png?v=ad8b0729',uswa:'img/uswa-logo.png?v=504eb8f3',ajpw:'img/ajpw-logo.png?v=0e4c9c64',asw:'img/asw-logo.png?v=761e67a7',pp:'img/pp-logo.jpg?v=fcfe09b5',twa:'img/tsw-logo.png?v=0a5ea135',gwf:'img/gwf-logo.png?v=2'};
 const plabel = k=>LOGO[k]?`<img class="plogo" src="${LOGO[k]}" alt="${P[k].short}">`:P[k].short;
 const chip = k=>`<a class="chip${LOGO[k]?' logo':''}" href="#${k}" style="--c:${P[k].c}" title="${P[k].short}">${plabel(k)}</a>`;
 const ORDER = ['wwf','wcw','uswa','njpw','ajpw','fmw','cmll','asw','pp','twa','gwf'];
