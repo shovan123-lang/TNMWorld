@@ -288,8 +288,8 @@ tr.big td{font-weight:700}
 .phead .full{font-family:var(--cond);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:14px}
 .phead .stat{text-align:right;font-family:var(--cond)}
 .phead .stat b{display:block;font-family:var(--head);font-weight:400;font-size:30px;line-height:1}
-.stat .pl{display:block;margin-top:5px;font-family:var(--cond);font-size:14px;color:var(--ink);text-decoration:none;border-top:1px solid var(--soft);padding-top:4px}
-.stat .pl b,.phead .stat .pl b{display:inline;font-family:var(--head);font-weight:400;font-size:22px;line-height:1}
+.stat .pl{display:block;font-family:var(--cond);font-size:14px;color:var(--ink);text-decoration:none}
+.stat .pl b,.phead .stat .pl b{display:block;font-family:var(--head);font-weight:400;font-size:30px;line-height:1}
 .stat .pl.up b{color:#1e6b34}.stat .pl.down b{color:var(--red)}
 .stat .pl:hover{text-decoration:underline}
 tr.per-q td{background:var(--paper2);font-weight:700}tr.per-y td{background:var(--ink);color:var(--paper);font-weight:700}
@@ -1871,13 +1871,11 @@ function finPeriodTable(k){
   </tbody></table></div>
   <p class="mute" style="font-family:var(--cond);font-size:13px">Each month counts only that month's shows, other revenue and talent pay. A month is filed in the archive when the world clock passes its last day, and its numbers stay fixed after that. Quarters and years add up their months, including the current month to date.</p>`;
 }
-/* Top right of each promotion page: this month's gate + merch, and the month's operating profit or loss so far. */
+/* Top right of each promotion page: the month's operating profit or loss so far (links to the Finance tab). */
 function promoMoneyStat(k){
-  const p=P[k], mo=WORLD_DATE.slice(0,7), S=FINANCE[k]?finSum(k,mo):null;
-  if(!S||!S.rows.some(r=>r.gate!=null)) return null;
-  const m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US'), n=S.rows.filter(r=>r.gate!=null).length, mn=MONTH_NAMES[+mo.slice(5,7)-1];
-  return {big:m(S.gate+S.merch),sub:`${mn} gate${S.merch?' + merch':''} · ${n} show${n===1?'':'s'}`,
-    pl:`<a class="pl ${S.profit<0?'down':'up'}" href="#${k}/finance" title="Revenue ${m(S.rev)} · costs ${m(S.costTot)}, ${esc(mn)} 1 to ${esc(fmt(WORLD_DATE))}">${mn} ${S.profit<0?'operating loss':'operating profit'} <b>${m(S.profit)}</b><br><span class="mute">on ${m(S.rev)} revenue, to ${esc(fmt(WORLD_DATE))}</span></a>`};
+  const mo=WORLD_DATE.slice(0,7), S=FINANCE[k]?finSum(k,mo):null; if(!S) return null;
+  const m=v=>(v<0?'−$':'$')+Math.abs(Math.round(v)).toLocaleString('en-US'), mn=MONTH_NAMES[+mo.slice(5,7)-1];
+  return `<a class="pl ${S.profit<0?'down':'up'}" href="#${k}/finance" title="Revenue ${m(S.rev)} · costs ${m(S.costTot)}, ${esc(mn)} 1 to ${esc(fmt(WORLD_DATE))}"><b>${m(S.profit)}</b><span>${mn} operating ${S.profit<0?'loss':'profit'}, to ${esc(fmt(WORLD_DATE))}</span></a>`;
 }
 /* ---------- Finance charts (inline SVG, no libraries) ---------- */
 const kMoney=v=>{const a=Math.abs(v),sg=v<0?'−':'';return sg+'$'+(a>=1e6?(a/1e6).toFixed(a>=1e7?1:2)+'M':a>=1e4?Math.round(a/1e3)+'K':Math.round(a).toLocaleString('en-US'))};
@@ -2816,8 +2814,8 @@ function viewPromo(k,tab){
   const MS=promoMoneyStat(k);
   return `<section style="--c:${p.c}">
     ${(BANNER_SVG[k]||BANNER_OF[k])?`<div style="margin-top:6px;border:2px solid var(--ink);line-height:0">${BANNER_SVG[k]?BANNER_SVG[k]:`<img src="${BANNER_OF[k][0]}" alt="${BANNER_OF[k][1]}" style="display:block;width:100%;height:auto">`}</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" style="margin-top:0" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right"><b style="font-family:var(--head);font-weight:400;font-size:30px;line-height:1">${MS?MS.big:esc(p.stat[0])}</b> ${MS?MS.sub:esc(p.stat[1])}${MS?MS.pl:''}</div></div>`:`
-    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:''}</div><div class="stat"><b>${MS?MS.big:esc(p.stat[0])}</b>${MS?MS.sub:esc(p.stat[1])}${MS?MS.pl:''}</div></div>`}
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--ink)">${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" style="margin-top:0" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:`<div class="full" style="font-family:var(--cond);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px">${esc(p.name)} · ${esc(p.home)}</div>`}<div class="stat" style="font-family:var(--cond);text-align:right">${MS||''}</div></div>`:`
+    <div class="phead"><div><div class="full">${esc(p.name)} · ${esc(p.home)}</div><h2>${esc(p.short)}</h2>${SITES[k]?`<a class="ext${LOGO[k]?' logo':''}" href="#${k}/page/WELCOME">${LOGO[k]?plabel(k)+' Official site':'Official '+p.short+' site'}</a>`:''}</div><div class="stat">${MS||''}</div></div>`}
     <div class="sub">${tabs.map(([t,l])=>`<button data-tab="${t}" class="${t===tab||(tab==='page'&&t==='archive')?'on':''}">${l}</button>`).join('')}</div>
     ${body}
   </section>`;
