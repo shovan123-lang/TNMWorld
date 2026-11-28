@@ -23,7 +23,7 @@ SITES.uswa = {"base": "https://shovan123-lang.github.io/USWA/HTML/", "arch": [["
 
 /* Aug–Dec 1991 schedule (dates and venues from the USWA onesheet; cards not set yet). */
 E.push(...[
-{"d": "1991-08-02", "p": "uswa", "city": "Dallas, TX", "venue": "Sportatorium", "type": "House show (Dallas monthly)"},
+{"d": "1991-08-02", "p": "uswa", "city": "Dallas, TX", "venue": "Dallas Convention Center Arena", "type": "House show (Dallas monthly)"},
 {"d": "1991-08-03", "p": "uswa", "city": "Nashville, TN", "venue": "Fairgrounds", "type": "House show"},
 {"d": "1991-08-05", "p": "uswa", "city": "Memphis, TN", "venue": "Mid South Coliseum", "type": "Coliseum card"},
 {"d": "1991-08-06", "p": "uswa", "city": "Louisville, KY", "venue": "Louisville Gardens", "type": "House show"},
@@ -69,7 +69,7 @@ E.push(...[
 {"d": "1991-10-01", "p": "uswa", "city": "Louisville, KY", "venue": "Louisville Gardens", "type": "House show"},
 {"d": "1991-10-02", "p": "uswa", "city": "Evansville, IN", "venue": "Veterans Memorial Coliseum", "type": "House show"},
 {"d": "1991-10-03", "p": "uswa", "city": "Bedford, IN", "venue": "To establish", "type": "House show"},
-{"d": "1991-10-04", "p": "uswa", "city": "Dallas, TX", "venue": "Sportatorium", "type": "House show (Dallas monthly)"},
+{"d": "1991-10-04", "p": "uswa", "city": "Dallas, TX", "venue": "Dallas Convention Center Arena", "type": "House show (Dallas monthly)"},
 {"d": "1991-10-05", "p": "uswa", "city": "Memphis, TN", "venue": "WMC-TV Studio", "type": "Championship Wrestling (live TV)"},
 {"d": "1991-10-05", "p": "uswa", "city": "Nashville, TN", "venue": "Fairgrounds", "type": "House show"},
 {"d": "1991-10-07", "p": "uswa", "city": "Memphis, TN", "venue": "Mid South Coliseum", "type": "Coliseum card"},
