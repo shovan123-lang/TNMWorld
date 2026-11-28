@@ -2164,7 +2164,7 @@ function finDeals(k){
   const sp=D.filter(x=>x.kind==='Sponsorship').length;
   return `<h2 class="sec">Signed deals <small>${D.length} partner${D.length===1?'':'s'}</small></h2>
   <div class="tbl-wrap"><table><thead><tr><th>Partner</th><th>Type</th><th>What they get</th><th>Terms</th><th>Term</th><th>Status</th></tr></thead><tbody>${D.map(x=>`<tr><td><b>${esc(x.partner)}</b></td><td>${esc(x.kind)}</td><td>${esc(x.what)}</td><td>${esc(x.terms)}</td><td style="white-space:nowrap">${esc(term(x))}</td><td>${st(x)}</td></tr>`).join('')}</tbody></table></div>
-  <p class="mute" style="font-family:var(--cond);font-size:13px">Licensing is counted month by month in Other revenue above.${sp?' Sponsorship money is counted show by show once each sponsored show has aired.':''}</p>`;
+  <p class="mute" style="font-family:var(--cond);font-size:13px">${D.some(x=>x.kind==='Tuition')?'Tuition':'Licensing'} is counted month by month in Other revenue above.${sp?' Sponsorship money is counted show by show once each sponsored show has aired.':''}</p>`;
 }
 function viewFinance(k){
   const S=finSum(k); if(!S) return `<div class="empty" style="margin-top:20px">No finance records yet.</div>`;
