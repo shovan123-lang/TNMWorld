@@ -150,6 +150,9 @@ FINANCE._tv = {
  asw:{amt:0,note:"Off ITV since 1988"},
  twa:{amt:0,note:"No TV deal"}
 };
+/* Months before July 1991 count TV rights only from these months (the promotion's TV was already on the air):
+   the USWA's Championship Wrestling started on WMC-TV 9/1/1990. */
+FINANCE._tvFrom = {uswa:"1990-09"};
 /* Recurring monthly revenue other than TV: counted day by day through the world date, like TV rights. */
 FINANCE._recurring = [
  {p:"wcw",stream:"900 hotline",amt:12500,note:"WCW Hotline, hosted by Jim Ross ($150,000 a year)"},
