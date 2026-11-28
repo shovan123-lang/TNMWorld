@@ -350,7 +350,7 @@ def site_key(name):
 # Circuit folder -> the site's promotion key (CARD.LGS order).
 SITE_KEY = {"USWA": "uswa", "POWER": "pp", "ALL": "ajpw", "CONSEJO": "cmll",
             "WORLD": "wwf", "WORLD1": "wcw", "NEW": "njpw",
-            "EASTERN1": "twa", "ALL1": "asw", "FRONTIER": "fmw"}
+            "EASTERN1": "twa", "ALL1": "asw", "FRONTIER": "fmw", "GLOBAL": "gwf"}
 
 
 def write_js(ranked, path, date):

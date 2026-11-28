@@ -8,6 +8,24 @@
    A wrestler who isn't listed here has no birth date on record yet, and the page
    shows "—" for the age. Add a line to fill one in. */
 const BIRTHS = {
+  /* GWF opening roster (added 2026-11-28). No public birth date found for Terry Garvin (Terry Simms), Rasta the Voodoo Mon, Randy Rhodes, Billy Black, Pvt. Terry Daniels, The Zebra Kid or Jimmy James. */
+  "The Patriot": "1961-12-21",   // Delbert Alexander Wilkes Jr. · https://en.wikipedia.org/wiki/Del_Wilkes
+  "Al Perez": "1957-07-23",   // real name not given · https://en.wikipedia.org/wiki/Al_Perez
+  "Stan Lane": "1953-08-05",   // Wallace Stanfield Lane · https://en.wikipedia.org/wiki/Stan_Lane
+  "Chris Walker": "1961-02-09",   // Glenn Coan · https://en.wikipedia.org/wiki/Chris_Walker_(wrestler)
+  "Steve Simpson": "1963-12-03",   // Stephan Simpson · https://en.wikipedia.org/wiki/Steve_Simpson_(wrestler)
+  "Makhan Singh": "1957-05-09",   // Michael Paul Shaw · https://en.wikipedia.org/wiki/Mike_Shaw
+  "Gary Young": "1959-08-26",   // David Harrington · https://en.wikipedia.org/wiki/Gary_Young_(wrestler)
+  "Brian Adias": "1960-06-01",   // Brian Gower · https://en.wikipedia.org/wiki/Brian_Adias
+  "Adrian Street": "1940-12-05",   // real name not given · https://en.wikipedia.org/wiki/Adrian_Street
+  "Jerry Lynn": "1963-06-12",   // Jeremy Lynn · https://en.wikipedia.org/wiki/Jerry_Lynn
+  "Doug Somers": "1951-09-22",   // Douglas Duane Somerson · https://en.wikipedia.org/wiki/Doug_Somers
+  "John Hawk": "1966-11-29",   // John Charles Layfield · https://en.wikipedia.org/wiki/John_Layfield
+  "Booker T": "1965-03-01",   // Booker T. Huffman Jr. · https://en.wikipedia.org/wiki/Booker_T_(wrestler)
+  "Stevie Ray": "1958-08-22",   // Laslon Steven Huffman · https://en.wikipedia.org/wiki/Stevie_Ray
+  "Axl Rotten": "1971-04-21",   // Brian Knighton · https://en.wikipedia.org/wiki/Axl_Rotten
+  "Barry Horowitz": "1960-03-24",   // Barry Horowitz · https://en.wikipedia.org/wiki/Barry_Horowitz
+  "Big Bully Busick": "1954-06-01",   // Nicholas Robert Busick · https://en.wikipedia.org/wiki/Big_Bully_Busick
   "Abdullah the Butcher": "1941-01-11",   // Lawrence Robert "Larry" Shreve · https://en.wikipedia.org/wiki/Abdullah_the_Butcher
   "Abdullah The Butcher": "1941-01-11",   // Lawrence Robert "Larry" Shreve · https://en.wikipedia.org/wiki/Abdullah_the_Butcher
   "Ace Steel": "1973-01-25",   // Christopher Guy · https://en.wikipedia.org/wiki/Ace_Steel
